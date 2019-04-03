@@ -155,6 +155,11 @@
 		90F2C66A2254C02A00A712B8 /* liveroom */ = {
 			isa = PBXGroup;
 			children = (
+				90F2C68E2254C08600A712B8 /* TCDefine.h */,
+				90F2C6A32254C08600A712B8 /* Headers.h */,
+				90F2C6822254C08600A712B8 /* LRNotifiersDefine.h */,
+				90F2C68F2254C08600A712B8 /* AppDelegate.h */,
+				90F2C6A82254C08600A712B8 /* AppDelegate.m */,
 				90F2C6F22254C09400A712B8 /* Resources */,
 				90F2C6812254C08600A712B8 /* Classes */,
 				90F2C6712254C02A00A712B8 /* Main.storyboard */,
@@ -169,11 +174,6 @@
 		90F2C6812254C08600A712B8 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				90F2C68F2254C08600A712B8 /* AppDelegate.h */,
-				90F2C6A82254C08600A712B8 /* AppDelegate.m */,
-				90F2C68E2254C08600A712B8 /* TCDefine.h */,
-				90F2C6A32254C08600A712B8 /* Headers.h */,
-				90F2C6822254C08600A712B8 /* LRNotifiersDefine.h */,
 				90F2C6832254C08600A712B8 /* Home */,
 				90F2C6862254C08600A712B8 /* VoiceChatRoomInfo */,
 				90F2C6902254C08600A712B8 /* Category */,
@@ -433,6 +433,7 @@
 		90F2C6602254C02A00A712B8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = LR;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Easemob;
 				TargetAttributes = {
