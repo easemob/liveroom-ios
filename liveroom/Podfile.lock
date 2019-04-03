@@ -1,0 +1,29 @@
+PODS:
+  - CocoaLumberjack (3.4.2):
+    - CocoaLumberjack/Default (= 3.4.2)
+    - CocoaLumberjack/Extensions (= 3.4.2)
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Extensions (3.4.2):
+    - CocoaLumberjack/Default
+  - Masonry (1.1.0)
+  - MJRefresh (3.1.16)
+
+DEPENDENCIES:
+  - CocoaLumberjack (~> 3.4.2)
+  - Masonry (~> 1.1.0)
+  - MJRefresh
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - CocoaLumberjack
+    - Masonry
+    - MJRefresh
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
+
+PODFILE CHECKSUM: 5eeec2c861cb42e178f3d1dc99032ba052c6b5e8
+
+COCOAPODS: 1.5.3
