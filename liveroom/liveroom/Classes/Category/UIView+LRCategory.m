@@ -37,7 +37,8 @@
         default:
             break;
     }
-    self.layer.borderColor = [color colorWithAlphaComponent:0.6].CGColor;
+    self.layer.borderColor = [color colorWithAlphaComponent:0.5].CGColor;
+    self.layer.borderWidth = 2.5;
 }
 @end
 
