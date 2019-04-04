@@ -23,9 +23,12 @@ typedef void(^CloseBlock)(void);
 @property (nonatomic, copy) CloseBlock closeBlock;
 @property (nonatomic, strong) UITextField *textField;
 
-+ (LRAlertController *)showAlertWithImage:(UIImage * _Nullable)aImage
++ (LRAlertController *)showAlertWithImage:(UIImage *)aImage
                                imageColor:(UIColor *)aColor
                                     title:(NSString *)aTitle
+                                     info:(NSString *)aInfo;
+
++ (LRAlertController *)showAlertWithTitle:(NSString *)aTitle
                                      info:(NSString *)aInfo;
 
 - (void)addAction:(LRAlertAction *)aAction;

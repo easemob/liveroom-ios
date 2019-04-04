@@ -9,13 +9,10 @@
 #import "LRLoginViewController.h"
 #import "Headers.h"
 #import "LRAlertController.h"
-#import "LRLoginHintView.h"
 
-@interface LRLoginViewController () <LRLoginHintViewDelegate>
+@interface LRLoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-
-@property (strong , nonatomic) LRLoginHintView *loginHintView;
 
 @end
 
@@ -29,12 +26,9 @@
 
 - (void)_setupSubViews
 {
-    self.loginHintView = [[LRLoginHintView alloc] initWithFrame:CGRectMake(70, 330, LRWindowWidth - 140, 150)];
-    self.loginHintView.delegate = self;
-    
-    [self.usernameTextField setupTextFieldType:LRTextFieldInputType];
+    [self.usernameTextField setupTextField];
     [self.usernameTextField strokeWithColor:LRStrokeWhite];
-    [self.passwordTextField setupTextFieldType:LRTextFieldInputType];
+    [self.passwordTextField setupTextField];
     [self.passwordTextField strokeWithColor:LRStrokeWhite];
 }
 
@@ -74,7 +68,14 @@
 // 注册
 - (IBAction)registerAction:(id)sender
 {
-
+    LRAlertController *alertController = [LRAlertController showAlertWithImage:[UIImage imageNamed:@"correct"]
+                                                                    imageColor:[UIColor greenColor]
+                                                                         title:@"正确 ok"
+                                                                          info:@"账号注册成功。 Account registeration was successful."];
+    alertController.closeBlock = ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_ACCOUNT_LOGIN_CHANGED object:[NSNumber numberWithBool:YES]];
+    };
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (IBAction)tapBackgroundAction:(id)sender

@@ -72,7 +72,7 @@
                                 <constraint firstAttribute="height" constant="40" id="j3Y-Gq-kQV"/>
                                 <constraint firstAttribute="width" constant="40" id="lT4-3F-9XY"/>
                             </constraints>
-                            <state key="normal" image="close.png"/>
+                            <state key="normal" image="closeAlert.png"/>
                             <connections>
                                 <action selector="closeBtnClicked:" destination="-1" eventType="touchUpInside" id="XmC-iq-que"/>
                             </connections>
@@ -107,6 +107,6 @@
         </view>
     </objects>
     <resources>
-        <image name="close.png" width="22" height="22"/>
+        <image name="closeAlert.png" width="22" height="22"/>
     </resources>
 </document>

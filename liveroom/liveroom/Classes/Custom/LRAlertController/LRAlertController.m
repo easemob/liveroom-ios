@@ -25,6 +25,7 @@
     return action;
 }
 
+
 @end
 
 @interface LRAlertController () <UITextFieldDelegate>
@@ -61,6 +62,17 @@
     return alertController;
 }
 
+
++ (LRAlertController *)showAlertWithTitle:(NSString *)aTitle
+                                     info:(NSString *)aInfo
+{
+    LRAlertController *alertController = [[LRAlertController alloc]
+                                          initWithImage:nil
+                                          imageColor:nil
+                                          title:aTitle
+                                          info:aInfo];
+    return alertController;
+}
 
 - (instancetype)initWithImage:(UIImage *)aImage
                    imageColor:(UIColor *)aColor
@@ -160,7 +172,7 @@
 
 - (void)_setupTextField
 {
-    [self.textField setupTextFieldType:LRTextFieldInputType];
+    [self.textField setupTextField];
     [self.textField strokeWithColor:LRStrokeWhite];
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.textColor = UIColor.whiteColor;

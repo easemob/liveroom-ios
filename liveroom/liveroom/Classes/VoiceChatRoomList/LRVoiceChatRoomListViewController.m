@@ -13,6 +13,9 @@
 #import "LRVoiceChatRoomListCell.h"
 #import "LRChatRoomListModel.h"
 #import "LRJoinVoiceChatRoomView.h"
+
+#import "LRVoiceRoomViewController.h"
+
 #import "Headers.h"
 
 @interface LRVoiceChatRoomListViewController () <TCSearchControllerDelegate, LRJoinVoiceChatRoomViewDelegate>
@@ -147,13 +150,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    NSInteger row = indexPath.row;
-    LRChatRoomListModel *model = [self.dataArray objectAtIndex:row];
-    self.joinVoiceChatRoomView.voiceChatRoomName = model.chatRoomName;
-    [self.view addSubview:self.joinVoiceChatRoomView];
-    [self.view bringSubviewToFront:self.joinVoiceChatRoomView];
-    
+    LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomName:@"ASD123"];
+    [self presentViewController:vroomVC animated:YES completion:nil];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
