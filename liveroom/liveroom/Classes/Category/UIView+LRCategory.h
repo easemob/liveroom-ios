@@ -13,20 +13,22 @@ NS_ASSUME_NONNULL_BEGIN
 typedef enum : NSUInteger {
     LRStrokeRed,
     LRStrokeBlue,
-    LRStrokeBlack,
     LRStrokeWhite
 } LRStrokeColor;
 
 @interface UIView (Stroke)
 - (void)strokeWithColor:(LRStrokeColor)aColor;
+- (void)disableStroke;
 @end
 
 typedef enum : NSUInteger {
-    LRTextFieldInputType
-} LRTextFieldType;
+    LRTextInputType,
+    LRTextNormalType
+} LRTextType;
 
 @interface UITextField (Type)
-- (void)setupTextFieldType:(LRTextFieldType)aType;
+- (void)setupTextField;
 @end
+
 
 NS_ASSUME_NONNULL_END

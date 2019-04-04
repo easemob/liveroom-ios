@@ -172,7 +172,7 @@
 
 - (void)_setupTextField
 {
-    [self.textField setupTextFieldType:LRTextFieldInputType];
+    [self.textField setupTextField];
     [self.textField strokeWithColor:LRStrokeWhite];
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.textColor = UIColor.whiteColor;

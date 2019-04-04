@@ -150,7 +150,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin];
+    LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomName:@"ASD123"];
     [self presentViewController:vroomVC animated:YES completion:nil];
 }
 

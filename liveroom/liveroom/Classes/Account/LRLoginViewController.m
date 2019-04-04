@@ -26,9 +26,9 @@
 
 - (void)_setupSubViews
 {
-    [self.usernameTextField setupTextFieldType:LRTextFieldInputType];
+    [self.usernameTextField setupTextField];
     [self.usernameTextField strokeWithColor:LRStrokeWhite];
-    [self.passwordTextField setupTextFieldType:LRTextFieldInputType];
+    [self.passwordTextField setupTextField];
     [self.passwordTextField strokeWithColor:LRStrokeWhite];
 }
 
