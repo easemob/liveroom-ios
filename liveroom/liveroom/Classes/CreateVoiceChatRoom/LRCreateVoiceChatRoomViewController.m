@@ -9,6 +9,8 @@
 #import "LRCreateVoiceChatRoomViewController.h"
 
 @interface LRCreateVoiceChatRoomViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *voiceChatroomIDTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
 @end
 
@@ -16,14 +18,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [self.voiceChatroomIDTextField setupTextField];
+    [self.voiceChatroomIDTextField strokeWithColor:LRStrokeWhite];
     
-    
+    [self.passwordTextField setupTextField];
+    [self.passwordTextField strokeWithColor:LRStrokeWhite];
 }
 - (IBAction)closeAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
+}
+- (IBAction)submitAction:(id)sender {
+    
 }
 
 /*

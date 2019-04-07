@@ -1,0 +1,104 @@
+//
+//  TCSearchBar.m
+//  Tigercrew
+//
+//  Created by easemob-DN0164 on 2019/4/3.
+//  Copyright © 2019年 Easemob. All rights reserved.
+//
+
+#import "LRSearchBar.h"
+
+@interface LRSearchBar()<UITextFieldDelegate>
+
+@property (nonatomic, strong) UIButton *searchButton;
+
+@end
+
+@implementation LRSearchBar
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self _setupSubviews];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldTextDidChange) name:UITextFieldTextDidChangeNotification object:nil];
+    }
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Subviews
+
+- (void)_setupSubviews
+{
+    self.textField = [[UITextField alloc] init];
+    self.textField.delegate = self;
+    self.textField.font = [UIFont systemFontOfSize:16];
+    self.textField.placeholder = @"输入voiceChatroomID";
+    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.textField.returnKeyType = UIReturnKeyDone;
+    
+    [self.textField setupTextField];
+    [self.textField strokeWithColor:LRStrokeWhite];
+    [self addSubview:self.textField];
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self);
+        make.left.equalTo(self);
+        make.right.equalTo(self);
+        make.height.equalTo(@40);
+    }];
+    
+    UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+    leftView.contentMode = UIViewContentModeScaleAspectFit;
+    leftView.image = [UIImage imageNamed:@"search_gray"];
+    self.textField.leftView = leftView;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]) {
+        [self.delegate searchBarShouldBeginEditing:self];
+    }
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField.text.length == 0) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarCancelAction:)]) {
+            [self.delegate searchBarCancelAction:self];
+        }
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)textFieldTextDidChange
+{
+    if (self.textField.text.length == 0) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarCancelAction:)]) {
+            [self.delegate searchBarCancelAction:self];
+        }
+    } else {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]) {
+            [self.delegate searchBarShouldBeginEditing:self];
+        }
+    }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
+        [self.delegate searchTextDidChangeWithString:self.textField.text];
+    }
+}
+
+@end

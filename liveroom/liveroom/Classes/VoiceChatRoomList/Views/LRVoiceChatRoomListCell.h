@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRVoiceChatRoomListCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *chatRoomNameLabel;
+@property (nonatomic, strong) UILabel *userNameLabel;
 @property (nonatomic, strong) LRChatRoomListModel *model;
 
 @end

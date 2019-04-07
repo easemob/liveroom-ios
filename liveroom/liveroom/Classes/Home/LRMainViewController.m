@@ -16,7 +16,7 @@
 @property (nonatomic, strong) LRVoiceChatRoomListViewController *voiceChatRoomListVC;
 @property (nonatomic, strong) LRCreateVoiceChatRoomViewController *createVoiceChatRoomVC;
 @property (nonatomic, strong) LRSettingViewController *settingVC;
-@property (strong, nonatomic) UITabBar *tcTabBar;
+@property (strong, nonatomic) UITabBar *lrTabBar;
 
 @end
 
@@ -54,37 +54,14 @@
                                                            nil,NSForegroundColorAttributeName,
                                                            nil] forState:UIControlStateNormal];
         [viewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:16], NSFontAttributeName, nil, NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-//        [self addChildViewController:nav];
     } else {
         viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        [self addChildViewController:viewController];
     }
-    
-    //    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-    //
-    ////    nav.navigationBar.backgroundColor = [UIColor grayColor];
-    //
-    //
-    //    [self addChildViewController:nav];
     [self addChildViewController:viewController];
 }
 
 #pragma mark
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
-    //判断用户是否登陆
-//    if (isLogin == NO) {
-//        //这里拿到你想要的tabBarItem,这里的方法有很多,还有通过tag值,这里看你的需要了
-//        if ([viewController.tabBarItem.title isEqualToString:@"消息"] || [viewController.tabBarItem.title isEqualToString:@"订单"]) {
-//            LoginController *vc = [LoginController new];
-//            [self presentViewController:vc animated:YES completion:nil];
-//            //这里的NO是关键,如果是这个tabBarItem,就不要让他点击进去
-//            return NO;
-//        }
-//    }
-    
-    NSLog(@"tag---%ld", viewController.tabBarItem.tag);
-    
     if (viewController.tabBarItem.tag == 1) {
         LRCreateVoiceChatRoomViewController *createVoiceChatRoom = [[LRCreateVoiceChatRoomViewController alloc] init];
         [self presentViewController:createVoiceChatRoom animated:YES completion:^{
@@ -92,8 +69,6 @@
         }];
         return NO;
     }
-    
-    //当然其余的还是要点击进去的
     return YES;
 }
 @end
