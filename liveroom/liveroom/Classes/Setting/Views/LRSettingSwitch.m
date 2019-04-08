@@ -16,8 +16,6 @@
 @end
 
 @implementation LRSettingSwitch
-@synthesize isOn = _isOn;
-
 - (UILabel*)tagLabel{
     if (!_tagLabel) {
         CGRect frame = self.isOn?CGRectMake(5, 5,self.frame.size.width/2 - 5, self.frame.size.height - 10):CGRectMake(self.frame.size.width/2,5, self.frame.size.width/2 - 5,self.frame.size.height - 10);
@@ -73,12 +71,6 @@
     [self switchSettingWithOn:_isOn animated:_isAnimated];
 }
 
-- (BOOL)isOn
-{
-//    NSLog(@"_isOn---%d", _isOn);
-    return _isOn;
-}
-
 // 开关打开，关闭设置
 - (void)setOn:(BOOL)on animated:(BOOL)animated{
     _isAnimated = animated;
@@ -114,8 +106,8 @@
 
 - (void)tap{
     self.isOn = !self.isOn;
-    if ([self.delegate respondsToSelector:@selector(settingSwitchWithIsOn:)]) {
-        [self.delegate settingSwitchWithIsOn:self.isOn];
+    if ([self.delegate respondsToSelector:@selector(settingSwitchWithValueChanged:)]) {
+        [self.delegate settingSwitchWithValueChanged:self];
     }
 }
 

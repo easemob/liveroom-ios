@@ -11,17 +11,15 @@
 NS_ASSUME_NONNULL_BEGIN
 @protocol LRSettingSwitchDelegate;
 @interface LRSettingSwitch : UIView
-
 @property (nonatomic, weak) id <LRSettingSwitchDelegate> delegate;
 @property (nonatomic, assign) BOOL isOn;
 -(id)initWithFrame:(CGRect)frame;
 - (void)setOn:(BOOL)on animated:(BOOL)animated;
-
 @end
 
 @protocol LRSettingSwitchDelegate <NSObject>
 
-- (void)settingSwitchWithIsOn:(BOOL)isOn;
+- (void)settingSwitchWithValueChanged:(LRSettingSwitch *)aSwitch;
 
 @end
 

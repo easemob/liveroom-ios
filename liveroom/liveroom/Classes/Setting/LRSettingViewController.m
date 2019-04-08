@@ -13,7 +13,6 @@
 @interface LRSettingViewController () <UITableViewDelegate, UITableViewDataSource, LRSettingSwitchDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) LRSettingSwitch *switchControl;
 @end
 
 @implementation LRSettingViewController
@@ -81,7 +80,7 @@
     if (section == 2 || section == 5 || section == 6) {
         cellIdentifier = @"UITableViewCellSwitch";
     }
-    self.switchControl = nil;
+    LRSettingSwitch *switchControl = nil;
     BOOL isSwitchCell = NO;
     if (section == 2 || section == 5 || section == 6) {
         isSwitchCell = YES;
@@ -93,13 +92,13 @@
         [cell.textLabel setTextColor:[UIColor whiteColor]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (isSwitchCell) {
-            self.switchControl = [[LRSettingSwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 70, 10, 50, 30)];
-            self.switchControl.tag = section * 10 + row;
-            self.switchControl.delegate = self;
-            [cell.contentView addSubview:self.switchControl];
+            switchControl = [[LRSettingSwitch alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 70, 10, 50, 30)];
+            switchControl.tag = section * 10 + row;
+            switchControl.delegate = self;
+            [cell.contentView addSubview:switchControl];
         }
     } else if (isSwitchCell) {
-        self.switchControl = [cell.contentView viewWithTag:(section * 10 + row)];
+        switchControl = [cell.contentView viewWithTag:(section * 10 + row)];
     }
     
     cell.detailTextLabel.text = nil;
@@ -108,15 +107,15 @@
     } else if (section == 1) {
         [self displayWithCell:cell title:@"speakerNumberLimited default" details:@"默认创建voicechatroom互动主播数" detailText:@"6" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 2) {
-        [self displayWithCell:cell title:@"Allow apply for interact default" details:@"允许观众申请连麦" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:self.switchControl isSwitch:YES isAnimated:YES];
+        [self displayWithCell:cell title:@"Allow apply for interact default" details:@"允许观众申请连麦" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:YES isAnimated:YES];
     } else if (section == 3) {
         [self displayWithCell:cell title:@"type of voiceChatroom" details:@"主持,抢麦,互动三种模式的默认参数" detailText:@"host" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 4) {
         [self displayWithCell:cell title:@"audio quality default" details:@"默认音质参数" detailText:@"highleve(unmix)" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 5) {
-        [self displayWithCell:cell title:@"audio agree to apply as speaker" details:@"自动允许上麦申请" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:self.switchControl isSwitch:YES isAnimated:YES];
+        [self displayWithCell:cell title:@"audio agree to apply as speaker" details:@"自动允许上麦申请" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:YES isAnimated:YES];
     } else if (section == 6) {
-        [self displayWithCell:cell title:@"Automatically turn on music" details:@"创建直播间默认开启背景音乐" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:self.switchControl isSwitch:YES isAnimated:YES];
+        [self displayWithCell:cell title:@"Automatically turn on music" details:@"创建直播间默认开启背景音乐" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:YES isAnimated:YES];
     }
     
     return cell;
@@ -158,11 +157,10 @@
 }
 
 #pragma mark LRSettingSwitchDelegate
-- (void)settingSwitchWithIsOn:(BOOL)isOn
+- (void)settingSwitchWithValueChanged:(LRSettingSwitch *)aSwitch
 {
-    NSLog(@"isOn------%d", isOn);
-//    self.switchControl.isOn;
-    NSLog(@"self.switchControl.isOn---%d", self.switchControl.isOn);
+    NSLog(@"isOn------%d", aSwitch.isOn);
+    
 }
 
 @end
