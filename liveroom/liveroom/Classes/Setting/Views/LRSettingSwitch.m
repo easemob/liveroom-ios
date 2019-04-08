@@ -42,15 +42,15 @@
 
 - (id)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        [self setUp];
+        [self _setupSubviews];
     }
     return self;
 }
 
-- (void)setUp{
+- (void)_setupSubviews{
     _isOn = YES;
     _isAnimated = YES;
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
     [self.tagLabel addGestureRecognizer:tap];
     self.tagLabel.userInteractionEnabled = YES;
     self.userInteractionEnabled = YES;

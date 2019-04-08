@@ -10,65 +10,68 @@
 #import "LRVoiceChatRoomListViewController.h"
 #import "LRCreateVoiceChatRoomViewController.h"
 #import "LRSettingViewController.h"
+#import "LRTabBar.h"
 
-@interface LRMainViewController () <UITabBarControllerDelegate>
+
+@interface LRMainViewController () <UITabBarControllerDelegate, LRTabBarDelegate>
 
 @property (nonatomic, strong) LRVoiceChatRoomListViewController *voiceChatRoomListVC;
 @property (nonatomic, strong) LRCreateVoiceChatRoomViewController *createVoiceChatRoomVC;
 @property (nonatomic, strong) LRSettingViewController *settingVC;
-@property (strong, nonatomic) UITabBar *lrTabBar;
+@property (strong, nonatomic) LRTabBar *lrTabBar;
 
 @end
 
 @implementation LRMainViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.tabBar.hidden = YES;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.voiceChatRoomListVC = [[LRVoiceChatRoomListViewController alloc] init];
-    self.voiceChatRoomListVC.tabBarItem.tag = 0;
-    [self addChildViewControllerTitle:@"房间" image:nil viewController:_voiceChatRoomListVC];
-    self.createVoiceChatRoomVC = [[LRCreateVoiceChatRoomViewController alloc] init];
-    self.createVoiceChatRoomVC.tabBarItem.tag = 1;
-    [self addChildViewControllerTitle:nil image:@"add" viewController:_createVoiceChatRoomVC];
-    self.settingVC = [[LRSettingViewController alloc] init];
-    self.settingVC.tabBarItem.tag = 2;
-    [self addChildViewControllerTitle:@"设置" image:nil viewController:_settingVC];
-//    self.tcTabBar.delegate = self;
-    self.delegate = self;
+
+    [self _setupSubviews];
+
 }
 
-- (void)addChildViewControllerTitle:(NSString *)title image:(NSString *)image viewController:(UIViewController *)viewController
+- (void)_setupSubviews
 {
+    self.lrTabBar = [[LRTabBar alloc] initWithFrame:CGRectMake(0, LRWindowHeight - 49, LRWindowWidth, 49)];
+    self.lrTabBar.delegate = self;
+    [self.view addSubview:self.lrTabBar];
+    [self.view bringSubviewToFront:self.lrTabBar];
     
-    viewController.tabBarItem.image = [UIImage imageNamed:image];
-    // 解决图片变蓝的问题
-    UIImage *originalImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@HL",image]];
-    viewController.tabBarItem.selectedImage = [originalImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    [viewController setTitle:title];
-    
-    if (viewController.tabBarItem.tag != 1) {
-        viewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(-10,-15);
-        [viewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                           [UIFont systemFontOfSize:16], NSFontAttributeName,
-                                                           nil,NSForegroundColorAttributeName,
-                                                           nil] forState:UIControlStateNormal];
-        [viewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:16], NSFontAttributeName, nil, NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
-    } else {
-        viewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    }
-    [self addChildViewController:viewController];
+    [self _setupChildrenViewController];
 }
 
-#pragma mark
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
-    if (viewController.tabBarItem.tag == 1) {
-        LRCreateVoiceChatRoomViewController *createVoiceChatRoom = [[LRCreateVoiceChatRoomViewController alloc] init];
-        [self presentViewController:createVoiceChatRoom animated:YES completion:^{
-            
-        }];
-        return NO;
+- (void)_setupChildrenViewController
+{
+    self.createVoiceChatRoomVC = [[LRCreateVoiceChatRoomViewController alloc] init];
+    NSMutableArray * childVCArr = [NSMutableArray arrayWithArray:@[@"LRVoiceChatRoomListViewController",@"LRSettingViewController"]];
+    for (NSInteger i = 0; i < childVCArr.count; i++) {
+        NSString *childVCName = childVCArr[i];
+        UIViewController *vc = [[NSClassFromString(childVCName) alloc] init];
+        [childVCArr replaceObjectAtIndex:i withObject:vc];
     }
-    return YES;
+    self.viewControllers = childVCArr;
 }
+
+#pragma mark - LRTabBarDelegate
+- (void)tabBar:(LRTabBar *)tabBar clickViewAction:(LRItemType)type
+{
+    if (type != LRItemTypeMiddle) {
+        if (type == LRItemTypeLeft) {
+            self.selectedIndex = type - LRItemTypeLeft;
+        } else {
+            self.selectedIndex = type - LRItemTypeMiddle;
+        }
+        return;
+    }
+    //是模态视图
+    [self presentViewController:self.createVoiceChatRoomVC animated:YES completion:nil];
+}
+
 @end

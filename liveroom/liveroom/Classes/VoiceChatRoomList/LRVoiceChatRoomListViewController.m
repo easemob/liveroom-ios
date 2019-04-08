@@ -13,9 +13,7 @@
 #import "LRVoiceChatRoomListCell.h"
 #import "LRChatRoomListModel.h"
 #import "LRJoinVoiceChatRoomView.h"
-
 #import "LRVoiceRoomViewController.h"
-
 #import "Headers.h"
 
 @interface LRVoiceChatRoomListViewController () <LRSearchBarDelegate,UITableViewDelegate,UITableViewDataSource>

@@ -53,8 +53,8 @@
 		E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C22259A77C00F9910C /* LRSearchBar.m */; };
 		E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C52259A77C00F9910C /* LRRealtimeSearch.m */; };
 		E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712CB2259B3F600F9910C /* LRSettingTableViewCell.m */; };
-		E04712D02259C25600F9910C /* LRTabBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712CF2259C25600F9910C /* LRTabBarView.m */; };
 		E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712D22259D20900F9910C /* LRSettingSwitch.m */; };
+		E04712D7225B61F000F9910C /* LRTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712D6225B61F000F9910C /* LRTabBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,10 +128,10 @@
 		E04712C52259A77C00F9910C /* LRRealtimeSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRRealtimeSearch.m; sourceTree = "<group>"; };
 		E04712CB2259B3F600F9910C /* LRSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSettingTableViewCell.m; sourceTree = "<group>"; };
 		E04712CC2259B3F600F9910C /* LRSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSettingTableViewCell.h; sourceTree = "<group>"; };
-		E04712CE2259C25600F9910C /* LRTabBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRTabBarView.h; sourceTree = "<group>"; };
-		E04712CF2259C25600F9910C /* LRTabBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRTabBarView.m; sourceTree = "<group>"; };
 		E04712D12259D20900F9910C /* LRSettingSwitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSettingSwitch.h; sourceTree = "<group>"; };
 		E04712D22259D20900F9910C /* LRSettingSwitch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSettingSwitch.m; sourceTree = "<group>"; };
+		E04712D5225B61F000F9910C /* LRTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRTabBar.h; sourceTree = "<group>"; };
+		E04712D6225B61F000F9910C /* LRTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRTabBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,8 +238,7 @@
 			children = (
 				90F2C6842254C08600A712B8 /* LRMainViewController.h */,
 				90F2C6852254C08600A712B8 /* LRMainViewController.m */,
-				E04712CE2259C25600F9910C /* LRTabBarView.h */,
-				E04712CF2259C25600F9910C /* LRTabBarView.m */,
+				E04712D4225B61EF00F9910C /* Views */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -410,6 +409,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		E04712D4225B61EF00F9910C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E04712D5225B61F000F9910C /* LRTabBar.h */,
+				E04712D6225B61F000F9910C /* LRTabBar.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -563,13 +571,13 @@
 				E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */,
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
+				E04712D7225B61F000F9910C /* LRTabBar.m in Sources */,
 				E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */,
 				E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */,
 				901A54DD2254D14000F00186 /* LRVoiceRoomHeader.m in Sources */,
 				90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */,
 				90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */,
 				90F2C6D72254C08600A712B8 /* LRJoinVoiceChatRoomView.m in Sources */,
-				E04712D02259C25600F9910C /* LRTabBarView.m in Sources */,
 				90F2C6DC2254C08600A712B8 /* AppDelegate.m in Sources */,
 				E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */,
 				90F2C6D92254C08600A712B8 /* LRVoiceChatRoomListViewController.m in Sources */,
