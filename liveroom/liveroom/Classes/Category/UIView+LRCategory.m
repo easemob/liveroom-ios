@@ -9,9 +9,40 @@
 #import "UIView+LRCategory.h"
 #import "Headers.h"
 
+
 @implementation UIView (Stroke)
 - (void)strokeWithColor:(LRStrokeColor)aColor {
-    self.layer.borderColor = LRColor_LowBlackColor.CGColor;
+    UIColor *color = [UIColor whiteColor];
+    switch (aColor) {
+        case LRStrokeRed:
+        {
+            color = [UIColor redColor];
+        }
+            break;
+        case LRStrokeBlue:
+        {
+            color = [UIColor blueColor];
+        }
+            break;
+        case LRStrokeWhite:
+        {
+            color = [UIColor whiteColor];
+        }
+            break;
+        case LRStrokeLowBlack:
+        {
+            color = LRColor_LowBlackColor;
+        }
+            break;
+        case LRStrokeGreen:
+        {
+            color = [UIColor greenColor];
+        }
+            break;
+        default:
+            break;
+    }
+    self.layer.borderColor = color.CGColor;
     self.layer.borderWidth = 2.5;
 }
 
@@ -25,8 +56,9 @@
 - (void)setupTextField{
     self.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 0)];
     self.leftViewMode = UITextFieldViewModeAlways;
-    self.backgroundColor = LRColor_InputTextColor;
-    [self setValue:RGBACOLOR(255, 255, 255, 0.6) forKeyPath:@"_placeholderLabel.textColor"];
+    self.backgroundColor = LRColor_MiddleBlackColor;
+    self.textColor = LRColor_LowBlackColor;
+    [self setValue:LRColor_LowBlackColor forKeyPath:@"_placeholderLabel.textColor"];
 }
 
 @end

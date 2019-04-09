@@ -7,7 +7,9 @@
 //
 
 #import "LRVoiceRoomHeader.h"
+#import "LRMusicPlayerHelper.h"
 #import "Headers.h"
+
 
 #define kItemPadding 10
 #define kItemSize 35
@@ -24,7 +26,7 @@
 {
     LRVoiceRoomHeaderItem *btn = [LRVoiceRoomHeaderItem buttonWithType:UIButtonTypeCustom];
     [btn setImage:aImg forState:UIControlStateNormal];
-    [btn strokeWithColor:LRStrokeWhite];
+    [btn strokeWithColor:LRStrokeLowBlack];
     if (aAction) btn.action = aAction;
     if (aTarget) btn.target = aTarget;
     return btn;
@@ -39,7 +41,8 @@
 
 @end
 
-@interface LRVoiceRoomHeader() {
+@interface LRVoiceRoomHeader()
+{
     CGFloat _leftItemX;
     int _musictimer;
     NSString *_musicName;
@@ -53,7 +56,6 @@
 
 - (instancetype)initWithTitle:(NSString *)aTitle info:(NSString *)aInfo {
     if (self = [super init]) {
-        
         [self addSubview:self.titleLabel];
         [self addSubview:self.infoLabel];
         
@@ -93,9 +95,6 @@
 }
 
 #pragma mark - public
-- (void)setupMusicName:(NSString *)aName timer:(int)aTimer {
-    [self.playerView setupMusicName:aName timer:aTimer];
-}
 
 #pragma mark - private
 - (void)removeItems {
@@ -176,13 +175,8 @@
 @end
 
 
-@interface LRVoiceRoomHeaderPlayerView ()
-{
-    CGFloat _progress; // 0~1
-    int _totalTime;
-    int _currentTime;
-    NSTimer *_timer;
-}
+@interface LRVoiceRoomHeaderPlayerView () <LRMusicPlayerHelperDelegate>
+
 @property (nonatomic, strong) UIProgressView *progressView;
 @property (nonatomic, strong) UILabel *totalTimeLabel;
 @property (nonatomic, strong) UILabel *currentTimeLabel;
@@ -195,6 +189,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         [self editEnable:YES];
+        [[LRMusicPlayerHelper sharedInstance] addDelegate:self delegateQueue:nil];
         self.backgroundColor = LRColor_MiddleBlackColor;
         [self addSubview:self.nameLabel];
         [self addSubview:self.playBtn];
@@ -204,6 +199,18 @@
         [self _setupSubViews];
     }
     return self;
+}
+
+#pragma mark - LRMusicPlayerHelperDelegate
+- (void)musicDidChanged:(LRMusicItem *)item {
+    self.nameLabel.text = item.itemName;
+    self.totalTimeLabel.text = [self _strFromTimer:item.totalTime];
+}
+
+- (void)currentTimeChanged:(int)currentTime totalTime:(int)aTotalTime {
+    self.currentTimeLabel.text = [self _strFromTimer:currentTime];
+    CGFloat progress = (CGFloat)currentTime / (CGFloat)aTotalTime;
+    [self.progressView setProgress:progress animated:YES];
 }
 
 #pragma mark - subviews
@@ -223,7 +230,7 @@
     }];
     
     [self.currentTimeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.nameLabel);
+        make.left.equalTo(self.nameLabel).priorityLow();
         make.right.equalTo(self.progressView.mas_left).offset(-5);
         make.centerY.equalTo(self.progressView);
     }];
@@ -242,14 +249,15 @@
 }
 
 #pragma mark - public
-- (void)setupMusicName:(NSString *)aName timer:(int)aTimer {
-    self.nameLabel.text = aName;
-    _totalTime = aTimer;
-    _currentTime = 0;
-    self.totalTimeLabel.text = [self _strFromTimer:_totalTime];
-    self.progressView.progress = 0;
-    [self _startTimer];
+- (void)editEnable:(BOOL)isEnable {
+    self.playBtn.hidden = !isEnable;
+    if (isEnable) {
+        [self strokeWithColor:LRStrokeLowBlack];
+    }else {
+        [self disableStroke];
+    }
 }
+
 
 #pragma mark - private
 - (NSString *)_strFromTimer:(int)aTimer {
@@ -258,45 +266,13 @@
     return [NSString stringWithFormat:@"%02d:%02d",min, sec];
 }
 
-- (void)_updateProgress {
-    _currentTime += 1;
-    self.currentTimeLabel.text = [self _strFromTimer:_currentTime];
-    CGFloat progress = (CGFloat)_currentTime / (CGFloat)_totalTime;
-    [self.progressView setProgress:progress animated:YES];
-    if (progress == 1) {
-        [self _stopTimer];
-    }
-}
-
-- (void)_startTimer {
-    [self _stopTimer];
-    _timer = [NSTimer timerWithTimeInterval:1
-                                     target:self
-                                   selector:@selector(_updateProgress)
-                                   userInfo:nil
-                                    repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-}
-
-- (void)_stopTimer {
-    if (_timer) {
-        [_timer invalidate];
-        _timer = nil;
-    }
-}
-
-- (void)editEnable:(BOOL)isEnable {
-    self.playBtn.hidden = !isEnable;
-    if (isEnable) {
-        [self strokeWithColor:LRStrokeWhite];
-    }else {
-        [self disableStroke];
-    }
-}
-
 #pragma mark - actions
 - (void)playBtnAction:(UIButton *)btn {
-    
+    if (btn.selected) {
+        [[LRMusicPlayerHelper sharedInstance] pause];
+    }else {
+        [[LRMusicPlayerHelper sharedInstance] play];
+    }
     btn.selected = !btn.selected;
 }
 
@@ -307,7 +283,6 @@
         _progressView.progressViewStyle = UIProgressViewStyleDefault;
         _progressView.progressTintColor = LRColor_LowBlackColor;
         _progressView.trackTintColor = LRColor_MiddleBlackColor;
-        _progressView.progress = 0.4;
     }
     return _progressView;
 }
@@ -336,7 +311,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.textColor = LRColor_MiddleBlackColor;
-        _nameLabel.text = @"TestTestTestTestTestTestTestTestTest";
+        _nameLabel.text = @"";
         _nameLabel.numberOfLines = 1;
         _nameLabel.font = [UIFont boldSystemFontOfSize:22];
     }

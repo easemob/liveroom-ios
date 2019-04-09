@@ -13,7 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 typedef enum : NSUInteger {
     LRStrokeRed,
     LRStrokeBlue,
-    LRStrokeWhite
+    LRStrokeGreen,
+    LRStrokeWhite,
+    LRStrokeLowBlack
 } LRStrokeColor;
 
 @interface UIView (Stroke)

@@ -17,19 +17,18 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @protocol LRVoiceRoomHeaderDelegate <NSObject>
-- (void)playerDidBegin;
-- (void)playerDidEnd;
+- (void)playerPause;
+- (void)playerPlay;
 @end
 
 @interface LRVoiceRoomHeader : UIView
 @property (nonatomic, strong) NSArray *actionList;
+@property (nonatomic, strong) id <LRVoiceRoomHeaderDelegate> delegate;
 - (instancetype)initWithTitle:(NSString *)aTitle info:(NSString *)aInfo;
-- (void)setupMusicName:(NSString *)aName timer:(int)aTimer;
 @end
 
 @interface LRVoiceRoomHeaderPlayerView : UIView
 - (void)editEnable:(BOOL)isEnable;
-- (void)setupMusicName:(NSString *)aName timer:(int)aTimer;
 @end
 
 NS_ASSUME_NONNULL_END
