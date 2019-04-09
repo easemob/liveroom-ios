@@ -40,9 +40,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define LRColor_PlaceholderTextColor RGBACOLOR(255, 255, 255, 0.6)
 
 #define LRColor_PureBlackColor [UIColor blackColor]
-#define LRColor_HeightBlackColor [[UIColor whiteColor] colorWithAlphaComponent:0.05]
-#define LRColor_MiddleBlackColor [[UIColor whiteColor] colorWithAlphaComponent:0.1]
-#define LRColor_LowBlackColor [[UIColor whiteColor] colorWithAlphaComponent:0.5]
+#define LRColor_HeightBlackColor RGBACOLOR(26, 26, 26, 1)
+#define LRColor_MiddleBlackColor RGBACOLOR(51, 51, 51, 1)
+#define LRColor_LowBlackColor RGBACOLOR(102, 102, 102, 1)
 
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 

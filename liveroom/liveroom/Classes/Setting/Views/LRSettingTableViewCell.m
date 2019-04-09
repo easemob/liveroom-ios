@@ -24,7 +24,7 @@
 }
 - (void)_setupSubviews
 {
-    self.backgroundColor = LRColor_MiddleBlackColor;
+    self.backgroundColor = LRColor_HeightBlackColor;
     self.titleLabel = [[UILabel alloc] init];
     [self.titleLabel setTextColor:[UIColor whiteColor]];
     self.titleLabel.font = [UIFont systemFontOfSize:16];

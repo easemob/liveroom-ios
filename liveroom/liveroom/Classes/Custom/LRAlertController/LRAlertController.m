@@ -90,6 +90,7 @@
     return self;
 }
 
+#pragma mark - life cycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -98,9 +99,13 @@
     }
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLayoutSubviews
 {
-    [_alertView strokeWithColor:LRStrokeWhite];
+    [_alertView strokeWithColor:LRStrokeLowBlack];
     _alertView.backgroundColor = LRColor_HighLightColor;
     [self _setupImageView];
     self.titleLabel.text = _title;
@@ -173,7 +178,7 @@
 - (void)_setupTextField
 {
     [self.textField setupTextField];
-    [self.textField strokeWithColor:LRStrokeWhite];
+    [self.textField strokeWithColor:LRStrokeLowBlack];
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.textColor = UIColor.whiteColor;
     self.textField.delegate = self;
