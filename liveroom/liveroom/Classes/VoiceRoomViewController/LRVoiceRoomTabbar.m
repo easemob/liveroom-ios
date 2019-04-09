@@ -119,7 +119,7 @@
         [_inputTextView strokeWithColor:LRStrokeLowBlack];
         _inputTextView.returnKeyType = UIReturnKeySend;
         _inputTextView.delegate = self;
-        _inputTextView.backgroundColor = LRColor_MiddleBlackColor;
+        _inputTextView.backgroundColor = LRColor_HeightBlackColor;
         _inputTextView.placeholder = @"say me to your heart";
         [_inputTextView setupTextField];
     }

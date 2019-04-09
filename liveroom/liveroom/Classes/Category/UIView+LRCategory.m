@@ -56,7 +56,7 @@
 - (void)setupTextField{
     self.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 0)];
     self.leftViewMode = UITextFieldViewModeAlways;
-    self.backgroundColor = LRColor_MiddleBlackColor;
+    self.backgroundColor = LRColor_HeightBlackColor;
     self.textColor = LRColor_LowBlackColor;
     [self setValue:LRColor_LowBlackColor forKeyPath:@"_placeholderLabel.textColor"];
 }

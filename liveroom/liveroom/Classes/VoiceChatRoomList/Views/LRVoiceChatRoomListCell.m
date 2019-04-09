@@ -32,7 +32,7 @@
 
 - (void)_setupSubviews
 {
-    self.backgroundColor = LRColor_MiddleBlackColor;
+    self.backgroundColor = LRColor_HeightBlackColor;
     self.chatRoomNameLabel = [[UILabel alloc] init];
     self.chatRoomNameLabel.textColor = [UIColor whiteColor];
     self.chatRoomNameLabel.font = [UIFont systemFontOfSize:16];

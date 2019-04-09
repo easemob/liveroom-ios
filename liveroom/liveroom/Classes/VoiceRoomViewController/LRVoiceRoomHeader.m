@@ -190,7 +190,7 @@
     if (self = [super init]) {
         [self editEnable:YES];
         [[LRMusicPlayerHelper sharedInstance] addDelegate:self delegateQueue:nil];
-        self.backgroundColor = LRColor_MiddleBlackColor;
+        self.backgroundColor = LRColor_HeightBlackColor;
         [self addSubview:self.nameLabel];
         [self addSubview:self.playBtn];
         [self addSubview:self.currentTimeLabel];

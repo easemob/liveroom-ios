@@ -80,7 +80,7 @@
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.tableFooterView = [UIView new];
-        _tableView.backgroundColor = LRColor_MiddleBlackColor;
+        _tableView.backgroundColor = LRColor_HeightBlackColor;
         _tableView.rowHeight = UITableViewAutomaticDimension;
         _tableView.estimatedRowHeight = 60;
         _tableView.delegate = self;

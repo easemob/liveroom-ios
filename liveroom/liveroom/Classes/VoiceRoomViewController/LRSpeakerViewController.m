@@ -7,6 +7,7 @@
 //
 
 #import "LRSpeakerViewController.h"
+#import "LRVolumeView.h"
 #import "Headers.h"
 
 #define kCurrentUserIsAdmin NO
@@ -94,7 +95,7 @@
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.tableFooterView = [UIView new];
-        _tableView.backgroundColor = LRColor_MiddleBlackColor;
+        _tableView.backgroundColor = LRColor_HeightBlackColor;
         _tableView.rowHeight = UITableViewAutomaticDimension;
         _tableView.estimatedRowHeight = 60;
         _tableView.delegate = self;
@@ -125,7 +126,7 @@
 @property (nonatomic, strong) UIView *lightView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIImageView *crownImage;
-@property (nonatomic, strong) UIView *volumeView;
+@property (nonatomic, strong) LRVolumeView *volumeView;
 @property (nonatomic, strong) UIView *lineView;
 
 @property (nonatomic, strong) UIButton *voiceEnableBtn;
@@ -214,15 +215,15 @@
     if (voiceEnableBtnNeedShow) {
         self.voiceEnableBtn.hidden = NO;
         [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(1);
             make.left.equalTo(self.lightView);
             make.width.equalTo(@100);
-            make.height.equalTo(@30);
+            make.height.equalTo(@25);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
     }else {
         [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(1);
             make.left.equalTo(self.lightView);
             make.width.height.equalTo(@0);
         }];
@@ -232,15 +233,15 @@
     if (disconnectBtnNeedShow) {
         self.disconnectBtn.hidden = NO;
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(1);
             make.left.equalTo(self.voiceEnableBtn.mas_right).offset(10);
             make.width.equalTo(@100);
-            make.height.equalTo(@30);
+            make.height.equalTo(@25);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
     }else {
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(1);
             make.left.equalTo(self.voiceEnableBtn.mas_right).offset(10);
             make.width.height.equalTo(@0);
         }];
@@ -290,10 +291,11 @@
     return _crownImage;
 }
 
-- (UIView *)volumeView {
+- (LRVolumeView *)volumeView {
     if (!_volumeView) {
-        _volumeView = [[UIView alloc] init];
-        _volumeView.backgroundColor = [UIColor blueColor];
+        _volumeView = [[LRVolumeView alloc] initWithFrame:CGRectZero];
+        _volumeView.backgroundColor = [UIColor blackColor];
+        _volumeView.progress = 0;
     }
     return _volumeView;
 }
