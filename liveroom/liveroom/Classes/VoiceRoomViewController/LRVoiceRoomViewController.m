@@ -15,7 +15,6 @@
 #import "Headers.h"
 #import "LRChatroomMembersViewController.h"
 
-
 #define kPadding 15
 #define kHeaderViewHeight 100
 #define kInputViewHeight 64
