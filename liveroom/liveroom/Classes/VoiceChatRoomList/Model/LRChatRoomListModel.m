@@ -10,12 +10,11 @@
 
 @implementation LRChatRoomListModel
 
-+ (instancetype)initWithChatRoomName:(NSString *)name
++ (instancetype)initWithChatRoomDict:(NSDictionary *)dict
 {
     LRChatRoomListModel *model = [[LRChatRoomListModel alloc] init];
-    model.chatRoomName = name;
+    [model setValuesForKeysWithDictionary:dict];
     return model;
-    
 }
 
 @end

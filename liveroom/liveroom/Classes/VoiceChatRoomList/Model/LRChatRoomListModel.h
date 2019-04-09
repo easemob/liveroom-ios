@@ -13,8 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRChatRoomListModel : NSObject
 
 @property (nonatomic, strong) NSString *chatRoomName;
+@property (nonatomic, strong) NSString *userName;
 
-+ (instancetype)initWithChatRoomName:(NSString *)name;
++ (instancetype)initWithChatRoomDict:(NSDictionary *)dict;
 @end
 
 NS_ASSUME_NONNULL_END

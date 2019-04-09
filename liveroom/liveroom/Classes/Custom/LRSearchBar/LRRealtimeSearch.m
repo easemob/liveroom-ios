@@ -1,9 +1,9 @@
 //
-//  EMRealtimeSearch.m
-//  DXStudio
+//  TCRealtimeSearch.m
+//  Tigercrew
 //
-//  Created by XieYajie on 22/09/2017.
-//  Copyright © 2017 dxstudio. All rights reserved.
+//  Created by easemob-DN0164 on 2019/4/3.
+//  Copyright © 2019年 Easemob. All rights reserved.
 //
 
 #import "LRRealtimeSearch.h"
