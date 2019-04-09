@@ -1,24 +1,24 @@
 //
-//  LRVoiceChatRoomListViewController.m
-//  Tigercrew
+//  LRChatroomMembersViewController.m
+//  liveroom
 //
-//  Created by easemob-DN0164 on 2019/4/1.
+//  Created by easemob-DN0164 on 2019/4/9.
 //  Copyright © 2019年 Easemob. All rights reserved.
 //
 
-#import "LRVoiceChatRoomListViewController.h"
-#import "LRVoiceChatRoomListCell.h"
-#import "LRRealtimeSearch.h"
+#import "LRChatroomMembersViewController.h"
 #import "LRSearchBar.h"
-#import "LRVoiceChatRoomListCell.h"
-#import "LRChatRoomListModel.h"
-#import "LRJoinVoiceChatRoomView.h"
-#import "LRVoiceRoomViewController.h"
-#import "Headers.h"
 #import "LRFindView.h"
+#import "LRRealtimeSearch.h"
+#import "LRChatroomMembersCell.h"
+#import "LRChatroomMembersModel.h"
 
-@interface LRVoiceChatRoomListViewController () <LRSearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
+
+@interface LRChatroomMembersViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate>
+
+@property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
+
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic) BOOL isSearching;
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation LRVoiceChatRoomListViewController
+@implementation LRChatroomMembersViewController
 
 - (NSMutableArray *)dataArray
 {
@@ -49,26 +49,41 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSArray *array = @[@{@"chatRoomName":@"ASD1",@"userName":@"username"},@{@"chatRoomName":@"ASD2",@"userName":@"username"},@{@"chatRoomName":@"ASD3",@"userName":@"username"},@{@"chatRoomName":@"ASD4",@"userName":@"username"},@{@"chatRoomName":@"ASD5",@"userName":@"username"},@{@"chatRoomName":@"ASD6",@"userName":@"username"},@{@"chatRoomName":@"ASD7",@"userName":@"username"},@{@"chatRoomName":@"ASD8",@"userName":@"username"}];
+    NSArray *array = @[@{@"memberName":@"shengxi",@"isOwner":@YES},@{@"memberName":@"jiepeng",@"isOwner":@NO},@{@"memberName":@"donghai",@"isOwner":@NO}];
     for (NSDictionary *dict in array) {
-        LRChatRoomListModel *model = [LRChatRoomListModel initWithChatRoomDict:dict];
+        LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
         [self.dataArray addObject:model];
     }
+    
     [self _setupSubviews];
 }
 
 - (void)_setupSubviews
 {
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.closeButton = [[UIButton alloc] init];
+    self.closeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    self.closeButton.backgroundColor = [UIColor grayColor];
+    [self.closeButton setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    [self.closeButton addTarget:self action:@selector(closeButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.closeButton];
+    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
+        make.left.equalTo(self.view).offset(13);
+        make.width.equalTo(@20);
+        make.height.equalTo(@20);
+    }];
+    
     self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.text = @"选择房间 Chose a voiceChatroom";
-    self.titleLabel.textColor = [UIColor whiteColor];
+    self.titleLabel.text = @"成员 ChatroomMembers";
+    [self.titleLabel setTextColor:[UIColor blackColor]];
     self.titleLabel.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(13);
-        make.top.equalTo(self.view).offset(20);
-        make.height.equalTo(@60);
+        make.centerX.equalTo(self.view);
+        make.centerY.equalTo(self.closeButton);
+        make.width.equalTo(@220);
+        make.height.equalTo(@30);
     }];
     
     [self _setupSearch];
@@ -77,8 +92,10 @@
 - (void)_setupSearch
 {
     self.searchBar = [[LRSearchBar alloc] init];
-    self.searchBar.placeholderString = @"输入voiceChatroomID";
-    self.searchBar.placeholderTextColor = RGBACOLOR(255, 255, 255, 0.6);
+    self.searchBar.placeholderString = @"Search";
+    self.searchBar.placeholderTextColor = [UIColor grayColor];
+    self.searchBar.strokeColor = [UIColor grayColor];
+    self.searchBar.strokeWidth = 0.5;
     LRFindView *findView = [[LRFindView alloc] init];
     self.searchBar.leftView = findView;
     self.searchBar.delegate = self;
@@ -93,7 +110,7 @@
     self.tableView = [[UITableView alloc] init];
     self.tableView.tag = 10;
     self.tableView.rowHeight = 60;
-    self.tableView.backgroundColor = [UIColor blackColor];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellEditingStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -107,7 +124,7 @@
     
     self.searchResultTableView = [[UITableView alloc] init];
     self.searchResultTableView.tag = 11;
-    self.searchResultTableView.backgroundColor = [UIColor blackColor];
+    self.searchResultTableView.backgroundColor = [UIColor whiteColor];
     self.searchResultTableView.separatorStyle = UITableViewCellEditingStyleNone;
     self.searchResultTableView.rowHeight = self.tableView.rowHeight;
     self.searchResultTableView.delegate = self;
@@ -133,12 +150,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = @"LRVoiceChatRoomListCell";
-    LRVoiceChatRoomListCell *cell = (LRVoiceChatRoomListCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    NSString *cellIdentifier = @"LRChatroomMembersCell";
+    LRChatroomMembersCell *cell = (LRChatroomMembersCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[LRVoiceChatRoomListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[LRChatroomMembersCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    LRChatRoomListModel *model = nil;
+    LRChatroomMembersModel *model = nil;
     if (tableView == self.tableView) {
         model = [self.dataArray objectAtIndex:indexPath.row];
     } else {
@@ -152,22 +169,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomName:@"ASD123"];
-    [self presentViewController:vroomVC animated:YES completion:nil];
-}
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
-
-//左划操作
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    //在iOS8.0上，必须加上这个方法才能出发左划操作
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-
-    }
 }
 
 #pragma mark - LRSearchBarDelegate
@@ -210,7 +212,7 @@
         return;
     }
     __weak typeof(self) weakself = self;
-    [[LRRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(chatRoomName) resultBlock:^(NSArray *results) {
+    [[LRRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(memberName) resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.searchResults removeAllObjects];
             [weakself.searchResults addObjectsFromArray:results];
@@ -269,6 +271,13 @@
     } else {
         animation();
     }
+}
+
+- (void)closeButtonAction
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 @end
