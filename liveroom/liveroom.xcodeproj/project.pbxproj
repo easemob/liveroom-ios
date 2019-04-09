@@ -55,7 +55,6 @@
 		90F2C6DD2254C08600A712B8 /* LRLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6AA2254C08600A712B8 /* LRLoginViewController.xib */; };
 		90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6AB2254C08600A712B8 /* LRLoginViewController.m */; };
 		90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6B22254C08600A712B8 /* LRSettingViewController.m */; };
-		90F2C6E22254C08600A712B8 /* LRSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6B32254C08600A712B8 /* LRSettingViewController.xib */; };
 		90F2C6E32254C08600A712B8 /* correct@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6B82254C08600A712B8 /* correct@3x.png */; };
 		90F2C6E42254C08600A712B8 /* correct@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6B92254C08600A712B8 /* correct@2x.png */; };
 		90F2C6E52254C08600A712B8 /* warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BA2254C08600A712B8 /* warning@2x.png */; };
@@ -64,14 +63,12 @@
 		90F2C6E82254C08600A712B8 /* LRAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BD2254C08600A712B8 /* LRAlertController.xib */; };
 		90F2C6E92254C08600A712B8 /* closeAlert@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BE2254C08600A712B8 /* closeAlert@3x.png */; };
 		90F2C6EA2254C08600A712B8 /* closeAlert@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BF2254C08600A712B8 /* closeAlert@2x.png */; };
-		90F2C6EB2254C08600A712B8 /* LRRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6C32254C08600A712B8 /* LRRefreshTableViewController.m */; };
-		90F2C6EC2254C08600A712B8 /* LRRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6C42254C08600A712B8 /* LRRefreshViewController.m */; };
-		90F2C6ED2254C08600A712B8 /* UIViewController+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6C82254C08600A712B8 /* UIViewController+Search.m */; };
-		90F2C6EE2254C08600A712B8 /* LRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6C92254C08600A712B8 /* LRSearchBar.m */; };
-		90F2C6EF2254C08600A712B8 /* LRSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6CE2254C08600A712B8 /* LRSearchViewController.m */; };
-		90F2C6F02254C08600A712B8 /* LRSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6CF2254C08600A712B8 /* LRSearchResultController.m */; };
-		90F2C6F12254C08600A712B8 /* LRRealtimeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6D02254C08600A712B8 /* LRRealtimeSearch.m */; };
 		90F2C6F42254C09400A712B8 /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6F32254C09400A712B8 /* add@2x.png */; };
+		E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C22259A77C00F9910C /* LRSearchBar.m */; };
+		E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C52259A77C00F9910C /* LRRealtimeSearch.m */; };
+		E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712CB2259B3F600F9910C /* LRSettingTableViewCell.m */; };
+		E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712D22259D20900F9910C /* LRSettingSwitch.m */; };
+		E04712D7225B61F000F9910C /* LRTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712D6225B61F000F9910C /* LRTabBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,7 +144,6 @@
 		90F2C6AB2254C08600A712B8 /* LRLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRLoginViewController.m; sourceTree = "<group>"; };
 		90F2C6B02254C08600A712B8 /* LRLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRLoginViewController.h; sourceTree = "<group>"; };
 		90F2C6B22254C08600A712B8 /* LRSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSettingViewController.m; sourceTree = "<group>"; };
-		90F2C6B32254C08600A712B8 /* LRSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LRSettingViewController.xib; sourceTree = "<group>"; };
 		90F2C6B42254C08600A712B8 /* LRSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSettingViewController.h; sourceTree = "<group>"; };
 		90F2C6B72254C08600A712B8 /* LRAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRAlertController.h; sourceTree = "<group>"; };
 		90F2C6B82254C08600A712B8 /* correct@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "correct@3x.png"; sourceTree = "<group>"; };
@@ -158,22 +154,18 @@
 		90F2C6BD2254C08600A712B8 /* LRAlertController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LRAlertController.xib; sourceTree = "<group>"; };
 		90F2C6BE2254C08600A712B8 /* closeAlert@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closeAlert@3x.png"; sourceTree = "<group>"; };
 		90F2C6BF2254C08600A712B8 /* closeAlert@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closeAlert@2x.png"; sourceTree = "<group>"; };
-		90F2C6C22254C08600A712B8 /* LRRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRefreshViewController.h; sourceTree = "<group>"; };
-		90F2C6C32254C08600A712B8 /* LRRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRRefreshTableViewController.m; sourceTree = "<group>"; };
-		90F2C6C42254C08600A712B8 /* LRRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRRefreshViewController.m; sourceTree = "<group>"; };
-		90F2C6C52254C08600A712B8 /* LRRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRefreshTableViewController.h; sourceTree = "<group>"; };
-		90F2C6C62254C08600A712B8 /* LRRealtimeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRealtimeSearch.h; sourceTree = "<group>"; };
-		90F2C6C82254C08600A712B8 /* UIViewController+Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Search.m"; sourceTree = "<group>"; };
-		90F2C6C92254C08600A712B8 /* LRSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSearchBar.m; sourceTree = "<group>"; };
-		90F2C6CA2254C08600A712B8 /* LRSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSearchViewController.h; sourceTree = "<group>"; };
-		90F2C6CB2254C08600A712B8 /* LRSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSearchResultController.h; sourceTree = "<group>"; };
-		90F2C6CC2254C08600A712B8 /* LRSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSearchBar.h; sourceTree = "<group>"; };
-		90F2C6CD2254C08600A712B8 /* UIViewController+Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Search.h"; sourceTree = "<group>"; };
-		90F2C6CE2254C08600A712B8 /* LRSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSearchViewController.m; sourceTree = "<group>"; };
-		90F2C6CF2254C08600A712B8 /* LRSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSearchResultController.m; sourceTree = "<group>"; };
-		90F2C6D02254C08600A712B8 /* LRRealtimeSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRRealtimeSearch.m; sourceTree = "<group>"; };
 		90F2C6F32254C09400A712B8 /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add@2x.png"; sourceTree = "<group>"; };
 		9129ABF1877E591B4D2B7E4D /* Pods-liveroom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liveroom.release.xcconfig"; path = "Pods/Target Support Files/Pods-liveroom/Pods-liveroom.release.xcconfig"; sourceTree = "<group>"; };
+		E04712C22259A77C00F9910C /* LRSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSearchBar.m; sourceTree = "<group>"; };
+		E04712C32259A77C00F9910C /* LRRealtimeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRealtimeSearch.h; sourceTree = "<group>"; };
+		E04712C42259A77C00F9910C /* LRSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSearchBar.h; sourceTree = "<group>"; };
+		E04712C52259A77C00F9910C /* LRRealtimeSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRRealtimeSearch.m; sourceTree = "<group>"; };
+		E04712CB2259B3F600F9910C /* LRSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSettingTableViewCell.m; sourceTree = "<group>"; };
+		E04712CC2259B3F600F9910C /* LRSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSettingTableViewCell.h; sourceTree = "<group>"; };
+		E04712D12259D20900F9910C /* LRSettingSwitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSettingSwitch.h; sourceTree = "<group>"; };
+		E04712D22259D20900F9910C /* LRSettingSwitch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSettingSwitch.m; sourceTree = "<group>"; };
+		E04712D5225B61F000F9910C /* LRTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRTabBar.h; sourceTree = "<group>"; };
+		E04712D6225B61F000F9910C /* LRTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRTabBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,6 +321,7 @@
 			children = (
 				90F2C6842254C08600A712B8 /* LRMainViewController.h */,
 				90F2C6852254C08600A712B8 /* LRMainViewController.m */,
+				E04712D4225B61EF00F9910C /* Views */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -423,7 +416,7 @@
 			children = (
 				90F2C6B42254C08600A712B8 /* LRSettingViewController.h */,
 				90F2C6B22254C08600A712B8 /* LRSettingViewController.m */,
-				90F2C6B32254C08600A712B8 /* LRSettingViewController.xib */,
+				E04712CA2259B3F600F9910C /* Views */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -432,6 +425,7 @@
 			isa = PBXGroup;
 			children = (
 				9083DC8C225606B10099C5BD /* LRGCDMulticastDelegate */,
+				E04712C12259A77C00F9910C /* LRSearchBar */,
 				90F2C6B62254C08600A712B8 /* LRAlertController */,
 			);
 			path = Custom;
@@ -466,32 +460,6 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
-		90F2C6C12254C08600A712B8 /* RefreshController */ = {
-			isa = PBXGroup;
-			children = (
-				90F2C6C22254C08600A712B8 /* LRRefreshViewController.h */,
-				90F2C6C42254C08600A712B8 /* LRRefreshViewController.m */,
-				90F2C6C52254C08600A712B8 /* LRRefreshTableViewController.h */,
-				90F2C6C32254C08600A712B8 /* LRRefreshTableViewController.m */,
-			);
-			path = RefreshController;
-			sourceTree = "<group>";
-		};
-		90F2C6C72254C08600A712B8 /* SearchController */ = {
-			isa = PBXGroup;
-			children = (
-				90F2C6CD2254C08600A712B8 /* UIViewController+Search.h */,
-				90F2C6C82254C08600A712B8 /* UIViewController+Search.m */,
-				90F2C6CC2254C08600A712B8 /* LRSearchBar.h */,
-				90F2C6C92254C08600A712B8 /* LRSearchBar.m */,
-				90F2C6CA2254C08600A712B8 /* LRSearchViewController.h */,
-				90F2C6CE2254C08600A712B8 /* LRSearchViewController.m */,
-				90F2C6CB2254C08600A712B8 /* LRSearchResultController.h */,
-				90F2C6CF2254C08600A712B8 /* LRSearchResultController.m */,
-			);
-			path = SearchController;
-			sourceTree = "<group>";
-		};
 		90F2C6F22254C09400A712B8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -507,6 +475,37 @@
 				9129ABF1877E591B4D2B7E4D /* Pods-liveroom.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		E04712C12259A77C00F9910C /* LRSearchBar */ = {
+			isa = PBXGroup;
+			children = (
+				E04712C42259A77C00F9910C /* LRSearchBar.h */,
+				E04712C22259A77C00F9910C /* LRSearchBar.m */,
+				E04712C32259A77C00F9910C /* LRRealtimeSearch.h */,
+				E04712C52259A77C00F9910C /* LRRealtimeSearch.m */,
+			);
+			path = LRSearchBar;
+			sourceTree = "<group>";
+		};
+		E04712CA2259B3F600F9910C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E04712CC2259B3F600F9910C /* LRSettingTableViewCell.h */,
+				E04712CB2259B3F600F9910C /* LRSettingTableViewCell.m */,
+				E04712D12259D20900F9910C /* LRSettingSwitch.h */,
+				E04712D22259D20900F9910C /* LRSettingSwitch.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E04712D4225B61EF00F9910C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E04712D5225B61F000F9910C /* LRTabBar.h */,
+				E04712D6225B61F000F9910C /* LRTabBar.m */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -595,6 +594,9 @@
 				90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */,
 				90F2C6F42254C09400A712B8 /* add@2x.png in Resources */,
 				90F2C6E22254C08600A712B8 /* LRSettingViewController.xib in Resources */,
+				901A54F02254DABC00F00186 /* close@3x.png in Resources */,
+				901A54EB2254D9FD00F00186 /* musicList@3x.png in Resources */,
+				901A54E72254D9FD00F00186 /* settings@2x.png in Resources */,
 				90F2C6E32254C08600A712B8 /* correct@3x.png in Resources */,
 				90CBF7E6225C8F9800C92F8D /* userList@3x.png in Resources */,
 				90CBF7DD225C8F9800C92F8D /* gift@2x.png in Resources */,
@@ -679,15 +681,22 @@
 				9083DC8B225603E70099C5BD /* LRSpeakerViewController.m in Sources */,
 				9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */,
 				90F2C6EB2254C08600A712B8 /* LRRefreshTableViewController.m in Sources */,
+				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
+				90F2C6DB2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m in Sources */,
+				90F2C6D62254C08600A712B8 /* LRChatRoomListModel.m in Sources */,
+				E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */,
+				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
+				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
+				E04712D7225B61F000F9910C /* LRTabBar.m in Sources */,
+				E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */,
+				E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */,
 				901A54DD2254D14000F00186 /* LRVoiceRoomHeader.m in Sources */,
 				90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */,
-				90F2C6F12254C08600A712B8 /* LRRealtimeSearch.m in Sources */,
-				90F2C6F02254C08600A712B8 /* LRSearchResultController.m in Sources */,
 				90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */,
 				90F2C6D72254C08600A712B8 /* LRJoinVoiceChatRoomView.m in Sources */,
 				90F2C6DC2254C08600A712B8 /* AppDelegate.m in Sources */,
+				E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */,
 				90F2C6D92254C08600A712B8 /* LRVoiceChatRoomListViewController.m in Sources */,
-				90F2C6EC2254C08600A712B8 /* LRRefreshViewController.m in Sources */,
 				90F2C6D42254C08600A712B8 /* UIView+LRCategory.m in Sources */,
 				90CBF7EF225C904F00C92F8D /* LRHelper.m in Sources */,
 			);
@@ -834,6 +843,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/liveroom/headers.h";
 				INFOPLIST_FILE = liveroom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -853,6 +864,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/liveroom/headers.h";
 				INFOPLIST_FILE = liveroom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (

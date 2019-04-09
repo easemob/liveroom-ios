@@ -6,11 +6,10 @@
 //  Copyright © 2019年 Easemob. All rights reserved.
 //
 
-#import "LRRefreshViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LRVoiceChatRoomListViewController : LRRefreshViewController
+@interface LRVoiceChatRoomListViewController : UIViewController
 
 @end
 

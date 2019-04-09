@@ -1,9 +1,9 @@
 //
-//  EMSearchBar.h
-//  ChatDemo-UI3.0
+//  TCSearchBar.h
+//  Tigercrew
 //
-//  Created by XieYajie on 2019/1/16.
-//  Copyright © 2019 XieYajie. All rights reserved.
+//  Created by easemob-DN0164 on 2019/4/3.
+//  Copyright © 2019年 Easemob. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -25,9 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)searchBarShouldBeginEditing:(LRSearchBar *)searchBar;
 
-- (void)searchBarCancelButtonAction:(LRSearchBar *)searchBar;
-
-- (void)searchBarSearchButtonClicked:(NSString *)aString;
+- (void)searchBarCancelAction:(LRSearchBar *)searchBar;
 
 - (void)searchTextDidChangeWithString:(NSString *)aString;
 
