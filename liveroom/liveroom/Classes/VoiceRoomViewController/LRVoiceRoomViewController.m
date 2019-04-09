@@ -13,6 +13,7 @@
 #import "LRVoiceRoomHeader.h"
 #import "LRVoiceRoomTabbar.h"
 #import "Headers.h"
+#import "LRChatroomMembersViewController.h"
 
 
 #define kPadding 15
@@ -167,7 +168,10 @@
 
 #pragma mark - actions
 - (void)memberListAction {
-    
+    LRChatroomMembersViewController *membersVC = [[LRChatroomMembersViewController alloc] init];
+    [self presentViewController:membersVC animated:YES completion:^{
+        
+    }];
 }
 
 - (void)musicPlayListAction {

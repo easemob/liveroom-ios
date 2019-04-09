@@ -40,10 +40,9 @@
     self.textField = [[UITextField alloc] init];
     self.textField.delegate = self;
     self.textField.font = [UIFont systemFontOfSize:16];
-    self.textField.placeholder = @"输入voiceChatroomID";
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.textField.returnKeyType = UIReturnKeyDone;
-    
+    self.textField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"add"]];
     [self.textField setupTextField];
     [self.textField strokeWithColor:LRStrokeWhite];
     [self addSubview:self.textField];
@@ -60,8 +59,47 @@
     self.textField.leftView = leftView;
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - About TextField Setter
+- (void)setPlaceholderString:(NSString *)placeholderString
+{
+    _placeholderString = placeholderString;
+    self.textField.placeholder = _placeholderString;
+    
+}
 
+- (void)setInputTextColor:(UIColor *)inputTextColor
+{
+    _inputTextColor = inputTextColor;
+    self.textField.backgroundColor = _inputTextColor;
+    
+}
+
+- (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
+{
+    _placeholderTextColor = placeholderTextColor;
+    [self.textField setValue:_placeholderTextColor forKeyPath:@"_placeholderLabel.textColor"];
+}
+
+- (void)setStrokeWidth:(CGFloat)strokeWidth
+{
+    _strokeWidth = strokeWidth;
+    self.textField.layer.borderWidth = _strokeWidth;
+}
+
+- (void)setStrokeColor:(UIColor *)strokeColor
+{
+    _strokeColor = strokeColor;
+    self.textField.layer.borderColor = _strokeColor.CGColor;
+}
+
+- (void)setLeftView:(UIView *)leftView
+{
+    _leftView = leftView;
+    self.textField.leftView = leftView;
+    self.textField.leftViewMode = UITextFieldViewModeAlways;
+}
+
+#pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]) {

@@ -37,6 +37,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 #define LRColor_HighLightColor RGBACOLOR(255, 255, 255, 0.1)
 #define LRColor_InputTextColor RGBACOLOR(255, 255, 255, 0.3)
+#define LRColor_PlaceholderTextColor RGBACOLOR(255, 255, 255, 0.6)
 
 #define LRColor_PureBlackColor [UIColor blackColor]
 #define LRColor_HeightBlackColor RGBACOLOR(26, 26, 26, 1)
