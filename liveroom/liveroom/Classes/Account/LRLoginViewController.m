@@ -28,6 +28,7 @@
 {
     [self.usernameTextField setupTextField];
     [self.usernameTextField strokeWithColor:LRStrokeWhite];
+    
     [self.passwordTextField setupTextField];
     [self.passwordTextField strokeWithColor:LRStrokeWhite];
 }

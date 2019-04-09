@@ -14,8 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRSearchBar : UIView
 
 @property (nonatomic, weak) id<LRSearchBarDelegate> delegate;
-
 @property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) NSString *placeholderString;
+@property (nonatomic, strong) UIColor *inputTextColor;
+@property (nonatomic, strong) UIColor *placeholderTextColor;
+@property (nonatomic, assign) CGFloat strokeWidth;
+@property (nonatomic, strong) UIColor *strokeColor;
+@property (nonatomic, strong) UIView *leftView;
 
 @end
 
