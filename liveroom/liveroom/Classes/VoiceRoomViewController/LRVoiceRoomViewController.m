@@ -17,7 +17,7 @@
 
 #define kPadding 15
 #define kHeaderViewHeight 100
-#define kInputViewHeight 70
+#define kInputViewHeight 64
 
 @interface LRVoiceRoomViewController () <LRVoiceRoomTabbarDelgate>
 @property (nonatomic, assign) LRUserRoleType type;

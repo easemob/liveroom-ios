@@ -111,7 +111,6 @@
     }
 }
 
-
 #pragma mark - getter
 - (UITextField *)inputTextView {
     if (!_inputTextView) {
@@ -122,6 +121,7 @@
         _inputTextView.backgroundColor = LRColor_HeightBlackColor;
         _inputTextView.placeholder = @"say me to your heart";
         [_inputTextView setupTextField];
+        _inputTextView.textColor = [UIColor whiteColor];
     }
     return _inputTextView;
 }

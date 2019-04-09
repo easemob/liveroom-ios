@@ -35,6 +35,7 @@
     model1.username = @"dujiepeng";
     model1.isMyself = YES;
     model1.isAdmin = NO;
+    model1.isMute = YES;
     
     LRSpeakerCellModel *model2 = [[LRSpeakerCellModel alloc] init];
     model2.username = @"shengxi";
@@ -138,6 +139,8 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        
+        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self _setupSubViews];
@@ -158,14 +161,14 @@
     [self.lightView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(10);
         make.centerY.equalTo(self.nameLabel);
-        make.right.equalTo(self.nameLabel.mas_left).offset( -5);
+        make.right.equalTo(self.nameLabel.mas_left).offset(-5);
         make.width.height.equalTo(@8);
     }];
     
     [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(5);
+        make.top.equalTo(self.contentView).offset(10);
         make.right.lessThanOrEqualTo(self.volumeView.mas_left).offset(-32);
-        make.height.equalTo(@30);
+        make.bottom.equalTo(self.lineView.mas_top).offset(-10).priorityLow();
     }];
     
     [self.crownImage mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -177,7 +180,7 @@
     [self.volumeView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.nameLabel);
         make.right.equalTo(self.contentView).offset(-10);
-        make.width.equalTo(@15);
+        make.width.equalTo(@10);
         make.height.equalTo(@20);
     }];
     
@@ -196,7 +199,7 @@
     // 如果有数据
     if (_model.username) {
         self.nameLabel.text = _model.username;
-        self.lightView.backgroundColor = !_model.isMute ? [UIColor yellowColor] : LRColor_HeightBlackColor;
+        self.lightView.backgroundColor = !_model.isMute ? [UIColor yellowColor] : LRColor_MiddleBlackColor;
         if (_model.isAdmin) {
             self.crownImage.hidden = NO;
         }else {
@@ -215,36 +218,26 @@
     if (voiceEnableBtnNeedShow) {
         self.voiceEnableBtn.hidden = NO;
         [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(1);
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
             make.left.equalTo(self.lightView);
             make.width.equalTo(@100);
-            make.height.equalTo(@25);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
     }else {
-        [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(1);
-            make.left.equalTo(self.lightView);
-            make.width.height.equalTo(@0);
-        }];
+        [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {}];
         self.voiceEnableBtn.hidden = YES;
     }
-
+    
     if (disconnectBtnNeedShow) {
         self.disconnectBtn.hidden = NO;
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(1);
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
             make.left.equalTo(self.voiceEnableBtn.mas_right).offset(10);
             make.width.equalTo(@100);
-            make.height.equalTo(@25);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
     }else {
-        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(1);
-            make.left.equalTo(self.voiceEnableBtn.mas_right).offset(10);
-            make.width.height.equalTo(@0);
-        }];
+        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {}];
         self.disconnectBtn.hidden = YES;
     }
 }
@@ -295,7 +288,7 @@
     if (!_volumeView) {
         _volumeView = [[LRVolumeView alloc] initWithFrame:CGRectZero];
         _volumeView.backgroundColor = [UIColor blackColor];
-        _volumeView.progress = 0;
+        _volumeView.progress = 0.5;
     }
     return _volumeView;
 }
