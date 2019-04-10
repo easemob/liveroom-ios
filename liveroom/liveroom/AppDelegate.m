@@ -24,7 +24,8 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     self.window.backgroundColor = UIColor.blackColor;
-    self.window.rootViewController = [[LRMainViewController alloc] init];
+    self.window.rootViewController = LRImHelper.sharedInstance.isLoggedIn ?
+    [[LRMainViewController alloc] init] : [[LRLoginViewController alloc] init] ;
     [self.window makeKeyAndVisible];
     
     //注册登录状态监听
@@ -38,7 +39,9 @@
 
 - (void)loginStateChange:(NSNotification *)notification
 {
-    self.window.rootViewController = [[LRMainViewController alloc] init];
+    BOOL isLogin = [notification.object boolValue];
+    self.window.rootViewController = isLogin ?
+    [[LRMainViewController alloc] init] : [[LRLoginViewController alloc] init];
 }
 
 
