@@ -42,8 +42,8 @@
 }
 
 #pragma mark - getter
-- (BOOL)isLogin {
-    return EMClient.sharedClient.isLoggedIn;
+- (BOOL)isLoggedIn {
+    return EMClient.sharedClient.isAutoLogin;
 }
 
 #pragma mark register delegates
@@ -74,6 +74,7 @@
          if (aCompletion) {
              if (!aError)
              {
+                 [[EMClient sharedClient].options setIsAutoLogin:YES];
                  aCompletion(nil, YES);
              }else {
                  aCompletion(aError.errorDescription, NO);
