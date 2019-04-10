@@ -12,8 +12,8 @@
 // frame
 #define LRWindowWidth UIScreen.mainScreen.bounds.size.width
 #define LRWindowHeight UIScreen.mainScreen.bounds.size.height
-#define LRSafeAreaTopHeight (LRWindowWidth == 812.0 ? 88 : 64)
-#define LRSafeAreaBottomHeight (LRWindowHeight == 812.0 ? 34 : 0)
+#define LRSafeAreaTopHeight ((LRWindowHeight == 812.0 || LRWindowHeight == 896) ? 44 : 20)
+#define LRSafeAreaBottomHeight ((LRWindowHeight == 812.0 || LRWindowHeight == 896)? 34 : 0)
 
 
 #define IS_iPhoneX (\
