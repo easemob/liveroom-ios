@@ -70,11 +70,11 @@
         make.top.equalTo(self.headerView.mas_bottom);
         make.left.equalTo(self.headerView);
         make.right.equalTo(self.headerView);
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight) / 2 + 30));
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 30));
     }];
 
     [self.chatVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight) / 2 - 40));
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 40));
         make.left.equalTo(self.speakerVC.view);
         make.right.equalTo(self.speakerVC.view);
         make.bottom.equalTo(self.inputBar.mas_top);
@@ -93,14 +93,14 @@
     NSMutableArray *itemAry = [NSMutableArray array];
     if (_type == LRUserType_Admin) {
         [itemAry addObject:[LRVoiceRoomHeaderItem
+                            itemWithImage:[UIImage imageNamed:@"pause"]
+                            target:self
+                            action:@selector(musicPlayListAction)]];
+        
+        [itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"userList"]
                             target:self
                             action:@selector(memberListAction)]];
-        
-        [itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"musicList"]
-                            target:self
-                            action:@selector(musicPlayListAction)]];
         
         [itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"share"]

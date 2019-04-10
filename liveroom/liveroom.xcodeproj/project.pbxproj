@@ -9,37 +9,16 @@
 /* Begin PBXBuildFile section */
 		2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 789E70471AB662ABBFC025F0 /* libPods-liveroom.a */; };
 		901A54DA2254CA9700F00186 /* LRVoiceRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A54D92254CA9700F00186 /* LRVoiceRoomViewController.m */; };
-		90445CA3225CA2A400917B64 /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CA2225CA2A400917B64 /* LRVolumeView.m */; };
-		90445CAE225CD03300917B64 /* LRVoiceRoomHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CA6225CD03200917B64 /* LRVoiceRoomHeader.m */; };
-		90445CAF225CD03300917B64 /* LRTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CA8225CD03200917B64 /* LRTitleView.m */; };
-		90445CB0225CD03300917B64 /* LRChatroomMembersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CAA225CD03200917B64 /* LRChatroomMembersCell.m */; };
 		90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */; };
 		9058DF912258D7A900699AB2 /* LRChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9058DF902258D7A900699AB2 /* LRChatViewController.m */; };
 		9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */; };
+		90600131225DA55600CD8BAA /* LRVoiceRoomHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600129225DA55600CD8BAA /* LRVoiceRoomHeader.m */; };
+		90600132225DA55600CD8BAA /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012C225DA55600CD8BAA /* LRVolumeView.m */; };
+		90600133225DA55600CD8BAA /* LRTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012D225DA55600CD8BAA /* LRTitleView.m */; };
+		90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */; };
+		90600135225DA55600CD8BAA /* LRSpeakerTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */; };
 		9083DC8B225603E70099C5BD /* LRSpeakerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8A225603E70099C5BD /* LRSpeakerViewController.m */; };
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
-		90CBF7D6225C8F9800C92F8D /* pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C0225C8F9800C92F8D /* pause@2x.png */; };
-		90CBF7D7225C8F9800C92F8D /* play@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C1225C8F9800C92F8D /* play@3x.png */; };
-		90CBF7D8225C8F9800C92F8D /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C2225C8F9800C92F8D /* play@2x.png */; };
-		90CBF7D9225C8F9800C92F8D /* pause@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C3225C8F9800C92F8D /* pause@3x.png */; };
-		90CBF7DA225C8F9800C92F8D /* share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C4225C8F9800C92F8D /* share@2x.png */; };
-		90CBF7DB225C8F9800C92F8D /* like@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C5225C8F9800C92F8D /* like@3x.png */; };
-		90CBF7DC225C8F9800C92F8D /* gift@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C6225C8F9800C92F8D /* gift@3x.png */; };
-		90CBF7DD225C8F9800C92F8D /* gift@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C7225C8F9800C92F8D /* gift@2x.png */; };
-		90CBF7DE225C8F9800C92F8D /* share@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C8225C8F9800C92F8D /* share@3x.png */; };
-		90CBF7DF225C8F9800C92F8D /* like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7C9225C8F9800C92F8D /* like@2x.png */; };
-		90CBF7E0225C8F9800C92F8D /* musicList@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7CA225C8F9800C92F8D /* musicList@3x.png */; };
-		90CBF7E1225C8F9800C92F8D /* musicList@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7CB225C8F9800C92F8D /* musicList@2x.png */; };
-		90CBF7E2225C8F9800C92F8D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7CC225C8F9800C92F8D /* settings@2x.png */; };
-		90CBF7E3225C8F9800C92F8D /* triangle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7CD225C8F9800C92F8D /* triangle@3x.png */; };
-		90CBF7E4225C8F9800C92F8D /* crown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7CE225C8F9800C92F8D /* crown@2x.png */; };
-		90CBF7E5225C8F9800C92F8D /* close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7CF225C8F9800C92F8D /* close@3x.png */; };
-		90CBF7E6225C8F9800C92F8D /* userList@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7D0225C8F9800C92F8D /* userList@3x.png */; };
-		90CBF7E7225C8F9800C92F8D /* close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7D1225C8F9800C92F8D /* close@2x.png */; };
-		90CBF7E8225C8F9800C92F8D /* userList@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7D2225C8F9800C92F8D /* userList@2x.png */; };
-		90CBF7E9225C8F9800C92F8D /* crown@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7D3225C8F9800C92F8D /* crown@3x.png */; };
-		90CBF7EA225C8F9800C92F8D /* triangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7D4225C8F9800C92F8D /* triangle@2x.png */; };
-		90CBF7EB225C8F9800C92F8D /* settings@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF7D5225C8F9800C92F8D /* settings@3x.png */; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
 		90F2C6752254C02B00A712B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6742254C02B00A712B8 /* Assets.xcassets */; };
 		90F2C6782254C02B00A712B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6762254C02B00A712B8 /* LaunchScreen.storyboard */; };
@@ -57,14 +36,8 @@
 		90F2C6DD2254C08600A712B8 /* LRLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6AA2254C08600A712B8 /* LRLoginViewController.xib */; };
 		90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6AB2254C08600A712B8 /* LRLoginViewController.m */; };
 		90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6B22254C08600A712B8 /* LRSettingViewController.m */; };
-		90F2C6E32254C08600A712B8 /* correct@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6B82254C08600A712B8 /* correct@3x.png */; };
-		90F2C6E42254C08600A712B8 /* correct@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6B92254C08600A712B8 /* correct@2x.png */; };
-		90F2C6E52254C08600A712B8 /* warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BA2254C08600A712B8 /* warning@2x.png */; };
-		90F2C6E62254C08600A712B8 /* warning@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BB2254C08600A712B8 /* warning@3x.png */; };
 		90F2C6E72254C08600A712B8 /* LRAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6BC2254C08600A712B8 /* LRAlertController.m */; };
 		90F2C6E82254C08600A712B8 /* LRAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BD2254C08600A712B8 /* LRAlertController.xib */; };
-		90F2C6E92254C08600A712B8 /* closeAlert@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BE2254C08600A712B8 /* closeAlert@3x.png */; };
-		90F2C6EA2254C08600A712B8 /* closeAlert@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BF2254C08600A712B8 /* closeAlert@2x.png */; };
 		90F2C6F42254C09400A712B8 /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6F32254C09400A712B8 /* add@2x.png */; };
 		E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C22259A77C00F9910C /* LRSearchBar.m */; };
 		E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C52259A77C00F9910C /* LRRealtimeSearch.m */; };
@@ -74,9 +47,6 @@
 		E04712DB225C503400F9910C /* LRChatroomMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712DA225C503400F9910C /* LRChatroomMembersViewController.m */; };
 		E04712DF225C8CEF00F9910C /* find@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712DE225C8CEF00F9910C /* find@2x.png */; };
 		E04712E2225C907600F9910C /* LRFindView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E1225C907600F9910C /* LRFindView.m */; };
-		E04712E5225C940D00F9910C /* LRTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E4225C940D00F9910C /* LRTitleView.m */; };
-		E04712EA225CA3B300F9910C /* LRChatroomMembersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E9225CA3B300F9910C /* LRChatroomMembersCell.m */; };
-		E04712ED225CA7BE00F9910C /* LRChatroomMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712EC225CA7BE00F9910C /* LRChatroomMembersModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,46 +54,26 @@
 		789E70471AB662ABBFC025F0 /* libPods-liveroom.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-liveroom.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		901A54D82254CA9700F00186 /* LRVoiceRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRVoiceRoomViewController.h; sourceTree = "<group>"; };
 		901A54D92254CA9700F00186 /* LRVoiceRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRVoiceRoomViewController.m; sourceTree = "<group>"; };
-		90445CA1225CA2A400917B64 /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
-		90445CA2225CA2A400917B64 /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
-		90445CA5225CD03200917B64 /* LRTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRTitleView.h; sourceTree = "<group>"; };
-		90445CA6225CD03200917B64 /* LRVoiceRoomHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVoiceRoomHeader.m; sourceTree = "<group>"; };
-		90445CA7225CD03200917B64 /* LRChatroomMembersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatroomMembersCell.h; sourceTree = "<group>"; };
-		90445CA8225CD03200917B64 /* LRTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRTitleView.m; sourceTree = "<group>"; };
-		90445CA9225CD03200917B64 /* LRVoiceRoomHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVoiceRoomHeader.h; sourceTree = "<group>"; };
-		90445CAA225CD03200917B64 /* LRChatroomMembersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRChatroomMembersCell.m; sourceTree = "<group>"; };
 		90445CAC225CD03300917B64 /* LRChatroomMembersModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatroomMembersModel.h; sourceTree = "<group>"; };
 		90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRChatroomMembersModel.m; sourceTree = "<group>"; };
 		9058DF8F2258D7A900699AB2 /* LRChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRChatViewController.h; sourceTree = "<group>"; };
 		9058DF902258D7A900699AB2 /* LRChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRChatViewController.m; sourceTree = "<group>"; };
 		9058DF922258D8EE00699AB2 /* LRVoiceRoomTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRVoiceRoomTabbar.h; sourceTree = "<group>"; };
 		9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRVoiceRoomTabbar.m; sourceTree = "<group>"; };
+		90600127225DA55600CD8BAA /* LRTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRTitleView.h; sourceTree = "<group>"; };
+		90600128225DA55600CD8BAA /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
+		90600129225DA55600CD8BAA /* LRVoiceRoomHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVoiceRoomHeader.m; sourceTree = "<group>"; };
+		9060012A225DA55600CD8BAA /* LRChatroomMembersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatroomMembersCell.h; sourceTree = "<group>"; };
+		9060012B225DA55600CD8BAA /* LRSpeakerTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSpeakerTypeView.h; sourceTree = "<group>"; };
+		9060012C225DA55600CD8BAA /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
+		9060012D225DA55600CD8BAA /* LRTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRTitleView.m; sourceTree = "<group>"; };
+		9060012E225DA55600CD8BAA /* LRVoiceRoomHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVoiceRoomHeader.h; sourceTree = "<group>"; };
+		9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRChatroomMembersCell.m; sourceTree = "<group>"; };
+		90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerTypeView.m; sourceTree = "<group>"; };
 		9083DC89225603E70099C5BD /* LRSpeakerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerViewController.h; sourceTree = "<group>"; };
 		9083DC8A225603E70099C5BD /* LRSpeakerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerViewController.m; sourceTree = "<group>"; };
 		9083DC8D225606B10099C5BD /* LRGCDMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRGCDMulticastDelegate.h; sourceTree = "<group>"; };
 		9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRGCDMulticastDelegate.m; sourceTree = "<group>"; };
-		90CBF7C0225C8F9800C92F8D /* pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause@2x.png"; sourceTree = "<group>"; };
-		90CBF7C1225C8F9800C92F8D /* play@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@3x.png"; sourceTree = "<group>"; };
-		90CBF7C2225C8F9800C92F8D /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
-		90CBF7C3225C8F9800C92F8D /* pause@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause@3x.png"; sourceTree = "<group>"; };
-		90CBF7C4225C8F9800C92F8D /* share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share@2x.png"; sourceTree = "<group>"; };
-		90CBF7C5225C8F9800C92F8D /* like@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like@3x.png"; sourceTree = "<group>"; };
-		90CBF7C6225C8F9800C92F8D /* gift@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift@3x.png"; sourceTree = "<group>"; };
-		90CBF7C7225C8F9800C92F8D /* gift@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift@2x.png"; sourceTree = "<group>"; };
-		90CBF7C8225C8F9800C92F8D /* share@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share@3x.png"; sourceTree = "<group>"; };
-		90CBF7C9225C8F9800C92F8D /* like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like@2x.png"; sourceTree = "<group>"; };
-		90CBF7CA225C8F9800C92F8D /* musicList@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "musicList@3x.png"; sourceTree = "<group>"; };
-		90CBF7CB225C8F9800C92F8D /* musicList@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "musicList@2x.png"; sourceTree = "<group>"; };
-		90CBF7CC225C8F9800C92F8D /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
-		90CBF7CD225C8F9800C92F8D /* triangle@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "triangle@3x.png"; sourceTree = "<group>"; };
-		90CBF7CE225C8F9800C92F8D /* crown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "crown@2x.png"; sourceTree = "<group>"; };
-		90CBF7CF225C8F9800C92F8D /* close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@3x.png"; sourceTree = "<group>"; };
-		90CBF7D0225C8F9800C92F8D /* userList@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "userList@3x.png"; sourceTree = "<group>"; };
-		90CBF7D1225C8F9800C92F8D /* close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@2x.png"; sourceTree = "<group>"; };
-		90CBF7D2225C8F9800C92F8D /* userList@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "userList@2x.png"; sourceTree = "<group>"; };
-		90CBF7D3225C8F9800C92F8D /* crown@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "crown@3x.png"; sourceTree = "<group>"; };
-		90CBF7D4225C8F9800C92F8D /* triangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "triangle@2x.png"; sourceTree = "<group>"; };
-		90CBF7D5225C8F9800C92F8D /* settings@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@3x.png"; sourceTree = "<group>"; };
 		90F2C6682254C02A00A712B8 /* liveroom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = liveroom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F2C6722254C02A00A712B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90F2C6742254C02B00A712B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -158,14 +108,8 @@
 		90F2C6B22254C08600A712B8 /* LRSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSettingViewController.m; sourceTree = "<group>"; };
 		90F2C6B42254C08600A712B8 /* LRSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSettingViewController.h; sourceTree = "<group>"; };
 		90F2C6B72254C08600A712B8 /* LRAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRAlertController.h; sourceTree = "<group>"; };
-		90F2C6B82254C08600A712B8 /* correct@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "correct@3x.png"; sourceTree = "<group>"; };
-		90F2C6B92254C08600A712B8 /* correct@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "correct@2x.png"; sourceTree = "<group>"; };
-		90F2C6BA2254C08600A712B8 /* warning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "warning@2x.png"; sourceTree = "<group>"; };
-		90F2C6BB2254C08600A712B8 /* warning@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "warning@3x.png"; sourceTree = "<group>"; };
 		90F2C6BC2254C08600A712B8 /* LRAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRAlertController.m; sourceTree = "<group>"; };
 		90F2C6BD2254C08600A712B8 /* LRAlertController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LRAlertController.xib; sourceTree = "<group>"; };
-		90F2C6BE2254C08600A712B8 /* closeAlert@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closeAlert@3x.png"; sourceTree = "<group>"; };
-		90F2C6BF2254C08600A712B8 /* closeAlert@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closeAlert@2x.png"; sourceTree = "<group>"; };
 		90F2C6F32254C09400A712B8 /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add@2x.png"; sourceTree = "<group>"; };
 		9129ABF1877E591B4D2B7E4D /* Pods-liveroom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liveroom.release.xcconfig"; path = "Pods/Target Support Files/Pods-liveroom/Pods-liveroom.release.xcconfig"; sourceTree = "<group>"; };
 		E04712C22259A77C00F9910C /* LRSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSearchBar.m; sourceTree = "<group>"; };
@@ -183,12 +127,6 @@
 		E04712DE225C8CEF00F9910C /* find@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "find@2x.png"; sourceTree = "<group>"; };
 		E04712E0225C907600F9910C /* LRFindView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRFindView.h; sourceTree = "<group>"; };
 		E04712E1225C907600F9910C /* LRFindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRFindView.m; sourceTree = "<group>"; };
-		E04712E3225C940D00F9910C /* LRTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRTitleView.h; sourceTree = "<group>"; };
-		E04712E4225C940D00F9910C /* LRTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRTitleView.m; sourceTree = "<group>"; };
-		E04712E8225CA3B300F9910C /* LRChatroomMembersCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRChatroomMembersCell.h; sourceTree = "<group>"; };
-		E04712E9225CA3B300F9910C /* LRChatroomMembersCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRChatroomMembersCell.m; sourceTree = "<group>"; };
-		E04712EB225CA7BE00F9910C /* LRChatroomMembersModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRChatroomMembersModel.h; sourceTree = "<group>"; };
-		E04712EC225CA7BE00F9910C /* LRChatroomMembersModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRChatroomMembersModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,9 +152,8 @@
 		901A54D72254CA7500F00186 /* VoiceRoomViewController */ = {
 			isa = PBXGroup;
 			children = (
+				90600126225DA55600CD8BAA /* Views */,
 				90445CAB225CD03300917B64 /* Model */,
-				90445CA4225CD03200917B64 /* Views */,
-				90CBF7BF225C8F9800C92F8D /* icon */,
 				9083DC89225603E70099C5BD /* LRSpeakerViewController.h */,
 				9083DC8A225603E70099C5BD /* LRSpeakerViewController.m */,
 				9058DF8F2258D7A900699AB2 /* LRChatViewController.h */,
@@ -228,25 +165,8 @@
 				901A54D92254CA9700F00186 /* LRVoiceRoomViewController.m */,
 				E04712D9225C503400F9910C /* LRChatroomMembersViewController.h */,
 				E04712DA225C503400F9910C /* LRChatroomMembersViewController.m */,
-				E04712E7225CA2E500F9910C /* Views */,
-				E04712E6225CA2E400F9910C /* Model */,
 			);
 			path = VoiceRoomViewController;
-			sourceTree = "<group>";
-		};
-		90445CA4225CD03200917B64 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				90445CA1225CA2A400917B64 /* LRVolumeView.h */,
-				90445CA2225CA2A400917B64 /* LRVolumeView.m */,
-				90445CA5225CD03200917B64 /* LRTitleView.h */,
-				90445CA8225CD03200917B64 /* LRTitleView.m */,
-				90445CA9225CD03200917B64 /* LRVoiceRoomHeader.h */,
-				90445CA6225CD03200917B64 /* LRVoiceRoomHeader.m */,
-				90445CA7225CD03200917B64 /* LRChatroomMembersCell.h */,
-				90445CAA225CD03200917B64 /* LRChatroomMembersCell.m */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		90445CAB225CD03300917B64 /* Model */ = {
@@ -258,6 +178,23 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		90600126225DA55600CD8BAA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				90600127225DA55600CD8BAA /* LRTitleView.h */,
+				90600128225DA55600CD8BAA /* LRVolumeView.h */,
+				90600129225DA55600CD8BAA /* LRVoiceRoomHeader.m */,
+				9060012A225DA55600CD8BAA /* LRChatroomMembersCell.h */,
+				9060012B225DA55600CD8BAA /* LRSpeakerTypeView.h */,
+				9060012C225DA55600CD8BAA /* LRVolumeView.m */,
+				9060012D225DA55600CD8BAA /* LRTitleView.m */,
+				9060012E225DA55600CD8BAA /* LRVoiceRoomHeader.h */,
+				9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */,
+				90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		9083DC8C225606B10099C5BD /* LRGCDMulticastDelegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,35 +202,6 @@
 				9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */,
 			);
 			path = LRGCDMulticastDelegate;
-			sourceTree = "<group>";
-		};
-		90CBF7BF225C8F9800C92F8D /* icon */ = {
-			isa = PBXGroup;
-			children = (
-				90CBF7C0225C8F9800C92F8D /* pause@2x.png */,
-				90CBF7C1225C8F9800C92F8D /* play@3x.png */,
-				90CBF7C2225C8F9800C92F8D /* play@2x.png */,
-				90CBF7C3225C8F9800C92F8D /* pause@3x.png */,
-				90CBF7C4225C8F9800C92F8D /* share@2x.png */,
-				90CBF7C5225C8F9800C92F8D /* like@3x.png */,
-				90CBF7C6225C8F9800C92F8D /* gift@3x.png */,
-				90CBF7C7225C8F9800C92F8D /* gift@2x.png */,
-				90CBF7C8225C8F9800C92F8D /* share@3x.png */,
-				90CBF7C9225C8F9800C92F8D /* like@2x.png */,
-				90CBF7CA225C8F9800C92F8D /* musicList@3x.png */,
-				90CBF7CB225C8F9800C92F8D /* musicList@2x.png */,
-				90CBF7CC225C8F9800C92F8D /* settings@2x.png */,
-				90CBF7CD225C8F9800C92F8D /* triangle@3x.png */,
-				90CBF7CE225C8F9800C92F8D /* crown@2x.png */,
-				90CBF7CF225C8F9800C92F8D /* close@3x.png */,
-				90CBF7D0225C8F9800C92F8D /* userList@3x.png */,
-				90CBF7D1225C8F9800C92F8D /* close@2x.png */,
-				90CBF7D2225C8F9800C92F8D /* userList@2x.png */,
-				90CBF7D3225C8F9800C92F8D /* crown@3x.png */,
-				90CBF7D4225C8F9800C92F8D /* triangle@2x.png */,
-				90CBF7D5225C8F9800C92F8D /* settings@3x.png */,
-			);
-			path = icon;
 			sourceTree = "<group>";
 		};
 		90CBF7F3225C950600C92F8D /* LRHelper */ = {
@@ -478,12 +386,6 @@
 				90F2C6B72254C08600A712B8 /* LRAlertController.h */,
 				90F2C6BC2254C08600A712B8 /* LRAlertController.m */,
 				90F2C6BD2254C08600A712B8 /* LRAlertController.xib */,
-				90F2C6B82254C08600A712B8 /* correct@3x.png */,
-				90F2C6B92254C08600A712B8 /* correct@2x.png */,
-				90F2C6BA2254C08600A712B8 /* warning@2x.png */,
-				90F2C6BB2254C08600A712B8 /* warning@3x.png */,
-				90F2C6BE2254C08600A712B8 /* closeAlert@3x.png */,
-				90F2C6BF2254C08600A712B8 /* closeAlert@2x.png */,
 			);
 			path = LRAlertController;
 			sourceTree = "<group>";
@@ -542,26 +444,6 @@
 			children = (
 				E04712D5225B61F000F9910C /* LRTabBar.h */,
 				E04712D6225B61F000F9910C /* LRTabBar.m */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		E04712E6225CA2E400F9910C /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				E04712EB225CA7BE00F9910C /* LRChatroomMembersModel.h */,
-				E04712EC225CA7BE00F9910C /* LRChatroomMembersModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		E04712E7225CA2E500F9910C /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				E04712E3225C940D00F9910C /* LRTitleView.h */,
-				E04712E4225C940D00F9910C /* LRTitleView.m */,
-				E04712E8225CA3B300F9910C /* LRChatroomMembersCell.h */,
-				E04712E9225CA3B300F9910C /* LRChatroomMembersCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -626,42 +508,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90CBF7E5225C8F9800C92F8D /* close@3x.png in Resources */,
-				90CBF7E8225C8F9800C92F8D /* userList@2x.png in Resources */,
 				E04712DF225C8CEF00F9910C /* find@2x.png in Resources */,
 				90F2C6782254C02B00A712B8 /* LaunchScreen.storyboard in Resources */,
-				90CBF7E4225C8F9800C92F8D /* crown@2x.png in Resources */,
-				90F2C6EA2254C08600A712B8 /* closeAlert@2x.png in Resources */,
-				90CBF7DB225C8F9800C92F8D /* like@3x.png in Resources */,
-				90F2C6E52254C08600A712B8 /* warning@2x.png in Resources */,
-				90CBF7D8225C8F9800C92F8D /* play@2x.png in Resources */,
-				90CBF7D9225C8F9800C92F8D /* pause@3x.png in Resources */,
 				90F2C6DA2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.xib in Resources */,
-				90CBF7EB225C8F9800C92F8D /* settings@3x.png in Resources */,
-				90CBF7DE225C8F9800C92F8D /* share@3x.png in Resources */,
-				90CBF7DA225C8F9800C92F8D /* share@2x.png in Resources */,
-				90F2C6E62254C08600A712B8 /* warning@3x.png in Resources */,
-				90CBF7E9225C8F9800C92F8D /* crown@3x.png in Resources */,
-				90CBF7E2225C8F9800C92F8D /* settings@2x.png in Resources */,
 				90F2C6752254C02B00A712B8 /* Assets.xcassets in Resources */,
 				90F2C6E82254C08600A712B8 /* LRAlertController.xib in Resources */,
-				90CBF7D6225C8F9800C92F8D /* pause@2x.png in Resources */,
-				90F2C6E92254C08600A712B8 /* closeAlert@3x.png in Resources */,
-				90CBF7E3225C8F9800C92F8D /* triangle@3x.png in Resources */,
-				90CBF7E1225C8F9800C92F8D /* musicList@2x.png in Resources */,
-				90F2C6E42254C08600A712B8 /* correct@2x.png in Resources */,
 				90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */,
 				90F2C6F42254C09400A712B8 /* add@2x.png in Resources */,
-				90F2C6E32254C08600A712B8 /* correct@3x.png in Resources */,
-				90CBF7E6225C8F9800C92F8D /* userList@3x.png in Resources */,
-				90CBF7DD225C8F9800C92F8D /* gift@2x.png in Resources */,
-				90CBF7E0225C8F9800C92F8D /* musicList@3x.png in Resources */,
 				90F2C6DD2254C08600A712B8 /* LRLoginViewController.xib in Resources */,
-				90CBF7EA225C8F9800C92F8D /* triangle@2x.png in Resources */,
-				90CBF7DF225C8F9800C92F8D /* like@2x.png in Resources */,
-				90CBF7DC225C8F9800C92F8D /* gift@3x.png in Resources */,
-				90CBF7D7225C8F9800C92F8D /* play@3x.png in Resources */,
-				90CBF7E7225C8F9800C92F8D /* close@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,42 +573,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E04712EA225CA3B300F9910C /* LRChatroomMembersCell.m in Sources */,
+				90600135225DA55600CD8BAA /* LRSpeakerTypeView.m in Sources */,
 				90F2C6E72254C08600A712B8 /* LRAlertController.m in Sources */,
+				90600131225DA55600CD8BAA /* LRVoiceRoomHeader.m in Sources */,
+				90600132225DA55600CD8BAA /* LRVolumeView.m in Sources */,
 				90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */,
 				E04712E2225C907600F9910C /* LRFindView.m in Sources */,
 				901A54DA2254CA9700F00186 /* LRVoiceRoomViewController.m in Sources */,
 				90F2C6D52254C08600A712B8 /* LRLogManager.m in Sources */,
 				9058DF912258D7A900699AB2 /* LRChatViewController.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
-				90445CAE225CD03300917B64 /* LRVoiceRoomHeader.m in Sources */,
-				90445CB0225CD03300917B64 /* LRChatroomMembersCell.m in Sources */,
 				90F2C6DB2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m in Sources */,
 				90F2C6D62254C08600A712B8 /* LRChatRoomListModel.m in Sources */,
 				9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */,
+				90600133225DA55600CD8BAA /* LRTitleView.m in Sources */,
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
 				9083DC8B225603E70099C5BD /* LRSpeakerViewController.m in Sources */,
 				9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
-				90445CAF225CD03300917B64 /* LRTitleView.m in Sources */,
 				90F2C6DB2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m in Sources */,
-				E04712ED225CA7BE00F9910C /* LRChatroomMembersModel.m in Sources */,
 				90F2C6D62254C08600A712B8 /* LRChatRoomListModel.m in Sources */,
 				E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */,
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
+				90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */,
 				E04712D7225B61F000F9910C /* LRTabBar.m in Sources */,
 				E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */,
 				E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */,
-				E04712E5225C940D00F9910C /* LRTitleView.m in Sources */,
 				90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */,
 				90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */,
 				90F2C6D72254C08600A712B8 /* LRJoinVoiceChatRoomView.m in Sources */,
 				90F2C6DC2254C08600A712B8 /* AppDelegate.m in Sources */,
 				E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */,
 				90F2C6D92254C08600A712B8 /* LRVoiceChatRoomListViewController.m in Sources */,
-				90445CA3225CA2A400917B64 /* LRVolumeView.m in Sources */,
 				90F2C6D42254C08600A712B8 /* UIView+LRCategory.m in Sources */,
 				E04712DB225C503400F9910C /* LRChatroomMembersViewController.m in Sources */,
 			);
