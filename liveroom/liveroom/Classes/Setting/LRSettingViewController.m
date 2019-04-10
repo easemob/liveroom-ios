@@ -33,8 +33,7 @@
     [self.view addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(13);
-        make.top.equalTo(self.view).offset(20);
-        make.height.equalTo(@60);
+        make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
     }];
     
     self.tableView = [[UITableView alloc] init];
@@ -48,7 +47,7 @@
         make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
         make.left.equalTo(self.view).offset(13);
         make.right.equalTo(self.view).offset(-13);
-        make.bottom.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight);
     }];
 }
 

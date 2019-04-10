@@ -41,7 +41,7 @@
     topLine.backgroundColor = [UIColor grayColor];
     [self.contentView addSubview:topLine];
     [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
+        make.top.equalTo(self.contentView).offset(0.5);
         make.left.equalTo(self.contentView);
         make.right.equalTo(self.contentView);
         make.height.equalTo(@0.5);
@@ -62,7 +62,7 @@
     [self.contentView addSubview:leftLine];
     [leftLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView);
-        make.left.equalTo(self.contentView);
+        make.left.equalTo(self.contentView).offset(0.5);
         make.bottom.equalTo(self.contentView);
         make.width.equalTo(@0.5);
     }];
@@ -87,7 +87,7 @@
     }];
     
     self.ownerIconImageView = [[UIImageView alloc] init];
-    self.ownerIconImageView.image = [UIImage imageNamed:@"find"];
+    self.ownerIconImageView.image = [UIImage imageNamed:@"crown"];
     [self.contentView addSubview:self.ownerIconImageView];
     [self.ownerIconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView.mas_centerY);

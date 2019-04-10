@@ -39,7 +39,7 @@
 
 - (void)_setupSubviews
 {
-    self.lrTabBar = [[LRTabBar alloc] initWithFrame:CGRectMake(0, LRWindowHeight - 49, LRWindowWidth, 49)];
+    self.lrTabBar = [[LRTabBar alloc] initWithFrame:CGRectMake(0, LRWindowHeight - LRSafeAreaBottomHeight - 49, LRWindowWidth, 49)];
     self.lrTabBar.delegate = self;
     [self.view addSubview:self.lrTabBar];
     [self.view bringSubviewToFront:self.lrTabBar];
