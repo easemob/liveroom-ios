@@ -67,7 +67,7 @@
     [self.view addSubview:self.inputBar];
     
     [self.speakerVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.headerView.mas_bottom);
+        make.top.equalTo(self.headerView.mas_bottom).offset(5);
         make.left.equalTo(self.headerView);
         make.right.equalTo(self.headerView);
         make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 30));

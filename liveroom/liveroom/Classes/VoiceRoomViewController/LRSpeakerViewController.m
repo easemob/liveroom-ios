@@ -13,7 +13,7 @@
 
 #define kCurrentUserIsAdmin NO
 
-@interface LRSpeakerViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface LRSpeakerViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakerTypeViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
@@ -68,6 +68,36 @@
     }];
 }
 
+#pragma mark - LRSpeakerTypeViewDelegate
+- (void)switchBtnClicked {
+    
+    __weak typeof(self)weakSelf = self;
+    
+    LRAlertController *alert = [LRAlertController showAlertWithTitle:@"请选择会议模式" info:nil];
+    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
+                                                       callback:^(LRAlertController * _Nonnull alertController)
+                                 {
+                                     [weakSelf.headerView setType:LRSpeakerType_Host];
+                                 }];
+    
+    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式"
+                                                           callback:^(LRAlertController * _Nonnull alertController)
+                                     {
+                                         [weakSelf.headerView setType:LRSpeakerType_Monopoly];
+                                     }];
+    
+    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式"
+                                                                callback:^(LRAlertController * _Nonnull alertController)
+                                          {
+                                              [weakSelf.headerView setType:LRSpeakerType_Communication];
+                                          }];
+    
+    [alert addAction:hostAction];
+    [alert addAction:monopolyAction];
+    [alert addAction:communicationAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 #pragma mark - table view delegate & datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataAry.count;
@@ -112,6 +142,7 @@
 - (LRSpeakerTypeView *)headerView {
     if (!_headerView) {
         _headerView = [[LRSpeakerTypeView alloc] init];
+        _headerView.delegate = self;
     }
     return _headerView;
 }
@@ -181,9 +212,9 @@
     
     [self.volumeView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.nameLabel);
-        make.right.equalTo(self.contentView).offset(-10);
+        make.right.equalTo(self.contentView).offset(-15);
         make.width.equalTo(@10);
-        make.height.equalTo(@20);
+        make.height.equalTo(@18);
     }];
     
     [self.lineView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -273,7 +304,7 @@
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.textColor = [UIColor whiteColor];
-        _nameLabel.font = [UIFont boldSystemFontOfSize:17];
+        _nameLabel.font = [UIFont boldSystemFontOfSize:19];
     }
     return _nameLabel;
 }

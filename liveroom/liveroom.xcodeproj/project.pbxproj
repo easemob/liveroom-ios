@@ -183,14 +183,14 @@
 			children = (
 				90600127225DA55600CD8BAA /* LRTitleView.h */,
 				90600128225DA55600CD8BAA /* LRVolumeView.h */,
+				9060012C225DA55600CD8BAA /* LRVolumeView.m */,
+				9060012E225DA55600CD8BAA /* LRVoiceRoomHeader.h */,
 				90600129225DA55600CD8BAA /* LRVoiceRoomHeader.m */,
 				9060012A225DA55600CD8BAA /* LRChatroomMembersCell.h */,
-				9060012B225DA55600CD8BAA /* LRSpeakerTypeView.h */,
-				9060012C225DA55600CD8BAA /* LRVolumeView.m */,
-				9060012D225DA55600CD8BAA /* LRTitleView.m */,
-				9060012E225DA55600CD8BAA /* LRVoiceRoomHeader.h */,
 				9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */,
+				9060012B225DA55600CD8BAA /* LRSpeakerTypeView.h */,
 				90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */,
+				9060012D225DA55600CD8BAA /* LRTitleView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
