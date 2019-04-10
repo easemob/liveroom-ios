@@ -71,6 +71,31 @@
 #pragma mark - LRSpeakerTypeViewDelegate
 - (void)switchBtnClicked {
     
+    __weak typeof(self)weakSelf = self;
+    
+    LRAlertController *alert = [LRAlertController showAlertWithTitle:@"请选择会议模式" info:nil];
+    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
+                                                       callback:^(LRAlertController * _Nonnull alertController)
+                                 {
+                                     [weakSelf.headerView setType:LRSpeakerType_Host];
+                                 }];
+    
+    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式"
+                                                           callback:^(LRAlertController * _Nonnull alertController)
+                                     {
+                                         [weakSelf.headerView setType:LRSpeakerType_Monopoly];
+                                     }];
+    
+    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式"
+                                                                callback:^(LRAlertController * _Nonnull alertController)
+                                          {
+                                              [weakSelf.headerView setType:LRSpeakerType_Communication];
+                                          }];
+    
+    [alert addAction:hostAction];
+    [alert addAction:monopolyAction];
+    [alert addAction:communicationAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - table view delegate & datasource

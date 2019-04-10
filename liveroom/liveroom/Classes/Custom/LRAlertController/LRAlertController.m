@@ -109,15 +109,19 @@
     _alertView.backgroundColor = LRColor_HighLightColor;
     [self _setupImageView];
     self.titleLabel.text = _title;
-
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineSpacing = 8;
-    NSDictionary *ats = @{
-                          NSFontAttributeName : [UIFont systemFontOfSize:14.0f],
-                          NSParagraphStyleAttributeName : paragraphStyle,
-                          };
-    self.infoLabel.attributedText = [[NSAttributedString alloc] initWithString:_info attributes:ats];
-    self.infoLabel.textColor = RGBACOLOR(255, 255, 255, 1);
+    
+    if (_info) {
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = 8;
+        NSDictionary *ats = @{
+                              NSFontAttributeName : [UIFont systemFontOfSize:14.0f],
+                              NSParagraphStyleAttributeName : paragraphStyle,
+                              };
+        self.infoLabel.attributedText = [[NSAttributedString alloc] initWithString:_info attributes:ats];
+        self.infoLabel.textColor = RGBACOLOR(255, 255, 255, 1);
+    }else {
+        
+    }
 
     if (self.textField) {
         [self _setupTextField];

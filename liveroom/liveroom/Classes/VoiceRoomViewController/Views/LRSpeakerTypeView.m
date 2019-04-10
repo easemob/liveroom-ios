@@ -69,13 +69,13 @@
         case LRSpeakerType_Monopoly:
         {
             self.titleLabel.text = @"抢麦模式 monopoly";
-            self.infoLabel.text = @"管理员和主播可以互相抢麦发言，管理员可以控制所发言，主播仅能抢麦发言";
+            self.infoLabel.text = @"管理员和主播可以互相抢麦发言";
         }
             break;
         case LRSpeakerType_Communication:
         {
             self.titleLabel.text = @"自由麦模式 communication";
-            self.infoLabel.text = @"管理员和主播均能自由控制自己的发言，管理员可以控制所有发言";
+            self.infoLabel.text = @"管理员和主播均能自由控制自己的发言";
         }
             break;
         default:

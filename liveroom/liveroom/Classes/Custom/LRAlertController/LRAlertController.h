@@ -26,10 +26,10 @@ typedef void(^CloseBlock)(void);
 + (LRAlertController *)showAlertWithImage:(UIImage *)aImage
                                imageColor:(UIColor *)aColor
                                     title:(NSString *)aTitle
-                                     info:(NSString *)aInfo;
+                                     info:(NSString * _Nullable)aInfo;
 
 + (LRAlertController *)showAlertWithTitle:(NSString *)aTitle
-                                     info:(NSString *)aInfo;
+                                     info:(NSString * _Nullable)aInfo;
 
 - (void)addAction:(LRAlertAction *)aAction;
 
