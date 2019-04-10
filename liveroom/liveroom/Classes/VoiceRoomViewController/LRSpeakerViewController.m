@@ -8,13 +8,14 @@
 
 #import "LRSpeakerViewController.h"
 #import "LRVolumeView.h"
+#import "LRSpeakerTypeView.h"
 #import "Headers.h"
 
 #define kCurrentUserIsAdmin NO
 
 @interface LRSpeakerViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) LRSpeakerTypeView *headerView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @end
 
@@ -26,6 +27,8 @@
     [self _setupSubViews];
     
 
+    [self.headerView setType:LRSpeakerType_Host];
+    
     LRSpeakerCellModel *model = [[LRSpeakerCellModel alloc] init];
     model.username = @"zhangsong";
     model.isMyself = NO;
@@ -106,10 +109,9 @@
     return _tableView;
 }
 
-- (UIView *)headerView {
+- (LRSpeakerTypeView *)headerView {
     if (!_headerView) {
-        _headerView = [[UIView alloc] init];
-        _headerView.backgroundColor = [UIColor redColor];
+        _headerView = [[LRSpeakerTypeView alloc] init];
     }
     return _headerView;
 }

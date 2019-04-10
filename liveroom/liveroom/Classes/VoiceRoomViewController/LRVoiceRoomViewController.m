@@ -9,14 +9,13 @@
 #import "LRVoiceRoomViewController.h"
 #import "LRSpeakerViewController.h"
 #import "LRChatViewController.h"
-#import "LRMusicPlayerHelper.h"
 #import "LRVoiceRoomHeader.h"
 #import "LRVoiceRoomTabbar.h"
 #import "Headers.h"
 #import "LRChatroomMembersViewController.h"
 
 #define kPadding 15
-#define kHeaderViewHeight 100
+#define kHeaderViewHeight 45
 #define kInputViewHeight 64
 
 @interface LRVoiceRoomViewController () <LRVoiceRoomTabbarDelgate>
@@ -47,29 +46,6 @@
     [self.chatVC.view addGestureRecognizer:tap];
 }
 
-- (void)todo {
-    // get play list
-    NSMutableArray *ary = [NSMutableArray array];
-    
-    LRMusicItem *item1 = [[LRMusicItem alloc] init];
-    item1.itemName = @"test1";
-    item1.totalTime = 60;
-    [ary addObject:item1];
-    
-    LRMusicItem *item2 = [[LRMusicItem alloc] init];
-    item2.itemName = @"test2";
-    item2.totalTime = 90;
-    [ary addObject:item2];
-    
-    LRMusicItem *item3 = [[LRMusicItem alloc] init];
-    item3.itemName = @"test3";
-    item3.totalTime = 120;
-    [ary addObject:item3];
-    
-    [LRMusicPlayerHelper sharedInstance].playList = ary;
-    [[LRMusicPlayerHelper sharedInstance] play];
-}
-
 #pragma mark - subviews
 - (void)_setupSubViews {
     self.headerView = [[LRVoiceRoomHeader alloc] initWithTitle:self.roomName info:@"dujiepeng"];
@@ -81,7 +57,7 @@
         make.right.equalTo(self.view).offset(-kPadding);
         make.height.equalTo(@kHeaderViewHeight);
     }];
-    
+
     [self.view addSubview:self.speakerVC.view];
     [self addChildViewController:self.speakerVC];
     
@@ -94,11 +70,11 @@
         make.top.equalTo(self.headerView.mas_bottom);
         make.left.equalTo(self.headerView);
         make.right.equalTo(self.headerView);
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight) / 2 + 30));
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 30));
     }];
 
     [self.chatVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight) / 2 - 40));
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 40));
         make.left.equalTo(self.speakerVC.view);
         make.right.equalTo(self.speakerVC.view);
         make.bottom.equalTo(self.inputBar.mas_top);
@@ -117,14 +93,14 @@
     NSMutableArray *itemAry = [NSMutableArray array];
     if (_type == LRUserType_Admin) {
         [itemAry addObject:[LRVoiceRoomHeaderItem
+                            itemWithImage:[UIImage imageNamed:@"pause"]
+                            target:self
+                            action:@selector(musicPlayListAction)]];
+        
+        [itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"userList"]
                             target:self
                             action:@selector(memberListAction)]];
-        
-        [itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"musicList"]
-                            target:self
-                            action:@selector(musicPlayListAction)]];
         
         [itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"share"]
@@ -203,13 +179,11 @@
         [UIView animateWithDuration:aDuration animations:^{
             self.headerView.alpha = 0;
             self.speakerVC.view.alpha = 0;
-            self.speakerVC.view.frame = CGRectInset(self.speakerVC.view.frame, -80, -80);
         }];
     } else {
         [UIView animateWithDuration:aDuration animations:^{
             self.headerView.alpha = 1;
             self.speakerVC.view.alpha = 1;
-            self.speakerVC.view.frame = CGRectInset(self.speakerVC.view.frame, 80, 80);
         }];
     }
     
@@ -217,7 +191,7 @@
         make.left.equalTo(self.chatVC.view);
         make.right.equalTo(self.chatVC.view);
         make.height.equalTo(@kInputViewHeight);
-        make.bottom.equalTo(self.view).offset(-height);
+        make.bottom.equalTo(self.view).offset(isKeyboardShow ? -height : -height - LRSafeAreaBottomHeight);
     }];
     
     [self.view layoutIfNeeded];

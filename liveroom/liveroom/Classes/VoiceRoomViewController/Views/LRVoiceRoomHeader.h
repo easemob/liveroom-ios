@@ -16,19 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
                                   action:(SEL __nullable)aAction;
 @end
 
-@protocol LRVoiceRoomHeaderDelegate <NSObject>
-- (void)playerPause;
-- (void)playerPlay;
-@end
-
 @interface LRVoiceRoomHeader : UIView
 @property (nonatomic, strong) NSArray *actionList;
-@property (nonatomic, strong) id <LRVoiceRoomHeaderDelegate> delegate;
 - (instancetype)initWithTitle:(NSString *)aTitle info:(NSString *)aInfo;
-@end
-
-@interface LRVoiceRoomHeaderPlayerView : UIView
-- (void)editEnable:(BOOL)isEnable;
 @end
 
 NS_ASSUME_NONNULL_END
