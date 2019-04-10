@@ -93,6 +93,7 @@
 {
     self.searchBar = [[LRSearchBar alloc] init];
     self.searchBar.placeholderString = @"Search";
+    self.searchBar.inputTextColor = [UIColor clearColor];
     self.searchBar.placeholderTextColor = [UIColor grayColor];
     self.searchBar.strokeColor = [UIColor grayColor];
     self.searchBar.strokeWidth = 0.5;
@@ -119,7 +120,7 @@
         make.top.equalTo(self.searchBar.mas_bottom).offset(10);
         make.left.equalTo(self.view).offset(13);
         make.right.equalTo(self.view).offset(-13);
-        make.bottom.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight);
     }];
     
     self.searchResultTableView = [[UITableView alloc] init];
@@ -188,7 +189,7 @@
                     make.top.equalTo(self.searchBar.mas_bottom).offset(10);
                     make.left.equalTo(self.view).offset(13);
                     make.right.equalTo(self.view).offset(-13);
-                    make.bottom.equalTo(self.view);
+                    make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight);
                 }];
             }
         }
