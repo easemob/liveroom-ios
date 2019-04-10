@@ -17,6 +17,7 @@
 		90600133225DA55600CD8BAA /* LRTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012D225DA55600CD8BAA /* LRTitleView.m */; };
 		90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */; };
 		90600135225DA55600CD8BAA /* LRSpeakerTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */; };
+		90600139225DCB0C00CD8BAA /* LRImHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600138225DCB0C00CD8BAA /* LRImHelper.m */; };
 		9083DC8B225603E70099C5BD /* LRSpeakerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8A225603E70099C5BD /* LRSpeakerViewController.m */; };
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
@@ -70,6 +71,8 @@
 		9060012E225DA55600CD8BAA /* LRVoiceRoomHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVoiceRoomHeader.h; sourceTree = "<group>"; };
 		9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRChatroomMembersCell.m; sourceTree = "<group>"; };
 		90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerTypeView.m; sourceTree = "<group>"; };
+		90600137225DCB0C00CD8BAA /* LRImHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRImHelper.h; sourceTree = "<group>"; };
+		90600138225DCB0C00CD8BAA /* LRImHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRImHelper.m; sourceTree = "<group>"; };
 		9083DC89225603E70099C5BD /* LRSpeakerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerViewController.h; sourceTree = "<group>"; };
 		9083DC8A225603E70099C5BD /* LRSpeakerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerViewController.m; sourceTree = "<group>"; };
 		9083DC8D225606B10099C5BD /* LRGCDMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRGCDMulticastDelegate.h; sourceTree = "<group>"; };
@@ -193,6 +196,15 @@
 				9060012D225DA55600CD8BAA /* LRTitleView.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		90600136225DCAFE00CD8BAA /* LRImHelper */ = {
+			isa = PBXGroup;
+			children = (
+				90600137225DCB0C00CD8BAA /* LRImHelper.h */,
+				90600138225DCB0C00CD8BAA /* LRImHelper.m */,
+			);
+			path = LRImHelper;
 			sourceTree = "<group>";
 		};
 		9083DC8C225606B10099C5BD /* LRGCDMulticastDelegate */ = {
@@ -393,6 +405,7 @@
 		90F2C6C02254C08600A712B8 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				90600136225DCAFE00CD8BAA /* LRImHelper */,
 				90CBF7F3225C950600C92F8D /* LRHelper */,
 			);
 			path = Helper;
@@ -460,6 +473,7 @@
 				90F2C6652254C02A00A712B8 /* Frameworks */,
 				90F2C6662254C02A00A712B8 /* Resources */,
 				E5A84395069200D90DDF58CB /* [CP] Copy Pods Resources */,
+				C1A4F0F815C65991378C2FBD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -544,6 +558,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C1A4F0F815C65991378C2FBD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh",
+				"${PODS_ROOT}/Hyphenate/iOS_Pods_IMFullSDK_V3.5.4/Hyphenate.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E5A84395069200D90DDF58CB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -600,6 +636,7 @@
 				90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */,
 				E04712D7225B61F000F9910C /* LRTabBar.m in Sources */,
 				E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */,
+				90600139225DCB0C00CD8BAA /* LRImHelper.m in Sources */,
 				E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */,
 				90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */,
 				90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */,

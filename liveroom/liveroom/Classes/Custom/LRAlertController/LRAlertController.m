@@ -32,8 +32,7 @@
 {
     NSString *_title;
     NSString *_info;
-    UIImage *_image;
-    UIColor *_bgColor;
+    LRAlertType _type;
     NSMutableArray *_actionList;
 }
 @property (weak, nonatomic) IBOutlet UIView *alertView;
@@ -48,17 +47,14 @@
 
 @implementation LRAlertController
 
-+ (LRAlertController *)showAlertWithImage:(UIImage *)aImage
-                               imageColor:(UIColor *)aColor
-                                    title:(NSString *)aTitle
-                                     info:(NSString *)aInfo
++ (LRAlertController *)showAlertWithType:(LRAlertType)aType
+                                   title:(NSString *)aTitle
+                                    info:(NSString * _Nullable)aInfo
 
 {
-    LRAlertController *alertController = [[LRAlertController alloc]
-                                          initWithImage:aImage
-                                          imageColor:aColor
-                                          title:aTitle
-                                          info:aInfo];
+    LRAlertController *alertController = [[LRAlertController alloc] initWithType:aType
+                                                                           title:aTitle
+                                                                            info:aInfo];
     return alertController;
 }
 
@@ -66,25 +62,21 @@
 + (LRAlertController *)showAlertWithTitle:(NSString *)aTitle
                                      info:(NSString *)aInfo
 {
-    LRAlertController *alertController = [[LRAlertController alloc]
-                                          initWithImage:nil
-                                          imageColor:nil
-                                          title:aTitle
-                                          info:aInfo];
+    LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_None
+                                                                           title:aTitle
+                                                                            info:aInfo];
     return alertController;
 }
 
-- (instancetype)initWithImage:(UIImage *)aImage
-                   imageColor:(UIColor *)aColor
+- (instancetype)initWithType:(LRAlertType)aType
                        title:(NSString *)aTitle
-                        info:(NSString *)aInfo
+                        info:(NSString * _Nullable)aInfo
 {
     if (self = [super initWithNibName:@"LRAlertController" bundle:nil]) {
         [self _setupAnimation];
-        _image = aImage;
+        _type = aType;
         _info = aInfo;
         _title = aTitle;
-        _bgColor = aColor;
         _actionList = [NSMutableArray array];
     }
     return self;
@@ -105,6 +97,7 @@
 
 - (void)viewDidLayoutSubviews
 {
+    self.otherView.backgroundColor = [UIColor clearColor];
     [_alertView strokeWithColor:LRStrokeLowBlack];
     _alertView.backgroundColor = LRColor_HighLightColor;
     [self _setupImageView];
@@ -122,7 +115,7 @@
     }else {
         
     }
-
+    
     if (self.textField) {
         [self _setupTextField];
     }
@@ -161,8 +154,30 @@
 
 - (void)_setupImageView
 {
-    if (_image) {
-        self.showImage.image = _image;
+    UIImage *image = nil;
+    
+    switch (_type) {
+        case LRAlertType_Success:
+        {
+            image = [UIImage imageNamed:@"correct"];
+        }
+            break;
+        case LRAlertType_Warning:
+        {
+            image = [UIImage imageNamed:@"warning"];
+        }
+            break;
+        case LRAlertType_Error:
+        {
+            image = [UIImage imageNamed:@"error"];
+        }
+            break;
+        default:
+            break;
+    }
+    
+    if (image) {
+        self.showImage.image = image;
         self.showImage.layer.masksToBounds = YES;
         self.showImage.layer.cornerRadius = 2;
     }else {
@@ -172,10 +187,6 @@
         [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(@15);
         }];
-    }
-    
-    if (_bgColor) {
-        self.showImage.backgroundColor = _bgColor;
     }
 }
 
@@ -201,7 +212,7 @@
     if (!_actionList) {
         return;
     }
-
+    
     for (int i = 0 ; i < _actionList.count; i++) {
         LRAlertAction *action = _actionList[i];
         [self _setupAction:action];

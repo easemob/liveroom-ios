@@ -18,4 +18,7 @@
 
 #import "UIView+LRCategory.h"
 
+#import <Hyphenate/Hyphenate.h>
+#import "LRImHelper.h"
+
 #endif /* Headers_h */
