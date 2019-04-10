@@ -12,7 +12,6 @@
 #import "LRSearchBar.h"
 #import "LRVoiceChatRoomListCell.h"
 #import "LRChatRoomListModel.h"
-#import "LRJoinVoiceChatRoomView.h"
 #import "LRVoiceRoomViewController.h"
 #import "Headers.h"
 #import "LRFindView.h"
