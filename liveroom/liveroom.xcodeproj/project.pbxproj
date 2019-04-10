@@ -26,7 +26,6 @@
 		90F2C6D42254C08600A712B8 /* UIView+LRCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6922254C08600A712B8 /* UIView+LRCategory.m */; };
 		90F2C6D52254C08600A712B8 /* LRLogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6952254C08600A712B8 /* LRLogManager.m */; };
 		90F2C6D62254C08600A712B8 /* LRChatRoomListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C69A2254C08600A712B8 /* LRChatRoomListModel.m */; };
-		90F2C6D72254C08600A712B8 /* LRJoinVoiceChatRoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C69F2254C08600A712B8 /* LRJoinVoiceChatRoomView.m */; };
 		90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6A12254C08600A712B8 /* LRVoiceChatRoomListCell.m */; };
 		90F2C6D92254C08600A712B8 /* LRVoiceChatRoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6A22254C08600A712B8 /* LRVoiceChatRoomListViewController.m */; };
 		90F2C6DA2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6A52254C08600A712B8 /* LRCreateVoiceChatRoomViewController.xib */; };
@@ -91,8 +90,6 @@
 		90F2C69A2254C08600A712B8 /* LRChatRoomListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRChatRoomListModel.m; sourceTree = "<group>"; };
 		90F2C69B2254C08600A712B8 /* LRChatRoomListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatRoomListModel.h; sourceTree = "<group>"; };
 		90F2C69D2254C08600A712B8 /* LRVoiceChatRoomListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVoiceChatRoomListCell.h; sourceTree = "<group>"; };
-		90F2C69F2254C08600A712B8 /* LRJoinVoiceChatRoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRJoinVoiceChatRoomView.m; sourceTree = "<group>"; };
-		90F2C6A02254C08600A712B8 /* LRJoinVoiceChatRoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRJoinVoiceChatRoomView.h; sourceTree = "<group>"; };
 		90F2C6A12254C08600A712B8 /* LRVoiceChatRoomListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVoiceChatRoomListCell.m; sourceTree = "<group>"; };
 		90F2C6A22254C08600A712B8 /* LRVoiceChatRoomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVoiceChatRoomListViewController.m; sourceTree = "<group>"; };
 		90F2C6A32254C08600A712B8 /* Headers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Headers.h; sourceTree = "<group>"; };
@@ -326,18 +323,8 @@
 			children = (
 				90F2C69D2254C08600A712B8 /* LRVoiceChatRoomListCell.h */,
 				90F2C6A12254C08600A712B8 /* LRVoiceChatRoomListCell.m */,
-				90F2C69E2254C08600A712B8 /* JoinVoiceChatRoomView */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		90F2C69E2254C08600A712B8 /* JoinVoiceChatRoomView */ = {
-			isa = PBXGroup;
-			children = (
-				90F2C6A02254C08600A712B8 /* LRJoinVoiceChatRoomView.h */,
-				90F2C69F2254C08600A712B8 /* LRJoinVoiceChatRoomView.m */,
-			);
-			path = JoinVoiceChatRoomView;
 			sourceTree = "<group>";
 		};
 		90F2C6A42254C08600A712B8 /* CreateVoiceChatRoom */ = {
@@ -603,7 +590,6 @@
 				E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */,
 				90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */,
 				90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */,
-				90F2C6D72254C08600A712B8 /* LRJoinVoiceChatRoomView.m in Sources */,
 				90F2C6DC2254C08600A712B8 /* AppDelegate.m in Sources */,
 				E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */,
 				90F2C6D92254C08600A712B8 /* LRVoiceChatRoomListViewController.m in Sources */,
