@@ -11,7 +11,7 @@
 
 
 #define kItemPadding 10
-#define kItemSize 35
+#define kItemSize 40
 
 @interface LRVoiceRoomHeaderItem ()
 @property (nonatomic) SEL action;

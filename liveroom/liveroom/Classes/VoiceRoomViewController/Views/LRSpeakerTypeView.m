@@ -49,6 +49,13 @@
     }];
 }
 
+#pragma mark - actions
+- (void)switchBtnClicked:(UIButton *)btn {
+    if (_delegate && [_delegate respondsToSelector:@selector(switchBtnClicked)]) {
+        [_delegate switchBtnClicked];
+    }
+}
+
 #pragma mark - setter
 - (void)setType:(LRSpeakerType)type {
     _type = type;
@@ -80,7 +87,7 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _titleLabel.font = [UIFont boldSystemFontOfSize:17];
+        _titleLabel.font = [UIFont boldSystemFontOfSize:15];
         _titleLabel.textColor = [UIColor whiteColor];
     }
     return _titleLabel;
@@ -89,7 +96,7 @@
 - (UILabel *)infoLabel {
     if (!_infoLabel) {
         _infoLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _infoLabel.font = [UIFont systemFontOfSize:13];
+        _infoLabel.font = [UIFont systemFontOfSize:11];
         _infoLabel.textColor = LRColor_LowBlackColor;
     }
     return _infoLabel;
@@ -100,6 +107,9 @@
         _switchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_switchBtn setImage:[UIImage imageNamed:@"triangle"] forState:UIControlStateNormal];
         [_switchBtn strokeWithColor:LRStrokeLowBlack];
+        [_switchBtn addTarget:self
+                       action:@selector(switchBtnClicked:)
+             forControlEvents:UIControlEventTouchUpInside];
     }
     return _switchBtn;
 }
