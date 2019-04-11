@@ -159,15 +159,39 @@
     }];
 }
 
+- (void)sendLikeToChatroom:(NSString *)aChatroomId
+                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    //TODO: 发送点赞
+}
+
+- (void)sendGiftToChatroom:(NSString *)aChatroomId
+                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    //TODO: 发送礼物
+}
 
 #pragma mark - EMChatManagerDelegate
 - (void)messagesDidReceive:(NSArray *)aMessages {
+
     for (EMMessage *msg in aMessages) {
         if (msg.chatType != EMChatTypeChatRoom) {
             continue;
         }
         
         if (msg.body.type != EMMessageBodyTypeText) {
+            continue;
+        }
+        
+        // TODO: 解析gift， like 事件
+        BOOL isLike = YES;
+        if (isLike) {
+            [_delegates didReceiveRoomLikeActionWithRoomId:msg.conversationId];
+            continue;
+        }
+        
+        
+        BOOL isGift = YES;
+        if (isGift) {
+            [_delegates didReceiveRoomGiftActionWithRoomId:msg.conversationId];
             continue;
         }
         
