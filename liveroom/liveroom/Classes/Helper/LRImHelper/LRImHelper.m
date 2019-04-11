@@ -36,7 +36,12 @@
 
 #pragma mark - private
 - (void)_registerImSDK {
-    EMOptions *options = [EMOptions optionsWithAppkey:@"1100181024084247#voicechatroom"];
+    // 1100181024084247#voicechatroom
+    EMOptions *options = [EMOptions optionsWithAppkey:@"1100181023201864#voicechatroom"];
+    options.enableDnsConfig = NO;
+    options.chatPort = 6717;
+    options.chatServer = @"39.107.54.56";
+    options.restServer = @"a1-hsb.easemob.com";
     options.enableConsoleLog = YES;
     [EMClient.sharedClient initializeSDKWithOptions:options];
 }
