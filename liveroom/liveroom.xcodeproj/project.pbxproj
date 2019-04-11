@@ -47,6 +47,7 @@
 		E04712DF225C8CEF00F9910C /* find@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712DE225C8CEF00F9910C /* find@2x.png */; };
 		E04712E2225C907600F9910C /* LRFindView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E1225C907600F9910C /* LRFindView.m */; };
 		E04712F0225DEEB600F9910C /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712EF225DEEB600F9910C /* LRVolumeView.m */; };
+		E04712F5225EF19500F9910C /* LRRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712F4225EF19500F9910C /* LRRequestManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -127,6 +128,8 @@
 		E04712E1225C907600F9910C /* LRFindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRFindView.m; sourceTree = "<group>"; };
 		E04712EE225DEEB600F9910C /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
 		E04712EF225DEEB600F9910C /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
+		E04712F3225EF19500F9910C /* LRRequestManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LRRequestManager.h; path = ../../../../../../../../Documents/LRRequestManager.h; sourceTree = "<group>"; };
+		E04712F4225EF19500F9910C /* LRRequestManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LRRequestManager.m; path = ../../../../../../../../Documents/LRRequestManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -452,6 +455,8 @@
 		E04712F2225EDAD900F9910C /* LRNetWorking */ = {
 			isa = PBXGroup;
 			children = (
+				E04712F3225EF19500F9910C /* LRRequestManager.h */,
+				E04712F4225EF19500F9910C /* LRRequestManager.m */,
 			);
 			path = LRNetWorking;
 			sourceTree = "<group>";
@@ -639,6 +644,7 @@
 				E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */,
 				90F2C6D92254C08600A712B8 /* LRVoiceChatRoomListViewController.m in Sources */,
 				90F2C6D42254C08600A712B8 /* UIView+LRCategory.m in Sources */,
+				E04712F5225EF19500F9910C /* LRRequestManager.m in Sources */,
 				E04712DB225C503400F9910C /* LRChatroomMembersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
