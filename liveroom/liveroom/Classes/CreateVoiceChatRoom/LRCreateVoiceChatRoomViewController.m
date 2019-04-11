@@ -52,7 +52,10 @@
 //    }];
     
     NSString *url = @"http://turn2.easemob.com:8082/app/talk/rooms/0/10";
-    [[LRRequestManager sharedInstance] getNetworkRequestWithUrl:url token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
+    [[LRRequestManager sharedInstance] getNetworkRequestWithUrl:url
+                                                          token:@""
+                                                     completion:^(NSString * _Nonnull result, NSError * _Nonnull error)
+     {
         NSLog(@"result---%@,----%@", result,error);
     }];
     
