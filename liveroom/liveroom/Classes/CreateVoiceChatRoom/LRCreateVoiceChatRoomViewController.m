@@ -11,6 +11,7 @@
 @interface LRCreateVoiceChatRoomViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *voiceChatroomIDTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 
 @end
 
@@ -18,11 +19,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
+    }];
+    
     [self.voiceChatroomIDTextField setupTextField];
     [self.voiceChatroomIDTextField strokeWithColor:LRStrokeWhite];
     
     [self.passwordTextField setupTextField];
     [self.passwordTextField strokeWithColor:LRStrokeWhite];
+    
+//    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/create/talk/room";
+//    NSDictionary *parameters = @{@"roomName":@"chatroom1",
+//                                 @"password":@"123456",
+//                                 @"desc":@"desc",
+//                                 @"allowAudienceTalk":@true,
+//                                 @"imChatRoomMaxusers":@100,
+//                                 @"confrDelayMillis":@3600
+//                                 };
+//    [[LRRequestManager sharedInstance] postNetworkRequestWithUrl:url requestBody:parameters token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
+//        NSLog(@"result---%@,----%@", result,error);
+//    }];
+    
+//    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/79230364876801";
+//    [[LRRequestManager sharedInstance] deleteNetworkRequestWithUrl:url token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
+//        NSLog(@"result---%@,----%@", result,error);
+//    }];
+    
+    NSString *url = @"http://turn2.easemob.com:8082/app/talk/rooms/0/10";
+    [[LRRequestManager sharedInstance] getNetworkRequestWithUrl:url token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
+        NSLog(@"result---%@,----%@", result,error);
+    }];
+    
+    
 }
 - (IBAction)closeAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{
