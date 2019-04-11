@@ -17,13 +17,17 @@
 
 @implementation LRCreateVoiceChatRoomViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
     }];
-    
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
     [self.voiceChatroomIDTextField setupTextField];
     [self.voiceChatroomIDTextField strokeWithColor:LRStrokeWhite];
     
