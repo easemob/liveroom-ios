@@ -28,6 +28,14 @@
 
 @end
 
+typedef enum : NSUInteger {
+    LRAlertType_Success,
+    LRAlertType_Warning,
+    LRAlertType_Error,
+    LRAlertType_None
+} LRAlertType;
+
+
 @interface LRAlertController () <UITextFieldDelegate>
 {
     NSString *_title;
@@ -42,10 +50,44 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIView *otherView;
 
-
 @end
 
 @implementation LRAlertController
+
++ (LRAlertController *)showSuccessAlertWithTitle:(NSString *)aTitle
+                                           info:(NSString * _Nullable)aInfo {
+    LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_Success
+                                                                           title:aTitle
+                                                                            info:aInfo];
+    return alertController;
+}
+
+
++ (LRAlertController *)showTipsAlertWithTitle:(NSString *)aTitle
+                                        info:(NSString * _Nullable)aInfo {
+    LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_Warning
+                                                                           title:aTitle
+                                                                            info:aInfo];
+    return alertController;
+}
+
++ (LRAlertController *)showErrorAlertWithTitle:(NSString *)aTitle
+                                         info:(NSString * _Nullable)aInfo {
+    LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_Error
+                                                                           title:aTitle
+                                                                            info:aInfo];
+    return alertController;
+}
+
++ (LRAlertController *)showTextAlertWithTitle:(NSString *)aTitle
+                                        info:(NSString * _Nullable)aInfo {
+    LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_None
+                                                                           title:aTitle
+                                                                            info:aInfo];
+    return alertController;
+}
+
+
 
 + (LRAlertController *)showAlertWithType:(LRAlertType)aType
                                    title:(NSString *)aTitle
