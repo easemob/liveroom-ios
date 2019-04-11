@@ -392,6 +392,7 @@
 		90F2C6C02254C08600A712B8 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				E04712F2225EDAD900F9910C /* LRNetWorking */,
 				90600136225DCAFE00CD8BAA /* LRImHelper */,
 				90CBF7F3225C950600C92F8D /* LRHelper */,
 			);
@@ -446,6 +447,13 @@
 				E04712D6225B61F000F9910C /* LRTabBar.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E04712F2225EDAD900F9910C /* LRNetWorking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LRNetWorking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
