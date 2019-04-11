@@ -52,7 +52,7 @@
 - (IBAction)loginAction:(id)sender
 {
     if (![self validationInputInfo]) return;
-    [LRImHelper.sharedInstance asyncLoginWithUsername:self.usernameTextField.text
+    [LRChatHelper.sharedInstance asyncLoginWithUsername:self.usernameTextField.text
                                              password:self.passwordTextField.text
                                            completion:^(NSString * _Nonnull errorInfo, BOOL success)
     {
@@ -74,7 +74,7 @@
     if (![self validationInputInfo]) return;
     
     
-    [LRImHelper.sharedInstance asyncRegisterWithUsername:self.usernameTextField.text
+    [LRChatHelper.sharedInstance asyncRegisterWithUsername:self.usernameTextField.text
                                                 password:self.passwordTextField.text
                                               completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {

@@ -20,6 +20,6 @@
 
 #import <Hyphenate/Hyphenate.h>
 #import <Hyphenate/EMOptions+PrivateDeploy.h>
-#import "LRImHelper.h"
+#import "LRChatHelper.h"
 
 #endif /* Headers_h */

@@ -24,7 +24,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     self.window.backgroundColor = UIColor.blackColor;
-    self.window.rootViewController = LRImHelper.sharedInstance.isLoggedIn ?
+    self.window.rootViewController = LRChatHelper.sharedInstance.isLoggedIn ?
     [[LRMainViewController alloc] init] : [[LRLoginViewController alloc] init] ;
     [self.window makeKeyAndVisible];
     

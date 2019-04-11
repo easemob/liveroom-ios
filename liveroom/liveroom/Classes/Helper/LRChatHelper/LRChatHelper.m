@@ -1,34 +1,34 @@
 //
-//  LRImHelper.m
+//  LRChatHelper.m
 //  liveroom
 //
 //  Created by 杜洁鹏 on 2019/4/10.
 //  Copyright © 2019 Easemob. All rights reserved.
 //
 
-#import "LRImHelper.h"
+#import "LRChatHelper.h"
 #import "LRGCDMulticastDelegate.h"
 #import "Headers.h"
 
-@interface LRImHelper () <EMChatManagerDelegate, EMChatroomManagerDelegate>
+@interface LRChatHelper () <EMChatManagerDelegate, EMChatroomManagerDelegate>
 {
-    LRGCDMulticastDelegate <LRImHelperDelegate> *_delegates;
+    LRGCDMulticastDelegate <LRChatHelperDelegate> *_delegates;
 }
 @end
 
-@implementation LRImHelper
-+ (LRImHelper *)sharedInstance {
-    static LRImHelper *helper_;
+@implementation LRChatHelper
++ (LRChatHelper *)sharedInstance {
+    static LRChatHelper *helper_;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        helper_ = [[LRImHelper alloc] init];
+        helper_ = [[LRChatHelper alloc] init];
     });
     return helper_;
 }
 
 - (instancetype)init {
     if (self = [super init]) {
-        _delegates = (LRGCDMulticastDelegate<LRImHelperDelegate> *)[[LRGCDMulticastDelegate alloc] init];
+        _delegates = (LRGCDMulticastDelegate<LRChatHelperDelegate> *)[[LRGCDMulticastDelegate alloc] init];
         [self _registerImSDK];
     }
     return self;
@@ -57,14 +57,14 @@
     [EMClient.sharedClient.roomManager addDelegate:self delegateQueue:nil];
 }
 
-- (void)addDeelgate:(id<LRImHelperDelegate>)aDelegate delegateQueue:(dispatch_queue_t)aQueue {
+- (void)addDeelgate:(id<LRChatHelperDelegate>)aDelegate delegateQueue:(dispatch_queue_t)aQueue {
     if (!aQueue) {
         aQueue = dispatch_get_main_queue();
     }
     [_delegates addDelegate:aDelegate delegateQueue:aQueue];
 }
 
-- (void)removeDelegate:(id<LRImHelperDelegate>)aDelegate {
+- (void)removeDelegate:(id<LRChatHelperDelegate>)aDelegate {
     [_delegates removeDelegate:aDelegate];
 }
 
