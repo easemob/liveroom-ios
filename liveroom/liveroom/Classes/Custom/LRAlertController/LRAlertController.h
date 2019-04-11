@@ -20,24 +20,23 @@ typedef void(^LRAlertActionCallback)(LRAlertController *alertController);
 typedef void(^CloseBlock)(void);
 
 
-typedef enum : NSUInteger {
-    LRAlertType_Success,
-    LRAlertType_Warning,
-    LRAlertType_Error,
-    LRAlertType_None
-} LRAlertType;
-
 @interface LRAlertController : UIViewController
 
 @property (nonatomic, copy) CloseBlock closeBlock;
 @property (nonatomic, strong) UITextField *textField;
 
-+ (LRAlertController *)showAlertWithType:(LRAlertType)aType
-                                    title:(NSString *)aTitle
-                                     info:(NSString * _Nullable)aInfo;
++ (LRAlertController *)showSuccessAlertWithTitle:(NSString *)aTitle
+                                           info:(NSString * _Nullable)aInfo;
 
-+ (LRAlertController *)showAlertWithTitle:(NSString *)aTitle
-                                     info:(NSString * _Nullable)aInfo;
++ (LRAlertController *)showTipsAlertWithTitle:(NSString *)aTitle
+                                        info:(NSString * _Nullable)aInfo;
+
++ (LRAlertController *)showErrorAlertWithTitle:(NSString *)aTitle
+                                         info:(NSString * _Nullable)aInfo;
+
++ (LRAlertController *)showTextAlertWithTitle:(NSString *)aTitle
+                                        info:(NSString * _Nullable)aInfo;
+
 
 - (void)addAction:(LRAlertAction *)aAction;
 

@@ -158,8 +158,6 @@
 				9083DC8A225603E70099C5BD /* LRSpeakerViewController.m */,
 				9058DF8F2258D7A900699AB2 /* LRChatViewController.h */,
 				9058DF902258D7A900699AB2 /* LRChatViewController.m */,
-				9058DF922258D8EE00699AB2 /* LRVoiceRoomTabbar.h */,
-				9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */,
 				E04712DE225C8CEF00F9910C /* find@2x.png */,
 				901A54D82254CA9700F00186 /* LRVoiceRoomViewController.h */,
 				901A54D92254CA9700F00186 /* LRVoiceRoomViewController.m */,
@@ -181,6 +179,8 @@
 		90600126225DA55600CD8BAA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9058DF922258D8EE00699AB2 /* LRVoiceRoomTabbar.h */,
+				9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */,
 				E04712EE225DEEB600F9910C /* LRVolumeView.h */,
 				E04712EF225DEEB600F9910C /* LRVolumeView.m */,
 				90600128225DA55600CD8BAA /* LRVolumeView.h */,

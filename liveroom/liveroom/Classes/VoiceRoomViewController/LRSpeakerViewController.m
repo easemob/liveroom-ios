@@ -73,20 +73,20 @@
     
     __weak typeof(self)weakSelf = self;
     
-    LRAlertController *alert = [LRAlertController showAlertWithTitle:@"请选择会议模式" info:nil];
-    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示 tip" info:@"切换房间互动模式会初始化麦序。主播模式为当前只有管理员能发言；抢麦模式为当前只有管理员可以发言；互动模式为全部主播均可发言。请确认切换的模式。"];
+    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式 Host"
                                                        callback:^(LRAlertController * _Nonnull alertController)
                                  {
                                      [weakSelf.headerView setType:LRSpeakerType_Host];
                                  }];
     
-    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式"
+    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式 monopoly"
                                                            callback:^(LRAlertController * _Nonnull alertController)
                                      {
                                          [weakSelf.headerView setType:LRSpeakerType_Monopoly];
                                      }];
     
-    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式"
+    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 communication"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
                                           {
                                               [weakSelf.headerView setType:LRSpeakerType_Communication];

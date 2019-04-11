@@ -15,6 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
                                 message:(NSString *)aMessage
                                fromUser:(NSString *)fromUser
                               timestamp:(long long)aTimestamp;
+
+- (void)didReceiveRoomLikeActionWithRoomId:(NSString *)aChatroomId;
+
+- (void)didReceiveRoomGiftActionWithRoomId:(NSString *)aChatroomId;
 @end
 
 @interface LRImHelper : NSObject
@@ -48,6 +52,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendMessageToChatroom:(NSString *)aChatroomId
                       message:(NSString *)aMessage
          completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+
+
+- (void)sendLikeToChatroom:(NSString *)aChatroomId
+                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+
+- (void)sendGiftToChatroom:(NSString *)aChatroomId
+                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
 @end
 
 NS_ASSUME_NONNULL_END

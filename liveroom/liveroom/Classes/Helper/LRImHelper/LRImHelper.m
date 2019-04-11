@@ -36,14 +36,19 @@
 
 #pragma mark - private
 - (void)_registerImSDK {
-    EMOptions *options = [EMOptions optionsWithAppkey:@"1100181024084247#voicechatroom"];
+    // 1100181024084247#voicechatroom
+    EMOptions *options = [EMOptions optionsWithAppkey:@"1100181023201864#voicechatroom"];
+    options.enableDnsConfig = NO;
+    options.chatPort = 6717;
+    options.chatServer = @"39.107.54.56";
+    options.restServer = @"a1-hsb.easemob.com";
     options.enableConsoleLog = YES;
     [EMClient.sharedClient initializeSDKWithOptions:options];
 }
 
 #pragma mark - getter
-- (BOOL)isLogin {
-    return EMClient.sharedClient.isLoggedIn;
+- (BOOL)isLoggedIn {
+    return EMClient.sharedClient.isAutoLogin;
 }
 
 #pragma mark register delegates
@@ -74,6 +79,7 @@
          if (aCompletion) {
              if (!aError)
              {
+                 [[EMClient sharedClient].options setIsAutoLogin:YES];
                  aCompletion(nil, YES);
              }else {
                  aCompletion(aError.errorDescription, NO);
@@ -158,15 +164,39 @@
     }];
 }
 
+- (void)sendLikeToChatroom:(NSString *)aChatroomId
+                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    //TODO: 发送点赞
+}
+
+- (void)sendGiftToChatroom:(NSString *)aChatroomId
+                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    //TODO: 发送礼物
+}
 
 #pragma mark - EMChatManagerDelegate
 - (void)messagesDidReceive:(NSArray *)aMessages {
+
     for (EMMessage *msg in aMessages) {
         if (msg.chatType != EMChatTypeChatRoom) {
             continue;
         }
         
         if (msg.body.type != EMMessageBodyTypeText) {
+            continue;
+        }
+        
+        // TODO: 解析gift， like 事件
+        BOOL isLike = YES;
+        if (isLike) {
+            [_delegates didReceiveRoomLikeActionWithRoomId:msg.conversationId];
+            continue;
+        }
+        
+        
+        BOOL isGift = YES;
+        if (isGift) {
+            [_delegates didReceiveRoomGiftActionWithRoomId:msg.conversationId];
             continue;
         }
         
