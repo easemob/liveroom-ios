@@ -21,5 +21,5 @@
 #import <Hyphenate/Hyphenate.h>
 #import <Hyphenate/EMOptions+PrivateDeploy.h>
 #import "LRChatHelper.h"
-
+#import "LRRequestManager.h"
 #endif /* Headers_h */
