@@ -19,6 +19,7 @@
 #import "UIView+LRCategory.h"
 
 #import <Hyphenate/Hyphenate.h>
+#import <Hyphenate/EMOptions+PrivateDeploy.h>
 #import "LRImHelper.h"
 
 #endif /* Headers_h */
