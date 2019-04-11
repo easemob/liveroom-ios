@@ -1,5 +1,5 @@
 //
-//  LRImHelper.h
+//  LRChatHelper.h
 //  liveroom
 //
 //  Created by 杜洁鹏 on 2019/4/10.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LRImHelperDelegate <NSObject>
+@protocol LRChatHelperDelegate <NSObject>
 - (void)didReceiveRoomMessageWithRoomId:(NSString *)aChatroomId
                                 message:(NSString *)aMessage
                                fromUser:(NSString *)fromUser
@@ -21,16 +21,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didReceiveRoomGiftActionWithRoomId:(NSString *)aChatroomId;
 @end
 
-@interface LRImHelper : NSObject
+@interface LRChatHelper : NSObject
 
 @property (nonatomic, readonly) BOOL isLoggedIn;
 
-+ (LRImHelper *)sharedInstance;
++ (LRChatHelper *)sharedInstance;
 
-- (void)addDeelgate:(id<LRImHelperDelegate>)aDelegate
+- (void)addDeelgate:(id<LRChatHelperDelegate>)aDelegate
       delegateQueue:(dispatch_queue_t)aQueue;
 
-- (void)removeDelegate:(id<LRImHelperDelegate>)aDelegate;
+- (void)removeDelegate:(id<LRChatHelperDelegate>)aDelegate;
 
 #pragma mark - account
 - (void)asyncLoginWithUsername:(NSString *)aUsername

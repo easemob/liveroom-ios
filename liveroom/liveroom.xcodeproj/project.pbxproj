@@ -16,7 +16,8 @@
 		90600132225DA55600CD8BAA /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012C225DA55600CD8BAA /* LRVolumeView.m */; };
 		90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */; };
 		90600135225DA55600CD8BAA /* LRSpeakerTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */; };
-		90600139225DCB0C00CD8BAA /* LRImHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600138225DCB0C00CD8BAA /* LRImHelper.m */; };
+		9060013E225EE35B00CD8BAA /* LRChatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060013C225EE35B00CD8BAA /* LRChatHelper.m */; };
+		90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600140225EE38B00CD8BAA /* LRSpeakHelper.m */; };
 		9083DC8B225603E70099C5BD /* LRSpeakerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8A225603E70099C5BD /* LRSpeakerViewController.m */; };
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
@@ -69,8 +70,10 @@
 		9060012E225DA55600CD8BAA /* LRVoiceRoomHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVoiceRoomHeader.h; sourceTree = "<group>"; };
 		9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRChatroomMembersCell.m; sourceTree = "<group>"; };
 		90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerTypeView.m; sourceTree = "<group>"; };
-		90600137225DCB0C00CD8BAA /* LRImHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRImHelper.h; sourceTree = "<group>"; };
-		90600138225DCB0C00CD8BAA /* LRImHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRImHelper.m; sourceTree = "<group>"; };
+		9060013C225EE35B00CD8BAA /* LRChatHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRChatHelper.m; sourceTree = "<group>"; };
+		9060013D225EE35B00CD8BAA /* LRChatHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatHelper.h; sourceTree = "<group>"; };
+		9060013F225EE38B00CD8BAA /* LRSpeakHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakHelper.h; sourceTree = "<group>"; };
+		90600140225EE38B00CD8BAA /* LRSpeakHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakHelper.m; sourceTree = "<group>"; };
 		9083DC89225603E70099C5BD /* LRSpeakerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerViewController.h; sourceTree = "<group>"; };
 		9083DC8A225603E70099C5BD /* LRSpeakerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerViewController.m; sourceTree = "<group>"; };
 		9083DC8D225606B10099C5BD /* LRGCDMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRGCDMulticastDelegate.h; sourceTree = "<group>"; };
@@ -198,13 +201,22 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		90600136225DCAFE00CD8BAA /* LRImHelper */ = {
+		9060013A225EE35B00CD8BAA /* LRSpeakHelper */ = {
 			isa = PBXGroup;
 			children = (
-				90600137225DCB0C00CD8BAA /* LRImHelper.h */,
-				90600138225DCB0C00CD8BAA /* LRImHelper.m */,
+				9060013F225EE38B00CD8BAA /* LRSpeakHelper.h */,
+				90600140225EE38B00CD8BAA /* LRSpeakHelper.m */,
 			);
-			path = LRImHelper;
+			path = LRSpeakHelper;
+			sourceTree = "<group>";
+		};
+		9060013B225EE35B00CD8BAA /* LRChatHelper */ = {
+			isa = PBXGroup;
+			children = (
+				9060013D225EE35B00CD8BAA /* LRChatHelper.h */,
+				9060013C225EE35B00CD8BAA /* LRChatHelper.m */,
+			);
+			path = LRChatHelper;
 			sourceTree = "<group>";
 		};
 		9083DC8C225606B10099C5BD /* LRGCDMulticastDelegate */ = {
@@ -214,13 +226,6 @@
 				9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */,
 			);
 			path = LRGCDMulticastDelegate;
-			sourceTree = "<group>";
-		};
-		90CBF7F3225C950600C92F8D /* LRHelper */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LRHelper;
 			sourceTree = "<group>";
 		};
 		90F2C65F2254C02A00A712B8 = {
@@ -395,8 +400,9 @@
 		90F2C6C02254C08600A712B8 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				9060013B225EE35B00CD8BAA /* LRChatHelper */,
+				9060013A225EE35B00CD8BAA /* LRSpeakHelper */,
 				E04712F2225EDAD900F9910C /* LRNetWorking */,
-				90600136225DCAFE00CD8BAA /* LRImHelper */,
 				90CBF7F3225C950600C92F8D /* LRHelper */,
 			);
 			path = Helper;
@@ -630,6 +636,7 @@
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
 				E04712F0225DEEB600F9910C /* LRVolumeView.m in Sources */,
 				90F2C6DB2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m in Sources */,
+				90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */,
 				90F2C6D62254C08600A712B8 /* LRChatRoomListModel.m in Sources */,
 				E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */,
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
@@ -637,11 +644,11 @@
 				90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */,
 				E04712D7225B61F000F9910C /* LRTabBar.m in Sources */,
 				E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */,
-				90600139225DCB0C00CD8BAA /* LRImHelper.m in Sources */,
 				E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */,
 				90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */,
 				90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */,
 				90F2C6DC2254C08600A712B8 /* AppDelegate.m in Sources */,
+				9060013E225EE35B00CD8BAA /* LRChatHelper.m in Sources */,
 				E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */,
 				90F2C6D92254C08600A712B8 /* LRVoiceChatRoomListViewController.m in Sources */,
 				90F2C6D42254C08600A712B8 /* UIView+LRCategory.m in Sources */,
