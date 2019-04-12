@@ -14,21 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (LRRequestManager *)sharedInstance;
 
-// get请求
-- (void)getNetworkRequestWithUrl:(NSString *)url
-                           token:(NSString *)token
-                      completion:(void (^)(NSString *result,NSError *error))aCompletionBlock;
-
 // 请求
-- (void)postNetworkRequestWithUrl:(NSString *)url
-                      requestBody:(NSDictionary *)requestBody
-                            token:(NSString *)token
-                       completion:(void (^)(NSString *result,NSError *error))aCompletionBlock;
-
-// delete请求
-- (void)deleteNetworkRequestWithUrl:(NSString *)url
-                              token:(NSString *)token
-                         completion:(void (^)(NSString *result,NSError *error))aCompletionBlock;
+- (void)requestWithMethod:(NSString *)method urlString:(NSString *)url
+                     parameters:(NSDictionary *__nullable)parameters
+                           token:(NSString *__nullable)token
+                      completion:(void (^)(NSString *result,NSError *error))aCompletionBlock;
 
 @end
 

@@ -13,7 +13,7 @@
 #import "LRChatroomMembersCell.h"
 #import "LRChatroomMembersModel.h"
 
-
+#define kPadding 16
 @interface LRChatroomMembersViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate>
 
 @property (nonatomic, strong) UIButton *closeButton;
@@ -69,7 +69,7 @@
     [self.view addSubview:self.closeButton];
     [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
-        make.left.equalTo(self.view).offset(13);
+        make.left.equalTo(self.view).offset(kPadding);
         make.width.equalTo(@20);
         make.height.equalTo(@20);
     }];
@@ -77,13 +77,12 @@
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.text = @"成员 ChatroomMembers";
     [self.titleLabel setTextColor:[UIColor blackColor]];
-    self.titleLabel.font = [UIFont systemFontOfSize:18];
+    self.titleLabel.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.centerY.equalTo(self.closeButton);
-        make.width.equalTo(@220);
-        make.height.equalTo(@30);
+        make.height.equalTo(@31);
     }];
     
     [self _setupSearch];
@@ -92,35 +91,38 @@
 - (void)_setupSearch
 {
     self.searchBar = [[LRSearchBar alloc] init];
+    [self.searchBar.textField setTextColor:LRColor_MiddleBlackColor];
     self.searchBar.placeholderString = @"Search";
+    self.searchBar.placeholderTextFont = 12;
     self.searchBar.inputTextColor = [UIColor clearColor];
     self.searchBar.placeholderTextColor = [UIColor grayColor];
     self.searchBar.strokeColor = [UIColor grayColor];
     self.searchBar.strokeWidth = 0.5;
+    self.searchBar.height = 32;
     LRFindView *findView = [[LRFindView alloc] init];
     self.searchBar.leftView = findView;
     self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom);
-        make.left.equalTo(self.view).offset(13);
-        make.right.equalTo(self.view).offset(-13);
-        make.height.equalTo(@50);
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(6);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+        make.height.equalTo(@32);
     }];
     
     self.tableView = [[UITableView alloc] init];
     self.tableView.tag = 10;
-    self.tableView.rowHeight = 60;
+    self.tableView.rowHeight = 40;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellEditingStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.searchBar.mas_bottom).offset(10);
-        make.left.equalTo(self.view).offset(13);
-        make.right.equalTo(self.view).offset(-13);
-        make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight);
+        make.top.equalTo(self.searchBar.mas_bottom).offset(6);
+        make.left.equalTo(self.view).offset(kPadding - 1);
+        make.right.equalTo(self.view).offset(-kPadding + 1);
+        make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
     }];
     
     self.searchResultTableView = [[UITableView alloc] init];
@@ -186,10 +188,10 @@
                 self.tableView.hidden = YES;
                 [self.view addSubview:self.searchResultTableView];
                 [self.searchResultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.searchBar.mas_bottom).offset(10);
-                    make.left.equalTo(self.view).offset(13);
-                    make.right.equalTo(self.view).offset(-13);
-                    make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight);
+                    make.top.equalTo(self.searchBar.mas_bottom).offset(6);
+                    make.left.equalTo(self.view).offset(kPadding - 1);
+                    make.right.equalTo(self.view).offset(-kPadding + 1);
+                    make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
                 }];
             }
         }

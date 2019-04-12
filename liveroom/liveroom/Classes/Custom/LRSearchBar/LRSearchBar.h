@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat strokeWidth;
 @property (nonatomic, strong) UIColor *strokeColor;
 @property (nonatomic, strong) UIView *leftView;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, assign) CGFloat placeholderTextFont;
 
 @end
 
