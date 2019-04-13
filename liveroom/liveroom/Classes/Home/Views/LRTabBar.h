@@ -10,12 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, LRItemType) {
-    LRItemTypeLeft = 100,
-    LRItemTypeMiddle,
-    LRItemTypeRight
-};
-
 @class LRTabBar;
 @protocol LRTabBarDelegate;
 
@@ -26,18 +20,12 @@ typedef NS_ENUM(NSUInteger, LRItemType) {
 
 @property (nonatomic, weak) id <LRTabBarDelegate> delegate;
 
-// 上一次点击的item
-@property (nonatomic, strong) UIView *lastItem;
-
 @end
 
 @protocol LRTabBarDelegate <NSObject>
 
-//再将tag类型换为枚举类型
-- (void)tabBar:(LRTabBar *)tabBar clickViewAction:(LRItemType)type;
+- (void)tabBar:(LRTabBar *)tabBar clickViewAction:(NSInteger)tag;
 
 @end
-
-
 
 NS_ASSUME_NONNULL_END

@@ -29,7 +29,7 @@
 
 -(void)setFrame:(CGRect)frame
 {
-    frame.origin.x = 2;
+    frame.origin.x = 1;
     frame.size.width -= 2 * frame.origin.x;
     frame.size.height -= 2 * frame.origin.x;
     [super setFrame:frame];
@@ -78,12 +78,13 @@
     }];
     
     self.memberNameLabel = [[UILabel alloc] init];
+    self.memberNameLabel.font = [UIFont systemFontOfSize:17.0];
     [self.memberNameLabel setTextColor:[UIColor grayColor]];
     [self.contentView addSubview:self.memberNameLabel];
     [self.memberNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(@10);
-        make.height.equalTo(@30);
+        make.left.equalTo(@16);
+        make.height.equalTo(@31);
     }];
     
     self.ownerIconImageView = [[UIImageView alloc] init];
@@ -92,13 +93,13 @@
     [self.ownerIconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView.mas_centerY);
         make.left.equalTo(self.memberNameLabel.mas_right).offset(5);
-        make.width.equalTo(@30);
-        make.height.equalTo(@30);
+        make.width.equalTo(@13);
+        make.height.equalTo(@12);
     }];
     
     self.exitMemberButton = [[UIButton alloc] init];
     [self.exitMemberButton setTitle:@"踢出 exit" forState:UIControlStateNormal];
-    self.exitMemberButton.titleLabel.font = [UIFont systemFontOfSize:13.0];
+    self.exitMemberButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
     self.exitMemberButton.layer.borderColor = [UIColor grayColor].CGColor;
     self.exitMemberButton.layer.borderWidth = 0.5;
     [self.exitMemberButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
@@ -106,9 +107,9 @@
     [self.contentView addSubview:self.exitMemberButton];
     [self.exitMemberButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView.mas_centerY);
-        make.right.equalTo(self.contentView).offset(-10);
-        make.width.equalTo(@80);
-        make.height.equalTo(@30);
+        make.right.equalTo(self.contentView).offset(-16);
+        make.width.equalTo(@60);
+        make.height.equalTo(@20);
     }];
 }
 

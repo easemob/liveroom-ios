@@ -7,6 +7,7 @@
 //
 
 #import "LRSearchBar.h"
+#import "UIImage+LRImageColor.h"
 
 @interface LRSearchBar()<UITextFieldDelegate>
 
@@ -42,7 +43,8 @@
     self.textField.font = [UIFont systemFontOfSize:16];
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.textField.returnKeyType = UIReturnKeyDone;
-    self.textField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"add"]];
+    UIButton *clear = [self.textField valueForKey:@"_clearButton"];
+    [clear setImage:[UIImage imageNamed:@"delete_input"] forState:UIControlStateNormal];
     [self.textField setupTextField];
     [self.textField strokeWithColor:LRStrokeWhite];
     [self addSubview:self.textField];
@@ -50,7 +52,6 @@
         make.centerY.equalTo(self);
         make.left.equalTo(self);
         make.right.equalTo(self);
-        make.height.equalTo(@40);
     }];
     
     UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
@@ -64,14 +65,12 @@
 {
     _placeholderString = placeholderString;
     self.textField.placeholder = _placeholderString;
-    
 }
 
 - (void)setInputTextColor:(UIColor *)inputTextColor
 {
     _inputTextColor = inputTextColor;
     self.textField.backgroundColor = _inputTextColor;
-    
 }
 
 - (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
@@ -97,6 +96,20 @@
     _leftView = leftView;
     self.textField.leftView = leftView;
     self.textField.leftViewMode = UITextFieldViewModeAlways;
+}
+
+- (void)setHeight:(CGFloat)height
+{
+    _height = height;
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(height));
+    }];
+}
+
+- (void)setPlaceholderTextFont:(CGFloat)placeholderTextFont
+{
+    _placeholderTextFont = placeholderTextFont;
+    [self.textField setValue:[UIFont boldSystemFontOfSize:_placeholderTextFont] forKeyPath:@"_placeholderLabel.font"];
 }
 
 #pragma mark - UITextFieldDelegate

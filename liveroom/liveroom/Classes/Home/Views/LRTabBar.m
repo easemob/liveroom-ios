@@ -36,7 +36,7 @@
 {
     // chatRoomView
     self.chatRoomView = [[UIView alloc] init];
-    self.chatRoomView.tag = LRItemTypeLeft;
+    self.chatRoomView.tag = 100;
     self.chatRoomView.backgroundColor = LRColor_PureBlackColor;
     [self addSubview:self.chatRoomView];
     [self.chatRoomView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -76,7 +76,7 @@
     
     // addView
     self.addView = [[UIView alloc] init];
-    self.addView.tag = LRItemTypeMiddle;
+    self.addView.tag = 101;
     self.addView.backgroundColor = [UIColor grayColor];
     [self addSubview:self.addView];
     [self.addView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -99,7 +99,7 @@
     
     // settingView
     self.settingView = [[UIView alloc] init];
-    self.settingView.tag = LRItemTypeRight;
+    self.settingView.tag = 102;
     self.settingView.backgroundColor = LRColor_PureBlackColor;
     [self addSubview:self.settingView];
     [self.settingView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -142,25 +142,22 @@
 #pragma mark - UITapGestureRecognizer
 - (void)chatRoomViewTapAction:(UITapGestureRecognizer *)tap
 {
-    NSLog(@"chatRoomViewTapAction---%ld", tap.view.tag);
     if ([self.delegate respondsToSelector:@selector(tabBar:clickViewAction:)]) {
-        [self.delegate tabBar:self clickViewAction:LRItemTypeLeft];
+        [self.delegate tabBar:self clickViewAction:tap.view.tag];
     }
 }
 
 - (void)addViewTapAction:(UITapGestureRecognizer *)tap
 {
-    NSLog(@"addViewTapAction---%ld", tap.view.tag);
     if ([self.delegate respondsToSelector:@selector(tabBar:clickViewAction:)]) {
-        [self.delegate tabBar:self clickViewAction:LRItemTypeMiddle];
+        [self.delegate tabBar:self clickViewAction:tap.view.tag];
     }
 }
 
 - (void)settingViewTapAction:(UITapGestureRecognizer *)tap
 {
-    NSLog(@"settingViewTapAction---%ld", tap.view.tag);
     if ([self.delegate respondsToSelector:@selector(tabBar:clickViewAction:)]) {
-        [self.delegate tabBar:self clickViewAction:LRItemTypeRight];
+        [self.delegate tabBar:self clickViewAction:tap.view.tag];
     }
 }
 

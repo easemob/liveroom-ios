@@ -17,6 +17,7 @@
 #import "LRFindView.h"
 #import "LRRequestManager.h"
 
+#define kPadding 16
 @interface LRVoiceChatRoomListViewController () <LRSearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UITableView *tableView;
@@ -26,6 +27,7 @@
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) UITableView *searchResultTableView;
 
+@property (nonatomic) BOOL showRefreshHeader;
 @end
 
 @implementation LRVoiceChatRoomListViewController
@@ -50,25 +52,6 @@
     [super viewDidLoad];
     
     [self _setupSubviews];
-
-    [LRRequestManager.sharedInstance getNetworkRequestWithUrl:@"http://turn2.easemob.com:8082/app/talk/rooms/0/100" token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!error) {
-                NSData *data = [result dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                
-                [self.dataArray addObjectsFromArray:dic[@"list"]];
-                [self.tableView reloadData];
-            }
-        });
-        
-    }];
-    
-//    NSArray *array = @[@{@"chatRoomName":@"ASD1",@"userName":@"username"},@{@"chatRoomName":@"ASD2",@"userName":@"username"},@{@"chatRoomName":@"ASD3",@"userName":@"username"},@{@"chatRoomName":@"ASD4",@"userName":@"username"},@{@"chatRoomName":@"ASD5",@"userName":@"username"},@{@"chatRoomName":@"ASD6",@"userName":@"username"},@{@"chatRoomName":@"ASD7",@"userName":@"username"},@{@"chatRoomName":@"ASD8",@"userName":@"username"}];
-//    for (NSDictionary *dict in array) {
-//        LRChatRoomListModel *model = [LRChatRoomListModel initWithChatRoomDict:dict];
-//        [self.dataArray addObject:model];
-//    }
 }
 
 - (void)_setupSubviews
@@ -77,10 +60,10 @@
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.text = @"选择房间 Chose a voiceChatroom";
     self.titleLabel.textColor = [UIColor whiteColor];
-    self.titleLabel.font = [UIFont systemFontOfSize:18];
+    self.titleLabel.font = [UIFont systemFontOfSize:15];
     [self.view addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(13);
+        make.left.equalTo(self.view).offset(kPadding);
         make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
     }];
     
@@ -91,31 +74,33 @@
 {
     self.searchBar = [[LRSearchBar alloc] init];
     self.searchBar.placeholderString = @"输入voiceChatroomID";
+    self.searchBar.placeholderTextFont = 17;
     self.searchBar.placeholderTextColor = RGBACOLOR(255, 255, 255, 0.6);
+    self.searchBar.height = 48;
     LRFindView *findView = [[LRFindView alloc] init];
     self.searchBar.leftView = findView;
     self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
-        make.left.equalTo(self.view).offset(13);
-        make.right.equalTo(self.view).offset(-13);
-        make.height.equalTo(@50);
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(12);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+        make.height.equalTo(@48);
     }];
     
     self.tableView = [[UITableView alloc] init];
     self.tableView.tag = 10;
-    self.tableView.rowHeight = 60;
+    self.tableView.rowHeight = 48;
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.separatorStyle = UITableViewCellEditingStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.searchBar.mas_bottom).offset(10);
-        make.left.equalTo(self.view).offset(13);
-        make.right.equalTo(self.view).offset(-13);
-        make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight);
+        make.top.equalTo(self.searchBar.mas_bottom).offset(12);
+        make.left.equalTo(self.view).offset(kPadding - 1);
+        make.right.equalTo(self.view).offset(-kPadding + 1);
+        make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
     }];
     
     self.searchResultTableView = [[UITableView alloc] init];
@@ -125,6 +110,9 @@
     self.searchResultTableView.rowHeight = self.tableView.rowHeight;
     self.searchResultTableView.delegate = self;
     self.searchResultTableView.dataSource = self;
+    
+    self.showRefreshHeader = YES;
+    
 }
 
 #pragma mark - TablevViewDataSource
@@ -174,20 +162,6 @@
     [self presentViewController:vroomVC animated:YES completion:nil];
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
-
-//左划操作
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    //在iOS8.0上，必须加上这个方法才能出发左划操作
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-
-    }
-}
-
 #pragma mark - LRSearchBarDelegate
 - (void)searchBarShouldBeginEditing:(LRSearchBar *)searchBar
 {
@@ -201,10 +175,10 @@
                 self.tableView.hidden = YES;
                 [self.view addSubview:self.searchResultTableView];
                 [self.searchResultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.searchBar.mas_bottom).offset(10);
-                    make.left.equalTo(self.view).offset(13);
-                    make.right.equalTo(self.view).offset(-13);
-                    make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight);
+                    make.top.equalTo(self.searchBar.mas_bottom).offset(12);
+                    make.left.equalTo(self.view).offset(kPadding - 1);
+                    make.right.equalTo(self.view).offset(-kPadding + 1);
+                    make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
                 }];
             }
         }
@@ -287,6 +261,47 @@
     } else {
         animation();
     }
+}
+
+#pragma mark - Refresh Setter
+- (void)setShowRefreshHeader:(BOOL)showRefreshHeader
+{
+    if (_showRefreshHeader != showRefreshHeader) {
+        _showRefreshHeader = showRefreshHeader;
+        if (_showRefreshHeader) {
+            __weak LRVoiceChatRoomListViewController *weakSelf = self;
+            
+            self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+                //                [weakSelf tableViewDidTriggerHeaderRefresh];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    // 结束刷新
+                    [self tableViewDidFinishTriggerHeader:YES reload:NO];
+                });
+                
+            }];
+            self.tableView.mj_header.accessibilityIdentifier = @"refresh_header";
+        }
+        else{
+            [self.tableView setMj_header:nil];
+        }
+    }
+}
+
+- (void)tableViewDidFinishTriggerHeader:(BOOL)isHeader reload:(BOOL)reload
+{
+    __weak LRVoiceChatRoomListViewController *weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (reload) {
+            [weakSelf.tableView reloadData];
+        }
+        
+        if (isHeader) {
+            [weakSelf.tableView.mj_header endRefreshing];
+        }
+        else{
+            [weakSelf.tableView.mj_footer endRefreshing];
+        }
+    });
 }
 
 @end
