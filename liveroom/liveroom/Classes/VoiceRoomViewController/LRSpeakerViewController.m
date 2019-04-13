@@ -9,11 +9,13 @@
 #import "LRSpeakerViewController.h"
 #import "LRVolumeView.h"
 #import "LRSpeakerTypeView.h"
+#import "LRSpeakHelper.h"
+#import "LRRoomModel.h"
 #import "Headers.h"
 
 #define kCurrentUserIsAdmin NO
 
-@interface LRSpeakerViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakerTypeViewDelegate>
+@interface LRSpeakerViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakerTypeViewDelegate, LRSpeakHelperDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
@@ -21,35 +23,23 @@
 
 @implementation LRSpeakerViewController
 
+- (instancetype)init {
+    if (self = [super init]) {
+        [LRSpeakHelper.sharedInstance addDeelgate:self delegateQueue:nil];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self _setupSubViews];
-    
-
     [self.headerView setType:LRSpeakerType_Host];
-    
-    LRSpeakerCellModel *model = [[LRSpeakerCellModel alloc] init];
-    model.username = @"zhangsong";
-    model.isMyself = NO;
-    model.isAdmin = YES;
-    
-    LRSpeakerCellModel *model1 = [[LRSpeakerCellModel alloc] init];
-    model1.username = @"dujiepeng";
-    model1.isMyself = YES;
-    model1.isAdmin = NO;
-    model1.isMute = YES;
-    
-    LRSpeakerCellModel *model2 = [[LRSpeakerCellModel alloc] init];
-    model2.username = @"shengxi";
-    model2.isMyself = NO;
-    model2.isAdmin = NO;
-    
-    [self.dataAry addObject:model];
-    [self.dataAry addObject:model1];
-    [self.dataAry addObject:model2];
-    
-    
+    for (int i = 0; i < 6; i++) {
+        LRSpeakerCellModel *model = [[LRSpeakerCellModel alloc] init];
+        [self.dataAry addObject:model];
+    }
+
     [self.tableView reloadData];
 }
 

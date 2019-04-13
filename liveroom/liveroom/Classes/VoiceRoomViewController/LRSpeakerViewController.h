@@ -10,8 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LRSpeakerCellModel;
+@class LRSpeakerCellModel, LRRoomModel;
 @interface LRSpeakerViewController : UIViewController
+@property (nonatomic, strong) LRRoomModel *roomModel;
 @end
 
 @interface LRSpeakerCell : UITableViewCell

@@ -11,10 +11,11 @@
 #import "LRRealtimeSearch.h"
 #import "LRSearchBar.h"
 #import "LRVoiceChatRoomListCell.h"
-#import "LRChatRoomListModel.h"
+#import "LRRoomModel.h"
 #import "LRVoiceRoomViewController.h"
 #import "Headers.h"
 #import "LRFindView.h"
+#import "LRRequestManager.h"
 
 #define kPadding 16
 @interface LRVoiceChatRoomListViewController () <LRSearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
@@ -26,7 +27,6 @@
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) UITableView *searchResultTableView;
 
-@property (nonatomic) BOOL showRefreshHeader;
 @end
 
 @implementation LRVoiceChatRoomListViewController
@@ -49,16 +49,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    NSArray *array = @[@{@"chatRoomName":@"ASD1",@"userName":@"username"},@{@"chatRoomName":@"ASD2",@"userName":@"username"},@{@"chatRoomName":@"ASD3",@"userName":@"username"},@{@"chatRoomName":@"ASD4",@"userName":@"username"},@{@"chatRoomName":@"ASD5",@"userName":@"username"},@{@"chatRoomName":@"ASD6",@"userName":@"username"},@{@"chatRoomName":@"ASD7",@"userName":@"username"},@{@"chatRoomName":@"ASD8",@"userName":@"username"}];
-    for (NSDictionary *dict in array) {
-        LRChatRoomListModel *model = [LRChatRoomListModel initWithChatRoomDict:dict];
-        [self.dataArray addObject:model];
-    }
     [self _setupSubviews];
-    
-
-    
+    [self autoReload];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(autoReload)
+                                               name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED
+                                             object:nil];
 }
 
 - (void)_setupSubviews
@@ -75,6 +71,11 @@
     }];
     
     [self _setupSearch];
+    [self _setupRefresh];
+}
+
+- (void)_setupRefresh {
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reloadPage)];
 }
 
 - (void)_setupSearch
@@ -117,9 +118,6 @@
     self.searchResultTableView.rowHeight = self.tableView.rowHeight;
     self.searchResultTableView.delegate = self;
     self.searchResultTableView.dataSource = self;
-    
-    self.showRefreshHeader = YES;
-    
 }
 
 #pragma mark - TablevViewDataSource
@@ -146,12 +144,7 @@
     if (cell == nil) {
         cell = [[LRVoiceChatRoomListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    LRChatRoomListModel *model = nil;
-    if (tableView == self.tableView) {
-        model = [self.dataArray objectAtIndex:indexPath.row];
-    } else {
-        model = [self.searchResults objectAtIndex:indexPath.row];
-    }
+    LRRoomModel *model = [self.dataArray objectAtIndex:indexPath.row];
     cell.model = model;
     return cell;
 }
@@ -160,8 +153,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomName:@"ASD123"];
-    [self presentViewController:vroomVC animated:YES completion:nil];
+    LRRoomModel *model = [self.dataArray objectAtIndex:indexPath.row];
+    [self joinRoomWithModel:model];
 }
 
 #pragma mark - LRSearchBarDelegate
@@ -204,7 +197,7 @@
         return;
     }
     __weak typeof(self) weakself = self;
-    [[LRRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(chatRoomName) resultBlock:^(NSArray *results) {
+    [[LRRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(roomname) resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.searchResults removeAllObjects];
             [weakself.searchResults addObjectsFromArray:results];
@@ -265,45 +258,57 @@
     }
 }
 
-#pragma mark - Refresh Setter
-- (void)setShowRefreshHeader:(BOOL)showRefreshHeader
-{
-    if (_showRefreshHeader != showRefreshHeader) {
-        _showRefreshHeader = showRefreshHeader;
-        if (_showRefreshHeader) {
-            __weak LRVoiceChatRoomListViewController *weakSelf = self;
-            
-            self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-                //                [weakSelf tableViewDidTriggerHeaderRefresh];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    // 结束刷新
-                    [self tableViewDidFinishTriggerHeader:YES reload:NO];
-                });
-                
-            }];
-            self.tableView.mj_header.accessibilityIdentifier = @"refresh_header";
+
+#pragma mark - Actions
+
+- (void)joinRoomWithModel:(LRRoomModel *)aModel {
+    // TODO: show info, join room.
+    LRAlertController *alert = [LRAlertController showSuccessAlertWithTitle:aModel.roomname info:nil];
+    alert.textField = [[UITextField alloc] init];
+    LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"加入" callback:^(LRAlertController * _Nonnull alertController) {
+        if (alertController.textField.text.length == 0) {
+            return;
         }
-        else{
-            [self.tableView setMj_header:nil];
-        }
-    }
+        LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Audiance roomModel:aModel password:alertController.textField.text];
+        [self presentViewController:vroomVC animated:YES completion:nil];
+    }];
+    
+    LRAlertAction *cancelAction = [LRAlertAction alertActionTitle:@"取消" callback:nil];
+    [alert addAction:joinAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)tableViewDidFinishTriggerHeader:(BOOL)isHeader reload:(BOOL)reload
-{
-    __weak LRVoiceChatRoomListViewController *weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (reload) {
-            [weakSelf.tableView reloadData];
-        }
-        
-        if (isHeader) {
-            [weakSelf.tableView.mj_header endRefreshing];
-        }
-        else{
-            [weakSelf.tableView.mj_footer endRefreshing];
-        }
-    });
+
+- (void)autoReload {
+    [self.tableView.mj_header beginRefreshing];
+    [self reloadPage];
+}
+
+- (void)reloadPage {
+    [LRRequestManager.sharedInstance requestWithMethod:@"GET" urlString:@"http://turn2.easemob.com:8082/app/talk/rooms/0/200" parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             if (!error) {
+                 NSArray *list = result[@"list"];
+                 [self.dataArray removeAllObjects];
+                 if (list) {
+                     for (NSDictionary *dic in list) {
+                         LRRoomModel *model = [LRRoomModel roomWithDict:dic];
+                         [self.dataArray addObject:model];
+                     }
+                 }
+             }else {
+                 // TODO: error alert
+             }
+             [self endReload];
+         });
+    }];
+}
+
+- (void)endReload {
+    [self.tableView.mj_header endRefreshing];
+    [self.tableView reloadData];
 }
 
 @end

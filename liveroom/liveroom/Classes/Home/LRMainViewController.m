@@ -8,15 +8,15 @@
 
 #import "LRMainViewController.h"
 #import "LRVoiceChatRoomListViewController.h"
+#import "LRVoiceRoomViewController.h"
 #import "LRCreateVoiceChatRoomViewController.h"
 #import "LRSettingViewController.h"
 #import "LRTabBar.h"
-
+#import "LRRoomModel.h"
 
 @interface LRMainViewController () <UITabBarControllerDelegate, LRTabBarDelegate>
 
 @property (nonatomic, strong) LRVoiceChatRoomListViewController *voiceChatRoomListVC;
-@property (nonatomic, strong) LRCreateVoiceChatRoomViewController *createVoiceChatRoomVC;
 @property (nonatomic, strong) LRSettingViewController *settingVC;
 
 @end
@@ -34,6 +34,7 @@
 
     [self _setupSubviews];
 
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
 }
 
 - (void)_setupSubviews
@@ -49,7 +50,6 @@
 - (void)_setupChildrenViewController
 {
     self.voiceChatRoomListVC = [[LRVoiceChatRoomListViewController alloc] init];
-    self.createVoiceChatRoomVC = [[LRCreateVoiceChatRoomViewController alloc] init];
     self.settingVC = [[LRSettingViewController alloc] init];
     self.viewControllers = @[self.voiceChatRoomListVC,self.settingVC];
 }
@@ -66,7 +66,19 @@
         return;
     }
     //是模态视图
-    [self presentViewController:self.createVoiceChatRoomVC animated:YES completion:nil];
+    LRCreateVoiceChatRoomViewController *createVC = [[LRCreateVoiceChatRoomViewController alloc] init];
+    [self presentViewController:createVC animated:YES completion:nil];
+}
+
+
+- (void)roomDidCreated:(NSNotification *)aNoti {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    if (aNoti.object) {
+        NSDictionary *roomInfo = aNoti.object;
+        LRRoomModel *model = [LRRoomModel roomWithDict:roomInfo];
+        LRVoiceRoomViewController *lrVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
+        [self presentViewController:lrVC animated:YES completion:nil];
+    }
 }
 
 @end

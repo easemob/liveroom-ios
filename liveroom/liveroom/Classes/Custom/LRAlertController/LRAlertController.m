@@ -288,10 +288,10 @@ typedef enum : NSUInteger {
 
 - (void)actionClicked:(LRAlertAction *)aAction
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
     if (aAction.callback) {
         aAction.callback(self);
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)keyboardDidChanged:(NSNotification *)aNoti

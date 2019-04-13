@@ -7,6 +7,7 @@
 //
 
 #import "LRCreateVoiceChatRoomViewController.h"
+#import "UIViewController+LRAlert.h"
 
 #define kPadding 16
 @interface LRCreateVoiceChatRoomViewController ()
@@ -31,46 +32,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self _setupSubviews];
-    
-    // post
-    //    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/create/talk/room";
-    //    NSDictionary *parameters = @{@"roomName":@"chatroom1",
-    //                                 @"password":@"123456",
-    //                                 @"desc":@"desc",
-    //                                 @"allowAudienceTalk":@true,
-    //                                 @"imChatRoomMaxusers":@100,
-    //                                 @"confrDelayMillis":@3600
-    //                                 };
-    //    [[LRRequestManager sharedInstance] requestWithMethod:@"POST"
-    //                                               urlString:url
-    //                                              parameters:parameters
-    //                                                   token:nil completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
-    //        NSLog(@"result---%@,----%@", result,error);
-    //    }];
-    
-    
-    // delete
-    //    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/79230364876801";
-    //    [[LRRequestManager sharedInstance] requestWithMethod:@"DELETE"
-    //                                               urlString:url
-    //                                              parameters:nil
-    //                                                   token:nil
-    //                                              completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
-    //
-    //        NSLog(@"result---%@,----%@", result,error);
-    //    }];
-    
-    // get
-    NSString *url = @"http://turn2.easemob.com:8082/app/talk/rooms/0/10";
-    [[LRRequestManager sharedInstance] requestWithMethod:@"GET"
-                                               urlString:url
-                                              parameters:nil
-                                                   token:nil
-                                              completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
-                                                  NSLog(@"result---%@,----%@", result,error);
-                                              }];
 }
 
 - (void)_setupSubviews
@@ -168,7 +130,39 @@
 
 - (void)submitButtonAction
 {
+    if (self.voiceChatroomIDTextField.text.length == 0) {
+        LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"请输入房间号"];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
     
+    id body = @{@"roomName":self.voiceChatroomIDTextField.text,
+                @"password":self.passwordTextField.text,
+                @"allowAudienceTalk":@YES,
+                @"imChatRoomMaxusers":@100,
+                @"desc":@"desc",
+                @"confrDelayMillis":@3600,
+                @"memRole":@1
+                };
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:@"http://turn2.easemob.com:8082/app/huangcl/create/talk/room" parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                NSMutableDictionary *dic = [result mutableCopy];
+                if (dic) {
+                    [dic setObject:weakSelf.voiceChatroomIDTextField.text forKey:@"roomname"];
+                    [dic setObject:weakSelf.passwordTextField.text forKey:@"rtcConfrPassword"];
+                    [dic setObject:EMClient.sharedClient.currentUsername forKey:@"ownerName"];
+                }
+                [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:dic];
+            }else {
+                [self showErrorAlertWithTitle:@"失败" info:error.domain];
+            }
+        });
+    }];
 }
 
 @end

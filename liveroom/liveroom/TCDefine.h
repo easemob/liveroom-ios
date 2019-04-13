@@ -12,7 +12,7 @@
 // frame
 #define LRWindowWidth UIScreen.mainScreen.bounds.size.width
 #define LRWindowHeight UIScreen.mainScreen.bounds.size.height
-#define LRSafeAreaTopHeight ((LRWindowHeight == 812.0 || LRWindowHeight == 896) ? 44 : 20)
+#define LRSafeAreaTopHeight ((LRWindowHeight == 812.0 || LRWindowHeight == 896) ? 64 : 40)
 #define LRSafeAreaBottomHeight ((LRWindowHeight == 812.0 || LRWindowHeight == 896)? 34 : 0)
 
 

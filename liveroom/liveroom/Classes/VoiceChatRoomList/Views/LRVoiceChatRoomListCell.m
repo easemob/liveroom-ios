@@ -7,7 +7,7 @@
 //
 
 #import "LRVoiceChatRoomListCell.h"
-#import "LRChatRoomListModel.h"
+#import "LRRoomModel.h"
 #import "Headers.h"
 
 @implementation LRVoiceChatRoomListCell
@@ -57,11 +57,11 @@
     
 }
 
-- (void)setModel:(LRChatRoomListModel *)model
+- (void)setModel:(LRRoomModel *)model
 {
     _model = model;
-    _chatRoomNameLabel.text = _model.chatRoomName;
-    _userNameLabel.text = _model.userName;
+    _chatRoomNameLabel.text = _model.roomname;
+    _userNameLabel.text = _model.roomId;
 }
 
 @end
