@@ -18,7 +18,6 @@
 @property (nonatomic, strong) LRVoiceChatRoomListViewController *voiceChatRoomListVC;
 @property (nonatomic, strong) LRCreateVoiceChatRoomViewController *createVoiceChatRoomVC;
 @property (nonatomic, strong) LRSettingViewController *settingVC;
-@property (strong, nonatomic) LRTabBar *lrTabBar;
 
 @end
 
@@ -39,34 +38,30 @@
 
 - (void)_setupSubviews
 {
-    self.lrTabBar = [[LRTabBar alloc] initWithFrame:CGRectMake(0, LRWindowHeight - LRSafeAreaBottomHeight - 49, LRWindowWidth, 49)];
-    self.lrTabBar.delegate = self;
-    [self.view addSubview:self.lrTabBar];
-    [self.view bringSubviewToFront:self.lrTabBar];
+    LRTabBar *tabBar = [[LRTabBar alloc] initWithFrame:CGRectMake(0, LRWindowHeight - LRSafeAreaBottomHeight - 49, LRWindowWidth, 49)];
+    tabBar.delegate = self;
+    [self.view addSubview:tabBar];
+    [self.view bringSubviewToFront:tabBar];
     
     [self _setupChildrenViewController];
 }
 
 - (void)_setupChildrenViewController
 {
+    self.voiceChatRoomListVC = [[LRVoiceChatRoomListViewController alloc] init];
     self.createVoiceChatRoomVC = [[LRCreateVoiceChatRoomViewController alloc] init];
-    NSMutableArray * childVCArr = [NSMutableArray arrayWithArray:@[@"LRVoiceChatRoomListViewController",@"LRSettingViewController"]];
-    for (NSInteger i = 0; i < childVCArr.count; i++) {
-        NSString *childVCName = childVCArr[i];
-        UIViewController *vc = [[NSClassFromString(childVCName) alloc] init];
-        [childVCArr replaceObjectAtIndex:i withObject:vc];
-    }
-    self.viewControllers = childVCArr;
+    self.settingVC = [[LRSettingViewController alloc] init];
+    self.viewControllers = @[self.voiceChatRoomListVC,self.settingVC];
 }
 
 #pragma mark - LRTabBarDelegate
-- (void)tabBar:(LRTabBar *)tabBar clickViewAction:(LRItemType)type
+- (void)tabBar:(LRTabBar *)tabBar clickViewAction:(NSInteger)tag
 {
-    if (type != LRItemTypeMiddle) {
-        if (type == LRItemTypeLeft) {
-            self.selectedIndex = type - LRItemTypeLeft;
+    if (tag != 101) {
+        if (tag == 100) {
+            self.selectedIndex = tag - 100;
         } else {
-            self.selectedIndex = type - LRItemTypeMiddle;
+            self.selectedIndex = tag - 101;
         }
         return;
     }

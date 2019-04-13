@@ -24,7 +24,7 @@
 
 -(void)setFrame:(CGRect)frame
 {
-    frame.origin.x = 2;
+    frame.origin.x = 1;
     frame.size.width -= 2 * frame.origin.x;
     frame.size.height -= 2 * frame.origin.x;
     [super setFrame:frame];
@@ -39,10 +39,9 @@
     self.chatRoomNameLabel.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.chatRoomNameLabel];
     [self.chatRoomNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(8);
+        make.top.equalTo(self.contentView).offset(5);
         make.left.equalTo(self.contentView).offset(10);
-        make.width.equalTo(@100);
-        make.height.equalTo(@20);
+        make.right.equalTo(self.contentView).offset(-10);
     }];
     
     self.userNameLabel = [[UILabel alloc] init];
@@ -51,10 +50,9 @@
     self.userNameLabel.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.userNameLabel];
     [self.userNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.contentView.mas_bottom).offset(-8);
+        make.bottom.equalTo(self.contentView.mas_bottom).offset(-5);
         make.left.equalTo(self.contentView).offset(10);
-        make.width.equalTo(@100);
-        make.height.equalTo(@20);
+        make.right.equalTo(self.contentView).offset(-10);
     }];
     
 }

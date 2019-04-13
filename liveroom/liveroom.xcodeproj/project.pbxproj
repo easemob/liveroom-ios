@@ -30,8 +30,6 @@
 		90F2C6D62254C08600A712B8 /* LRChatRoomListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C69A2254C08600A712B8 /* LRChatRoomListModel.m */; };
 		90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6A12254C08600A712B8 /* LRVoiceChatRoomListCell.m */; };
 		90F2C6D92254C08600A712B8 /* LRVoiceChatRoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6A22254C08600A712B8 /* LRVoiceChatRoomListViewController.m */; };
-		90F2C6DA2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6A52254C08600A712B8 /* LRCreateVoiceChatRoomViewController.xib */; };
-		90F2C6DB2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6A72254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m */; };
 		90F2C6DC2254C08600A712B8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6A82254C08600A712B8 /* AppDelegate.m */; };
 		90F2C6DD2254C08600A712B8 /* LRLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6AA2254C08600A712B8 /* LRLoginViewController.xib */; };
 		90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6AB2254C08600A712B8 /* LRLoginViewController.m */; };
@@ -49,6 +47,9 @@
 		E04712E2225C907600F9910C /* LRFindView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E1225C907600F9910C /* LRFindView.m */; };
 		E04712F0225DEEB600F9910C /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712EF225DEEB600F9910C /* LRVolumeView.m */; };
 		E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712F6225F1A5900F9910C /* LRRequestManager.m */; };
+		E04712FB225F46D300F9910C /* UIImage+LRImageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712FA225F46D200F9910C /* UIImage+LRImageColor.m */; };
+		E04712FE22602FC800F9910C /* LRCreateVoiceChatRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712FD22602FC800F9910C /* LRCreateVoiceChatRoomViewController.m */; };
+		E047130022606E7900F9910C /* delete_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712FF22606E7900F9910C /* delete_input@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,9 +101,6 @@
 		90F2C6A12254C08600A712B8 /* LRVoiceChatRoomListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVoiceChatRoomListCell.m; sourceTree = "<group>"; };
 		90F2C6A22254C08600A712B8 /* LRVoiceChatRoomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVoiceChatRoomListViewController.m; sourceTree = "<group>"; };
 		90F2C6A32254C08600A712B8 /* Headers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Headers.h; sourceTree = "<group>"; };
-		90F2C6A52254C08600A712B8 /* LRCreateVoiceChatRoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LRCreateVoiceChatRoomViewController.xib; sourceTree = "<group>"; };
-		90F2C6A62254C08600A712B8 /* LRCreateVoiceChatRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRCreateVoiceChatRoomViewController.h; sourceTree = "<group>"; };
-		90F2C6A72254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRCreateVoiceChatRoomViewController.m; sourceTree = "<group>"; };
 		90F2C6A82254C08600A712B8 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		90F2C6AA2254C08600A712B8 /* LRLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LRLoginViewController.xib; sourceTree = "<group>"; };
 		90F2C6AB2254C08600A712B8 /* LRLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRLoginViewController.m; sourceTree = "<group>"; };
@@ -133,6 +131,11 @@
 		E04712EF225DEEB600F9910C /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
 		E04712F6225F1A5900F9910C /* LRRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRRequestManager.m; sourceTree = "<group>"; };
 		E04712F7225F1A5900F9910C /* LRRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRequestManager.h; sourceTree = "<group>"; };
+		E04712F9225F46D200F9910C /* UIImage+LRImageColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+LRImageColor.h"; sourceTree = "<group>"; };
+		E04712FA225F46D200F9910C /* UIImage+LRImageColor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LRImageColor.m"; sourceTree = "<group>"; };
+		E04712FC22602FC800F9910C /* LRCreateVoiceChatRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCreateVoiceChatRoomViewController.h; sourceTree = "<group>"; };
+		E04712FD22602FC800F9910C /* LRCreateVoiceChatRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCreateVoiceChatRoomViewController.m; sourceTree = "<group>"; };
+		E04712FF22606E7900F9910C /* delete_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete_input@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +300,8 @@
 			children = (
 				90F2C6912254C08600A712B8 /* UIView+LRCategory.h */,
 				90F2C6922254C08600A712B8 /* UIView+LRCategory.m */,
+				E04712F9225F46D200F9910C /* UIImage+LRImageColor.h */,
+				E04712FA225F46D200F9910C /* UIImage+LRImageColor.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -350,9 +355,8 @@
 		90F2C6A42254C08600A712B8 /* CreateVoiceChatRoom */ = {
 			isa = PBXGroup;
 			children = (
-				90F2C6A52254C08600A712B8 /* LRCreateVoiceChatRoomViewController.xib */,
-				90F2C6A62254C08600A712B8 /* LRCreateVoiceChatRoomViewController.h */,
-				90F2C6A72254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m */,
+				E04712FC22602FC800F9910C /* LRCreateVoiceChatRoomViewController.h */,
+				E04712FD22602FC800F9910C /* LRCreateVoiceChatRoomViewController.m */,
 			);
 			path = CreateVoiceChatRoom;
 			sourceTree = "<group>";
@@ -403,7 +407,6 @@
 				9060013B225EE35B00CD8BAA /* LRChatHelper */,
 				9060013A225EE35B00CD8BAA /* LRSpeakHelper */,
 				E04712F2225EDAD900F9910C /* LRNetWorking */,
-				90CBF7F3225C950600C92F8D /* LRHelper */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 		90F2C6F22254C09400A712B8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E04712FF22606E7900F9910C /* delete_input@2x.png */,
 				90F2C6F32254C09400A712B8 /* add@2x.png */,
 			);
 			path = Resources;
@@ -530,7 +534,7 @@
 			files = (
 				E04712DF225C8CEF00F9910C /* find@2x.png in Resources */,
 				90F2C6782254C02B00A712B8 /* LaunchScreen.storyboard in Resources */,
-				90F2C6DA2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.xib in Resources */,
+				E047130022606E7900F9910C /* delete_input@2x.png in Resources */,
 				90F2C6752254C02B00A712B8 /* Assets.xcassets in Resources */,
 				90F2C6E82254C08600A712B8 /* LRAlertController.xib in Resources */,
 				90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */,
@@ -626,16 +630,16 @@
 				9058DF912258D7A900699AB2 /* LRChatViewController.m in Sources */,
 				E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
-				90F2C6DB2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m in Sources */,
 				90F2C6D62254C08600A712B8 /* LRChatRoomListModel.m in Sources */,
+				E04712FB225F46D300F9910C /* UIImage+LRImageColor.m in Sources */,
 				9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */,
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
+				E04712FE22602FC800F9910C /* LRCreateVoiceChatRoomViewController.m in Sources */,
 				9083DC8B225603E70099C5BD /* LRSpeakerViewController.m in Sources */,
 				9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
 				E04712F0225DEEB600F9910C /* LRVolumeView.m in Sources */,
-				90F2C6DB2254C08600A712B8 /* LRCreateVoiceChatRoomViewController.m in Sources */,
 				90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */,
 				90F2C6D62254C08600A712B8 /* LRChatRoomListModel.m in Sources */,
 				E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */,
@@ -805,7 +809,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.liveroom;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -826,7 +830,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.liveroom;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

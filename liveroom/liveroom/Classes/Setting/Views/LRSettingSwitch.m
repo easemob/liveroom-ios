@@ -8,36 +8,22 @@
 
 #import "LRSettingSwitch.h"
 
+#define kPadding 4
 @interface LRSettingSwitch ()
-@property (nonatomic, strong) UILabel * leftLabel;
-@property (nonatomic, strong) UILabel * rightLabel;
-@property (nonatomic, strong) UILabel * tagLabel;
+
+@property (nonatomic, strong) UIView *tagView;
+@property (nonatomic, strong) UIView *tagBackGroundView;
 @property (nonatomic, assign) BOOL isAnimated;
 @end
 
 @implementation LRSettingSwitch
-- (UILabel*)tagLabel{
-    if (!_tagLabel) {
-        CGRect frame = self.isOn?CGRectMake(5, 5,self.frame.size.width/2 - 5, self.frame.size.height - 10):CGRectMake(self.frame.size.width/2,5, self.frame.size.width/2 - 5,self.frame.size.height - 10);
-        _tagLabel = [[UILabel alloc] initWithFrame:frame];
+
+- (UIView *)tagBackGroundView{
+    if (!_tagBackGroundView) {
+        CGRect frame = self.isOn?CGRectMake(kPadding, kPadding,self.frame.size.width/2 - kPadding, self.frame.size.height - kPadding * 2):CGRectMake(self.frame.size.width/2,kPadding, self.frame.size.width/2 - kPadding,self.frame.size.height - kPadding * 2);
+        _tagBackGroundView = [[UIView alloc] initWithFrame:frame];
     }
-    return  _tagLabel;
-}
-- (UILabel*)leftLabel{
-    if (!_leftLabel) {
-        CGRect frame = CGRectMake(0, 0, self.frame.size.width/2, self.frame.size.height);
-        _leftLabel = [[UILabel alloc] initWithFrame:frame];
-        _leftLabel.textAlignment = NSTextAlignmentCenter;
-    }
-    return _leftLabel;
-}
-- (UILabel*)rightLabel{
-    if (!_rightLabel) {
-        CGRect frame = CGRectMake(self.frame.size.width/2,0, self.frame.size.width/2, self.frame.size.height);
-        _rightLabel = [[UILabel alloc] initWithFrame:frame];
-        _rightLabel.textAlignment = NSTextAlignmentCenter;
-    }
-    return _rightLabel;
+    return  _tagBackGroundView;
 }
 
 - (id)initWithFrame:(CGRect)frame{
@@ -51,15 +37,29 @@
     _isOn = YES;
     _isAnimated = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
-    [self.tagLabel addGestureRecognizer:tap];
-    self.tagLabel.userInteractionEnabled = YES;
+    [self.tagBackGroundView addGestureRecognizer:tap];
+    self.tagBackGroundView.userInteractionEnabled = YES;
+    self.tagBackGroundView.backgroundColor = RGBACOLOR(126, 211, 33, 1.0);
+    self.tagBackGroundView.layer.cornerRadius = self.tagBackGroundView.frame.size.height/10;
+    self.tagBackGroundView.clipsToBounds = YES;
+    [self addSubview:self.tagBackGroundView];
+
+    self.tagView = [[UIView alloc] init];
+    self.tagView.layer.borderColor = RGBACOLOR(80, 123, 32, 1.0).CGColor;
+    self.tagView.layer.borderWidth = 1;
+    self.tagView.layer.cornerRadius = self.tagView.frame.size.height/10;
+    self.tagView.clipsToBounds = YES;
+    self.tagView.backgroundColor = RGBACOLOR(126, 211, 33, 1.0);
+    self.tagView.userInteractionEnabled = YES;
+    [self.tagBackGroundView addSubview:self.tagView];
+    [self.tagView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tagBackGroundView).offset(1);
+        make.bottom.equalTo(self.tagBackGroundView).offset(-1);
+        make.left.equalTo(self.tagBackGroundView).offset(1);
+        make.right.equalTo(self.tagBackGroundView).offset(-1);
+    }];
+    self.backgroundColor = RGBACOLOR(37, 64, 6, 1.0);
     self.userInteractionEnabled = YES;
-    self.rightLabel.backgroundColor = RGBACOLOR(37, 63, 11, 1.0);
-    [self addSubview:self.rightLabel];
-    self.leftLabel.backgroundColor = RGBACOLOR(37, 63, 11, 1.0);
-    [self addSubview:self.leftLabel];
-    self.tagLabel.backgroundColor = RGBACOLOR(129, 209, 52, 1.0);
-    [self addSubview:self.tagLabel];
     self.layer.cornerRadius = self.frame.size.height/10;
     self.clipsToBounds = YES;
 }
@@ -69,12 +69,29 @@
 {
     _isOn = isOn;
     [self switchSettingWithOn:_isOn animated:_isAnimated];
+    [self switchViewColorChange:_isOn];
 }
 
 // 开关打开，关闭设置
 - (void)setOn:(BOOL)on animated:(BOOL)animated{
     _isAnimated = animated;
     [self switchSettingWithOn:on animated:_isAnimated];
+    [self switchViewColorChange:on];
+}
+
+- (void)switchViewColorChange:(BOOL)isOn
+{
+    if (isOn) {
+        self.backgroundColor = RGBACOLOR(37, 64, 6, 1.0);
+        self.tagBackGroundView.backgroundColor = RGBACOLOR(126, 211, 33, 1.0);
+        self.tagView.backgroundColor = RGBACOLOR(126, 211, 33, 1.0);
+        self.tagView.layer.borderColor = RGBACOLOR(80, 123, 32, 1.0).CGColor;
+    } else {
+        self.backgroundColor = RGBACOLOR(51, 51, 51, 1.0);
+        self.tagBackGroundView.backgroundColor = RGBACOLOR(102, 102, 102, 1.0);
+        self.tagView.backgroundColor = RGBACOLOR(153, 153, 153, 1.0);
+        self.tagView.layer.borderColor = RGBACOLOR(102, 102, 102, 1.0).CGColor;
+    }
 }
 
 - (void)switchSettingWithOn:(BOOL)isOn animated:(BOOL)animated
@@ -82,9 +99,9 @@
     CGFloat width = self.frame.size.width;
     CGFloat height = self.frame.size.height;
     if (isOn) {
-        [self animateWithPoint:CGPointMake(width/4+2.5,height/2) isAnimate:animated];
+        [self animateWithPoint:CGPointMake(width/4 + kPadding/2,height/2) isAnimate:animated];
     }else{
-        [self animateWithPoint:CGPointMake(3*width/4-2.5,height/2) isAnimate:animated];
+        [self animateWithPoint:CGPointMake(3*width/4 - kPadding/2,height/2) isAnimate:animated];
     }
 }
 
@@ -95,12 +112,12 @@
                               delay:0.01
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             self.tagLabel.center = point;
+                             self.tagBackGroundView.center = point;
                          } completion:^(BOOL finished) {
                              
                          }];
     } else {
-        self.tagLabel.center = point;
+        self.tagBackGroundView.center = point;
     }
 }
 
@@ -110,6 +127,5 @@
         [self.delegate settingSwitchWithValueChanged:self];
     }
 }
-
 
 @end
