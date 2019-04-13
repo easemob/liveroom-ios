@@ -1,5 +1,5 @@
 //
-//  LRVoiceRoomViewController.h
+//  LRRoomViewController.h
 //  liveroom
 //
 //  Created by 杜洁鹏 on 2019/4/3.
@@ -17,7 +17,7 @@ typedef enum : NSUInteger {
 } LRUserRoleType;
 
 @class LRRoomModel;
-@interface LRVoiceRoomViewController : UIViewController
+@interface LRRoomViewController : UIViewController
 - (instancetype)initWithUserType:(LRUserRoleType)aType
                        roomModel:(LRRoomModel *)aRoomModel
                         password:(NSString *)aPassword;

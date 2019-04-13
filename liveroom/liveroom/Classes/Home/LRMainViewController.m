@@ -7,16 +7,16 @@
 //
 
 #import "LRMainViewController.h"
-#import "LRVoiceChatRoomListViewController.h"
-#import "LRVoiceRoomViewController.h"
-#import "LRCreateVoiceChatRoomViewController.h"
+#import "LRRoomListViewController.h"
+#import "LRRoomViewController.h"
+#import "LRCreateRoomViewController.h"
 #import "LRSettingViewController.h"
 #import "LRTabBar.h"
 #import "LRRoomModel.h"
 
 @interface LRMainViewController () <UITabBarControllerDelegate, LRTabBarDelegate>
 
-@property (nonatomic, strong) LRVoiceChatRoomListViewController *voiceChatRoomListVC;
+@property (nonatomic, strong) LRRoomListViewController *voiceChatRoomListVC;
 @property (nonatomic, strong) LRSettingViewController *settingVC;
 
 @end
@@ -49,7 +49,7 @@
 
 - (void)_setupChildrenViewController
 {
-    self.voiceChatRoomListVC = [[LRVoiceChatRoomListViewController alloc] init];
+    self.voiceChatRoomListVC = [[LRRoomListViewController alloc] init];
     self.settingVC = [[LRSettingViewController alloc] init];
     self.viewControllers = @[self.voiceChatRoomListVC,self.settingVC];
 }
@@ -66,7 +66,7 @@
         return;
     }
     //是模态视图
-    LRCreateVoiceChatRoomViewController *createVC = [[LRCreateVoiceChatRoomViewController alloc] init];
+    LRCreateRoomViewController *createVC = [[LRCreateRoomViewController alloc] init];
     [self presentViewController:createVC animated:YES completion:nil];
 }
 
@@ -76,7 +76,7 @@
     if (aNoti.object) {
         NSDictionary *roomInfo = aNoti.object;
         LRRoomModel *model = [LRRoomModel roomWithDict:roomInfo];
-        LRVoiceRoomViewController *lrVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
+        LRRoomViewController *lrVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
         [self presentViewController:lrVC animated:YES completion:nil];
     }
 }

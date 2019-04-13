@@ -1,12 +1,12 @@
 //
-//  LRSpeakerViewController.m
+//  LRSpeakViewController.m
 //  liveroom
 //
 //  Created by 杜洁鹏 on 2019/4/4.
 //  Copyright © 2019 Easemob. All rights reserved.
 //
 
-#import "LRSpeakerViewController.h"
+#import "LRSpeakViewController.h"
 #import "LRVolumeView.h"
 #import "LRSpeakerTypeView.h"
 #import "LRSpeakHelper.h"
@@ -15,13 +15,13 @@
 
 #define kCurrentUserIsAdmin NO
 
-@interface LRSpeakerViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakerTypeViewDelegate, LRSpeakHelperDelegate>
+@interface LRSpeakViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakerTypeViewDelegate, LRSpeakHelperDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @end
 
-@implementation LRSpeakerViewController
+@implementation LRSpeakViewController
 
 - (instancetype)init {
     if (self = [super init]) {
