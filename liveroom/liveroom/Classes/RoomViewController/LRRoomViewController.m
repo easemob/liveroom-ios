@@ -1,19 +1,19 @@
 //
-//  LRVoiceRoomViewController.m
+//  LRRoomViewController.m
 //  liveroom
 //
 //  Created by 杜洁鹏 on 2019/4/3.
 //  Copyright © 2019 Easemob. All rights reserved.
 //
 
-#import "LRVoiceRoomViewController.h"
-#import "LRSpeakerViewController.h"
+#import "LRRoomViewController.h"
+#import "LRSpeakViewController.h"
 #import "LRChatViewController.h"
 #import "LRVoiceRoomHeader.h"
 #import "LRVoiceRoomTabbar.h"
 #import "LRRoomModel.h"
 #import "Headers.h"
-#import "LRChatroomMembersViewController.h"
+#import "LRRoomInfoViewController.h"
 
 #import "LRChatHelper.h"
 #import "LRSpeakHelper.h"
@@ -22,20 +22,20 @@
 #define kHeaderViewHeight 45
 #define kInputViewHeight 64
 
-@interface LRVoiceRoomViewController () <LRVoiceRoomTabbarDelgate> {
+@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate> {
     BOOL _chatJoined;
     BOOL _conferenceJoined;
 }
 @property (nonatomic, assign) LRUserRoleType type;
 @property (nonatomic, strong) LRVoiceRoomHeader *headerView;
-@property (nonatomic, strong) LRSpeakerViewController *speakerVC;
+@property (nonatomic, strong) LRSpeakViewController *speakerVC;
 @property (nonatomic, strong) LRChatViewController *chatVC;
 @property (nonatomic, strong) LRVoiceRoomTabbar *inputBar;
 @property (nonatomic, strong) LRRoomModel *roomModel;
 @property (nonatomic, strong) NSString *password;
 @end
 
-@implementation LRVoiceRoomViewController
+@implementation LRRoomViewController
 
 - (instancetype)initWithUserType:(LRUserRoleType)aType
                        roomModel:(LRRoomModel *)aRoomModel
@@ -206,7 +206,7 @@
 
 
 - (void)memberListAction {
-    LRChatroomMembersViewController *membersVC = [[LRChatroomMembersViewController alloc] init];
+    LRRoomInfoViewController *membersVC = [[LRRoomInfoViewController alloc] init];
     [self presentViewController:membersVC animated:YES completion:^{
         
     }];
@@ -290,9 +290,9 @@
 }
 
 #pragma mark - getter
-- (LRSpeakerViewController *)speakerVC {
+- (LRSpeakViewController *)speakerVC {
     if (!_speakerVC) {
-        _speakerVC = [[LRSpeakerViewController alloc] init];
+        _speakerVC = [[LRSpeakViewController alloc] init];
     }
     return _speakerVC;
 }

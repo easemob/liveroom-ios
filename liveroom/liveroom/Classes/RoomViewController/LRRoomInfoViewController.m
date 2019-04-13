@@ -1,25 +1,24 @@
 //
-//  LRVoiceChatRoomListViewController.m
-//  Tigercrew
+//  LRRoomInfoViewController.m
+//  liveroom
 //
-//  Created by easemob-DN0164 on 2019/4/1.
+//  Created by easemob-DN0164 on 2019/4/9.
 //  Copyright © 2019年 Easemob. All rights reserved.
 //
 
-#import "LRVoiceChatRoomListViewController.h"
-#import "LRVoiceChatRoomListCell.h"
-#import "LRRealtimeSearch.h"
+#import "LRRoomInfoViewController.h"
 #import "LRSearchBar.h"
-#import "LRVoiceChatRoomListCell.h"
-#import "LRRoomModel.h"
-#import "LRVoiceRoomViewController.h"
-#import "Headers.h"
 #import "LRFindView.h"
-#import "LRRequestManager.h"
+#import "LRRealtimeSearch.h"
+#import "LRChatroomMembersCell.h"
+#import "LRChatroomMembersModel.h"
 
 #define kPadding 16
-@interface LRVoiceChatRoomListViewController () <LRSearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate>
+
+@property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
+
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic) BOOL isSearching;
@@ -29,7 +28,7 @@
 
 @end
 
-@implementation LRVoiceChatRoomListViewController
+@implementation LRRoomInfoViewController
 
 - (NSMutableArray *)dataArray
 {
@@ -49,63 +48,78 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSArray *array = @[@{@"memberName":@"shengxi",@"isOwner":@YES},@{@"memberName":@"jiepeng",@"isOwner":@NO},@{@"memberName":@"donghai",@"isOwner":@NO}];
+    for (NSDictionary *dict in array) {
+        LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
+        [self.dataArray addObject:model];
+    }
+    
     [self _setupSubviews];
-    [self autoReload];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(autoReload)
-                                               name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED
-                                             object:nil];
 }
 
 - (void)_setupSubviews
 {
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.closeButton = [[UIButton alloc] init];
+    self.closeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    self.closeButton.backgroundColor = [UIColor grayColor];
+    [self.closeButton setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    [self.closeButton addTarget:self action:@selector(closeButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.closeButton];
+    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.width.equalTo(@20);
+        make.height.equalTo(@20);
+    }];
+    
     self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.text = @"选择房间 Chose a voiceChatroom";
-    self.titleLabel.textColor = [UIColor whiteColor];
-    self.titleLabel.font = [UIFont systemFontOfSize:15];
+    self.titleLabel.text = @"成员 ChatroomMembers";
+    [self.titleLabel setTextColor:[UIColor blackColor]];
+    self.titleLabel.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(kPadding);
-        make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
+        make.centerX.equalTo(self.view);
+        make.centerY.equalTo(self.closeButton);
+        make.height.equalTo(@31);
     }];
     
     [self _setupSearch];
-    [self _setupRefresh];
-}
-
-- (void)_setupRefresh {
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reloadPage)];
 }
 
 - (void)_setupSearch
 {
     self.searchBar = [[LRSearchBar alloc] init];
-    self.searchBar.placeholderString = @"输入voiceChatroomID";
-    self.searchBar.placeholderTextFont = 17;
-    self.searchBar.placeholderTextColor = RGBACOLOR(255, 255, 255, 0.6);
-    self.searchBar.height = 48;
+    [self.searchBar.textField setTextColor:LRColor_MiddleBlackColor];
+    self.searchBar.placeholderString = @"Search";
+    self.searchBar.placeholderTextFont = 12;
+    self.searchBar.inputTextColor = [UIColor clearColor];
+    self.searchBar.placeholderTextColor = [UIColor grayColor];
+    self.searchBar.strokeColor = [UIColor grayColor];
+    self.searchBar.strokeWidth = 0.5;
+    self.searchBar.height = 32;
     LRFindView *findView = [[LRFindView alloc] init];
     self.searchBar.leftView = findView;
     self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom).offset(12);
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(6);
         make.left.equalTo(self.view).offset(kPadding);
         make.right.equalTo(self.view).offset(-kPadding);
-        make.height.equalTo(@48);
+        make.height.equalTo(@32);
     }];
     
     self.tableView = [[UITableView alloc] init];
     self.tableView.tag = 10;
-    self.tableView.rowHeight = 48;
-    self.tableView.backgroundColor = [UIColor blackColor];
+    self.tableView.rowHeight = 40;
+    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellEditingStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.searchBar.mas_bottom).offset(12);
+        make.top.equalTo(self.searchBar.mas_bottom).offset(6);
         make.left.equalTo(self.view).offset(kPadding - 1);
         make.right.equalTo(self.view).offset(-kPadding + 1);
         make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
@@ -113,7 +127,7 @@
     
     self.searchResultTableView = [[UITableView alloc] init];
     self.searchResultTableView.tag = 11;
-    self.searchResultTableView.backgroundColor = [UIColor blackColor];
+    self.searchResultTableView.backgroundColor = [UIColor whiteColor];
     self.searchResultTableView.separatorStyle = UITableViewCellEditingStyleNone;
     self.searchResultTableView.rowHeight = self.tableView.rowHeight;
     self.searchResultTableView.delegate = self;
@@ -139,12 +153,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = @"LRVoiceChatRoomListCell";
-    LRVoiceChatRoomListCell *cell = (LRVoiceChatRoomListCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    NSString *cellIdentifier = @"LRChatroomMembersCell";
+    LRChatroomMembersCell *cell = (LRChatroomMembersCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[LRVoiceChatRoomListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[LRChatroomMembersCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    LRRoomModel *model = [self.dataArray objectAtIndex:indexPath.row];
+    LRChatroomMembersModel *model = nil;
+    if (tableView == self.tableView) {
+        model = [self.dataArray objectAtIndex:indexPath.row];
+    } else {
+        model = [self.searchResults objectAtIndex:indexPath.row];
+    }
     cell.model = model;
     return cell;
 }
@@ -153,8 +172,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    LRRoomModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    [self joinRoomWithModel:model];
+
 }
 
 #pragma mark - LRSearchBarDelegate
@@ -170,7 +188,7 @@
                 self.tableView.hidden = YES;
                 [self.view addSubview:self.searchResultTableView];
                 [self.searchResultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.searchBar.mas_bottom).offset(12);
+                    make.top.equalTo(self.searchBar.mas_bottom).offset(6);
                     make.left.equalTo(self.view).offset(kPadding - 1);
                     make.right.equalTo(self.view).offset(-kPadding + 1);
                     make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
@@ -197,7 +215,7 @@
         return;
     }
     __weak typeof(self) weakself = self;
-    [[LRRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(roomname) resultBlock:^(NSArray *results) {
+    [[LRRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(memberName) resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakself.searchResults removeAllObjects];
             [weakself.searchResults addObjectsFromArray:results];
@@ -258,57 +276,11 @@
     }
 }
 
-
-#pragma mark - Actions
-
-- (void)joinRoomWithModel:(LRRoomModel *)aModel {
-    // TODO: show info, join room.
-    LRAlertController *alert = [LRAlertController showSuccessAlertWithTitle:aModel.roomname info:nil];
-    alert.textField = [[UITextField alloc] init];
-    LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"加入" callback:^(LRAlertController * _Nonnull alertController) {
-        if (alertController.textField.text.length == 0) {
-            return;
-        }
-        LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Audiance roomModel:aModel password:alertController.textField.text];
-        [self presentViewController:vroomVC animated:YES completion:nil];
+- (void)closeButtonAction
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
     }];
-    
-    LRAlertAction *cancelAction = [LRAlertAction alertActionTitle:@"取消" callback:nil];
-    [alert addAction:joinAction];
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-
-- (void)autoReload {
-    [self.tableView.mj_header beginRefreshing];
-    [self reloadPage];
-}
-
-- (void)reloadPage {
-    [LRRequestManager.sharedInstance requestWithMethod:@"GET" urlString:@"http://turn2.easemob.com:8082/app/talk/rooms/0/200" parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^{
-             if (!error) {
-                 NSArray *list = result[@"list"];
-                 [self.dataArray removeAllObjects];
-                 if (list) {
-                     for (NSDictionary *dic in list) {
-                         LRRoomModel *model = [LRRoomModel roomWithDict:dic];
-                         [self.dataArray addObject:model];
-                     }
-                 }
-             }else {
-                 // TODO: error alert
-             }
-             [self endReload];
-         });
-    }];
-}
-
-- (void)endReload {
-    [self.tableView.mj_header endRefreshing];
-    [self.tableView reloadData];
 }
 
 @end

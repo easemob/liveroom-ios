@@ -1,5 +1,5 @@
 //
-//  LRVoiceChatRoomListViewController.h
+//  LRRoomListViewController.h
 //  Tigercrew
 //
 //  Created by easemob-DN0164 on 2019/4/1.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LRVoiceChatRoomListViewController : UIViewController
+@interface LRRoomListViewController : UIViewController
 
 @end
 

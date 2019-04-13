@@ -1,8 +1,8 @@
 //
-//  LRChatroomMembersViewController.h
+//  LRCreateRoomViewController.h
 //  liveroom
 //
-//  Created by easemob-DN0164 on 2019/4/9.
+//  Created by easemob-DN0164 on 2019/4/12.
 //  Copyright © 2019年 Easemob. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LRChatroomMembersViewController : UIViewController
+@interface LRCreateRoomViewController : UIViewController
 
 @end
 

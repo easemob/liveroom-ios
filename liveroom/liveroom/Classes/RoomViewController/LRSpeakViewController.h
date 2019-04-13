@@ -1,5 +1,5 @@
 //
-//  LRSpeakerViewController.h
+//  LRSpeakViewController.h
 //  liveroom
 //
 //  Created by 杜洁鹏 on 2019/4/4.
@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class LRSpeakerCellModel, LRRoomModel;
-@interface LRSpeakerViewController : UIViewController
+@interface LRSpeakViewController : UIViewController
 @property (nonatomic, strong) LRRoomModel *roomModel;
 @end
 
