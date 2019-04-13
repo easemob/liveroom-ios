@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LRSpeakerCellModel;
 @interface LRSpeakerViewController : UIViewController
+@property (nonatomic, strong) NSDictionary *roomInfo;
 @end
 
 @interface LRSpeakerCell : UITableViewCell

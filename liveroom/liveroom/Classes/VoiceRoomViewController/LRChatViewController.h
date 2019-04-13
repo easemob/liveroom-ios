@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LRChatViewController : UIViewController
+@property (nonatomic, strong) NSDictionary *roomInfo;
 - (void)sendText:(NSString *)aText;
 @end
 

@@ -8,6 +8,7 @@
 
 #import "LRMainViewController.h"
 #import "LRVoiceChatRoomListViewController.h"
+#import "LRVoiceRoomViewController.h"
 #import "LRCreateVoiceChatRoomViewController.h"
 #import "LRSettingViewController.h"
 #import "LRTabBar.h"
@@ -16,7 +17,6 @@
 @interface LRMainViewController () <UITabBarControllerDelegate, LRTabBarDelegate>
 
 @property (nonatomic, strong) LRVoiceChatRoomListViewController *voiceChatRoomListVC;
-@property (nonatomic, strong) LRCreateVoiceChatRoomViewController *createVoiceChatRoomVC;
 @property (nonatomic, strong) LRSettingViewController *settingVC;
 @property (strong, nonatomic) LRTabBar *lrTabBar;
 
@@ -35,6 +35,7 @@
 
     [self _setupSubviews];
 
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_AFTER_CREATED_ROOM object:nil];
 }
 
 - (void)_setupSubviews
@@ -49,7 +50,6 @@
 
 - (void)_setupChildrenViewController
 {
-    self.createVoiceChatRoomVC = [[LRCreateVoiceChatRoomViewController alloc] init];
     NSMutableArray * childVCArr = [NSMutableArray arrayWithArray:@[@"LRVoiceChatRoomListViewController",@"LRSettingViewController"]];
     for (NSInteger i = 0; i < childVCArr.count; i++) {
         NSString *childVCName = childVCArr[i];
@@ -71,7 +71,16 @@
         return;
     }
     //是模态视图
-    [self presentViewController:self.createVoiceChatRoomVC animated:YES completion:nil];
+    LRCreateVoiceChatRoomViewController *createVC = [[LRCreateVoiceChatRoomViewController alloc] init];
+    [self presentViewController:createVC animated:YES completion:nil];
+}
+
+
+- (void)roomDidCreated:(NSNotification *)aNoti {
+    NSDictionary *roomInfo = aNoti.object;
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+    LRVoiceRoomViewController *lrVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomInfo:roomInfo];
+    [self presentViewController:lrVC animated:YES completion:nil];
 }
 
 @end

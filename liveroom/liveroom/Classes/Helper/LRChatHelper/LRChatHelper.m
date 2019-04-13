@@ -51,6 +51,10 @@
     return EMClient.sharedClient.isAutoLogin;
 }
 
+- (NSString *)currentUser {
+    return EMClient.sharedClient.currentUsername;
+}
+
 #pragma mark register delegates
 - (void)registerIMDelegates {
     [EMClient.sharedClient.chatManager addDelegate:self delegateQueue:nil];
@@ -76,14 +80,9 @@
                                     password:aPassword
                                   completion:^(NSString *aUsername, EMError *aError)
      {
+         if (!aError) { [[EMClient sharedClient].options setIsAutoLogin:YES]; }
          if (aCompletion) {
-             if (!aError)
-             {
-                 [[EMClient sharedClient].options setIsAutoLogin:YES];
-                 aCompletion(nil, YES);
-             }else {
-                 aCompletion(aError.errorDescription, NO);
-             }
+             aCompletion(aError.errorDescription, !aError);
          }
      }];
 }
@@ -96,12 +95,7 @@
                                      completion:^(NSString *aUsername, EMError *aError)
      {
          if (aCompletion) {
-             if (!aError)
-             {
-                 aCompletion(nil, YES);
-             }else {
-                 aCompletion(aError.errorDescription, NO);
-             }
+             aCompletion(aError.errorDescription, !aError);
          }
      }];
 }
@@ -112,12 +106,7 @@
                                          completion:^(EMChatroom *aChatroom, EMError *aError)
      {
          if (aCompletion) {
-             if (!aError)
-             {
-                 aCompletion(nil, YES);
-             }else {
-                 aCompletion(aError.errorDescription, NO);
-             }
+             aCompletion(aError.errorDescription, !aError);
          }
      }];
 }
@@ -128,12 +117,7 @@
                                           completion:^(EMError *aError)
      {
          if (aCompletion) {
-             if (!aError)
-             {
-                 aCompletion(nil, YES);
-             }else {
-                 aCompletion(aError.errorDescription, NO);
-             }
+             aCompletion(aError.errorDescription, !aError);
          }
      }];
 }
@@ -154,12 +138,7 @@
                                         completion:^(EMMessage *message, EMError *error)
     {
         if (aCompletion) {
-            if (!error)
-            {
-                aCompletion(nil, YES);
-            }else {
-                aCompletion(error.errorDescription, NO);
-            }
+            aCompletion(error.errorDescription, !error);
         }
     }];
 }

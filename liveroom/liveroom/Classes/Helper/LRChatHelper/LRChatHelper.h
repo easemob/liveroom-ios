@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol LRChatHelperDelegate <NSObject>
+@optional
 - (void)didReceiveRoomMessageWithRoomId:(NSString *)aChatroomId
                                 message:(NSString *)aMessage
                                fromUser:(NSString *)fromUser
@@ -24,11 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRChatHelper : NSObject
 
 @property (nonatomic, readonly) BOOL isLoggedIn;
+@property (nonatomic, strong, readonly) NSString *currentUser;
 
 + (LRChatHelper *)sharedInstance;
 
 - (void)addDeelgate:(id<LRChatHelperDelegate>)aDelegate
-      delegateQueue:(dispatch_queue_t)aQueue;
+      delegateQueue:(dispatch_queue_t  _Nullable)aQueue;
 
 - (void)removeDelegate:(id<LRChatHelperDelegate>)aDelegate;
 
@@ -43,22 +45,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - chatroom
 - (void)joinChatroomWithRoomId:(NSString *)aChatroomId
-                    completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+                    completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 - (void)leaveChatroomWithRoomId:(NSString *)aChatroomId
-                     completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+                     completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 #pragma mark - message
 - (void)sendMessageToChatroom:(NSString *)aChatroomId
                       message:(NSString *)aMessage
-         completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+         completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 
 - (void)sendLikeToChatroom:(NSString *)aChatroomId
-                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+                completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 - (void)sendGiftToChatroom:(NSString *)aChatroomId
-                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+                completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -27,47 +27,55 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self _setupSubviews];
+}
 
+- (void)_setupSubviews {
     [self.voiceChatroomIDTextField setupTextField];
     [self.voiceChatroomIDTextField strokeWithColor:LRStrokeWhite];
     
     [self.passwordTextField setupTextField];
     [self.passwordTextField strokeWithColor:LRStrokeWhite];
-    
-//    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/create/talk/room";
-//    NSDictionary *parameters = @{@"roomName":@"chatroom1",
-//                                 @"password":@"123456",
-//                                 @"desc":@"desc",
-//                                 @"allowAudienceTalk":@true,
-//                                 @"imChatRoomMaxusers":@100,
-//                                 @"confrDelayMillis":@3600
-//                                 };
-//    [[LRRequestManager sharedInstance] postNetworkRequestWithUrl:url requestBody:parameters token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
-//        NSLog(@"result---%@,----%@", result,error);
-//    }];
-    
-//    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/79230364876801";
-//    [[LRRequestManager sharedInstance] deleteNetworkRequestWithUrl:url token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
-//        NSLog(@"result---%@,----%@", result,error);
-//    }];
-    
-    NSString *url = @"http://turn2.easemob.com:8082/app/talk/rooms/0/10";
-    [[LRRequestManager sharedInstance] getNetworkRequestWithUrl:url
-                                                          token:@""
-                                                     completion:^(NSString * _Nonnull result, NSError * _Nonnull error)
-     {
-        NSLog(@"result---%@,----%@", result,error);
-    }];
-    
-    
 }
+
 - (IBAction)closeAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
 }
 - (IBAction)submitAction:(id)sender {
+    if (self.voiceChatroomIDTextField.text.length == 0) {
+        LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"请输入房间号"];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
     
+    id body = @{@"roomName":self.voiceChatroomIDTextField.text,
+                @"password":self.passwordTextField.text,
+                @"allowAudienceTalk":@YES,
+                @"imChatRoomMaxusers":@100,
+                @"desc":@"desc",
+                @"confrDelayMillis":@3600
+                };
+    
+    __weak typeof(self) weakSelf = self;
+    [LRRequestManager.sharedInstance postNetworkRequestWithUrl:@"http://turn2.easemob.com:8082/app/huangcl/create/talk/room" requestBody:body token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                NSData *data = [result dataUsingEncoding:NSUTF8StringEncoding];
+                NSMutableDictionary *dic = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] mutableCopy];
+                if (dic) {
+                    [dic setObject:weakSelf.voiceChatroomIDTextField.text forKey:@"roomname"];
+                    [dic setObject:@YES forKey:@"createMySelf"];
+                }
+                [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_AFTER_CREATED_ROOM object:dic];
+            }
+        });
+    }];
+}
+
+- (void)dealloc {
+    NSLog(@"dealloc");
 }
 
 /*

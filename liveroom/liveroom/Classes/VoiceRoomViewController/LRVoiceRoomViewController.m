@@ -14,25 +14,33 @@
 #import "Headers.h"
 #import "LRChatroomMembersViewController.h"
 
+#import "LRChatHelper.h"
+#import "LRSpeakHelper.h"
+
 #define kPadding 15
 #define kHeaderViewHeight 45
 #define kInputViewHeight 64
 
-@interface LRVoiceRoomViewController () <LRVoiceRoomTabbarDelgate>
+@interface LRVoiceRoomViewController () <LRVoiceRoomTabbarDelgate> {
+    BOOL _chatJoined;
+    BOOL _conferenceJoined;
+}
 @property (nonatomic, assign) LRUserRoleType type;
 @property (nonatomic, strong) LRVoiceRoomHeader *headerView;
 @property (nonatomic, strong) LRSpeakerViewController *speakerVC;
 @property (nonatomic, strong) LRChatViewController *chatVC;
 @property (nonatomic, strong) LRVoiceRoomTabbar *inputBar;
-@property (nonatomic, strong) NSString *roomName;
+@property (nonatomic, strong) NSDictionary *roomInfo;
 @end
 
 @implementation LRVoiceRoomViewController
 
-- (instancetype)initWithUserType:(LRUserRoleType)aType roomName:(NSString *)aRoomName {
+- (instancetype)initWithUserType:(LRUserRoleType)aType roomInfo:(NSDictionary *)aRoomInfo {
     if (self = [super init]) {
         _type = aType;
-        _roomName = aRoomName;
+        _roomInfo = aRoomInfo;
+        self.speakerVC.roomInfo = _roomInfo;
+        self.chatVC.roomInfo = _roomInfo;
     }
     return self;
 }
@@ -44,11 +52,13 @@
     [self _updateHeaderView];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
+    
+    [self joinChatAndConferenceRoom];
 }
 
 #pragma mark - subviews
 - (void)_setupSubViews {
-    self.headerView = [[LRVoiceRoomHeader alloc] initWithTitle:self.roomName info:@"dujiepeng"];
+    self.headerView = [[LRVoiceRoomHeader alloc] initWithTitle:_roomInfo[@"roomname"] info:_roomInfo[@"roomId"]];
     self.headerView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.headerView];
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -95,7 +105,7 @@
         [itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"pause"]
                             target:self
-                            action:@selector(musicPlayListAction)]];
+                            action:@selector(musicPlayAction)]];
         
         [itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"userList"]
@@ -142,6 +152,53 @@
 }
 
 #pragma mark - actions
+
+- (void)joinChatAndConferenceRoom {
+    __weak typeof(self) weakSelf = self;
+    
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_queue_t queue = dispatch_queue_create("com.easemob.liveroom", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_group_async(group, queue, ^{
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        [LRChatHelper.sharedInstance joinChatroomWithRoomId:weakSelf.roomInfo[@"roomId"]
+                                                 completion:^(NSString * _Nonnull errorInfo, BOOL success)
+         {
+             self->_chatJoined = success;
+             dispatch_semaphore_signal(semaphore);
+         }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    });
+    
+    dispatch_group_async(group, queue, ^{
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        [LRSpeakHelper.sharedInstance joinSpeakRoomWithRoomId:weakSelf.roomInfo[@"rtcConfrId"]
+                                                     password:weakSelf.roomInfo[@"rtcConfrPassword"]
+                                                   completion:^(NSString * _Nonnull errorInfo, BOOL success)
+         {
+             self->_conferenceJoined = success;
+             dispatch_semaphore_signal(semaphore);
+         }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    });
+    
+    dispatch_group_notify(group, queue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self->_conferenceJoined) {
+                [LRChatHelper.sharedInstance leaveChatroomWithRoomId:weakSelf.roomInfo[@"roomId"] completion:nil];
+            }
+            
+            if (!self->_chatJoined) {
+                [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:weakSelf.roomInfo[@"roomId"]  completion:nil];
+            }
+            
+            if (!self->_conferenceJoined || !self->_chatJoined) {
+                [self closeWindowAction];
+            }
+        });
+    });
+}
+
+
 - (void)memberListAction {
     LRChatroomMembersViewController *membersVC = [[LRChatroomMembersViewController alloc] init];
     [self presentViewController:membersVC animated:YES completion:^{
@@ -149,7 +206,7 @@
     }];
 }
 
-- (void)musicPlayListAction {
+- (void)musicPlayAction {
     
 }
 
@@ -198,11 +255,11 @@
 }
 
 - (void)likeAction {
-    NSLog(@"like action");
+    [LRChatHelper.sharedInstance sendLikeToChatroom:_roomInfo[@"roomId"] completion:nil];
 }
 
 - (void)giftAction {
-    NSLog(@"gift action");
+    [LRChatHelper.sharedInstance sendGiftToChatroom:_roomInfo[@"roomId"] completion:nil];
 }
 
 - (void)sendAction:(NSString *)aText {

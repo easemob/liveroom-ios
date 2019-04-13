@@ -18,7 +18,7 @@ typedef enum : NSUInteger {
 
 @interface LRVoiceRoomViewController : UIViewController
 - (instancetype)initWithUserType:(LRUserRoleType)aType
-                        roomName:(NSString *)aRoomName;
+                        roomInfo:(NSDictionary *)aRoomInfo;
 @end
 
 NS_ASSUME_NONNULL_END

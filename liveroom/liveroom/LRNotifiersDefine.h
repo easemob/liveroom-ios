@@ -12,4 +12,6 @@
 //账号状态
 #define LR_ACCOUNT_LOGIN_CHANGED @"loginStateChange"
 
+#define LR_NOTIFICATION_AFTER_CREATED_ROOM @"notificationAfterCreatedRoon"
+
 #endif /* LRNotifiersDefine_h */

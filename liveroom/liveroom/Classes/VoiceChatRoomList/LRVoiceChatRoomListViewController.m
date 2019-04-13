@@ -15,6 +15,7 @@
 #import "LRVoiceRoomViewController.h"
 #import "Headers.h"
 #import "LRFindView.h"
+#import "LRRequestManager.h"
 
 @interface LRVoiceChatRoomListViewController () <LRSearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -48,12 +49,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSArray *array = @[@{@"chatRoomName":@"ASD1",@"userName":@"username"},@{@"chatRoomName":@"ASD2",@"userName":@"username"},@{@"chatRoomName":@"ASD3",@"userName":@"username"},@{@"chatRoomName":@"ASD4",@"userName":@"username"},@{@"chatRoomName":@"ASD5",@"userName":@"username"},@{@"chatRoomName":@"ASD6",@"userName":@"username"},@{@"chatRoomName":@"ASD7",@"userName":@"username"},@{@"chatRoomName":@"ASD8",@"userName":@"username"}];
-    for (NSDictionary *dict in array) {
-        LRChatRoomListModel *model = [LRChatRoomListModel initWithChatRoomDict:dict];
-        [self.dataArray addObject:model];
-    }
     [self _setupSubviews];
+
+    [LRRequestManager.sharedInstance getNetworkRequestWithUrl:@"http://turn2.easemob.com:8082/app/talk/rooms/0/100" token:@"" completion:^(NSString * _Nonnull result, NSError * _Nonnull error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                NSData *data = [result dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                [self.dataArray addObjectsFromArray:dic[@"list"]];
+                [self.tableView reloadData];
+            }
+        });
+        
+    }];
+    
+//    NSArray *array = @[@{@"chatRoomName":@"ASD1",@"userName":@"username"},@{@"chatRoomName":@"ASD2",@"userName":@"username"},@{@"chatRoomName":@"ASD3",@"userName":@"username"},@{@"chatRoomName":@"ASD4",@"userName":@"username"},@{@"chatRoomName":@"ASD5",@"userName":@"username"},@{@"chatRoomName":@"ASD6",@"userName":@"username"},@{@"chatRoomName":@"ASD7",@"userName":@"username"},@{@"chatRoomName":@"ASD8",@"userName":@"username"}];
+//    for (NSDictionary *dict in array) {
+//        LRChatRoomListModel *model = [LRChatRoomListModel initWithChatRoomDict:dict];
+//        [self.dataArray addObject:model];
+//    }
 }
 
 - (void)_setupSubviews
@@ -136,12 +151,16 @@
     if (cell == nil) {
         cell = [[LRVoiceChatRoomListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    LRChatRoomListModel *model = nil;
-    if (tableView == self.tableView) {
-        model = [self.dataArray objectAtIndex:indexPath.row];
-    } else {
-        model = [self.searchResults objectAtIndex:indexPath.row];
-    }
+//    LRChatRoomListModel *model = nil;
+//    if (tableView == self.tableView) {
+//        model = [self.dataArray objectAtIndex:indexPath.row];
+//    } else {
+//        model = [self.searchResults objectAtIndex:indexPath.row];
+//    }
+    NSDictionary *dic = [self.dataArray objectAtIndex:indexPath.row];
+    LRChatRoomListModel *model = [[LRChatRoomListModel alloc] init];
+    model.chatRoomName = dic[@"roomname"];
+    model.userName = dic[@"roomId"];
     cell.model = model;
     return cell;
 }
@@ -150,7 +169,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomName:@"ASD123"];
+    NSDictionary *dic = [self.dataArray objectAtIndex:indexPath.row];
+    LRVoiceRoomViewController *vroomVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Audiance roomInfo:dic];
     [self presentViewController:vroomVC animated:YES completion:nil];
 }
 

@@ -7,14 +7,22 @@
 //
 
 #import "LRChatViewController.h"
+#import "LRChatHelper.h"
 #import "Headers.h"
 
-@interface LRChatViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface LRChatViewController ()<UITableViewDelegate, UITableViewDataSource, LRChatHelperDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @end
 
 @implementation LRChatViewController
+
+- (instancetype)init {
+    if (self = [super init]) {
+        [LRChatHelper.sharedInstance addDeelgate:self delegateQueue:nil];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -22,18 +30,34 @@
     [self _setupSubViews];
 }
 
+#pragma mark - LRChatHelperDelegate
+- (void)didReceiveRoomMessageWithRoomId:(NSString *)aChatroomId
+                                message:(NSString *)aMessage
+                               fromUser:(NSString *)fromUser
+                              timestamp:(long long)aTimestamp {
+    if ([aChatroomId isEqualToString:_roomInfo[@"roomid"]]) {
+        [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp];
+    }
+}
+
 #pragma mark - public
 - (void)sendText:(NSString *)aText {
     if (!aText || aText.length == 0) {
         return;
     }
-    [self addMessageToData:aText];
+    
+    [self addMessageToData:aText
+                  fromUser:LRChatHelper.sharedInstance.currentUser
+                 timestamp:[[NSDate new] timeIntervalSince1970]];
 }
 
 #pragma mark - private
-- (void)addMessageToData:(NSString *)aMessage {
-    NSString *str = [self dateFormatter:[NSDate new]];
-    NSString *from = @"username";
+- (void)addMessageToData:(NSString *)aMessage fromUser:(NSString *)aUsername timestamp:(long long)aTimestamp{
+    [LRChatHelper.sharedInstance sendMessageToChatroom:self.roomInfo[@"roomId"]
+                                               message:aMessage
+                                            completion:nil];
+    NSString *str = [self dateFormatter:aTimestamp];
+    NSString *from = aUsername;
     str = [NSString stringWithFormat:@"%@ %@ %@",str, from, aMessage];
     NSRange range = [str rangeOfString:from];
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:str];
@@ -45,7 +69,8 @@
                           atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
-- (NSString *)dateFormatter:(NSDate *)aDate {
+- (NSString *)dateFormatter:(long long)aTimestamp {
+    NSDate *aDate = [NSDate dateWithTimeIntervalSince1970:aTimestamp];
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
     fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     return [fmt stringFromDate:aDate];
@@ -114,6 +139,7 @@
 }
 
 #pragma mark - subviews
+
 - (void)_setupSubView {
     self.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.chatInfoLabel];
