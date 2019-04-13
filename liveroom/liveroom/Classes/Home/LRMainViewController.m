@@ -12,7 +12,7 @@
 #import "LRCreateVoiceChatRoomViewController.h"
 #import "LRSettingViewController.h"
 #import "LRTabBar.h"
-
+#import "LRRoomModel.h"
 
 @interface LRMainViewController () <UITabBarControllerDelegate, LRTabBarDelegate>
 
@@ -34,7 +34,7 @@
 
     [self _setupSubviews];
 
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_AFTER_CREATED_ROOM object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
 }
 
 - (void)_setupSubviews
@@ -72,10 +72,13 @@
 
 
 - (void)roomDidCreated:(NSNotification *)aNoti {
-    NSDictionary *roomInfo = aNoti.object;
-    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
-    LRVoiceRoomViewController *lrVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomInfo:roomInfo];
-    [self presentViewController:lrVC animated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    if (aNoti.object) {
+        NSDictionary *roomInfo = aNoti.object;
+        LRRoomModel *model = [LRRoomModel roomWithDict:roomInfo];
+        LRVoiceRoomViewController *lrVC = [[LRVoiceRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
+        [self presentViewController:lrVC animated:YES completion:nil];
+    }
 }
 
 @end

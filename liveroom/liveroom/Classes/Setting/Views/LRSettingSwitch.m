@@ -8,7 +8,7 @@
 
 #import "LRSettingSwitch.h"
 
-#define kPadding 4
+#define kPadding 1
 @interface LRSettingSwitch ()
 
 @property (nonatomic, strong) UIView *tagView;
@@ -37,7 +37,7 @@
     _isOn = YES;
     _isAnimated = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
-    [self.tagBackGroundView addGestureRecognizer:tap];
+    [self addGestureRecognizer:tap];
     self.tagBackGroundView.userInteractionEnabled = YES;
     self.tagBackGroundView.backgroundColor = RGBACOLOR(126, 211, 33, 1.0);
     self.tagBackGroundView.layer.cornerRadius = self.tagBackGroundView.frame.size.height/10;
@@ -108,7 +108,7 @@
 - (void)animateWithPoint:(CGPoint)point isAnimate:(BOOL)isAnimate
 {
     if (isAnimate) {
-        [UIView animateWithDuration:0.5
+        [UIView animateWithDuration:0.1
                               delay:0.01
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{

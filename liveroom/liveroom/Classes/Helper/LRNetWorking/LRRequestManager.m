@@ -29,7 +29,7 @@ static LRRequestManager *requestManager = nil;
 - (void)requestWithMethod:(NSString *)method urlString:(NSString *)url
                parameters:(NSDictionary *)parameters
                     token:(NSString *)token
-               completion:(void (^)(NSString *result,NSError *error))aCompletionBlock
+               completion:(void (^)(NSDictionary *result,NSError *aError))aCompletionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -50,14 +50,40 @@ static LRRequestManager *requestManager = nil;
     __weak typeof(self) weakself = self;
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                    aCompletionBlock([weakself requestTheResultsWithData:data],error);
+
+                                                    if (!aCompletionBlock) {
+                                                        return ;
+                                                    }
+                                                    if (error) {
+                                                        aCompletionBlock(nil, error);
+                                                        return ;
+                                                    }
+                                                    
+                                                    NSDictionary *info = [weakself requestTheResultsWithData:data];
+                                                    if ([(NSHTTPURLResponse *)response statusCode] == 200) {
+                                                        aCompletionBlock(info, error);
+                                                    } else {
+                                                        error = [NSError errorWithDomain:info[@"error"] code:[info[@"status"] integerValue] userInfo:nil];
+                                                        aCompletionBlock(info, error);
+                                                    }
                                                 }];
     [dataTask resume];
 }
 
-- (NSString *)requestTheResultsWithData:(NSData *)data
+- (NSDictionary *)requestTheResultsWithData:(NSData *)aData
 {
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSString *str = [[NSString alloc] initWithData:aData encoding:NSUTF8StringEncoding];
+    
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&err];
+    if(err) {
+        NSLog(@"json解析失败：%@",err);
+        return nil;
+    }
+    return dic;
 }
 
 @end

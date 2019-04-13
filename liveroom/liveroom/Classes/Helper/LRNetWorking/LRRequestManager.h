@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)requestWithMethod:(NSString *)method urlString:(NSString *)url
                      parameters:(NSDictionary *__nullable)parameters
                            token:(NSString *__nullable)token
-                      completion:(void (^)(NSString *result,NSError *error))aCompletionBlock;
+                      completion:(void (^ _Nullable)(NSDictionary *result,NSError *error))aCompletionBlock;
 
 @end
 

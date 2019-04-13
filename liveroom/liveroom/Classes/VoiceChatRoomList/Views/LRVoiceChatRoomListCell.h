@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class LRChatRoomListModel;
+@class LRRoomModel;
 @interface LRVoiceChatRoomListCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *chatRoomNameLabel;
 @property (nonatomic, strong) UILabel *userNameLabel;
-@property (nonatomic, strong) LRChatRoomListModel *model;
+@property (nonatomic, strong) LRRoomModel *model;
 
 @end
 

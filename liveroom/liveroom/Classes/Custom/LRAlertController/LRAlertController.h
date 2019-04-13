@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^LRAlertActionCallback)(LRAlertController *alertController);
 
 @interface LRAlertAction : UIButton
-+ (LRAlertAction *)alertActionTitle:(NSString *)aTitle callback:(LRAlertActionCallback)aCallBack;
++ (LRAlertAction *)alertActionTitle:(NSString *)aTitle callback:(LRAlertActionCallback _Nullable)aCallBack;
 @end
 
 typedef void(^CloseBlock)(void);

@@ -8,6 +8,7 @@
 
 #import "LRChatViewController.h"
 #import "LRChatHelper.h"
+#import "LRRoomModel.h"
 #import "Headers.h"
 
 @interface LRChatViewController ()<UITableViewDelegate, UITableViewDataSource, LRChatHelperDelegate>
@@ -35,7 +36,7 @@
                                 message:(NSString *)aMessage
                                fromUser:(NSString *)fromUser
                               timestamp:(long long)aTimestamp {
-    if ([aChatroomId isEqualToString:_roomInfo[@"roomid"]]) {
+    if ([aChatroomId isEqualToString:_roomModel.roomId]) {
         [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp];
     }
 }
@@ -53,7 +54,7 @@
 
 #pragma mark - private
 - (void)addMessageToData:(NSString *)aMessage fromUser:(NSString *)aUsername timestamp:(long long)aTimestamp{
-    [LRChatHelper.sharedInstance sendMessageToChatroom:self.roomInfo[@"roomId"]
+    [LRChatHelper.sharedInstance sendMessageToChatroom:self.roomModel.roomId
                                                message:aMessage
                                             completion:nil];
     NSString *str = [self dateFormatter:aTimestamp];

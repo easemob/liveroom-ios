@@ -10,6 +10,7 @@
 #import "LRVolumeView.h"
 #import "LRSpeakerTypeView.h"
 #import "LRSpeakHelper.h"
+#import "LRRoomModel.h"
 #import "Headers.h"
 
 #define kCurrentUserIsAdmin NO

@@ -11,6 +11,7 @@
 #import "LRChatViewController.h"
 #import "LRVoiceRoomHeader.h"
 #import "LRVoiceRoomTabbar.h"
+#import "LRRoomModel.h"
 #import "Headers.h"
 #import "LRChatroomMembersViewController.h"
 
@@ -30,17 +31,21 @@
 @property (nonatomic, strong) LRSpeakerViewController *speakerVC;
 @property (nonatomic, strong) LRChatViewController *chatVC;
 @property (nonatomic, strong) LRVoiceRoomTabbar *inputBar;
-@property (nonatomic, strong) NSDictionary *roomInfo;
+@property (nonatomic, strong) LRRoomModel *roomModel;
+@property (nonatomic, strong) NSString *password;
 @end
 
 @implementation LRVoiceRoomViewController
 
-- (instancetype)initWithUserType:(LRUserRoleType)aType roomInfo:(NSDictionary *)aRoomInfo {
+- (instancetype)initWithUserType:(LRUserRoleType)aType
+                       roomModel:(LRRoomModel *)aRoomModel
+                        password:(NSString *)aPassword {
     if (self = [super init]) {
         _type = aType;
-        _roomInfo = aRoomInfo;
-        self.speakerVC.roomInfo = _roomInfo;
-        self.chatVC.roomInfo = _roomInfo;
+        _roomModel = aRoomModel;
+        _password = aPassword;
+        self.speakerVC.roomModel = _roomModel;
+        self.chatVC.roomModel = _roomModel;
     }
     return self;
 }
@@ -58,7 +63,8 @@
 
 #pragma mark - subviews
 - (void)_setupSubViews {
-    self.headerView = [[LRVoiceRoomHeader alloc] initWithTitle:_roomInfo[@"roomname"] info:_roomInfo[@"roomId"]];
+    self.headerView = [[LRVoiceRoomHeader alloc] initWithTitle:_roomModel.roomname
+                                                          info:_roomModel.roomId];
     self.headerView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.headerView];
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -160,7 +166,7 @@
     dispatch_queue_t queue = dispatch_queue_create("com.easemob.liveroom", DISPATCH_QUEUE_CONCURRENT);
     dispatch_group_async(group, queue, ^{
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        [LRChatHelper.sharedInstance joinChatroomWithRoomId:weakSelf.roomInfo[@"roomId"]
+        [LRChatHelper.sharedInstance joinChatroomWithRoomId:weakSelf.roomModel.roomId
                                                  completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              self->_chatJoined = success;
@@ -171,8 +177,8 @@
     
     dispatch_group_async(group, queue, ^{
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        [LRSpeakHelper.sharedInstance joinSpeakRoomWithRoomId:weakSelf.roomInfo[@"rtcConfrId"]
-                                                     password:weakSelf.roomInfo[@"rtcConfrPassword"]
+        [LRSpeakHelper.sharedInstance joinSpeakRoomWithRoomId:weakSelf.roomModel.conferenceId
+                                                     password:weakSelf.password
                                                    completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              self->_conferenceJoined = success;
@@ -183,12 +189,12 @@
     
     dispatch_group_notify(group, queue, ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self->_conferenceJoined) {
-                [LRChatHelper.sharedInstance leaveChatroomWithRoomId:weakSelf.roomInfo[@"roomId"] completion:nil];
+            if (!self->_chatJoined) {
+                [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:weakSelf.roomModel.conferenceId completion:nil];
             }
             
-            if (!self->_chatJoined) {
-                [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:weakSelf.roomInfo[@"roomId"]  completion:nil];
+            if (!self->_conferenceJoined) {
+                [LRChatHelper.sharedInstance leaveChatroomWithRoomId:weakSelf.roomModel.roomId completion:nil];
             }
             
             if (!self->_conferenceJoined || !self->_chatJoined) {
@@ -219,6 +225,23 @@
 }
 
 - (void)closeWindowAction {
+    // TODO: delete room
+    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
+    url = [url stringByAppendingString:self.roomModel.roomId];
+    [LRRequestManager.sharedInstance requestWithMethod:@"DELETE" urlString:url parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error) {
+        [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
+    }];
+    
+    
+    /*
+    if([self.roomModel.owner isEqualToString:LRChatHelper.sharedInstance.currentUser]) {
+        NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
+        url = [url stringByAppendingString:self.roomModel.roomId];
+        [LRRequestManager.sharedInstance requestWithMethod:@"DELETE" urlString:url parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error) {
+            
+        }];
+    }
+     */
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -255,11 +278,11 @@
 }
 
 - (void)likeAction {
-    [LRChatHelper.sharedInstance sendLikeToChatroom:_roomInfo[@"roomId"] completion:nil];
+    [LRChatHelper.sharedInstance sendLikeToChatroom:_roomModel.roomId completion:nil];
 }
 
 - (void)giftAction {
-    [LRChatHelper.sharedInstance sendGiftToChatroom:_roomInfo[@"roomId"] completion:nil];
+    [LRChatHelper.sharedInstance sendGiftToChatroom:_roomModel.roomId completion:nil];
 }
 
 - (void)sendAction:(NSString *)aText {
