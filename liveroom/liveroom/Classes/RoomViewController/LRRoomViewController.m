@@ -187,21 +187,21 @@
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     });
     
-    dispatch_group_notify(group, queue, ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self->_chatJoined) {
-                [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:weakSelf.roomModel.conferenceId completion:nil];
-            }
-            
-            if (!self->_conferenceJoined) {
-                [LRChatHelper.sharedInstance leaveChatroomWithRoomId:weakSelf.roomModel.roomId completion:nil];
-            }
-            
-            if (!self->_conferenceJoined || !self->_chatJoined) {
-                [self closeWindowAction];
-            }
-        });
-    });
+//    dispatch_group_notify(group, queue, ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (!self->_chatJoined) {
+//                [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:weakSelf.roomModel.conferenceId completion:nil];
+//            }
+//            
+//            if (!self->_conferenceJoined) {
+//                [LRChatHelper.sharedInstance leaveChatroomWithRoomId:weakSelf.roomModel.roomId completion:nil];
+//            }
+//            
+//            if (!self->_conferenceJoined || !self->_chatJoined) {
+//                [self closeWindowAction];
+//            }
+//        });
+//    });
 }
 
 

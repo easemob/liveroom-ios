@@ -55,10 +55,11 @@ static LRRoomOptions *options = nil;
         self.version = [aDecoder decodeObjectForKey:lrOptions_Version];
         self.speakerNumber = [aDecoder decodeIntForKey:lrOptions_SpeakerNumber];
         self.isAllowAudienceApplyInteract = [aDecoder decodeBoolForKey:lrOptions_AllowAudienceApplyInteract];
-        self.speakerType = [aDecoder decodeIntegerForKey:lrOptions_SpeakerType];
+        self.speakerType = [aDecoder decodeIntForKey:lrOptions_SpeakerType];
         self.audioQuality = [aDecoder decodeObjectForKey:lrOptions_AudioQuality];
         self.isAllowApplyAsSpeaker = [aDecoder decodeBoolForKey:lrOptions_AllowApplyAsSpeaker];
         self.isAutomaticallyTurnOnMusic = [aDecoder decodeBoolForKey:lrOptions_AutomaticallyTurnOnMusic];
+        NSLog(@"解档self.speakerType ---%d", self.speakerType);
     }
     return self;
 }
@@ -69,10 +70,11 @@ static LRRoomOptions *options = nil;
     [aCoder encodeObject:self.version forKey:lrOptions_Version];
     [aCoder encodeInt:self.speakerNumber forKey:lrOptions_SpeakerNumber];
     [aCoder encodeBool:self.isAllowAudienceApplyInteract forKey:lrOptions_AllowAudienceApplyInteract];
-    [aCoder encodeInteger:self.speakerType forKey:lrOptions_SpeakerType];
+    [aCoder encodeInt:self.speakerType forKey:lrOptions_SpeakerType];
     [aCoder encodeObject:self.audioQuality forKey:lrOptions_AudioQuality];
     [aCoder encodeBool:self.isAllowApplyAsSpeaker forKey:lrOptions_AllowApplyAsSpeaker];
     [aCoder encodeBool:self.isAutomaticallyTurnOnMusic forKey:lrOptions_AutomaticallyTurnOnMusic];
+    NSLog(@"归档self.speakerType ---%d", self.speakerType);
 }
 
 - (void)archive

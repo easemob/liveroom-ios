@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL isOn;
 
 -(id)initWithFrame:(CGRect)frame;
-- (void)setOn:(BOOL)on animated:(BOOL)animated;
+- (void)setOn:(BOOL)isOn animated:(BOOL)animated;
 
 @end
 

@@ -73,7 +73,7 @@ static LRRequestManager *requestManager = nil;
 - (NSDictionary *)requestTheResultsWithData:(NSData *)aData
 {
     NSString *str = [[NSString alloc] initWithData:aData encoding:NSUTF8StringEncoding];
-    
+    NSLog(@"str---%@", str);
     NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
     NSError *err;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData

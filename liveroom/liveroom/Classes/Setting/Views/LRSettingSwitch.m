@@ -73,10 +73,11 @@
 }
 
 // 开关打开，关闭设置
-- (void)setOn:(BOOL)on animated:(BOOL)animated{
+- (void)setOn:(BOOL)isOn animated:(BOOL)animated{
+    _isOn = isOn;
     _isAnimated = animated;
-    [self switchSettingWithOn:on animated:_isAnimated];
-    [self switchViewColorChange:on];
+    [self switchSettingWithOn:isOn animated:_isAnimated];
+    [self switchViewColorChange:isOn];
 }
 
 - (void)switchViewColorChange:(BOOL)isOn

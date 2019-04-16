@@ -9,7 +9,6 @@
 #import "LRSettingViewController.h"
 #import "LRSettingTableViewCell.h"
 #import "LRSettingSwitch.h"
-#import "LRSpeakerTypeView.h"
 #import "LRRoomOptions.h"
 
 #define kPadding 16
@@ -117,7 +116,15 @@
     } else if (section == 2) {
         [self displayWithCell:cell title:@"Allow apply for interact default" details:@"允许观众申请连麦" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:options.isAllowAudienceApplyInteract isAnimated:YES];
     } else if (section == 3) {
-        [self displayWithCell:cell title:@"type of voiceChatroom" details:@"主持,抢麦,互动三种模式的默认参数" detailText:@"host" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:YES];
+        NSString *speakerTypeString = nil;
+        if (options.speakerType == 1) {
+            speakerTypeString = @"host";
+        } else if (options.speakerType == 2) {
+            speakerTypeString = @"monopoly";
+        } else {
+            speakerTypeString = @"communication";
+        }
+        [self displayWithCell:cell title:@"type of voiceChatroom" details:@"主持,抢麦,互动三种模式的默认参数" detailText:speakerTypeString accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:YES];
     } else if (section == 4) {
         [self displayWithCell:cell title:@"audio quality default" details:@"默认音质参数" detailText:@"highleve(unmix)" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:YES];
     } else if (section == 5) {
@@ -166,31 +173,41 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    LRRoomOptions *options = [LRRoomOptions sharedOptions];
     if (indexPath.section == 3) {
-        __weak typeof(self)weakSelf = self;
-        LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示 tip" info:@"切换房间互动模式会初始化麦序。主播模式为当前只有管理员能发言；抢麦模式为当前只有管理员可以发言；互动模式为全部主播均可发言。请确认切换的模式。"];
-        LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式 Host"
-                                                           callback:^(LRAlertController * _Nonnull alertController)
-                                     {
-//                                         [weakSelf.speakerTypeView setType:LRSpeakerType_Host];
-                                     }];
-        
-        LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式 monopoly"
+        LRSettingTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示 tip" info:@"切换房间互动模式会初始化麦序。主播模式为当前只有管理员能发言；抢麦模式为当前只有管理员可以发言；互动模式为全部主播均可发言。请确认切换的模式。"];
+            LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式 Host"
                                                                callback:^(LRAlertController * _Nonnull alertController)
                                          {
-//                                             [weakSelf.speakerTypeView setType:LRSpeakerType_Monopoly];
+                                             options.speakerType = 1;
+                                             [options archive];
+                                             cell.detailTextLabel.text = @"host";
                                          }];
-        
-        LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 communication"
-                                                                    callback:^(LRAlertController * _Nonnull alertController)
-                                              {
-//                                                  [weakSelf.speakerTypeView setType:LRSpeakerType_Communication];
-                                              }];
-        
-        [alert addAction:hostAction];
-        [alert addAction:monopolyAction];
-        [alert addAction:communicationAction];
-        [self presentViewController:alert animated:YES completion:nil];
+            
+            LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式 monopoly"
+                                                                   callback:^(LRAlertController * _Nonnull alertController)
+                                             {
+                                                 options.speakerType = 2;
+                                                 [options archive];
+                                                 cell.detailTextLabel.text = @"monopoly";
+                                             }];
+            
+            LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 communication"
+                                                                        callback:^(LRAlertController * _Nonnull alertController)
+                                                  {
+                                                      options.speakerType = 3;
+                                                      [options archive];
+                                                      cell.detailTextLabel.text = @"communication";
+                                                  }];
+            
+            [alert addAction:hostAction];
+            [alert addAction:monopolyAction];
+            [alert addAction:communicationAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        });
     }
 }
 
@@ -198,7 +215,6 @@
 - (void)settingSwitchWithValueChanged:(LRSettingSwitch *)aSwitch
 {
     LRRoomOptions *options = [LRRoomOptions sharedOptions];
-    NSLog(@"switch.tag---%ld,isOn------%d", aSwitch.tag,aSwitch.isOn);
     NSInteger tag = aSwitch.tag;
     switch (tag) {
         case 20:

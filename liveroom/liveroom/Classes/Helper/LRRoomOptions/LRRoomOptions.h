@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LRSpeakerTypeView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 static NSString *lrOptions_Version = @"Appkey";
@@ -23,7 +22,7 @@ static NSString *lrOptions_AutomaticallyTurnOnMusic = @"AutomaticallyTurnOnMusic
 @property (nonatomic, strong) NSString *version;
 @property (nonatomic, assign) int speakerNumber;
 @property (nonatomic, assign) BOOL isAllowAudienceApplyInteract;
-@property (nonatomic, assign) LRSpeakerType speakerType;
+@property (nonatomic, assign) int speakerType;
 @property (nonatomic, strong) NSString *audioQuality;
 @property (nonatomic, assign) BOOL isAllowApplyAsSpeaker;
 @property (nonatomic, assign) BOOL isAutomaticallyTurnOnMusic;
