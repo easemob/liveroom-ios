@@ -34,8 +34,8 @@
 }
 
 - (void)_setupSubviews{
-    _isOn = YES;
-    _isAnimated = YES;
+//    _isOn = YES;
+//    _isAnimated = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
     [self addGestureRecognizer:tap];
     self.tagBackGroundView.userInteractionEnabled = YES;

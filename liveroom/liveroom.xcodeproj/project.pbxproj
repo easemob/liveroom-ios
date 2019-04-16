@@ -49,9 +49,9 @@
 		E04712E2225C907600F9910C /* LRFindView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E1225C907600F9910C /* LRFindView.m */; };
 		E04712F0225DEEB600F9910C /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712EF225DEEB600F9910C /* LRVolumeView.m */; };
 		E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712F6225F1A5900F9910C /* LRRequestManager.m */; };
-		E04712FB225F46D300F9910C /* UIImage+LRImageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712FA225F46D200F9910C /* UIImage+LRImageColor.m */; };
 		E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */; };
 		E047130022606E7900F9910C /* delete_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712FF22606E7900F9910C /* delete_input@2x.png */; };
+		E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E096BE5E22641FB7007908BB /* LRRoomOptions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -137,11 +137,11 @@
 		E04712EF225DEEB600F9910C /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
 		E04712F6225F1A5900F9910C /* LRRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRRequestManager.m; sourceTree = "<group>"; };
 		E04712F7225F1A5900F9910C /* LRRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRequestManager.h; sourceTree = "<group>"; };
-		E04712F9225F46D200F9910C /* UIImage+LRImageColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+LRImageColor.h"; sourceTree = "<group>"; };
-		E04712FA225F46D200F9910C /* UIImage+LRImageColor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LRImageColor.m"; sourceTree = "<group>"; };
 		E04712FC22602FC800F9910C /* LRCreateRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCreateRoomViewController.h; sourceTree = "<group>"; };
 		E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCreateRoomViewController.m; sourceTree = "<group>"; };
 		E04712FF22606E7900F9910C /* delete_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete_input@2x.png"; sourceTree = "<group>"; };
+		E096BE5D22641FB7007908BB /* LRRoomOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomOptions.h; sourceTree = "<group>"; };
+		E096BE5E22641FB7007908BB /* LRRoomOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomOptions.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -315,8 +315,6 @@
 			children = (
 				90F2C6912254C08600A712B8 /* UIView+LRCategory.h */,
 				90F2C6922254C08600A712B8 /* UIView+LRCategory.m */,
-				E04712F9225F46D200F9910C /* UIImage+LRImageColor.h */,
-				E04712FA225F46D200F9910C /* UIImage+LRImageColor.m */,
 				902B51EB2261BCFD000EC701 /* UIViewController+LRAlert.h */,
 				902B51EC2261BCFD000EC701 /* UIViewController+LRAlert.m */,
 			);
@@ -421,6 +419,7 @@
 		90F2C6C02254C08600A712B8 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				E096BE5C22641F50007908BB /* LRRoomOptions */,
 				902B521A2261E43D000EC701 /* LRRoomSpecimen */,
 				9060013B225EE35B00CD8BAA /* LRChatHelper */,
 				9060013A225EE35B00CD8BAA /* LRSpeakHelper */,
@@ -487,6 +486,15 @@
 				E04712F6225F1A5900F9910C /* LRRequestManager.m */,
 			);
 			path = LRNetWorking;
+			sourceTree = "<group>";
+		};
+		E096BE5C22641F50007908BB /* LRRoomOptions */ = {
+			isa = PBXGroup;
+			children = (
+				E096BE5D22641FB7007908BB /* LRRoomOptions.h */,
+				E096BE5E22641FB7007908BB /* LRRoomOptions.m */,
+			);
+			path = LRRoomOptions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -649,13 +657,13 @@
 				E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
 				90F2C6D62254C08600A712B8 /* LRRoomModel.m in Sources */,
-				E04712FB225F46D300F9910C /* UIImage+LRImageColor.m in Sources */,
 				9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */,
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
 				E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */,
 				9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */,
 				902B521D2261E44F000EC701 /* LRRoomSpecimen.m in Sources */,
+				E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */,
 				9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
 				E04712F0225DEEB600F9910C /* LRVolumeView.m in Sources */,

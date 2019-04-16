@@ -7,7 +7,6 @@
 //
 
 #import "LRSearchBar.h"
-#import "UIImage+LRImageColor.h"
 
 @interface LRSearchBar()<UITextFieldDelegate>
 

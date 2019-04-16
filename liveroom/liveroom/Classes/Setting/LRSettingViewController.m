@@ -9,11 +9,14 @@
 #import "LRSettingViewController.h"
 #import "LRSettingTableViewCell.h"
 #import "LRSettingSwitch.h"
+#import "LRSpeakerTypeView.h"
+#import "LRRoomOptions.h"
 
 #define kPadding 16
 @interface LRSettingViewController () <UITableViewDelegate, UITableViewDataSource, LRSettingSwitchDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UITableView *tableView;
+
 @end
 
 @implementation LRSettingViewController
@@ -22,6 +25,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self _setupSubviews];
+    
 }
 
 - (void)_setupSubviews
@@ -50,6 +54,7 @@
         make.right.equalTo(self.view).offset(-kPadding);
         make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
     }];
+    
 }
 
 #pragma mark - TablevViewDataSource
@@ -101,22 +106,24 @@
         switchControl = [cell.contentView viewWithTag:(section * 10 + row)];
     }
     
+    LRRoomOptions *options = [LRRoomOptions sharedOptions];
+    
     cell.detailTextLabel.text = nil;
     cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
     if (section == 0) {
-        [self displayWithCell:cell title:@"版本version" details:nil detailText:@"1.01" accessoryType:UITableViewCellAccessoryNone switchControl:nil isSwitch:NO isAnimated:NO];
+        [self displayWithCell:cell title:@"版本version" details:nil detailText:options.version accessoryType:UITableViewCellAccessoryNone switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 1) {
-        [self displayWithCell:cell title:@"speakerNumberLimited default" details:@"默认创建voicechatroom互动主播数" detailText:@"6" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:NO];
+        [self displayWithCell:cell title:@"speakerNumberLimited default" details:@"默认创建voicechatroom互动主播数" detailText:[NSString stringWithFormat:@"%d", options.speakerNumber] accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 2) {
-        [self displayWithCell:cell title:@"Allow apply for interact default" details:@"允许观众申请连麦" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:YES isAnimated:YES];
+        [self displayWithCell:cell title:@"Allow apply for interact default" details:@"允许观众申请连麦" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:options.isAllowAudienceApplyInteract isAnimated:YES];
     } else if (section == 3) {
         [self displayWithCell:cell title:@"type of voiceChatroom" details:@"主持,抢麦,互动三种模式的默认参数" detailText:@"host" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:YES];
     } else if (section == 4) {
         [self displayWithCell:cell title:@"audio quality default" details:@"默认音质参数" detailText:@"highleve(unmix)" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:YES];
     } else if (section == 5) {
-        [self displayWithCell:cell title:@"audio agree to apply as speaker" details:@"自动允许上麦申请" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:YES isAnimated:YES];
+        [self displayWithCell:cell title:@"audio agree to apply as speaker" details:@"自动允许上麦申请" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:options.isAllowApplyAsSpeaker isAnimated:YES];
     } else if (section == 6) {
-        [self displayWithCell:cell title:@"Automatically turn on music" details:@"创建直播间默认开启背景音乐" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:YES isAnimated:YES];
+        [self displayWithCell:cell title:@"Automatically turn on music" details:@"创建直播间默认开启背景音乐" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:options.isAutomaticallyTurnOnMusic isAnimated:YES];
     }
     
     return cell;
@@ -157,10 +164,64 @@
     return nil;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 3) {
+        __weak typeof(self)weakSelf = self;
+        LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示 tip" info:@"切换房间互动模式会初始化麦序。主播模式为当前只有管理员能发言；抢麦模式为当前只有管理员可以发言；互动模式为全部主播均可发言。请确认切换的模式。"];
+        LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式 Host"
+                                                           callback:^(LRAlertController * _Nonnull alertController)
+                                     {
+//                                         [weakSelf.speakerTypeView setType:LRSpeakerType_Host];
+                                     }];
+        
+        LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式 monopoly"
+                                                               callback:^(LRAlertController * _Nonnull alertController)
+                                         {
+//                                             [weakSelf.speakerTypeView setType:LRSpeakerType_Monopoly];
+                                         }];
+        
+        LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 communication"
+                                                                    callback:^(LRAlertController * _Nonnull alertController)
+                                              {
+//                                                  [weakSelf.speakerTypeView setType:LRSpeakerType_Communication];
+                                              }];
+        
+        [alert addAction:hostAction];
+        [alert addAction:monopolyAction];
+        [alert addAction:communicationAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
 #pragma mark LRSettingSwitchDelegate
 - (void)settingSwitchWithValueChanged:(LRSettingSwitch *)aSwitch
 {
-    NSLog(@"isOn------%d", aSwitch.isOn);
+    LRRoomOptions *options = [LRRoomOptions sharedOptions];
+    NSLog(@"switch.tag---%ld,isOn------%d", aSwitch.tag,aSwitch.isOn);
+    NSInteger tag = aSwitch.tag;
+    switch (tag) {
+        case 20:
+        {
+            options.isAllowAudienceApplyInteract = aSwitch.isOn;
+            [options archive];
+        }
+            break;
+        case 50:
+        {
+            options.isAllowApplyAsSpeaker = aSwitch.isOn;
+            [options archive];
+        }
+            break;
+        case 60:
+        {
+            options.isAutomaticallyTurnOnMusic = aSwitch.isOn;
+            [options archive];
+        }
+            break;
+        default:
+            break;
+    }
     
 }
 
