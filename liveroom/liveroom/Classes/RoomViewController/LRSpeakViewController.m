@@ -15,10 +15,13 @@
 
 #define kCurrentUserIsAdmin NO
 
+#define kMaxSpeakerCount 6
+
 @interface LRSpeakViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakerTypeViewDelegate, LRSpeakHelperDelegate>
-@property (nonatomic, strong) UITableView *tableView;
+
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
+@property (nonatomic, strong) NSMutableArray *memberList;
 @end
 
 @implementation LRSpeakViewController
@@ -35,12 +38,16 @@
     self.view.backgroundColor = [UIColor blackColor];
     [self _setupSubViews];
     [self.headerView setType:LRSpeakerType_Host];
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < kMaxSpeakerCount; i++) {
         LRSpeakerCellModel *model = [[LRSpeakerCellModel alloc] init];
         [self.dataAry addObject:model];
     }
-
+    
     [self.tableView reloadData];
+    
+    if ([self.roomModel.owner isEqualToString:kCurrentUsername]) {
+        [self addMemberToDataAry:kCurrentUsername mute:NO admin:YES];
+    }
 }
 
 - (void)_setupSubViews {
@@ -112,14 +119,91 @@
     return cell;
 }
 
+#pragma mark - Actions
+// 添加speaker
+- (void)addMemberToDataAry:(NSString *)aMember
+                      mute:(BOOL)isMute
+                     admin:(BOOL)isAdmin{
+    
+    LRSpeakerCellModel *nModel = nil;
+    for (LRSpeakerCellModel *model in self.dataAry) {
+        if ([model.username isEqualToString:@""]) {
+            nModel = model; // 取第一个空的cell赋值
+            break;
+        }
+    }
+    
+    if (nModel) {
+        nModel.username = aMember;
+        nModel.isMute = isMute;
+        nModel.isAdmin = isAdmin;
+        [self.tableView reloadData];
+    }
+}
 
+// 删除speaker
+- (void)removeMemberFromDataAry:(NSString *)aMemeber {
+    LRSpeakerCellModel *dModel = nil;
+    @synchronized (self.dataAry) {
+        for (LRSpeakerCellModel *model in self.dataAry) {
+            if ([model.username isEqualToString:aMemeber]) {
+                dModel = model;
+                break;
+            }
+        }
+        
+        if (dModel) {
+            dModel.username = @"";
+            dModel.isMute = NO;
+            dModel.isAdmin = NO;
+            // 将空的放到最后一个位置
+            [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
+            [self.tableView reloadData];
+        }
+    }
+}
+
+#pragma mark - LRSpeakHelperDelegate
+
+// 收到有人上麦回调
+- (void)receiveSomeoneOnSpeaker:(NSString *)aUsername mute:(BOOL)isMute{
+    if ([self.memberList containsObject:aUsername]) {
+        return;
+    }
+    [self.memberList addObject:aUsername];
+    BOOL isAdmin = [self.roomModel.owner isEqualToString:aUsername];
+    [self addMemberToDataAry:aUsername mute:isMute admin:isAdmin];
+}
+
+// 收到有人下麦回调
+- (void)receiveSomeoneOffSpeaker:(NSString *)aUsername {
+    if (![self.memberList containsObject:aUsername]) {
+        return;
+    }
+    [self.memberList removeObject:aUsername];
+    [self removeMemberFromDataAry:aUsername] ;
+}
+
+// 收到成员静音状态变化
+- (void)receiveSpeakerMute:(NSString *)aUsername
+                      mute:(BOOL)isMute {
+    for (LRSpeakerCellModel *model in self.dataAry) {
+        if ([model.username isEqualToString:aUsername]) {
+            model.isMute = isMute;
+            break;
+        }
+    }
+    [self.tableView reloadData];
+}
+
+// TODO: 设置会议属性，会议属性变化
 
 #pragma mark - getter
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.tableFooterView = [UIView new];
-        _tableView.backgroundColor = LRColor_HeightBlackColor;
+        _tableView.backgroundColor = [UIColor clearColor];
         _tableView.rowHeight = UITableViewAutomaticDimension;
         _tableView.estimatedRowHeight = 60;
         _tableView.delegate = self;
@@ -144,6 +228,13 @@
     return _dataAry;
 }
 
+- (NSMutableArray *)memberList {
+    if (!_memberList) {
+        _memberList = [NSMutableArray array];
+    }
+    return _memberList;
+}
+
 @end
 
 @interface LRSpeakerCell ()
@@ -164,7 +255,7 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
         self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = LRColor_HeightBlackColor;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self _setupSubViews];
     }
@@ -220,7 +311,7 @@
     BOOL disconnectBtnNeedShow = NO;
     
     // 如果有数据
-    if (_model.username) {
+    if (![_model.username isEqualToString:@""]) {
         self.nameLabel.text = _model.username;
         self.lightView.backgroundColor = !_model.isMute ? [UIColor yellowColor] : LRColor_MiddleBlackColor;
         if (_model.isAdmin) {
@@ -358,4 +449,10 @@
 @end
 
 @implementation LRSpeakerCellModel
+- (instancetype)init {
+    if (self = [super init]) {
+        self.username = @"";
+    }
+    return self;
+}
 @end

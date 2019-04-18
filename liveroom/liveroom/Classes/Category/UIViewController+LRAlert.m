@@ -15,4 +15,11 @@
     LRAlertAction *action = [LRAlertAction alertActionTitle:@"确定" callback:nil];
     [self presentViewController:alert animated:YES completion:nil];
 }
+
+- (void)showTipsAlertWithTitle:(NSString *)aTitle info:(NSString *)aInfo {
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:aTitle info:aInfo];
+    LRAlertAction *action = [LRAlertAction alertActionTitle:@"确定" callback:nil];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 @end

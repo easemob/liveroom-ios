@@ -30,6 +30,7 @@
     if (self = [super init]) {
         _delegates = (LRGCDMulticastDelegate<LRChatHelperDelegate> *)[[LRGCDMulticastDelegate alloc] init];
         [self _registerImSDK];
+        [self _registerIMDelegates];
     }
     return self;
 }
@@ -56,7 +57,7 @@
 }
 
 #pragma mark register delegates
-- (void)registerIMDelegates {
+- (void)_registerIMDelegates {
     [EMClient.sharedClient.chatManager addDelegate:self delegateQueue:nil];
     [EMClient.sharedClient.roomManager addDelegate:self delegateQueue:nil];
 }
@@ -154,6 +155,29 @@
 }
 
 #pragma mark - EMChatManagerDelegate
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages {
+    for (EMMessage *msg in aCmdMessages) {
+        NSString *action = msg.ext[kRequestKey];
+        if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
+        {
+            [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_OnSpeak_Apply
+                                                              object:@{msg.conversationId:msg.from}];
+        }
+        
+        if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件
+        {
+            [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_OnSpeak_Reject
+                                                              object:@{msg.conversationId:msg.from}];
+        }
+        
+        if ([action isEqualToString:kRequestToBe_Audience]) // 收到下麦事件
+        {
+            [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_ToBe_Audience
+                                                              object:@{msg.conversationId:msg.from}];
+        }
+    }
+}
+
 - (void)messagesDidReceive:(NSArray *)aMessages {
 
     for (EMMessage *msg in aMessages) {
@@ -166,14 +190,14 @@
         }
         
         // TODO: 解析gift， like 事件
-        BOOL isLike = YES;
+        BOOL isLike = NO;
         if (isLike) {
             [_delegates didReceiveRoomLikeActionWithRoomId:msg.conversationId];
             continue;
         }
         
         
-        BOOL isGift = YES;
+        BOOL isGift = NO;
         if (isGift) {
             [_delegates didReceiveRoomGiftActionWithRoomId:msg.conversationId];
             continue;

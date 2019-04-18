@@ -147,7 +147,9 @@
     
     __weak typeof(self) weakSelf = self;
     
-    [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:@"http://turn2.easemob.com:8082/app/huangcl/create/talk/room" parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
+    NSString *url = [NSString stringWithFormat:@"http://turn2.easemob.com:8082/app/%@/create/talk/room", kCurrentUsername];;
+    
+    [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:url parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
