@@ -14,6 +14,7 @@
 @interface LRChatViewController ()<UITableViewDelegate, UITableViewDataSource, LRChatHelperDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
+
 @end
 
 @implementation LRChatViewController
@@ -46,6 +47,12 @@
     if (!aText || aText.length == 0) {
         return;
     }
+    [LRChatHelper.sharedInstance sendMessageToChatroom:self.roomModel.roomId
+                                               message:aText
+                                            completion:^(NSString * _Nonnull errorInfo, BOOL success)
+     {
+         // 此处没有处理发送失败的情况，不论发送是否成功，均上屏;
+     }];
     
     [self addMessageToData:aText
                   fromUser:LRChatHelper.sharedInstance.currentUser
@@ -54,9 +61,6 @@
 
 #pragma mark - private
 - (void)addMessageToData:(NSString *)aMessage fromUser:(NSString *)aUsername timestamp:(long long)aTimestamp{
-    [LRChatHelper.sharedInstance sendMessageToChatroom:self.roomModel.roomId
-                                               message:aMessage
-                                            completion:nil];
     NSString *str = [self dateFormatter:aTimestamp];
     NSString *from = aUsername;
     str = [NSString stringWithFormat:@"%@ %@ %@",str, from, aMessage];

@@ -46,7 +46,15 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
+// Account
+#define kCurrentUsername EMClient.sharedClient.currentUsername
 
+
+// Join
+#define kRequestKey @"em_conference_op"
+#define kRequestToBe_Speaker @"request_tobe_speaker"        // 申请上麦
+#define kRequestToBe_Audience @"request_tobe_audience"      // 申请下麦
+#define kRequestToBe_Rejected @"request_tobe_rejected"      // 拒绝上麦申请
 
 // define
 #define LRLog(x)  DDLogInfo(x);

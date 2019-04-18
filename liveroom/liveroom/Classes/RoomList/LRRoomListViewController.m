@@ -262,7 +262,7 @@
 #pragma mark - Actions
 
 - (void)joinRoomWithModel:(LRRoomModel *)aModel {
-    // TODO: show info, join room.
+
     LRAlertController *alert = [LRAlertController showSuccessAlertWithTitle:aModel.roomname info:nil];
     alert.textField = [[UITextField alloc] init];
     LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"加入" callback:^(LRAlertController * _Nonnull alertController) {
