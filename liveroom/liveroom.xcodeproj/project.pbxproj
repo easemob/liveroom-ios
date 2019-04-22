@@ -68,7 +68,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				905F023F22697E250063D558 /* Hyphenate.framework in Embed Frameworks */,
+                905F023F22697E250063D558 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,7 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
-				905F023E22697E250063D558 /* Hyphenate.framework in Frameworks */,
+                905F023E22697E250063D558 /* Hyphenate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +287,7 @@
 		90F2C66A2254C02A00A712B8 /* liveroom */ = {
 			isa = PBXGroup;
 			children = (
+				E096C5E32269B77D007908BB /* Hyphenate.framework */,
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
 				9080C4FB226D7B2100E1DCC5 /* LRTypes.h */,
 				90F2C6A32254C08600A712B8 /* Headers.h */,

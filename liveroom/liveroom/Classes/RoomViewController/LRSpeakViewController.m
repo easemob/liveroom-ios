@@ -92,13 +92,14 @@
                      admin:(BOOL)isAdmin{
     
     LRSpeakerCellModel *nModel = nil;
+    int i = 0;
     for (LRSpeakerCellModel *model in self.dataAry) {
         if ([model.username isEqualToString:@""]) {
             nModel = model; // 取第一个空的cell赋值
+            i++;
             break;
         }
     }
-    
     if (nModel) {
         nModel.username = aMember;
         nModel.isMute = isMute;

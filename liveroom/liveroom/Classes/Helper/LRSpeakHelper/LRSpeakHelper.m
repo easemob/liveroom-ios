@@ -14,7 +14,6 @@
 {
     LRGCDMulticastDelegate <LRSpeakHelperDelegate> *_delegates;
 }
-
 @property (nonatomic, strong) NSString *pubStreamId;
 
 @end
