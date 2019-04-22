@@ -7,7 +7,6 @@
 //
 
 #import "LRSearchBar.h"
-#import "UIImage+LRImageColor.h"
 
 @interface LRSearchBar()<UITextFieldDelegate>
 
@@ -35,7 +34,6 @@
 }
 
 #pragma mark - Subviews
-
 - (void)_setupSubviews
 {
     self.textField = [[UITextField alloc] init];
@@ -46,7 +44,7 @@
     UIButton *clear = [self.textField valueForKey:@"_clearButton"];
     [clear setImage:[UIImage imageNamed:@"delete_input"] forState:UIControlStateNormal];
     [self.textField setupTextField];
-    [self.textField strokeWithColor:LRStrokeWhite];
+    [self.textField strokeWithColor:LRStrokeLowBlack];
     [self addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
@@ -109,7 +107,7 @@
 - (void)setPlaceholderTextFont:(CGFloat)placeholderTextFont
 {
     _placeholderTextFont = placeholderTextFont;
-    [self.textField setValue:[UIFont boldSystemFontOfSize:_placeholderTextFont] forKeyPath:@"_placeholderLabel.font"];
+    [self.textField setValue:[UIFont systemFontOfSize:_placeholderTextFont] forKeyPath:@"_placeholderLabel.font"];
 }
 
 #pragma mark - UITextFieldDelegate

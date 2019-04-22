@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol LRSpeakerTypeViewDelegate <NSObject>
 - (void)switchBtnClicked;
+- (void)speakerTypeWithSelect:(LRRoomType)type;
 @end
 
 @interface LRSpeakerTypeView : UIView

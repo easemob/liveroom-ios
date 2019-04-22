@@ -27,6 +27,8 @@
 @interface LRRoomViewController () <LRVoiceRoomTabbarDelgate, LRSpeakHelperDelegate> {
     BOOL _chatJoined;
     BOOL _conferenceJoined;
+    BOOL _chatLeave;
+    BOOL _conferenceLeave;
 }
 @property (nonatomic, assign) LRUserRoleType type;
 @property (nonatomic, strong) LRVoiceRoomHeader *headerView;

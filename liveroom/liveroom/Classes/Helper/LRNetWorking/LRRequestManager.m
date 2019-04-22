@@ -73,14 +73,13 @@ static LRRequestManager *requestManager = nil;
 - (NSDictionary *)requestTheResultsWithData:(NSData *)aData
 {
     NSString *str = [[NSString alloc] initWithData:aData encoding:NSUTF8StringEncoding];
-    
     NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *err;
+    NSError *error;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
                                                         options:NSJSONReadingMutableContainers
-                                                          error:&err];
-    if(err) {
-        NSLog(@"json解析失败：%@",err);
+                                                          error:&error];
+    if(error) {
+        NSLog(@"json解析失败：%@",error);
         return nil;
     }
     return dic;

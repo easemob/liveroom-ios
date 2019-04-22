@@ -14,7 +14,7 @@
 {
     LRGCDMulticastDelegate <LRSpeakHelperDelegate> *_delegates;
 }
-@property (nonatomic, strong) EMCallConference *conference;
+
 @property (nonatomic, strong) NSString *pubStreamId;
 
 @end

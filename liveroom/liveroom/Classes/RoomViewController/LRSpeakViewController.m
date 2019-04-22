@@ -92,23 +92,22 @@
                      admin:(BOOL)isAdmin{
     
     LRSpeakerCellModel *nModel = nil;
-
-        for (LRSpeakerCellModel *model in self.dataAry) {
-            if ([model.username isEqualToString:@""]) {
-                nModel = model; // 取第一个空的cell赋值
-                break;
-            }
+    for (LRSpeakerCellModel *model in self.dataAry) {
+        if ([model.username isEqualToString:@""]) {
+            nModel = model; // 取第一个空的cell赋值
+            break;
         }
-        
-        if (nModel) {
-            nModel.username = aMember;
-            nModel.isMute = isMute;
-            nModel.isAdmin = isAdmin;
-            nModel.isMyself = [aMember isEqualToString:kCurrentUsername];
-        }
-        if (isAdmin) {
-            [self.dataAry replaceObjectAtIndex:0 withObject:nModel];
-        }
+    }
+    
+    if (nModel) {
+        nModel.username = aMember;
+        nModel.isMute = isMute;
+        nModel.isAdmin = isAdmin;
+        nModel.isMyself = [aMember isEqualToString:kCurrentUsername];
+    }
+    if (isAdmin) {
+        [self.dataAry replaceObjectAtIndex:0 withObject:nModel];
+    }
     
     [self.tableView reloadData];
 }
