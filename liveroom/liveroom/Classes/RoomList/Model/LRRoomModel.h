@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LRTypes.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *roomId;
 @property (nonatomic, copy) NSString *conferenceId;
 @property (nonatomic, copy) NSString *owner;
+@property (nonatomic) LRRoomType roomType;
 
 + (instancetype)roomWithDict:(NSDictionary *)dict;
 @end

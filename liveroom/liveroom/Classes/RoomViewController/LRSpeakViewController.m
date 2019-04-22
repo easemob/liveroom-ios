@@ -13,11 +13,9 @@
 #import "LRRoomModel.h"
 #import "Headers.h"
 
-#define kCurrentUserIsAdmin NO
-
 #define kMaxSpeakerCount 6
 
-@interface LRSpeakViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakerTypeViewDelegate, LRSpeakHelperDelegate>
+@interface LRSpeakViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakHelperDelegate>
 
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
@@ -37,17 +35,13 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self _setupSubViews];
-    [self.headerView setType:LRSpeakerType_Host];
+    [self.headerView setType:LRRoomType_Communication];
     for (int i = 0; i < kMaxSpeakerCount; i++) {
         LRSpeakerCellModel *model = [[LRSpeakerCellModel alloc] init];
         [self.dataAry addObject:model];
     }
     
     [self.tableView reloadData];
-    
-    if ([self.roomModel.owner isEqualToString:kCurrentUsername]) {
-        [self addMemberToDataAry:kCurrentUsername mute:NO admin:YES];
-    }
 }
 
 - (void)_setupSubViews {
@@ -63,36 +57,6 @@
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.view);
     }];
-}
-
-#pragma mark - LRSpeakerTypeViewDelegate
-- (void)switchBtnClicked {
-    
-    __weak typeof(self)weakSelf = self;
-    
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示 tip" info:@"切换房间互动模式会初始化麦序。主播模式为当前只有管理员能发言；抢麦模式为当前只有管理员可以发言；互动模式为全部主播均可发言。请确认切换的模式。"];
-    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式 Host"
-                                                       callback:^(LRAlertController * _Nonnull alertController)
-                                 {
-                                     [weakSelf.headerView setType:LRSpeakerType_Host];
-                                 }];
-    
-    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式 monopoly"
-                                                           callback:^(LRAlertController * _Nonnull alertController)
-                                     {
-                                         [weakSelf.headerView setType:LRSpeakerType_Monopoly];
-                                     }];
-    
-    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 communication"
-                                                                callback:^(LRAlertController * _Nonnull alertController)
-                                          {
-                                              [weakSelf.headerView setType:LRSpeakerType_Communication];
-                                          }];
-    
-    [alert addAction:hostAction];
-    [alert addAction:monopolyAction];
-    [alert addAction:communicationAction];
-    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - table view delegate & datasource
@@ -115,7 +79,9 @@
             cell = [[LRSpeakerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LRSpeakerOffCell"];
         }
     }
-    [cell setModel:model];
+    cell.model = model;
+    cell.isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
+    [cell updateSubViewUI];
     return cell;
 }
 
@@ -138,19 +104,21 @@
         nModel.username = aMember;
         nModel.isMute = isMute;
         nModel.isAdmin = isAdmin;
-        [self.tableView reloadData];
+        nModel.isMyself = [aMember isEqualToString:kCurrentUsername];
     }
+    if (isAdmin) {
+        [self.dataAry replaceObjectAtIndex:0 withObject:nModel];
+    }
+    
+    [self.tableView reloadData];
 }
 
 // 删除speaker
 - (void)removeMemberFromDataAry:(NSString *)aMemeber {
     LRSpeakerCellModel *dModel = nil;
-    int i = 0;
-    @synchronized (self.dataAry) {
         for (LRSpeakerCellModel *model in self.dataAry) {
             if ([model.username isEqualToString:aMemeber]) {
                 dModel = model;
-                i++;
                 break;
             }
         }
@@ -159,11 +127,12 @@
             dModel.username = @"";
             dModel.isMute = NO;
             dModel.isAdmin = NO;
+            dModel.isMyself = NO;
             // 将空的放到最后一个位置
-            [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
-            [self.tableView reloadData];
         }
-    }
+        [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - LRSpeakHelperDelegate
@@ -199,6 +168,17 @@
     [self.tableView reloadData];
 }
 
+// 房间属性变化
+- (void)roomTypeDidChange:(LRRoomType)aType {
+    self.roomModel.roomType = aType;
+    [self.headerView setType:aType];
+}
+
+// 谁在说话回调 (在主持或者抢麦模式下，标注谁在说话)
+- (void)currentSpeaker:(NSString *)aSpeaker {
+    
+}
+
 // TODO: 设置会议属性，会议属性变化
 
 #pragma mark - getter
@@ -219,7 +199,7 @@
 - (LRSpeakerTypeView *)headerView {
     if (!_headerView) {
         _headerView = [[LRSpeakerTypeView alloc] init];
-        _headerView.delegate = self;
+        [_headerView setupEnable:NO];
     }
     return _headerView;
 }
@@ -309,7 +289,7 @@
     [self layoutIfNeeded];
 }
 
-- (void)_setupUI {
+- (void) updateSubViewUI {
     BOOL voiceEnableBtnNeedShow = NO;
     BOOL disconnectBtnNeedShow = NO;
     
@@ -323,11 +303,10 @@
             self.crownImage.hidden = YES;
         }
     
-        // 如果显示的是当前用户，或者当前用户是群主时，才需要展示这两个按钮
-        voiceEnableBtnNeedShow = _model.isMyself || kCurrentUserIsAdmin;
-        disconnectBtnNeedShow = !_model.isMyself && kCurrentUserIsAdmin;
+        voiceEnableBtnNeedShow = _model.isMyself;
+        disconnectBtnNeedShow = _model.isMyself || _isOwner;
     } else {
-        self.nameLabel.text = @"disconnected";
+        self.nameLabel.text = @"已下线";
         self.lightView.backgroundColor = LRColor_LowBlackColor;
         self.crownImage.hidden = YES;
     }
@@ -414,7 +393,8 @@
     if (!_voiceEnableBtn) {
         _voiceEnableBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_voiceEnableBtn strokeWithColor:LRStrokeLowBlack];
-        [_voiceEnableBtn setTitle:@"音频 voiceOpen" forState:UIControlStateNormal];
+        [_voiceEnableBtn setTitle:@"打开麦克风" forState:UIControlStateNormal];
+        [_voiceEnableBtn setTitle:@"关闭麦克风" forState:UIControlStateSelected];
         [_voiceEnableBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_voiceEnableBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _voiceEnableBtn.titleLabel.font = [UIFont systemFontOfSize:11];
@@ -427,7 +407,7 @@
     if (!_disconnectBtn) {
         _disconnectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_disconnectBtn strokeWithColor:LRStrokeRed];
-        [_disconnectBtn setTitle:@"下麦 disconnect" forState:UIControlStateNormal];
+        [_disconnectBtn setTitle:@"下麦" forState:UIControlStateNormal];
         [_disconnectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_disconnectBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _disconnectBtn.titleLabel.font = [UIFont systemFontOfSize:11];
@@ -444,11 +424,6 @@
     return _lineView;
 }
 
-#pragma mark - setter
-- (void)setModel:(LRSpeakerCellModel *)model {
-    _model = model;
-    [self _setupUI];
-}
 @end
 
 @implementation LRSpeakerCellModel

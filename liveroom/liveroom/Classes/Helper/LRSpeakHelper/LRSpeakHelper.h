@@ -7,13 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LRTypes.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef enum : NSUInteger {
-    LRSpeakerRole_Speaker,
-    LRSpeakerRole_Audience,
-} LRSpeakerRole;
+
 
 @protocol LRSpeakHelperDelegate <NSObject>
 
@@ -28,8 +26,15 @@ typedef enum : NSUInteger {
 - (void)receiveSpeakerMute:(NSString *)aUsername
                       mute:(BOOL)isMute;
 
+// 房间属性变化
+- (void)roomTypeDidChange:(LRRoomType)aType;
+
+// 谁在说话回调 (在主持或者抢麦模式下，标注谁在说话)
+- (void)currentSpeaker:(NSString *)aSpeaker;
+
 @end
 
+@class LRRoomModel;
 @interface LRSpeakHelper : NSObject
 @property (nonatomic, strong) NSString *adminId;
 @property (nonatomic, strong) EMCallConference *conference;
@@ -51,26 +56,27 @@ typedef enum : NSUInteger {
 
 #pragma mark - admin
 // 自己上麦
-- (void)setupOnSpeaker;
+- (void)setupMySelfToSpeaker;
 
-// 设置用户角色为观众(Speaker下麦时使用)
+// 自己下麦
+- (void)setupMySelfToAudiance;
+
+// 设置用户角色为主播(群主设置Speaker上麦时使用)
+- (void)setupUserToSpeaker:(NSString *)aUsername;
+
+// 设置用户角色为观众(群主设置Speaker下麦时使用)
 - (void)setupUserToAudiance:(NSString *)aUsername;
 
-// 同意用户上麦申请
-- (void)acceptUserOnSpeaker:(NSString *)aUsername
-                   chatroom:(NSString *)aChatroomId;
-
 // 拒绝用户上麦申请
-- (void)forbidUserOnSpeaker:(NSString *)aUsername
-                   chatroom:(NSString *)aChatroomId;
+- (void)forbidUserOnSpeaker:(NSString *)aUsername;
 
 #pragma mark - user
 // 申请上麦
-- (void)applyOnSpeaker:(NSString *)aChatroomId
+- (void)requestOnSpeaker:(LRRoomModel *)aRoom
             completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
 
 // 申请下麦
-- (void)applyOffSpeaker:(NSString *)aChatroomId
+- (void)requestOffSpeaker:(LRRoomModel *)aRoom
              completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
 
 // 是否静音自己

@@ -13,6 +13,8 @@
 		90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */; };
 		9058DF912258D7A900699AB2 /* LRChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9058DF902258D7A900699AB2 /* LRChatViewController.m */; };
 		9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */; };
+		905F023E22697E250063D558 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905F023D22697E250063D558 /* Hyphenate.framework */; };
+		905F023F22697E250063D558 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 905F023D22697E250063D558 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		90600131225DA55600CD8BAA /* LRVoiceRoomHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600129225DA55600CD8BAA /* LRVoiceRoomHeader.m */; };
 		90600132225DA55600CD8BAA /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012C225DA55600CD8BAA /* LRVolumeView.m */; };
 		90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */; };
@@ -53,9 +55,6 @@
 		E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C8F226DB9F3008CF34E /* search-material@2x.png */; };
 		E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C90226DB9F3008CF34E /* search-material@3x.png */; };
 		E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E096BE5E22641FB7007908BB /* LRRoomOptions.m */; };
-		E096C5E42269B77D007908BB /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E096C5E32269B77D007908BB /* Hyphenate.framework */; };
-		E096C5E72269BE88007908BB /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E096C5E32269B77D007908BB /* Hyphenate.framework */; };
-		E096C5E82269BE88007908BB /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E096C5E32269B77D007908BB /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E0A7E6F9226D802400AE6C6F /* close2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F5226D802400AE6C6F /* close2@3x.png */; };
 		E0A7E6FA226D802400AE6C6F /* creat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F6226D802400AE6C6F /* creat@2x.png */; };
 		E0A7E6FB226D802400AE6C6F /* creat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F7226D802400AE6C6F /* creat@3x.png */; };
@@ -69,7 +68,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E096C5E82269BE88007908BB /* Hyphenate.framework in Embed Frameworks */,
+                905F023F22697E250063D558 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,6 +88,7 @@
 		9058DF902258D7A900699AB2 /* LRChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRChatViewController.m; sourceTree = "<group>"; };
 		9058DF922258D8EE00699AB2 /* LRVoiceRoomTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRVoiceRoomTabbar.h; sourceTree = "<group>"; };
 		9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRVoiceRoomTabbar.m; sourceTree = "<group>"; };
+		905F023D22697E250063D558 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		90600128225DA55600CD8BAA /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
 		90600129225DA55600CD8BAA /* LRVoiceRoomHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVoiceRoomHeader.m; sourceTree = "<group>"; };
 		9060012A225DA55600CD8BAA /* LRChatroomMembersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatroomMembersCell.h; sourceTree = "<group>"; };
@@ -101,6 +101,7 @@
 		9060013D225EE35B00CD8BAA /* LRChatHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatHelper.h; sourceTree = "<group>"; };
 		9060013F225EE38B00CD8BAA /* LRSpeakHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakHelper.h; sourceTree = "<group>"; };
 		90600140225EE38B00CD8BAA /* LRSpeakHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakHelper.m; sourceTree = "<group>"; };
+		9080C4FB226D7B2100E1DCC5 /* LRTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRTypes.h; sourceTree = "<group>"; };
 		9083DC89225603E70099C5BD /* LRSpeakViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakViewController.h; sourceTree = "<group>"; };
 		9083DC8A225603E70099C5BD /* LRSpeakViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakViewController.m; sourceTree = "<group>"; };
 		9083DC8D225606B10099C5BD /* LRGCDMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRGCDMulticastDelegate.h; sourceTree = "<group>"; };
@@ -164,7 +165,6 @@
 		E0780C90226DB9F3008CF34E /* search-material@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@3x.png"; sourceTree = "<group>"; };
 		E096BE5D22641FB7007908BB /* LRRoomOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomOptions.h; sourceTree = "<group>"; };
 		E096BE5E22641FB7007908BB /* LRRoomOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomOptions.m; sourceTree = "<group>"; };
-		E096C5E32269B77D007908BB /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		E0A7E6F5226D802400AE6C6F /* close2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close2@3x.png"; sourceTree = "<group>"; };
 		E0A7E6F6226D802400AE6C6F /* creat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creat@2x.png"; sourceTree = "<group>"; };
 		E0A7E6F7226D802400AE6C6F /* creat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creat@3x.png"; sourceTree = "<group>"; };
@@ -177,8 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
-				E096C5E72269BE88007908BB /* Hyphenate.framework in Frameworks */,
-				E096C5E42269B77D007908BB /* Hyphenate.framework in Frameworks */,
+                905F023E22697E250063D558 /* Hyphenate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +268,7 @@
 		90F2C65F2254C02A00A712B8 = {
 			isa = PBXGroup;
 			children = (
+				905F023D22697E250063D558 /* Hyphenate.framework */,
 				90F2C66A2254C02A00A712B8 /* liveroom */,
 				90F2C6692254C02A00A712B8 /* Products */,
 				B9C7747847F2506381338B9D /* Pods */,
@@ -289,6 +289,7 @@
 			children = (
 				E096C5E32269B77D007908BB /* Hyphenate.framework */,
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
+				9080C4FB226D7B2100E1DCC5 /* LRTypes.h */,
 				90F2C6A32254C08600A712B8 /* Headers.h */,
 				90F2C6822254C08600A712B8 /* LRNotifiersDefine.h */,
 				90F2C68F2254C08600A712B8 /* AppDelegate.h */,
