@@ -11,7 +11,11 @@
 
 //账号状态
 #define LR_ACCOUNT_LOGIN_CHANGED @"loginStateChange"
-
 #define LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED @"RoomListDidChanged"
+
+// Conference
+#define LR_Notification_Receive_OnSpeak_Apply @"ReceiveOnSpeakApply"
+#define LR_Notification_Receive_OnSpeak_Reject @"ReceiveOnSpeakReject"
+#define LR_Notification_Receive_ToBe_Audience @"ReceiveToByAudience"
 
 #endif /* LRNotifiersDefine_h */

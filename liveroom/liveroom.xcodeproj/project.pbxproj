@@ -10,7 +10,6 @@
 		2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 789E70471AB662ABBFC025F0 /* libPods-liveroom.a */; };
 		901A54DA2254CA9700F00186 /* LRRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A54D92254CA9700F00186 /* LRRoomViewController.m */; };
 		902B51ED2261BCFD000EC701 /* UIViewController+LRAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 902B51EC2261BCFD000EC701 /* UIViewController+LRAlert.m */; };
-		902B521D2261E44F000EC701 /* LRRoomSpecimen.m in Sources */ = {isa = PBXBuildFile; fileRef = 902B521C2261E44F000EC701 /* LRRoomSpecimen.m */; };
 		90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */; };
 		9058DF912258D7A900699AB2 /* LRChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9058DF902258D7A900699AB2 /* LRChatViewController.m */; };
 		9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */; };
@@ -51,8 +50,31 @@
 		E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712F6225F1A5900F9910C /* LRRequestManager.m */; };
 		E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */; };
 		E047130022606E7900F9910C /* delete_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712FF22606E7900F9910C /* delete_input@2x.png */; };
+		E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C8F226DB9F3008CF34E /* search-material@2x.png */; };
+		E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C90226DB9F3008CF34E /* search-material@3x.png */; };
 		E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E096BE5E22641FB7007908BB /* LRRoomOptions.m */; };
+		E096C5E42269B77D007908BB /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E096C5E32269B77D007908BB /* Hyphenate.framework */; };
+		E096C5E72269BE88007908BB /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E096C5E32269B77D007908BB /* Hyphenate.framework */; };
+		E096C5E82269BE88007908BB /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E096C5E32269B77D007908BB /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E0A7E6F9226D802400AE6C6F /* close2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F5226D802400AE6C6F /* close2@3x.png */; };
+		E0A7E6FA226D802400AE6C6F /* creat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F6226D802400AE6C6F /* creat@2x.png */; };
+		E0A7E6FB226D802400AE6C6F /* creat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F7226D802400AE6C6F /* creat@3x.png */; };
+		E0A7E6FC226D802400AE6C6F /* close2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F8226D802400AE6C6F /* close2@2x.png */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		90986BA622649737009A8FC7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E096C5E82269BE88007908BB /* Hyphenate.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2BA6ADC8633F347AD7C7963A /* Pods-liveroom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liveroom.debug.xcconfig"; path = "Pods/Target Support Files/Pods-liveroom/Pods-liveroom.debug.xcconfig"; sourceTree = "<group>"; };
@@ -61,8 +83,6 @@
 		901A54D92254CA9700F00186 /* LRRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomViewController.m; sourceTree = "<group>"; };
 		902B51EB2261BCFD000EC701 /* UIViewController+LRAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LRAlert.h"; sourceTree = "<group>"; };
 		902B51EC2261BCFD000EC701 /* UIViewController+LRAlert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LRAlert.m"; sourceTree = "<group>"; };
-		902B521B2261E44F000EC701 /* LRRoomSpecimen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomSpecimen.h; sourceTree = "<group>"; };
-		902B521C2261E44F000EC701 /* LRRoomSpecimen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomSpecimen.m; sourceTree = "<group>"; };
 		90445CAC225CD03300917B64 /* LRChatroomMembersModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatroomMembersModel.h; sourceTree = "<group>"; };
 		90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRChatroomMembersModel.m; sourceTree = "<group>"; };
 		9058DF8F2258D7A900699AB2 /* LRChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRChatViewController.h; sourceTree = "<group>"; };
@@ -140,8 +160,15 @@
 		E04712FC22602FC800F9910C /* LRCreateRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCreateRoomViewController.h; sourceTree = "<group>"; };
 		E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCreateRoomViewController.m; sourceTree = "<group>"; };
 		E04712FF22606E7900F9910C /* delete_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete_input@2x.png"; sourceTree = "<group>"; };
+		E0780C8F226DB9F3008CF34E /* search-material@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@2x.png"; sourceTree = "<group>"; };
+		E0780C90226DB9F3008CF34E /* search-material@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@3x.png"; sourceTree = "<group>"; };
 		E096BE5D22641FB7007908BB /* LRRoomOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomOptions.h; sourceTree = "<group>"; };
 		E096BE5E22641FB7007908BB /* LRRoomOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomOptions.m; sourceTree = "<group>"; };
+		E096C5E32269B77D007908BB /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
+		E0A7E6F5226D802400AE6C6F /* close2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close2@3x.png"; sourceTree = "<group>"; };
+		E0A7E6F6226D802400AE6C6F /* creat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creat@2x.png"; sourceTree = "<group>"; };
+		E0A7E6F7226D802400AE6C6F /* creat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creat@3x.png"; sourceTree = "<group>"; };
+		E0A7E6F8226D802400AE6C6F /* close2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close2@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +177,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
+				E096C5E72269BE88007908BB /* Hyphenate.framework in Frameworks */,
+				E096C5E42269B77D007908BB /* Hyphenate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,15 +209,6 @@
 				E04712DA225C503400F9910C /* LRRoomInfoViewController.m */,
 			);
 			path = RoomViewController;
-			sourceTree = "<group>";
-		};
-		902B521A2261E43D000EC701 /* LRRoomSpecimen */ = {
-			isa = PBXGroup;
-			children = (
-				902B521B2261E44F000EC701 /* LRRoomSpecimen.h */,
-				902B521C2261E44F000EC701 /* LRRoomSpecimen.m */,
-			);
-			path = LRRoomSpecimen;
 			sourceTree = "<group>";
 		};
 		90445CAB225CD03300917B64 /* Model */ = {
@@ -267,6 +287,7 @@
 		90F2C66A2254C02A00A712B8 /* liveroom */ = {
 			isa = PBXGroup;
 			children = (
+				E096C5E32269B77D007908BB /* Hyphenate.framework */,
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
 				90F2C6A32254C08600A712B8 /* Headers.h */,
 				90F2C6822254C08600A712B8 /* LRNotifiersDefine.h */,
@@ -420,7 +441,6 @@
 			isa = PBXGroup;
 			children = (
 				E096BE5C22641F50007908BB /* LRRoomOptions */,
-				902B521A2261E43D000EC701 /* LRRoomSpecimen */,
 				9060013B225EE35B00CD8BAA /* LRChatHelper */,
 				9060013A225EE35B00CD8BAA /* LRSpeakHelper */,
 				E04712F2225EDAD900F9910C /* LRNetWorking */,
@@ -431,6 +451,12 @@
 		90F2C6F22254C09400A712B8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E0780C8F226DB9F3008CF34E /* search-material@2x.png */,
+				E0780C90226DB9F3008CF34E /* search-material@3x.png */,
+				E0A7E6F8226D802400AE6C6F /* close2@2x.png */,
+				E0A7E6F5226D802400AE6C6F /* close2@3x.png */,
+				E0A7E6F6226D802400AE6C6F /* creat@2x.png */,
+				E0A7E6F7226D802400AE6C6F /* creat@3x.png */,
 				E04712FF22606E7900F9910C /* delete_input@2x.png */,
 				90F2C6F32254C09400A712B8 /* add@2x.png */,
 			);
@@ -509,7 +535,7 @@
 				90F2C6652254C02A00A712B8 /* Frameworks */,
 				90F2C6662254C02A00A712B8 /* Resources */,
 				E5A84395069200D90DDF58CB /* [CP] Copy Pods Resources */,
-				C1A4F0F815C65991378C2FBD /* [CP] Embed Pods Frameworks */,
+				90986BA622649737009A8FC7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -558,13 +584,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */,
 				E04712DF225C8CEF00F9910C /* find@2x.png in Resources */,
+				E0A7E6F9226D802400AE6C6F /* close2@3x.png in Resources */,
+				E0A7E6FB226D802400AE6C6F /* creat@3x.png in Resources */,
+				E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */,
 				90F2C6782254C02B00A712B8 /* LaunchScreen.storyboard in Resources */,
 				E047130022606E7900F9910C /* delete_input@2x.png in Resources */,
+				E0A7E6FA226D802400AE6C6F /* creat@2x.png in Resources */,
 				90F2C6752254C02B00A712B8 /* Assets.xcassets in Resources */,
 				90F2C6E82254C08600A712B8 /* LRAlertController.xib in Resources */,
 				90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */,
 				90F2C6F42254C09400A712B8 /* add@2x.png in Resources */,
+				E0A7E6FC226D802400AE6C6F /* close2@2x.png in Resources */,
 				90F2C6DD2254C08600A712B8 /* LRLoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -577,15 +609,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-liveroom-checkManifestLockResult.txt",
 			);
@@ -594,42 +622,16 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C1A4F0F815C65991378C2FBD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh",
-				"${PODS_ROOT}/Hyphenate/iOS_Pods_IMFullSDK_V3.5.4/Hyphenate.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E5A84395069200D90DDF58CB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-resources.sh",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 			);
@@ -662,7 +664,6 @@
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
 				E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */,
 				9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */,
-				902B521D2261E44F000EC701 /* LRRoomSpecimen.m in Sources */,
 				E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */,
 				9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
@@ -827,10 +828,24 @@
 			baseConfigurationReference = 2BA6ADC8633F347AD7C7963A /* Pods-liveroom.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/liveroom",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/liveroom/headers.h";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+				);
 				INFOPLIST_FILE = liveroom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -848,10 +863,24 @@
 			baseConfigurationReference = 9129ABF1877E591B4D2B7E4D /* Pods-liveroom.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/liveroom",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/liveroom/headers.h";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+				);
 				INFOPLIST_FILE = liveroom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (

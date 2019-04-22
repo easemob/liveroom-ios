@@ -14,7 +14,7 @@
 #import "LRChatroomMembersModel.h"
 
 #define kPadding 16
-@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate>
+@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -63,8 +63,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.closeButton = [[UIButton alloc] init];
     self.closeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.closeButton.backgroundColor = [UIColor grayColor];
-    [self.closeButton setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    [self.closeButton setImage:[UIImage imageNamed:@"close2"] forState:UIControlStateNormal];
     [self.closeButton addTarget:self action:@selector(closeButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.closeButton];
     [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -124,6 +123,9 @@
         make.right.equalTo(self.view).offset(-kPadding + 1);
         make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
     }];
+    UITapGestureRecognizer *tapTableView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTableViewAction:)];
+    tapTableView.delegate = self;
+    [self.tableView addGestureRecognizer:tapTableView];
     
     self.searchResultTableView = [[UITableView alloc] init];
     self.searchResultTableView.tag = 11;
@@ -132,6 +134,34 @@
     self.searchResultTableView.rowHeight = self.tableView.rowHeight;
     self.searchResultTableView.delegate = self;
     self.searchResultTableView.dataSource = self;
+    UITapGestureRecognizer *tapSRTableView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSRTableViewAction:)];
+    tapSRTableView.delegate = self;
+    [self.searchResultTableView addGestureRecognizer:tapSRTableView];
+}
+
+#pragma mark - GestureRecognizer
+-(void)tapTableViewAction:(UITapGestureRecognizer *)tapRecognizer
+{
+    [self.view endEditing:YES];
+}
+
+-(void)tapSRTableViewAction:(UITapGestureRecognizer *)tapRecognizer
+{
+    [self.view endEditing:YES];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([NSStringFromClass([touch.view class]) isEqual:@"UITableViewCellContentView"]) {
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark - TouchesBegan
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
 }
 
 #pragma mark - TablevViewDataSource

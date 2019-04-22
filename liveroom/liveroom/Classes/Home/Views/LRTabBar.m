@@ -8,6 +8,7 @@
 
 #import "LRTabBar.h"
 
+#define LRTabBarHeight 49
 @interface LRTabBar ()
 @property (nonatomic, strong) UIView *chatRoomView;
 @property (nonatomic, strong) UILabel *chatRoomTitleLabel;
@@ -42,8 +43,8 @@
     [self.chatRoomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self);
         make.left.equalTo(self);
-        make.width.equalTo(@(LRWindowWidth * 0.4));
-        make.height.equalTo(@(self.frame.size.height));
+        make.width.equalTo(@((LRWindowWidth - LRTabBarHeight) * 0.5));
+        make.height.equalTo(@(LRTabBarHeight));
     }];
     UITapGestureRecognizer *chatRoomViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatRoomViewTapAction:)];
     [self.chatRoomView addGestureRecognizer:chatRoomViewTap];
@@ -70,31 +71,30 @@
     [self.chatRoomDetailsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.chatRoomView.mas_bottom).offset(-5);
         make.centerX.equalTo(self.chatRoomView);
-        make.width.equalTo(@(LRWindowWidth * 0.4 - 10));
+        make.width.equalTo(@((LRWindowWidth - LRTabBarHeight) * 0.5 - 10));
         make.height.equalTo(@20);
     }];
     
     // addView
     self.addView = [[UIView alloc] init];
     self.addView.tag = 101;
-    self.addView.backgroundColor = [UIColor grayColor];
     [self addSubview:self.addView];
     [self.addView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self);
         make.left.equalTo(self.chatRoomView.mas_right);
-        make.width.equalTo(@(LRWindowWidth * 0.2));
-        make.height.equalTo(@(self.frame.size.height));
+        make.width.equalTo(@(LRTabBarHeight));
+        make.height.equalTo(@(LRTabBarHeight));
     }];
     UITapGestureRecognizer *addViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addViewTapAction:)];
     [self.addView addGestureRecognizer:addViewTap];
     
     self.addImageView = [[UIImageView alloc] init];
-    self.addImageView.image = [UIImage imageNamed:@"add"];
+    self.addImageView.image = [UIImage imageNamed:@"creat"];
     [self.addView addSubview:self.addImageView];
     [self.addImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.addView);
-        make.width.equalTo(@30);
-        make.height.equalTo(@30);
+        make.width.equalTo(@(LRTabBarHeight));
+        make.height.equalTo(@(LRTabBarHeight));
     }];
     
     // settingView
@@ -105,7 +105,7 @@
     [self.settingView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self);
         make.left.equalTo(self.addView.mas_right);
-        make.width.equalTo(@(LRWindowWidth * 0.4));
+        make.width.equalTo(@((LRWindowWidth - LRTabBarHeight) * 0.5));
         make.height.equalTo(@(self.frame.size.height));
     }];
     UITapGestureRecognizer *settingViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(settingViewTapAction:)];
@@ -133,7 +133,7 @@
     [self.settingDetailsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.settingView.mas_bottom).offset(-5);
         make.centerX.equalTo(self.settingView);
-        make.width.equalTo(@(LRWindowWidth * 0.4 - 10));
+        make.width.equalTo(@((LRWindowWidth - LRTabBarHeight) * 0.5 - 10));
         make.height.equalTo(@20);
     }];
     

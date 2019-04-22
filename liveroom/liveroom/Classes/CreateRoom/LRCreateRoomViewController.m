@@ -18,6 +18,8 @@
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UILabel *chatroomIDLabel;
 @property (nonatomic, strong) UILabel *passwordLabel;
+@property (nonatomic, strong) UIButton *speakerTypeButton;
+@property (nonatomic, strong) UILabel *speakerTypeLabel;
 @property (nonatomic, strong) UIButton *submitButton;
 
 @end
@@ -63,7 +65,7 @@
     self.voiceChatroomIDTextField = [[UITextField alloc] init];
     self.voiceChatroomIDTextField.placeholder = @"房间号 voiceChatroomID";
     [self.voiceChatroomIDTextField setupTextField];
-    [self.voiceChatroomIDTextField strokeWithColor:LRStrokeWhite];
+    [self.voiceChatroomIDTextField strokeWithColor:LRStrokeLowBlack];
     [self.view addSubview:self.voiceChatroomIDTextField];
     [self.voiceChatroomIDTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).offset(12);
@@ -80,14 +82,14 @@
     [self.view addSubview:self.chatroomIDLabel];
     [self.chatroomIDLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.voiceChatroomIDTextField.mas_bottom);
-        make.left.equalTo(self.view).offset(16);
-        make.right.equalTo(self.view).offset(-16);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
     }];
     
     self.passwordTextField = [[UITextField alloc] init];
     self.passwordTextField.placeholder = @"密码 password";
     [self.passwordTextField setupTextField];
-    [self.passwordTextField strokeWithColor:LRStrokeWhite];
+    [self.passwordTextField strokeWithColor:LRStrokeLowBlack];
     [self.view addSubview:self.passwordTextField];
     [self.passwordTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.chatroomIDLabel.mas_bottom).offset(12);
@@ -108,6 +110,35 @@
         make.right.equalTo(self.view).offset(-kPadding);
     }];
     
+    self.speakerTypeButton = [[UIButton alloc] init];
+    [self.speakerTypeButton setTitle:@"抢麦模式" forState:UIControlStateNormal];
+    [self.speakerTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.speakerTypeButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    self.speakerTypeButton.backgroundColor = LRColor_HeightBlackColor;
+    self.speakerTypeButton.layer.borderWidth = 2.5;
+    self.speakerTypeButton.layer.borderColor = RGBACOLOR(102, 102, 102, 1).CGColor;
+    self.speakerTypeButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    [self.speakerTypeButton addTarget:self action:@selector(speakerTypeButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.speakerTypeButton];
+    [self.speakerTypeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.passwordLabel.mas_bottom).offset(12);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+        make.height.equalTo(@48);
+    }];
+    
+    self.speakerTypeLabel = [[UILabel alloc] init];
+    self.speakerTypeLabel.text = @"设置房间的玩法模式。Set up the play mode of the room.";
+    [self.speakerTypeLabel setTextColor:[UIColor whiteColor]];
+    self.speakerTypeLabel.numberOfLines = 2;
+    self.speakerTypeLabel.font = [UIFont systemFontOfSize:10];
+    [self.view addSubview:self.speakerTypeLabel];
+    [self.speakerTypeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.speakerTypeButton.mas_bottom);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+    }];
+    
     self.submitButton = [[UIButton alloc] init];
     [self.submitButton setTitle:@"创建 create" forState:UIControlStateNormal];
     [self.submitButton setBackgroundColor:[UIColor whiteColor]];
@@ -115,7 +146,7 @@
     [self.submitButton addTarget:self action:@selector(submitButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.submitButton];
     [self.submitButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.passwordLabel.mas_bottom).offset(44);
+        make.top.equalTo(self.speakerTypeLabel.mas_bottom).offset(44);
         make.left.equalTo(self.view).offset(kPadding);
         make.right.equalTo(self.view).offset(-kPadding);
         make.height.equalTo(@48);
@@ -126,6 +157,33 @@
 - (void)closeButtonAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)speakerTypeButtonAction
+{
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示 tip" info:@"切换房间互动模式会初始化麦序。主播模式为当前只有管理员能发言；抢麦模式为当前只有管理员可以发言；互动模式为全部主播均可发言。请确认切换的模式。"];
+    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式 Host"
+                                                       callback:^(LRAlertController * _Nonnull alertController)
+                                 {
+                                     [self.speakerTypeButton setTitle:@"主持模式" forState:UIControlStateNormal];
+                                 }];
+    
+    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式 monopoly"
+                                                           callback:^(LRAlertController * _Nonnull alertController)
+                                     {
+                                         [self.speakerTypeButton setTitle:@"抢麦模式" forState:UIControlStateNormal];
+                                     }];
+    
+    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 communication"
+                                                                callback:^(LRAlertController * _Nonnull alertController)
+                                          {
+                                              [self.speakerTypeButton setTitle:@"自由麦模式" forState:UIControlStateNormal];
+                                          }];
+    
+    [alert addAction:hostAction];
+    [alert addAction:monopolyAction];
+    [alert addAction:communicationAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)submitButtonAction
@@ -147,7 +205,9 @@
     
     __weak typeof(self) weakSelf = self;
     
-    [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:@"http://turn2.easemob.com:8082/app/huangcl/create/talk/room" parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
+    NSString *url = [NSString stringWithFormat:@"http://turn2.easemob.com:8082/app/%@/create/talk/room", kCurrentUsername];;
+    
+    [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:url parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {

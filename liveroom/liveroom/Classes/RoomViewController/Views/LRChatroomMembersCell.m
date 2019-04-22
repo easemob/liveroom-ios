@@ -121,7 +121,9 @@
     
     if (_isOwner) {
         self.exitMemberButton.hidden = YES;
+        self.ownerIconImageView.hidden = NO;
     } else {
+        self.exitMemberButton.hidden = NO;
         self.ownerIconImageView.hidden = YES;
     }
 }

@@ -15,6 +15,8 @@
 #import "Headers.h"
 #import "LRRoomInfoViewController.h"
 
+#import "UIViewController+LRAlert.h"
+
 #import "LRChatHelper.h"
 #import "LRSpeakHelper.h"
 
@@ -22,9 +24,11 @@
 #define kHeaderViewHeight 45
 #define kInputViewHeight 64
 
-@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate> {
+@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate, LRSpeakHelperDelegate> {
     BOOL _chatJoined;
     BOOL _conferenceJoined;
+    BOOL _chatLeave;
+    BOOL _conferenceLeave;
 }
 @property (nonatomic, assign) LRUserRoleType type;
 @property (nonatomic, strong) LRVoiceRoomHeader *headerView;
@@ -33,6 +37,8 @@
 @property (nonatomic, strong) LRVoiceRoomTabbar *inputBar;
 @property (nonatomic, strong) LRRoomModel *roomModel;
 @property (nonatomic, strong) NSString *password;
+
+@property (nonatomic, strong) UIButton *applyOnSpeakBtn;
 @end
 
 @implementation LRRoomViewController
@@ -53,12 +59,71 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    [self regieterNotifiers];
+    
     [self _setupSubViews];
     [self _updateHeaderView];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
-    
     [self joinChatAndConferenceRoom];
+}
+
+- (void)regieterNotifiers {
+    [LRSpeakHelper.sharedInstance addDeelgate:self delegateQueue:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(showApplyInfo:)
+                                               name:LR_Notification_Receive_OnSpeak_Apply
+                                             object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(receiveRejectApply:)
+                                               name:LR_Notification_Receive_OnSpeak_Reject
+                                             object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(agreedToBeAudience:)
+                                               name:LR_Notification_Receive_ToBe_Audience
+                                             object:nil];
+}
+
+// 收到上麦申请
+- (void)showApplyInfo:(NSNotification *)aNoti  {
+    NSDictionary *dict = aNoti.object;
+    if (dict.count > 0) {
+        NSString *info = [NSString stringWithFormat:@"%@申请上麦", dict.allValues.firstObject];
+        LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
+        LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
+            [LRSpeakHelper.sharedInstance acceptUserOnSpeaker:dict.allValues.firstObject chatroom:dict.allKeys.firstObject];
+        }];
+        
+        LRAlertAction *reject = [LRAlertAction alertActionTitle:@"拒绝" callback:^(LRAlertController * _Nonnull alertController) {
+            [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:dict.allValues.firstObject chatroom:dict.allKeys.firstObject];
+        }];
+        [alert addAction:agreed];
+        [alert addAction:reject];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+// 自动同意下麦申请
+- (void)agreedToBeAudience:(NSNotification *)aNoti  {
+    NSDictionary *dict = aNoti.object;
+    if (dict.count > 0) {
+        [LRSpeakHelper.sharedInstance setupUserToAudiance:dict.allValues.firstObject];
+    }
+}
+
+// 上麦申请被拒绝
+- (void)receiveRejectApply:(NSNotification *)aNoti {
+    NSDictionary *dict = aNoti.object;
+    if (dict.count > 0) {
+        if ([dict.allKeys.firstObject isEqualToString:self.roomModel.roomId]) {
+            self.applyOnSpeakBtn.selected = NO;
+            
+            [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
+        }
+    }
 }
 
 #pragma mark - subviews
@@ -81,16 +146,16 @@
     [self addChildViewController:self.chatVC];
     
     [self.view addSubview:self.inputBar];
-    
+
     [self.speakerVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.headerView.mas_bottom).offset(5);
         make.left.equalTo(self.headerView);
         make.right.equalTo(self.headerView);
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 30));
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 80));
     }];
 
     [self.chatVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 40));
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 90));
         make.left.equalTo(self.speakerVC.view);
         make.right.equalTo(self.speakerVC.view);
         make.bottom.equalTo(self.inputBar.mas_top);
@@ -103,6 +168,15 @@
         make.height.equalTo(@kInputViewHeight);
         make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight);
     }];
+    
+    if (!self.isOwner) {
+        [self.view addSubview:self.applyOnSpeakBtn];
+        [self.applyOnSpeakBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@46);
+            make.bottom.equalTo(self.chatVC.view);
+            make.right.equalTo(self.chatVC.view);
+        }];
+    }
 }
 
 - (void)_updateHeaderView {
@@ -199,11 +273,15 @@
             
             if (!self->_conferenceJoined || !self->_chatJoined) {
                 [self closeWindowAction];
+                return ;
+            }
+            
+            if (self.isOwner) {
+                [LRSpeakHelper.sharedInstance setupOnSpeaker];
             }
         });
     });
 }
-
 
 - (void)memberListAction {
     LRRoomInfoViewController *membersVC = [[LRRoomInfoViewController alloc] init];
@@ -225,23 +303,48 @@
 }
 
 - (void)closeWindowAction {
-    // TODO: delete room
-    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
-    url = [url stringByAppendingString:self.roomModel.roomId];
-    [LRRequestManager.sharedInstance requestWithMethod:@"DELETE" urlString:url parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error) {
-        [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
-    }];
-    
-    
-    /*
-    if([self.roomModel.owner isEqualToString:LRChatHelper.sharedInstance.currentUser]) {
+    if (self.isOwner) {
         NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
         url = [url stringByAppendingString:self.roomModel.roomId];
         [LRRequestManager.sharedInstance requestWithMethod:@"DELETE" urlString:url parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error) {
-            
+            [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
         }];
+    } else {
+        __weak typeof(self) weakSelf = self;
+        dispatch_group_t group = dispatch_group_create();
+        dispatch_queue_t queue = dispatch_queue_create("com.easemob.leaveLiveroom", DISPATCH_QUEUE_CONCURRENT);
+        dispatch_group_async(group, queue, ^{
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+            [LRChatHelper.sharedInstance leaveChatroomWithRoomId:weakSelf.roomModel.roomId completion:^(NSString * _Nonnull errorInfo, BOOL success) {
+                NSLog(@"离开聊天室---%@", errorInfo);
+                self->_chatLeave = success;
+                dispatch_semaphore_signal(semaphore);
+            }];
+
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        });
+
+        dispatch_group_async(group, queue, ^{
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+            [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:weakSelf.roomModel.conferenceId completion:^(NSString * _Nonnull errorInfo, BOOL success) {
+                NSLog(@"离开语音会议---%@", errorInfo);
+                self->_conferenceLeave = success;
+                dispatch_semaphore_signal(semaphore);
+            }];
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        });
+
+        dispatch_group_notify(group, queue, ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self->_conferenceLeave && self->_chatLeave) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                    return ;
+                } else {
+
+                }
+            });
+        });
     }
-     */
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -289,7 +392,40 @@
     [self.chatVC sendText:aText];
 }
 
+- (void)applyOnSpeak:(UIButton *)btn {
+    if (self.applyOnSpeakBtn.selected == YES) {
+        return;
+    }
+    self.applyOnSpeakBtn.selected = YES;
+    [LRSpeakHelper.sharedInstance applyOnSpeaker:self.roomModel.roomId completion:^(NSString * _Nonnull errorInfo, BOOL success)
+    {
+        if (!success) {
+            self.applyOnSpeakBtn.selected = NO;
+            [self showErrorAlertWithTitle:@"错误 Error" info:errorInfo];
+        }
+    }];
+}
+
 #pragma mark - getter
+
+- (BOOL)isOwner {
+    return [self.roomModel.owner isEqualToString:kCurrentUsername];
+}
+
+- (UIButton *)applyOnSpeakBtn {
+    if (!_applyOnSpeakBtn) {
+        _applyOnSpeakBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _applyOnSpeakBtn.backgroundColor = [UIColor whiteColor];
+        [_applyOnSpeakBtn setImage:[UIImage imageNamed:@"mic"] forState:UIControlStateNormal];
+        [_applyOnSpeakBtn setImage:[UIImage imageNamed:@"unmic"] forState:UIControlStateSelected];
+        _applyOnSpeakBtn.layer.masksToBounds = YES;
+        _applyOnSpeakBtn.layer.cornerRadius = 23;
+        [_applyOnSpeakBtn addTarget:self action:@selector(applyOnSpeak:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _applyOnSpeakBtn;
+}
+
+
 - (LRSpeakViewController *)speakerVC {
     if (!_speakerVC) {
         _speakerVC = [[LRSpeakViewController alloc] init];

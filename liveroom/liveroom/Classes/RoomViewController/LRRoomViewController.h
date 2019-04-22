@@ -18,6 +18,9 @@ typedef enum : NSUInteger {
 
 @class LRRoomModel;
 @interface LRRoomViewController : UIViewController
+
+@property (nonatomic) BOOL isOwner;
+
 - (instancetype)initWithUserType:(LRUserRoleType)aType
                        roomModel:(LRRoomModel *)aRoomModel
                         password:(NSString *)aPassword;

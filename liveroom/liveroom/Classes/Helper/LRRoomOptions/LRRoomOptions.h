@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 static NSString *lrOptions_Version = @"Appkey";
 static NSString *lrOptions_SpeakerNumber = @"SpeakerNumber";
 static NSString *lrOptions_AllowAudienceApplyInteract = @"AllowAudienceApplyInteract";
-static NSString *lrOptions_SpeakerType = @"SpeakerType";
 static NSString *lrOptions_AudioQuality = @"AudioQuality";
 static NSString *lrOptions_AllowApplyAsSpeaker = @"AllowApplyAsSpeaker";
 static NSString *lrOptions_AutomaticallyTurnOnMusic = @"AutomaticallyTurnOnMusic";
@@ -22,7 +21,6 @@ static NSString *lrOptions_AutomaticallyTurnOnMusic = @"AutomaticallyTurnOnMusic
 @property (nonatomic, strong) NSString *version;
 @property (nonatomic, assign) int speakerNumber;
 @property (nonatomic, assign) BOOL isAllowAudienceApplyInteract;
-@property (nonatomic, assign) int speakerType;
 @property (nonatomic, strong) NSString *audioQuality;
 @property (nonatomic, assign) BOOL isAllowApplyAsSpeaker;
 @property (nonatomic, assign) BOOL isAutomaticallyTurnOnMusic;
