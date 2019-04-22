@@ -138,10 +138,6 @@
         nModel.username = aMember;
         nModel.isMute = isMute;
         nModel.isAdmin = isAdmin;
-        nModel.isMyself = YES;
-        if (!isAdmin) {
-            [self.dataAry replaceObjectAtIndex:i withObject:nModel];
-        }
         [self.tableView reloadData];
     }
 }
@@ -164,8 +160,7 @@
             dModel.isMute = NO;
             dModel.isAdmin = NO;
             // 将空的放到最后一个位置
-            [self.dataAry removeObjectAtIndex:i];
-            [self.dataAry replaceObjectAtIndex:kMaxSpeakerCount - 1 withObject:dModel];
+            [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
             [self.tableView reloadData];
         }
     }

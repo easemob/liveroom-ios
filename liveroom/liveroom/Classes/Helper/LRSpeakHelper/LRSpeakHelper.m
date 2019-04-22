@@ -103,7 +103,6 @@
      changeMemberRoleWithConfId:self.conference.confId
      memberNames:@[aUsername] role:EMConferenceRoleSpeaker
      completion:nil];
-    [_delegates receiveSomeoneOnSpeaker:aUsername mute:YES];
 }
 
 // 拒绝用户上麦申请

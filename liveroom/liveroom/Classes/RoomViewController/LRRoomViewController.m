@@ -309,41 +309,6 @@
         [LRRequestManager.sharedInstance requestWithMethod:@"DELETE" urlString:url parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error) {
             [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
         }];
-    } else {
-        __weak typeof(self) weakSelf = self;
-        dispatch_group_t group = dispatch_group_create();
-        dispatch_queue_t queue = dispatch_queue_create("com.easemob.leaveLiveroom", DISPATCH_QUEUE_CONCURRENT);
-        dispatch_group_async(group, queue, ^{
-            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-            [LRChatHelper.sharedInstance leaveChatroomWithRoomId:weakSelf.roomModel.roomId completion:^(NSString * _Nonnull errorInfo, BOOL success) {
-                NSLog(@"离开聊天室---%@", errorInfo);
-                self->_chatLeave = success;
-                dispatch_semaphore_signal(semaphore);
-            }];
-
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        });
-
-        dispatch_group_async(group, queue, ^{
-            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-            [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:weakSelf.roomModel.conferenceId completion:^(NSString * _Nonnull errorInfo, BOOL success) {
-                NSLog(@"离开语音会议---%@", errorInfo);
-                self->_conferenceLeave = success;
-                dispatch_semaphore_signal(semaphore);
-            }];
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        });
-
-        dispatch_group_notify(group, queue, ^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (self->_conferenceLeave && self->_chatLeave) {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                    return ;
-                } else {
-
-                }
-            });
-        });
     }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
