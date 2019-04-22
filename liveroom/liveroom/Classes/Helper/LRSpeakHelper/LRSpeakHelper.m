@@ -13,7 +13,6 @@
 {
     LRGCDMulticastDelegate <LRSpeakHelperDelegate> *_delegates;
 }
-@property (nonatomic, strong) EMCallConference *conference;
 
 @end
 
@@ -194,6 +193,18 @@
         return;
     }
     [_delegates receiveSpeakerMute:aStream.userName mute:aStream.enableVoice];
+}
+
+- (void)memberDidJoin:(EMCallConference *)aConference
+               member:(EMCallMember *)aMember
+{
+    
+}
+
+- (void)memberDidLeave:(EMCallConference *)aConference
+                member:(EMCallMember *)aMember
+{
+    
 }
 
 #pragma mark - getter

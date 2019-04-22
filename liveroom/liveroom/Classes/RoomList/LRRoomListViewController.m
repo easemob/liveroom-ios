@@ -18,7 +18,7 @@
 #import "LRRequestManager.h"
 
 #define kPadding 16
-@interface LRRoomListViewController () <LRSearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface LRRoomListViewController () <LRSearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -110,6 +110,9 @@
         make.right.equalTo(self.view).offset(-kPadding + 1);
         make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
     }];
+    UITapGestureRecognizer *tapTableView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTableViewAction:)];
+    tapTableView.delegate = self;
+    [self.tableView addGestureRecognizer:tapTableView];
     
     self.searchResultTableView = [[UITableView alloc] init];
     self.searchResultTableView.tag = 11;
@@ -118,7 +121,36 @@
     self.searchResultTableView.rowHeight = self.tableView.rowHeight;
     self.searchResultTableView.delegate = self;
     self.searchResultTableView.dataSource = self;
+    UITapGestureRecognizer *tapSRTableView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSRTableViewAction:)];
+    tapSRTableView.delegate = self;
+    [self.searchResultTableView addGestureRecognizer:tapSRTableView];
 }
+
+#pragma mark - GestureRecognizer
+-(void)tapTableViewAction:(UITapGestureRecognizer *)tapRecognizer
+{
+    [self.view endEditing:YES];
+}
+
+-(void)tapSRTableViewAction:(UITapGestureRecognizer *)tapRecognizer
+{
+    [self.view endEditing:YES];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([NSStringFromClass([touch.view class]) isEqual:@"UITableViewCellContentView"]) {
+        return NO;
+        }
+    return YES;
+}
+
+#pragma mark - TouchesBegan
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+
 
 #pragma mark - TablevViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -288,6 +320,7 @@
 - (void)reloadPage {
     [LRRequestManager.sharedInstance requestWithMethod:@"GET" urlString:@"http://turn2.easemob.com:8082/app/talk/rooms/0/200" parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
      {
+         NSLog(@"result---%@,error---%@", result,error);
          dispatch_async(dispatch_get_main_queue(), ^{
              if (!error) {
                  NSArray *list = result[@"list"];

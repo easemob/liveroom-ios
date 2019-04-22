@@ -21,14 +21,14 @@
 
 - (void)_setupSubviews
 {
-    self.frame = CGRectMake(0, 0, 40, 35);
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"find"]];
+    self.frame = CGRectMake(0, 0, 32, 32);
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search-material"]];
     [self addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(3);
-        make.right.equalTo(self);
-        make.width.equalTo(@25);
-        make.height.equalTo(@25);
+        make.centerY.equalTo(self);
+        make.right.equalTo(self).offset(-3);
+        make.width.equalTo(@17);
+        make.height.equalTo(@17);
     }];
 }
 @end

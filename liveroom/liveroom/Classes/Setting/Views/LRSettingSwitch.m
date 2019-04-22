@@ -34,8 +34,8 @@
 }
 
 - (void)_setupSubviews{
-    _isOn = YES;
-    _isAnimated = YES;
+//    _isOn = YES;
+//    _isAnimated = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
     [self addGestureRecognizer:tap];
     self.tagBackGroundView.userInteractionEnabled = YES;
@@ -73,10 +73,11 @@
 }
 
 // 开关打开，关闭设置
-- (void)setOn:(BOOL)on animated:(BOOL)animated{
+- (void)setOn:(BOOL)isOn animated:(BOOL)animated{
+    _isOn = isOn;
     _isAnimated = animated;
-    [self switchSettingWithOn:on animated:_isAnimated];
-    [self switchViewColorChange:on];
+    [self switchSettingWithOn:isOn animated:_isAnimated];
+    [self switchViewColorChange:isOn];
 }
 
 - (void)switchViewColorChange:(BOOL)isOn

@@ -32,6 +32,7 @@ typedef enum : NSUInteger {
 
 @interface LRSpeakHelper : NSObject
 @property (nonatomic, strong) NSString *adminId;
+@property (nonatomic, strong) EMCallConference *conference;
 + (LRSpeakHelper *)sharedInstance;
 
 - (void)addDeelgate:(id<LRSpeakHelperDelegate>)aDelegate delegateQueue:(dispatch_queue_t _Nullable)aQueue;

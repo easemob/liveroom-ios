@@ -18,6 +18,7 @@ typedef enum : NSUInteger {
 
 @protocol LRSpeakerTypeViewDelegate <NSObject>
 - (void)switchBtnClicked;
+- (void)speakerTypeWithSelect:(LRSpeakerType)type;
 @end
 
 @interface LRSpeakerTypeView : UIView

@@ -126,13 +126,14 @@
                      admin:(BOOL)isAdmin{
     
     LRSpeakerCellModel *nModel = nil;
+    int i = 0;
     for (LRSpeakerCellModel *model in self.dataAry) {
         if ([model.username isEqualToString:@""]) {
             nModel = model; // 取第一个空的cell赋值
+            i++;
             break;
         }
     }
-    
     if (nModel) {
         nModel.username = aMember;
         nModel.isMute = isMute;
@@ -144,10 +145,12 @@
 // 删除speaker
 - (void)removeMemberFromDataAry:(NSString *)aMemeber {
     LRSpeakerCellModel *dModel = nil;
+    int i = 0;
     @synchronized (self.dataAry) {
         for (LRSpeakerCellModel *model in self.dataAry) {
             if ([model.username isEqualToString:aMemeber]) {
                 dModel = model;
+                i++;
                 break;
             }
         }
