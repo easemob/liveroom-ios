@@ -7,22 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LRTypes.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-typedef enum : NSUInteger {
-    LRSpeakerType_Host,             // 主持模式
-    LRSpeakerType_Monopoly,         // 抢麦模式
-    LRSpeakerType_Communication     // 自由模式
-} LRSpeakerType;
 
 @protocol LRSpeakerTypeViewDelegate <NSObject>
 - (void)switchBtnClicked;
 @end
 
 @interface LRSpeakerTypeView : UIView
-@property (nonatomic) LRSpeakerType type;
+@property (nonatomic) LRRoomType type;
 @property (nonatomic) id<LRSpeakerTypeViewDelegate> delegate;
+
+- (void)setupEnable:(BOOL)isEnable;
 @end
 
 NS_ASSUME_NONNULL_END

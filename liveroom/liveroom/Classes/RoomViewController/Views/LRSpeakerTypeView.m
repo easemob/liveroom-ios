@@ -56,26 +56,34 @@
     }
 }
 
+- (void)setupEnable:(BOOL)isEnable {
+    if (isEnable) {
+        self.switchBtn.hidden = NO;
+    }else {
+        self.switchBtn.hidden = YES;
+    }
+}
+
 #pragma mark - setter
-- (void)setType:(LRSpeakerType)type {
+- (void)setType:(LRRoomType)type {
     _type = type;
     switch (_type) {
-        case LRSpeakerType_Host:
+        case LRRoomType_Host:
         {
-            self.titleLabel.text = @"主持模式 Host";
-            self.infoLabel.text = @"只有管理员admin可以控制发言";
+            self.titleLabel.text = @"主持模式";
+            self.infoLabel.text = @"主持模式下管理员分配的主播获得发言权";
         }
             break;
-        case LRSpeakerType_Monopoly:
+        case LRRoomType_Monopoly:
         {
-            self.titleLabel.text = @"抢麦模式 monopoly";
-            self.infoLabel.text = @"管理员和主播可以互相抢麦发言";
+            self.titleLabel.text = @"抢麦模式";
+            self.infoLabel.text = @"抢麦模式下所有主播通过抢麦获得发言权";
         }
             break;
-        case LRSpeakerType_Communication:
+        case LRRoomType_Communication:
         {
-            self.titleLabel.text = @"自由麦模式 communication";
-            self.infoLabel.text = @"管理员和主播均能自由控制自己的发言";
+            self.titleLabel.text = @"互动模式";
+            self.infoLabel.text = @"互动模式下所有主播可以自由发言";
         }
             break;
         default:

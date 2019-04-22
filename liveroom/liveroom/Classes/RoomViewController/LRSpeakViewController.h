@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface LRSpeakerCell : UITableViewCell
+@property (nonatomic) BOOL isOwner;
 @property (nonatomic, strong) LRSpeakerCellModel *model;
+- (void)updateSubViewUI;
 @end
 
 @interface LRSpeakerCellModel : NSObject

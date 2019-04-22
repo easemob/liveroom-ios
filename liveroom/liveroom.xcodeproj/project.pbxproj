@@ -13,6 +13,8 @@
 		90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */; };
 		9058DF912258D7A900699AB2 /* LRChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9058DF902258D7A900699AB2 /* LRChatViewController.m */; };
 		9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */; };
+		905F023E22697E250063D558 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 905F023D22697E250063D558 /* Hyphenate.framework */; };
+		905F023F22697E250063D558 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 905F023D22697E250063D558 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		90600131225DA55600CD8BAA /* LRVoiceRoomHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600129225DA55600CD8BAA /* LRVoiceRoomHeader.m */; };
 		90600132225DA55600CD8BAA /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012C225DA55600CD8BAA /* LRVolumeView.m */; };
 		90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */; };
@@ -60,6 +62,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				905F023F22697E250063D558 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +82,7 @@
 		9058DF902258D7A900699AB2 /* LRChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRChatViewController.m; sourceTree = "<group>"; };
 		9058DF922258D8EE00699AB2 /* LRVoiceRoomTabbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRVoiceRoomTabbar.h; sourceTree = "<group>"; };
 		9058DF932258D8EE00699AB2 /* LRVoiceRoomTabbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRVoiceRoomTabbar.m; sourceTree = "<group>"; };
+		905F023D22697E250063D558 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		90600128225DA55600CD8BAA /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
 		90600129225DA55600CD8BAA /* LRVoiceRoomHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVoiceRoomHeader.m; sourceTree = "<group>"; };
 		9060012A225DA55600CD8BAA /* LRChatroomMembersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatroomMembersCell.h; sourceTree = "<group>"; };
@@ -91,6 +95,7 @@
 		9060013D225EE35B00CD8BAA /* LRChatHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatHelper.h; sourceTree = "<group>"; };
 		9060013F225EE38B00CD8BAA /* LRSpeakHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakHelper.h; sourceTree = "<group>"; };
 		90600140225EE38B00CD8BAA /* LRSpeakHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakHelper.m; sourceTree = "<group>"; };
+		9080C4FB226D7B2100E1DCC5 /* LRTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRTypes.h; sourceTree = "<group>"; };
 		9083DC89225603E70099C5BD /* LRSpeakViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakViewController.h; sourceTree = "<group>"; };
 		9083DC8A225603E70099C5BD /* LRSpeakViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakViewController.m; sourceTree = "<group>"; };
 		9083DC8D225606B10099C5BD /* LRGCDMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRGCDMulticastDelegate.h; sourceTree = "<group>"; };
@@ -160,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
+				905F023E22697E250063D558 /* Hyphenate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +256,7 @@
 		90F2C65F2254C02A00A712B8 = {
 			isa = PBXGroup;
 			children = (
+				905F023D22697E250063D558 /* Hyphenate.framework */,
 				90F2C66A2254C02A00A712B8 /* liveroom */,
 				90F2C6692254C02A00A712B8 /* Products */,
 				B9C7747847F2506381338B9D /* Pods */,
@@ -269,6 +276,7 @@
 			isa = PBXGroup;
 			children = (
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
+				9080C4FB226D7B2100E1DCC5 /* LRTypes.h */,
 				90F2C6A32254C08600A712B8 /* Headers.h */,
 				90F2C6822254C08600A712B8 /* LRNotifiersDefine.h */,
 				90F2C68F2254C08600A712B8 /* AppDelegate.h */,
@@ -502,7 +510,6 @@
 				90F2C6662254C02A00A712B8 /* Resources */,
 				E5A84395069200D90DDF58CB /* [CP] Copy Pods Resources */,
 				90986BA622649737009A8FC7 /* Embed Frameworks */,
-				72BB2862DE167D62D6A9B3AE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -565,28 +572,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		72BB2862DE167D62D6A9B3AE /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh",
-				"${PODS_ROOT}/Hyphenate/iOS_Pods_IMFullSDK_V3.5.4/Hyphenate.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B68E15B3F5D8F640D398D453 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

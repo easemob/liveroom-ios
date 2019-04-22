@@ -7,14 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "LRTypes.h"
 NS_ASSUME_NONNULL_BEGIN
-
-typedef enum : NSUInteger {
-    LRUserType_Admin,
-    LRUserType_Speaker,
-    LRUserType_Audiance,
-} LRUserRoleType;
 
 @class LRRoomModel;
 @interface LRRoomViewController : UIViewController

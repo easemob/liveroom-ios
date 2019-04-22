@@ -68,34 +68,40 @@
 
 - (void)regieterNotifiers {
     [LRSpeakHelper.sharedInstance addDeelgate:self delegateQueue:nil];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(showApplyInfo:)
-                                               name:LR_Notification_Receive_OnSpeak_Apply
-                                             object:nil];
     
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(receiveRejectApply:)
+                                           selector:@selector(showRequestInfo:)
+                                               name:LR_Notification_Receive_OnSpeak_Request
+                                             object:nil];
+
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(receiveRequestReject:)
                                                name:LR_Notification_Receive_OnSpeak_Reject
                                              object:nil];
     
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(agreedToBeAudience:)
-                                               name:LR_Notification_Receive_ToBe_Audience
+                                           selector:@selector(receiveRequestAgreed:)
+                                               name:LR_Notification_UI_ChangeRoleToSpeaker
+                                             object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(changeToAudience:)
+                                               name:LR_Notification_UI_ChangeRoleToAudience
                                              object:nil];
 }
 
 // 收到上麦申请
-- (void)showApplyInfo:(NSNotification *)aNoti  {
-    NSDictionary *dict = aNoti.object;
-    if (dict.count > 0) {
-        NSString *info = [NSString stringWithFormat:@"%@申请上麦", dict.allValues.firstObject];
+- (void)showRequestInfo:(NSNotification *)aNoti  {
+    NSString *username = aNoti.object;
+    if (username) {
+        NSString *info = [NSString stringWithFormat:@"%@申请上麦", username];
         LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
         LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
-            [LRSpeakHelper.sharedInstance acceptUserOnSpeaker:dict.allValues.firstObject chatroom:dict.allKeys.firstObject];
+            [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
         }];
         
         LRAlertAction *reject = [LRAlertAction alertActionTitle:@"拒绝" callback:^(LRAlertController * _Nonnull alertController) {
-            [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:dict.allValues.firstObject chatroom:dict.allKeys.firstObject];
+            [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
         }];
         [alert addAction:agreed];
         [alert addAction:reject];
@@ -104,24 +110,27 @@
     }
 }
 
-// 自动同意下麦申请
-- (void)agreedToBeAudience:(NSNotification *)aNoti  {
-    NSDictionary *dict = aNoti.object;
-    if (dict.count > 0) {
-        [LRSpeakHelper.sharedInstance setupUserToAudiance:dict.allValues.firstObject];
-    }
+// 上麦申请被同意
+- (void)receiveRequestAgreed:(NSNotification *)aNoti {
+    self.applyOnSpeakBtn.hidden = YES;
+    self.applyOnSpeakBtn.selected = NO;
 }
 
 // 上麦申请被拒绝
-- (void)receiveRejectApply:(NSNotification *)aNoti {
+- (void)receiveRequestReject:(NSNotification *)aNoti {
     NSDictionary *dict = aNoti.object;
     if (dict.count > 0) {
         if ([dict.allKeys.firstObject isEqualToString:self.roomModel.roomId]) {
             self.applyOnSpeakBtn.selected = NO;
-            
+            self.applyOnSpeakBtn.hidden = NO;
             [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
         }
     }
+}
+
+- (void)changeToAudience:(NSNotification *)aNoti {
+    self.applyOnSpeakBtn.hidden = NO;
+    self.applyOnSpeakBtn.selected = NO;
 }
 
 #pragma mark - subviews
@@ -274,8 +283,8 @@
                 return ;
             }
             
-            if (self.isOwner) {
-                [LRSpeakHelper.sharedInstance setupOnSpeaker];
+            if (self.isOwner) { // 群主自动上麦
+                [LRSpeakHelper.sharedInstance setupMySelfToSpeaker];
             }
         });
     });
@@ -308,6 +317,10 @@
             [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
         }];
     }
+    
+    [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
+    [LRChatHelper.sharedInstance leaveChatroomWithRoomId:self.roomModel.roomId completion:nil];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -360,7 +373,7 @@
         return;
     }
     self.applyOnSpeakBtn.selected = YES;
-    [LRSpeakHelper.sharedInstance applyOnSpeaker:self.roomModel.roomId completion:^(NSString * _Nonnull errorInfo, BOOL success)
+    [LRSpeakHelper.sharedInstance requestOnSpeaker:self.roomModel completion:^(NSString * _Nonnull errorInfo, BOOL success)
     {
         if (!success) {
             self.applyOnSpeakBtn.selected = NO;

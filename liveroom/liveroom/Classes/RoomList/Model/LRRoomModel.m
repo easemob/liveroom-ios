@@ -17,6 +17,7 @@
     model.roomId = dict[@"roomId"];
     model.conferenceId = dict[@"rtcConfrId"];
     model.owner = dict[@"ownerName"];
+    model.roomType = LRRoomType_Communication; // 测试用
     return model;
 }
 

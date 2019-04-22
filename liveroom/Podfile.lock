@@ -5,29 +5,25 @@ PODS:
   - CocoaLumberjack/Default (3.4.2)
   - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
-  - Hyphenate (3.5.4)
   - Masonry (1.1.0)
   - MJRefresh (3.1.16)
 
 DEPENDENCIES:
   - CocoaLumberjack (~> 3.4.2)
-  - Hyphenate (~> 3.5.4)
   - Masonry (~> 1.1.0)
   - MJRefresh
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - CocoaLumberjack
-    - Hyphenate
     - Masonry
     - MJRefresh
 
 SPEC CHECKSUMS:
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
-  Hyphenate: 8fc5dd5176bf80d3a74383deb26a383e7f1b9c34
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
 
-PODFILE CHECKSUM: 86ad1af2d9edeca956b1db285be250f855b1ad27
+PODFILE CHECKSUM: 1ec37fd1a5173d068309e7490ee15b64dc4908ff
 
 COCOAPODS: 1.5.3

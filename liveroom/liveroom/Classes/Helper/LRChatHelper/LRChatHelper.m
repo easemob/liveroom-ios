@@ -160,20 +160,20 @@
         NSString *action = msg.ext[kRequestKey];
         if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
         {
-            [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_OnSpeak_Apply
-                                                              object:@{msg.conversationId:msg.from}];
+            [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_OnSpeak_Request
+                                                              object:msg.from];
         }
         
         if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件
         {
             [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_OnSpeak_Reject
-                                                              object:@{msg.conversationId:msg.from}];
+                                                              object:msg.from];
         }
         
         if ([action isEqualToString:kRequestToBe_Audience]) // 收到下麦事件
         {
             [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_ToBe_Audience
-                                                              object:@{msg.conversationId:msg.from}];
+                                                              object:msg.from];
         }
     }
 }

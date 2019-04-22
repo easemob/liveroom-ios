@@ -8,12 +8,14 @@
 
 #import "LRSpeakHelper.h"
 #import "LRGCDMulticastDelegate.h"
+#import "LRRoomModel.h"
 
 @interface LRSpeakHelper () <EMConferenceManagerDelegate>
 {
     LRGCDMulticastDelegate <LRSpeakHelperDelegate> *_delegates;
 }
 @property (nonatomic, strong) EMCallConference *conference;
+@property (nonatomic, strong) NSString *pubStreamId;
 
 @end
 
@@ -31,6 +33,11 @@
     if (self = [super init]) {
         _delegates = (LRGCDMulticastDelegate<LRSpeakHelperDelegate> *)[[LRGCDMulticastDelegate alloc] init];
         [EMClient.sharedClient.conferenceManager addDelegate:self delegateQueue:nil];
+        
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(agreedToBeAudience:)
+                                                   name:LR_Notification_Receive_ToBe_Audience
+                                                 object:nil];
     }
     return self;
 }
@@ -76,61 +83,90 @@
     }];
 }
 
-#pragma mark - admin
-- (void)setupOnSpeaker {
+// 发布自己的流，并更新ui
+- (void)setupMySelfToSpeaker {
+    __weak typeof(self) weakSekf = self;
     EMStreamParam *param = [[EMStreamParam alloc] init];
     param.streamName = kCurrentUsername;
     param.enableVideo = NO;
-    param.isMute = NO;
+    param.isMute = YES;
     [EMClient.sharedClient.conferenceManager publishConference:self.conference
                                                    streamParam:param
                                                     completion:^(NSString *aPubStreamId, EMError *aError)
      {
+         if(!aError) {weakSekf.pubStreamId = aPubStreamId;}
+    }];
+    [_delegates receiveSomeoneOnSpeaker:kCurrentUsername mute:YES];
+}
+
+// 停止发布自己的流，并更新ui
+- (void)setupMySelfToAudiance {
+    [EMClient.sharedClient.conferenceManager
+     unpublishConference:self.conference
+     streamId:self.pubStreamId
+     completion:^(EMError *aError) {
         
     }];
+    [_delegates receiveSomeoneOffSpeaker:kCurrentUsername];
 }
 
-- (void)setupUserToAudiance:(NSString *)aUsername{
-    [EMClient.sharedClient.conferenceManager changeMemberRoleWithConfId:self.conference.confId
-                                                            memberNames:@[aUsername]
-                                                                   role:EMConferenceRoleAudience
-                                                             completion:nil];
-}
 
-// 同意用户上麦申请
-- (void)acceptUserOnSpeaker:(NSString *)aUsername
-                   chatroom:(NSString *)aChatroomId {
+#pragma mark - admin
+// 设置用户为主播
+- (void)setupUserToSpeaker:(NSString *)aUsername {
+    NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
+    
     [EMClient.sharedClient.conferenceManager
      changeMemberRoleWithConfId:self.conference.confId
-     memberNames:@[aUsername] role:EMConferenceRoleSpeaker
-     completion:nil];
+     memberNames:@[applyUid] role:EMConferenceRoleSpeaker
+     completion:^(EMError *aError) {
+         
+     }];
+}
+
+// 设置用户为听众
+- (void)setupUserToAudiance:(NSString *)aUsername {
+    NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
+    
+    [EMClient.sharedClient.conferenceManager
+     changeMemberRoleWithConfId:self.conference.confId
+     memberNames:@[applyUid]
+     role:EMConferenceRoleAudience
+     completion:^(EMError *aError) {
+         
+     }];
 }
 
 // 拒绝用户上麦申请
-- (void)forbidUserOnSpeaker:(NSString *)aUsername
-                   chatroom:(NSString *)aChatroomId {
+- (void)forbidUserOnSpeaker:(NSString *)aUsername {
     EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@""];
-    EMMessage *msg = [[EMMessage alloc] initWithConversationID:aChatroomId
+    EMMessage *msg = [[EMMessage alloc] initWithConversationID:aUsername
                                                           from:kCurrentUsername
-                                                            to:aChatroomId
+                                                            to:aUsername
                                                           body:body
                                                            ext:@{kRequestKey:kRequestToBe_Rejected}];
-    msg.chatType =  EMChatTypeChatRoom;
+    msg.chatType =  EMChatTypeChat;
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:nil];
 }
 
 #pragma mark - user
 // 申请上麦
-- (void)applyOnSpeaker:(NSString *)aChatroomId
+- (void)requestOnSpeaker:(LRRoomModel *)aRoom
             completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    
+    if (self.conference.role == EMConferenceRoleSpeaker) {
+        [self roleDidChanged:self.conference];
+        return;
+    }
+    
     EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@""];
-    EMMessage *msg = [[EMMessage alloc] initWithConversationID:aChatroomId
+    EMMessage *msg = [[EMMessage alloc] initWithConversationID:aRoom.owner
                                                           from:kCurrentUsername
-                                                            to:aChatroomId
+                                                            to:aRoom.owner
                                                           body:body
                                                            ext:@{kRequestKey:kRequestToBe_Speaker}];
     
-    msg.chatType = EMChatTypeChatRoom;
+    msg.chatType = EMChatTypeChat;
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:^(EMMessage *message, EMError *error) {
         if (aCompletion) {
             if (!error) {aCompletion(nil, YES); return ;}
@@ -140,9 +176,22 @@
 }
 
 // 申请下麦
-- (void)applyOffSpeaker:(NSString *)aChatroomId
+- (void)requestOffSpeaker:(LRRoomModel *)aRoom
              completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@""];
+    EMMessage *msg = [[EMMessage alloc] initWithConversationID:aRoom.owner
+                                                          from:kCurrentUsername
+                                                            to:aRoom.owner
+                                                          body:body
+                                                           ext:@{kRequestKey:kRequestToBe_Audience}];
     
+    msg.chatType = EMChatTypeChat;
+    [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:^(EMMessage *message, EMError *error) {
+        if (aCompletion) {
+            if (!error) {aCompletion(nil, YES); return ;}
+            aCompletion(error.errorDescription, NO);
+        }
+    }];
 }
 
 // 是否静音自己
@@ -165,7 +214,9 @@
     [EMClient.sharedClient.conferenceManager subscribeConference:aConference
                                                         streamId:aStream.streamId
                                                  remoteVideoView:nil
-                                                      completion:nil];
+                                                      completion:^(EMError *aError) {
+                                                          
+                                                      }];
     
     [_delegates receiveSomeoneOnSpeaker:aStream.userName mute:!aStream.enableVoice];
 }
@@ -178,7 +229,6 @@
     if (![aConference.confId isEqualToString:aConference.confId]) {
         return;
     }
-    
     
     [EMClient.sharedClient.conferenceManager unsubscribeConference:aConference
                                                           streamId:aStream.streamId
@@ -194,6 +244,54 @@
         return;
     }
     [_delegates receiveSpeakerMute:aStream.userName mute:aStream.enableVoice];
+}
+
+// 管理员允许你上麦后会收到该回调
+- (void)roleDidChanged:(EMCallConference *)aConference {
+    if (aConference.role == EMConferenceRoleSpeaker) // 被设置为主播
+    {
+        [self setupMySelfToSpeaker];
+        [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_UI_ChangeRoleToSpeaker
+                                                          object:nil];
+    }
+    else if (aConference.role == EMConferenceRoleAudience) // 被设置为观众
+    {
+        [self setupMySelfToAudiance];
+        [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_UI_ChangeRoleToAudience
+                                                          object:nil];
+    }
+}
+
+- (void)conferenceAttributesChanged:(EMCallConference *)aConference attributeAction:(EMConferenceAttributeAction)aAction
+                       attributeKey:(NSString *)attrKey
+                     attributeValue:(NSString *)attrValue {
+    if ([attrKey isEqualToString:@"type"]) {
+        LRRoomType type = 0;
+        if ([attrValue isEqualToString:@"communication"]) {
+            type = LRRoomType_Communication;
+        }
+        if ([attrValue isEqualToString:@"host"]) {
+            type = LRRoomType_Host;
+        }
+        if ([attrValue isEqualToString:@"monopoly"]) {
+            type = LRRoomType_Monopoly;
+        }
+        if (type != 0) {
+            [_delegates roomTypeDidChange:type];
+        }
+    }
+    
+    if ([attrKey isEqualToString:@"talker"]) {
+        [_delegates currentSpeaker:attrValue];
+    }
+}
+
+// 自动同意下麦申请
+- (void)agreedToBeAudience:(NSNotification *)aNoti  {
+    NSString *username = aNoti.object;
+    if (username && [username isKindOfClass:[NSString class]]) {
+        [self setupUserToAudiance:username];
+    }
 }
 
 #pragma mark - getter
