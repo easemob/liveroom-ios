@@ -53,8 +53,6 @@
     [_delegates removeDelegate:aDelegate];
 }
 
-
-
 // 加入语音会议
 - (void)joinSpeakRoomWithRoomId:(NSString *)aRoomId
                        password:(NSString *)aPassword
@@ -190,6 +188,12 @@
                                                            ext:@{kRequestKey:kRequestToBe_Rejected}];
     msg.chatType =  EMChatTypeChat;
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:nil];
+}
+
+- (void)setupUserOnSpeaker:(NSString *)aUsername {
+    [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker" value:aUsername completion:^(EMError * _Nullable saError) {
+        
+    }];
 }
 
 #pragma mark - user

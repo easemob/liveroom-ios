@@ -98,7 +98,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [self layoutIfNeeded];
 }
 
-- (void) updateSubViewUI {
+- (void)updateSubViewUI {
     
     BOOL voiceEnableBtnNeedShow = NO;
     BOOL talkBtnNeedShow = NO;
@@ -108,7 +108,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     // 如果有数据
     if (![_model.username isEqualToString:@""]) {
         self.nameLabel.text = _model.username;
-        self.lightView.backgroundColor = !_model.isMute ? [UIColor yellowColor] : LRColor_MiddleBlackColor;
+        self.lightView.backgroundColor = _model.speakOn ? [UIColor yellowColor] : LRColor_MiddleBlackColor;
         if (_model.isAdmin) {
             self.crownImage.hidden = NO;
         }else {
@@ -136,6 +136,14 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             make.width.equalTo(@100);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
+        
+        
+        if (self.model.speakOn) {
+            [self.voiceEnableBtn strokeWithColor:LRStrokeGreen];
+        }else {
+            [self.voiceEnableBtn strokeWithColor:LRStrokeLowBlack];
+        }
+        
     }else {
         [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             
@@ -151,6 +159,13 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             make.width.equalTo(@60);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
+        
+        if (self.model.talkOn) {
+            [self.talkBtn strokeWithColor:LRStrokeGreen];
+        }else {
+            [self.talkBtn strokeWithColor:LRStrokeLowBlack];
+        }
+        
     }else {
         [self.talkBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             
@@ -168,6 +183,12 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
         
+        if (self.model.argumentOn) {
+            [self.argumentBtn strokeWithColor:LRStrokeGreen];
+        }else {
+            [self.argumentBtn strokeWithColor:LRStrokeLowBlack];
+        }
+        
         [self.unArgumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
             make.left.equalTo(self.argumentBtn.mas_right).offset(10);
@@ -175,6 +196,12 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
         
+        if (self.model.unArgumentOn) {
+            [self.unArgumentBtn strokeWithColor:LRStrokeGreen];
+        }else {
+            [self.unArgumentBtn strokeWithColor:LRStrokeLowBlack];
+        }
+
     }else {
         [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             
@@ -192,7 +219,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.disconnectBtn.hidden = NO;
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(!voiceEnableBtnNeedShow ? (!argumentBtnNeedShow ? self.contentView.mas_left: self.unArgumentBtn.mas_right) : self.voiceEnableBtn.mas_right).offset(10);
+            make.left.equalTo(!talkBtnNeedShow ? (!voiceEnableBtnNeedShow ? (!argumentBtnNeedShow ? self.contentView.mas_left: self.unArgumentBtn.mas_right) : self.voiceEnableBtn.mas_right) : self.talkBtn.mas_right).offset(10);
+
             make.width.equalTo(@60);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
@@ -206,14 +234,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 #pragma mark - actions
 - (void)voiceEnableAction:(UIButton *)aBtn {
-    aBtn.selected = !aBtn.selected;
-    if (aBtn.selected) {
-        [aBtn strokeWithColor:LRStrokeGreen];
-    }else {
-        [aBtn strokeWithColor:LRStrokeLowBlack];
-    }
-    
-    if (aBtn.selected) {
+    if (!self.model.speakOn) {
         [self btnSelectedWithEventName:ON_MIC_EVENT_NAME];
     }else {
         [self btnSelectedWithEventName:OFF_MIC_EVENT_NAME];
@@ -221,38 +242,16 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 }
 
 - (void)talkerAction:(UIButton *)aBtn {
-    aBtn.selected = !aBtn.selected;
-    if (aBtn.selected) {
-        [aBtn strokeWithColor:LRStrokeGreen];
-    }else {
-        [aBtn strokeWithColor:LRStrokeLowBlack];
-    }
-    
     [self btnSelectedWithEventName:TALK_EVENT_NAME];
 }
 
 - (void)argumentAction:(UIButton *)aBtn {
-    aBtn.selected = !aBtn.selected;
-    if (aBtn.selected) {
-        [aBtn strokeWithColor:LRStrokeGreen];
-    }else {
-        [aBtn strokeWithColor:LRStrokeLowBlack];
-    }
-    
     [self btnSelectedWithEventName:ARGUMENT_EVENT_NAME];
 }
 
 - (void)unArgumentAction:(UIButton *)aBtn {
-    aBtn.selected = !aBtn.selected;
-    if (aBtn.selected) {
-        [aBtn strokeWithColor:LRStrokeGreen];
-    }else {
-        [aBtn strokeWithColor:LRStrokeLowBlack];
-    }
-    
     [self btnSelectedWithEventName:UN_ARGUMENT_EVENT_NAME];
 }
-
 
 - (void)disconnectAction:(UIButton *)aBtn {
     [self btnSelectedWithEventName:DISCONNECT_EVENT_NAME];
@@ -347,7 +346,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     if (!_unArgumentBtn) {
         _unArgumentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_unArgumentBtn strokeWithColor:LRStrokeLowBlack];
-        [_unArgumentBtn setTitle:@"释放" forState:UIControlStateNormal];
+        [_unArgumentBtn setTitle:@"释放麦" forState:UIControlStateNormal];
         [_unArgumentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_unArgumentBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _unArgumentBtn.titleLabel.font = [UIFont systemFontOfSize:11];
