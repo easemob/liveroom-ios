@@ -25,10 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL isOwner;
 @property (nonatomic) BOOL isAdmin;
 @property (nonatomic) BOOL isMyself;
-@property (nonatomic) BOOL isMute;
 
-
-@property (nonatomic) BOOL voiceOn;
+@property (nonatomic) BOOL speakOn;
 @property (nonatomic) BOOL talkOn;
 @property (nonatomic) BOOL argumentOn;
 @property (nonatomic) BOOL unArgumentOn;

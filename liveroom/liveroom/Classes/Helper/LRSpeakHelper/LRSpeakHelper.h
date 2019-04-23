@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 申请下麦
 - (void)requestOffSpeaker:(LRRoomModel *)aRoom
-             completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+             completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 // 是否静音自己
 - (void)muteMyself:(BOOL)isMute;

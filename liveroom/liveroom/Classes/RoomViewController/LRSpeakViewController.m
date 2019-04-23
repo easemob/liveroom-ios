@@ -109,11 +109,13 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     if (nModel) {
         nModel.username = aMember;
         nModel.type = self.roomModel.roomType;
-        nModel.isMute = isMute;
         nModel.streamId = aStreamId;
         nModel.isAdmin = isAdmin;
         nModel.isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
         nModel.isMyself = [aMember isEqualToString:kCurrentUsername];
+        nModel.speakOn = !isMute;
+        nModel.argumentOn = NO;
+        nModel.unArgumentOn = NO;
     }
     if (isAdmin) {
         [self.dataAry replaceObjectAtIndex:0 withObject:nModel];
@@ -136,14 +138,15 @@ extern NSString * const DISCONNECT_EVENT_NAME;
             dModel.username = @"";
             dModel.streamId = @"";
             dModel.type = self.roomModel.roomType;
-            dModel.isMute = NO;
             dModel.isAdmin = NO;
             dModel.isMyself = NO;
             dModel.isOwner = NO;
-            // 将空的放到最后一个位置
+            dModel.speakOn = NO;
+            dModel.argumentOn = NO;
+            dModel.unArgumentOn = NO;
+            
+            [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
         }
-        [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
-    
     [self.tableView reloadData];
 }
 
@@ -171,7 +174,12 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     if ([eventName isEqualToString:DISCONNECT_EVENT_NAME]) {
         LRSpeakerCellModel *model = userInfo.allValues.firstObject;
         NSString *username = model.username;
-        [LRSpeakHelper.sharedInstance setupUserToAudiance:username];
+        if ([username isEqualToString:kCurrentUsername]) {
+            [LRSpeakHelper.sharedInstance requestOffSpeaker:self.roomModel
+                                                 completion:nil];
+        } else {
+            [LRSpeakHelper.sharedInstance setupUserToAudiance:username];
+        }
     }
 }
 
@@ -204,7 +212,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
                       mute:(BOOL)isMute {
     for (LRSpeakerCellModel *model in self.dataAry) {
         if ([model.username isEqualToString:aUsername]) {
-            model.isMute = isMute;
+            model.speakOn = !isMute;
             break;
         }
     }
