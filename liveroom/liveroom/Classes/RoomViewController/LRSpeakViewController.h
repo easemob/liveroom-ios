@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LRTypes.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface LRSpeakerCell : UITableViewCell
+@property (nonatomic) LRRoomType type;
 @property (nonatomic) BOOL isOwner;
 @property (nonatomic, strong) LRSpeakerCellModel *model;
 - (void)updateSubViewUI;

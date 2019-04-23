@@ -287,6 +287,7 @@
             
             if (self.isOwner) { // 群主自动上麦
                 [LRSpeakHelper.sharedInstance setupMySelfToSpeaker];
+                [LRSpeakHelper.sharedInstance setupRoomType:self.roomModel.roomType];
             }
         });
     });

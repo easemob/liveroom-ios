@@ -7,20 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LRChatHelperDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-@protocol LRChatHelperDelegate <NSObject>
-@optional
-- (void)didReceiveRoomMessageWithRoomId:(NSString *)aChatroomId
-                                message:(NSString *)aMessage
-                               fromUser:(NSString *)fromUser
-                              timestamp:(long long)aTimestamp;
-
-- (void)didReceiveRoomLikeActionWithRoomId:(NSString *)aChatroomId;
-
-- (void)didReceiveRoomGiftActionWithRoomId:(NSString *)aChatroomId;
-@end
 
 @interface LRChatHelper : NSObject
 

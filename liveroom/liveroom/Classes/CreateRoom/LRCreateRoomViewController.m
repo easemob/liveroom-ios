@@ -8,10 +8,13 @@
 
 #import "LRCreateRoomViewController.h"
 #import "UIViewController+LRAlert.h"
+#import "LRTypes.h"
 
 #define kPadding 16
 @interface LRCreateRoomViewController ()
-
+{
+    LRRoomType _type;
+}
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UITextField *voiceChatroomIDTextField;
@@ -34,6 +37,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _type = LRRoomType_Communication;
     [self _setupSubviews];
 }
 
@@ -111,12 +115,10 @@
     }];
     
     self.speakerTypeButton = [[UIButton alloc] init];
-    [self.speakerTypeButton setTitle:@"抢麦模式" forState:UIControlStateNormal];
-    [self.speakerTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.speakerTypeButton setTitle:@"互动模式" forState:UIControlStateNormal];
+    [self.speakerTypeButton setTitleColor:LRColor_PureBlackColor forState:UIControlStateNormal];
     self.speakerTypeButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    self.speakerTypeButton.backgroundColor = LRColor_HeightBlackColor;
-    self.speakerTypeButton.layer.borderWidth = 2.5;
-    self.speakerTypeButton.layer.borderColor = RGBACOLOR(102, 102, 102, 1).CGColor;
+    self.speakerTypeButton.backgroundColor = [UIColor whiteColor];
     self.speakerTypeButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.speakerTypeButton addTarget:self action:@selector(speakerTypeButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.speakerTypeButton];
@@ -161,28 +163,34 @@
 
 - (void)speakerTypeButtonAction
 {
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示 tip" info:@"切换房间互动模式会初始化麦序。主播模式为当前只有管理员能发言；抢麦模式为当前只有管理员可以发言；互动模式为全部主播均可发言。请确认切换的模式。"];
-    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式 Host"
-                                                       callback:^(LRAlertController * _Nonnull alertController)
-                                 {
-                                     [self.speakerTypeButton setTitle:@"主持模式" forState:UIControlStateNormal];
-                                 }];
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"互动模式下所有主播可以自由发言;\n抢麦模式下所有主播通过抢麦获得发言权;\n主持模式下管理员分配的主播获得发言权;\n"];
+
+    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"互动模式"
+                                                                callback:^(LRAlertController * _Nonnull alertController)
+                                          {
+                                              [self.speakerTypeButton setTitle:@"互动模式" forState:UIControlStateNormal];
+                                              self->_type = LRRoomType_Communication;
+                                          }];
     
-    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式 monopoly"
+    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式"
                                                            callback:^(LRAlertController * _Nonnull alertController)
                                      {
                                          [self.speakerTypeButton setTitle:@"抢麦模式" forState:UIControlStateNormal];
+                                         self->_type = LRRoomType_Monopoly;
                                      }];
     
-    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 communication"
-                                                                callback:^(LRAlertController * _Nonnull alertController)
-                                          {
-                                              [self.speakerTypeButton setTitle:@"自由麦模式" forState:UIControlStateNormal];
-                                          }];
+    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
+                                                       callback:^(LRAlertController * _Nonnull alertController)
+                                 {
+                                     [self.speakerTypeButton setTitle:@"主持模式" forState:UIControlStateNormal];
+                                     self->_type = LRRoomType_Host;
+                                 }];
     
-    [alert addAction:hostAction];
-    [alert addAction:monopolyAction];
+    
     [alert addAction:communicationAction];
+    [alert addAction:monopolyAction];
+    [alert addAction:hostAction];
+
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -216,6 +224,7 @@
                     [dic setObject:weakSelf.voiceChatroomIDTextField.text forKey:@"roomname"];
                     [dic setObject:weakSelf.passwordTextField.text forKey:@"rtcConfrPassword"];
                     [dic setObject:EMClient.sharedClient.currentUsername forKey:@"ownerName"];
+                    [dic setObject:@(self->_type) forKey:@"type"];
                 }
                 [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:dic];
             }else {

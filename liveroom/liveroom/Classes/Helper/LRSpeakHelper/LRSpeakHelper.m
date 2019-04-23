@@ -10,6 +10,7 @@
 #import "LRGCDMulticastDelegate.h"
 #import "LRRoomModel.h"
 
+
 @interface LRSpeakHelper () <EMConferenceManagerDelegate>
 {
     LRGCDMulticastDelegate <LRSpeakHelperDelegate> *_delegates;
@@ -80,6 +81,39 @@
             aCompletion(aError.errorDescription, !aError);
         }
     }];
+}
+
+
+// 设置房间属性
+- (void)setupRoomType:(LRRoomType)aType {
+    NSString *value;
+    switch (aType) {
+        case LRRoomType_Communication:
+        {
+            value = @"communication";
+        }
+            break;
+        case LRRoomType_Host:
+        {
+            value = @"host";
+        }
+            break;
+        case LRRoomType_Monopoly:
+        {
+            value = @"monopoly";
+        }
+            break;
+        default:
+            break;
+    }
+    if (value) {
+        [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"type"
+                                                                           value:value
+                                                                      completion:^(EMError * _Nullable saError)
+         {
+             
+         }];
+    }
 }
 
 // 发布自己的流，并更新ui
