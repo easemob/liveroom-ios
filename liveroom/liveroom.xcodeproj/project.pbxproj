@@ -19,6 +19,9 @@
 		9060013E225EE35B00CD8BAA /* LRChatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060013C225EE35B00CD8BAA /* LRChatHelper.m */; };
 		90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600140225EE38B00CD8BAA /* LRSpeakHelper.m */; };
 		907F5BDF226EB6C1009ED60E /* UIResponder+LRRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 907F5BDE226EB6C1009ED60E /* UIResponder+LRRouter.m */; };
+		907F5BE2226ECB3A009ED60E /* LRSpeakerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 907F5BE1226ECB3A009ED60E /* LRSpeakerCell.m */; };
+		907F5BE4226ED0F1009ED60E /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 907F5BE3226ED0F1009ED60E /* Hyphenate.framework */; };
+		907F5BE5226ED0F1009ED60E /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 907F5BE3226ED0F1009ED60E /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8A225603E70099C5BD /* LRSpeakViewController.m */; };
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
@@ -51,9 +54,6 @@
 		E047130022606E7900F9910C /* delete_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712FF22606E7900F9910C /* delete_input@2x.png */; };
 		E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C8F226DB9F3008CF34E /* search-material@2x.png */; };
 		E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C90226DB9F3008CF34E /* search-material@3x.png */; };
-		E0780CC3226ECB9A008CF34E /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0780CC2226ECB9A008CF34E /* Hyphenate.framework */; };
-		E0780CC4226ECBA1008CF34E /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0780CC2226ECB9A008CF34E /* Hyphenate.framework */; };
-		E0780CC5226ECBA1008CF34E /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0780CC2226ECB9A008CF34E /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E0780CCB226ED7CB008CF34E /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0780CC9226ED7CB008CF34E /* LRVolumeView.m */; };
 		E0780CD4226EE375008CF34E /* voice3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CCC226EE374008CF34E /* voice3@3x.png */; };
 		E0780CD5226EE375008CF34E /* voice1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CCD226EE374008CF34E /* voice1@3x.png */; };
@@ -77,7 +77,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E0780CC5226ECBA1008CF34E /* Hyphenate.framework in Embed Frameworks */,
+				907F5BE5226ED0F1009ED60E /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -111,6 +111,9 @@
 		907F5BDC226EB34E009ED60E /* LRChatHelperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRChatHelperDelegate.h; sourceTree = "<group>"; };
 		907F5BDD226EB6C1009ED60E /* UIResponder+LRRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIResponder+LRRouter.h"; sourceTree = "<group>"; };
 		907F5BDE226EB6C1009ED60E /* UIResponder+LRRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+LRRouter.m"; sourceTree = "<group>"; };
+		907F5BE0226ECB3A009ED60E /* LRSpeakerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerCell.h; sourceTree = "<group>"; };
+		907F5BE1226ECB3A009ED60E /* LRSpeakerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerCell.m; sourceTree = "<group>"; };
+		907F5BE3226ED0F1009ED60E /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		9080C4FB226D7B2100E1DCC5 /* LRTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRTypes.h; sourceTree = "<group>"; };
 		9083DC89225603E70099C5BD /* LRSpeakViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakViewController.h; sourceTree = "<group>"; };
 		9083DC8A225603E70099C5BD /* LRSpeakViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakViewController.m; sourceTree = "<group>"; };
@@ -171,7 +174,6 @@
 		E04712FF22606E7900F9910C /* delete_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete_input@2x.png"; sourceTree = "<group>"; };
 		E0780C8F226DB9F3008CF34E /* search-material@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@2x.png"; sourceTree = "<group>"; };
 		E0780C90226DB9F3008CF34E /* search-material@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@3x.png"; sourceTree = "<group>"; };
-		E0780CC2226ECB9A008CF34E /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		E0780CC9226ED7CB008CF34E /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
 		E0780CCA226ED7CB008CF34E /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
 		E0780CCC226EE374008CF34E /* voice3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice3@3x.png"; sourceTree = "<group>"; };
@@ -196,8 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
-				E0780CC4226ECBA1008CF34E /* Hyphenate.framework in Frameworks */,
-				E0780CC3226ECB9A008CF34E /* Hyphenate.framework in Frameworks */,
+				907F5BE4226ED0F1009ED60E /* Hyphenate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +253,8 @@
 				9060012F225DA55600CD8BAA /* LRChatroomMembersCell.m */,
 				9060012B225DA55600CD8BAA /* LRSpeakerTypeView.h */,
 				90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */,
+				907F5BE0226ECB3A009ED60E /* LRSpeakerCell.h */,
+				907F5BE1226ECB3A009ED60E /* LRSpeakerCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 		90F2C65F2254C02A00A712B8 = {
 			isa = PBXGroup;
 			children = (
+				907F5BE3226ED0F1009ED60E /* Hyphenate.framework */,
 				90F2C66A2254C02A00A712B8 /* liveroom */,
 				90F2C6692254C02A00A712B8 /* Products */,
 				B9C7747847F2506381338B9D /* Pods */,
@@ -306,7 +310,6 @@
 		90F2C66A2254C02A00A712B8 /* liveroom */ = {
 			isa = PBXGroup;
 			children = (
-				E0780CC2226ECB9A008CF34E /* Hyphenate.framework */,
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
 				9080C4FB226D7B2100E1DCC5 /* LRTypes.h */,
 				90F2C6A32254C08600A712B8 /* Headers.h */,
@@ -715,6 +718,7 @@
 				90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */,
 				E04712D7225B61F000F9910C /* LRTabBar.m in Sources */,
 				E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */,
+				907F5BE2226ECB3A009ED60E /* LRSpeakerCell.m in Sources */,
 				E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */,
 				90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */,
 				90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */,

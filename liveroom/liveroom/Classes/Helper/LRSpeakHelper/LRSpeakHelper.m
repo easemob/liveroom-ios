@@ -36,7 +36,7 @@
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(agreedToBeAudience:)
-                                                   name:LR_Notification_Receive_ToBe_Audience
+                                                   name:LR_Receive_ToBe_Audience_Notification
                                                  object:nil];
     }
     return self;
@@ -64,7 +64,15 @@
                                                              password:aPassword
                                                            completion:^(EMCallConference *aCall, EMError *aError)
     {
-        if (!aError) { weakSelf.conference = aCall; }
+        if (!aError) {
+            weakSelf.conference = aCall;
+            [EMClient.sharedClient.conferenceManager startMonitorSpeaker:weakSelf.conference
+                                                            timeInterval:1500
+                                                              completion:^(EMError *aError)
+            {
+                
+            }];
+        }
         if (aCompletion) {
             aCompletion(aError.errorDescription, !aError);
         }
@@ -127,9 +135,11 @@
                                                    streamParam:param
                                                     completion:^(NSString *aPubStreamId, EMError *aError)
      {
-         if(!aError) {weakSekf.pubStreamId = aPubStreamId;}
+         if(!aError) {
+             weakSekf.pubStreamId = aPubStreamId;
+             [self->_delegates receiveSomeoneOnSpeaker:kCurrentUsername streamId:aPubStreamId mute:YES];
+         }
     }];
-    [_delegates receiveSomeoneOnSpeaker:kCurrentUsername mute:YES];
 }
 
 // 停止发布自己的流，并更新ui
@@ -238,8 +248,6 @@
 // 收到新的流发布，直接关注
 - (void)streamDidUpdate:(EMCallConference *)aConference
               addStream:(EMCallStream *)aStream {
-    
-    
     // 判断是否是当前的Conference
     if (![aConference.confId isEqualToString:self.conference.confId]) {
         return;
@@ -252,7 +260,9 @@
                                                           
                                                       }];
     
-    [_delegates receiveSomeoneOnSpeaker:aStream.userName mute:!aStream.enableVoice];
+    [_delegates receiveSomeoneOnSpeaker:aStream.userName
+                               streamId:aStream.streamId
+                                   mute:!aStream.enableVoice];
 }
 
 // 收到流被移除，取消关注
@@ -285,13 +295,13 @@
     if (aConference.role == EMConferenceRoleSpeaker) // 被设置为主播
     {
         [self setupMySelfToSpeaker];
-        [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_UI_ChangeRoleToSpeaker
+        [NSNotificationCenter.defaultCenter postNotificationName:LR_UI_ChangeRoleToSpeaker_Notification
                                                           object:nil];
     }
     else if (aConference.role == EMConferenceRoleAudience) // 被设置为观众
     {
         [self setupMySelfToAudiance];
-        [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_UI_ChangeRoleToAudience
+        [NSNotificationCenter.defaultCenter postNotificationName:LR_UI_ChangeRoleToAudience_Notification
                                                           object:nil];
     }
 }
@@ -299,7 +309,8 @@
 // 监听用户说话
 - (void)conferenceSpeakerDidChange:(EMCallConference *)aConference
                  speakingStreamIds:(NSArray *)aStreamIds {
-    NSLog(@" -- %@", aStreamIds);
+    [NSNotificationCenter.defaultCenter postNotificationName:LR_Stream_Did_Speaking_Notification
+                                                      object:aStreamIds];
 }
 
 - (void)conferenceAttributesChanged:(EMCallConference *)aConference attributeAction:(EMConferenceAttributeAction)aAction

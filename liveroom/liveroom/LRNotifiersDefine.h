@@ -14,12 +14,14 @@
 #define LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED @"RoomListDidChanged"
 
 // Conference
-#define LR_Notification_Receive_OnSpeak_Request         @"ReceiveOnSpeakApply"
-#define LR_Notification_Receive_OnSpeak_Reject          @"ReceiveOnSpeakReject"
-#define LR_Notification_Receive_ToBe_Audience           @"ReceiveToByAudience"
+#define LR_Receive_OnSpeak_Request_Notification         @"ReceiveOnSpeakApply"
+#define LR_Receive_OnSpeak_Reject_Notification          @"ReceiveOnSpeakReject"
+#define LR_Receive_ToBe_Audience_Notification           @"ReceiveToByAudience"
 
 
-#define LR_Notification_UI_ChangeRoleToSpeaker             @"ChangeRoleToSpeaker"
-#define LR_Notification_UI_ChangeRoleToAudience            @"ChangeRoleToAudience"
+#define LR_UI_ChangeRoleToSpeaker_Notification          @"ChangeRoleToSpeaker"
+#define LR_UI_ChangeRoleToAudience_Notification         @"ChangeRoleToAudience"
+
+#define LR_Stream_Did_Speaking_Notification             @"StreamDidSpeaking"
 
 #endif /* LRNotifiersDefine_h */
