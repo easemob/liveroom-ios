@@ -45,15 +45,15 @@
 {
     self.view.backgroundColor = [UIColor blackColor];
     self.closeButton = [[UIButton alloc] init];
-    self.closeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    self.closeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 15, 10, 15);
     [self.closeButton setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
     [self.closeButton addTarget:self action:@selector(closeButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.closeButton];
     [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
-        make.left.equalTo(self.view).offset(kPadding);
-        make.width.equalTo(@15);
-        make.height.equalTo(@15);
+        make.left.equalTo(self.view);
+        make.width.equalTo(@45);
+        make.height.equalTo(@25);
     }];
     
     self.titleLabel = [[UILabel alloc] init];

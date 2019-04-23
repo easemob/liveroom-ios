@@ -352,6 +352,7 @@ static NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.lightView.backgroundColor = !_model.isMute ? [UIColor yellowColor] : LRColor_MiddleBlackColor;
         if (_model.isAdmin) {
             self.crownImage.hidden = NO;
+            [self.volumeView startSpeakAnimationImage];
         }else {
             self.crownImage.hidden = YES;
         }
@@ -536,7 +537,7 @@ static NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 - (LRVolumeView *)volumeView {
     if (!_volumeView) {
         _volumeView = [[LRVolumeView alloc] initWithFrame:CGRectZero];
-        _volumeView.backgroundColor = [UIColor blackColor];
+        _volumeView.backgroundColor = [UIColor clearColor];
         _volumeView.progress = 0.5;
     }
     return _volumeView;

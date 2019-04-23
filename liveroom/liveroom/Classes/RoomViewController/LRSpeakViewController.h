@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL argumentOn;
 @property (nonatomic) BOOL unArgumentOn;
 
+@property (nonatomic) BOOL isSpeakAnimation;
+
 @end
 
 NS_ASSUME_NONNULL_END
