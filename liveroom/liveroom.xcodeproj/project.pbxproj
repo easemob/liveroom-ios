@@ -22,6 +22,7 @@
 		907F5BE2226ECB3A009ED60E /* LRSpeakerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 907F5BE1226ECB3A009ED60E /* LRSpeakerCell.m */; };
 		907F5BE4226ED0F1009ED60E /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 907F5BE3226ED0F1009ED60E /* Hyphenate.framework */; };
 		907F5BE5226ED0F1009ED60E /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 907F5BE3226ED0F1009ED60E /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		907F5BEF226EFFF9009ED60E /* LRSpeakerEmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 907F5BEE226EFFF9009ED60E /* LRSpeakerEmptyCell.m */; };
 		9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8A225603E70099C5BD /* LRSpeakViewController.m */; };
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
@@ -114,6 +115,8 @@
 		907F5BE0226ECB3A009ED60E /* LRSpeakerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerCell.h; sourceTree = "<group>"; };
 		907F5BE1226ECB3A009ED60E /* LRSpeakerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerCell.m; sourceTree = "<group>"; };
 		907F5BE3226ED0F1009ED60E /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
+		907F5BED226EFFF9009ED60E /* LRSpeakerEmptyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerEmptyCell.h; sourceTree = "<group>"; };
+		907F5BEE226EFFF9009ED60E /* LRSpeakerEmptyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerEmptyCell.m; sourceTree = "<group>"; };
 		9080C4FB226D7B2100E1DCC5 /* LRTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRTypes.h; sourceTree = "<group>"; };
 		9083DC89225603E70099C5BD /* LRSpeakViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakViewController.h; sourceTree = "<group>"; };
 		9083DC8A225603E70099C5BD /* LRSpeakViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakViewController.m; sourceTree = "<group>"; };
@@ -255,6 +258,8 @@
 				90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */,
 				907F5BE0226ECB3A009ED60E /* LRSpeakerCell.h */,
 				907F5BE1226ECB3A009ED60E /* LRSpeakerCell.m */,
+				907F5BED226EFFF9009ED60E /* LRSpeakerEmptyCell.h */,
+				907F5BEE226EFFF9009ED60E /* LRSpeakerEmptyCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -707,6 +712,7 @@
 				9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */,
 				E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */,
 				9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */,
+				907F5BEF226EFFF9009ED60E /* LRSpeakerEmptyCell.m in Sources */,
 				907F5BDF226EB6C1009ED60E /* UIResponder+LRRouter.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
 				90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */,
