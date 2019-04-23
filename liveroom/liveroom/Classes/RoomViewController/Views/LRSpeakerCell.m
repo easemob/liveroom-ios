@@ -9,7 +9,7 @@
 #import "LRSpeakerCell.h"
 #import "Headers.h"
 #import "LRVolumeView.h"
-
+#import "LRSpeakerCellModel.h"
 #import "UIResponder+LRRouter.h"
 
 NSString *ON_MIC_EVENT_NAME              = @"onMicEventName";
@@ -25,17 +25,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 @property (nonatomic, strong) UIImageView *crownImage;
 @property (nonatomic, strong) LRVolumeView *volumeView;
 @property (nonatomic, strong) UIView *lineView;
-
-//// 音频开关按钮
-//@property (nonatomic, strong) UIButton *voiceEnableBtn;
-//// 指定说话按钮
-//@property (nonatomic, strong) UIButton *talkBtn;
-//// 抢麦按钮
-//@property (nonatomic, strong) UIButton *argumentBtn;
-//// 释放麦按钮
-//@property (nonatomic, strong) UIButton *unArgumentBtn;
-//// 断开按钮
-//@property (nonatomic, strong) UIButton *disconnectBtn;
 
 @end
 
@@ -221,16 +210,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 }
 
 @end
-
-@implementation LRSpeakerCellModel
-- (instancetype)init {
-    if (self = [super init]) {
-        self.username = @"";
-    }
-    return self;
-}
-@end
-
 
 @interface LRSpeakerHostCell ()
 // 指定说话按钮

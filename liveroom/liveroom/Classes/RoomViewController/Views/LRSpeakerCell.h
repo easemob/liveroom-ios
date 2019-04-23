@@ -35,20 +35,4 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRSpeakerMonopolyCell : LRSpeakerCell
 
 @end
-
-@interface LRSpeakerCellModel : NSObject
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *streamId;
-@property (nonatomic) LRRoomType type;
-@property (nonatomic) BOOL isOwner;
-@property (nonatomic) BOOL isAdmin;
-@property (nonatomic) BOOL isMyself;
-
-@property (nonatomic) BOOL speakOn;
-@property (nonatomic) BOOL talkOn;
-@property (nonatomic) BOOL argumentOn;
-@property (nonatomic) BOOL unArgumentOn;
-
-@end
-
 NS_ASSUME_NONNULL_END
