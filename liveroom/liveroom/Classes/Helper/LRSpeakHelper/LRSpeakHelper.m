@@ -248,9 +248,6 @@
 // 收到新的流发布，直接关注
 - (void)streamDidUpdate:(EMCallConference *)aConference
               addStream:(EMCallStream *)aStream {
-    
-    NSLog(@" -----------------------  addstream");
-    
     // 判断是否是当前的Conference
     if (![aConference.confId isEqualToString:self.conference.confId]) {
         return;
