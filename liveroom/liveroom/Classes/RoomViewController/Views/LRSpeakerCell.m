@@ -219,7 +219,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.disconnectBtn.hidden = NO;
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(!voiceEnableBtnNeedShow ? (!argumentBtnNeedShow ? self.contentView.mas_left: self.unArgumentBtn.mas_right) : self.voiceEnableBtn.mas_right).offset(10);
+            make.left.equalTo(!talkBtnNeedShow ? (!voiceEnableBtnNeedShow ? (!argumentBtnNeedShow ? self.contentView.mas_left: self.unArgumentBtn.mas_right) : self.voiceEnableBtn.mas_right) : self.talkBtn.mas_right).offset(10);
+
             make.width.equalTo(@60);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
@@ -345,7 +346,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     if (!_unArgumentBtn) {
         _unArgumentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_unArgumentBtn strokeWithColor:LRStrokeLowBlack];
-        [_unArgumentBtn setTitle:@"释放" forState:UIControlStateNormal];
+        [_unArgumentBtn setTitle:@"释放麦" forState:UIControlStateNormal];
         [_unArgumentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_unArgumentBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _unArgumentBtn.titleLabel.font = [UIFont systemFontOfSize:11];

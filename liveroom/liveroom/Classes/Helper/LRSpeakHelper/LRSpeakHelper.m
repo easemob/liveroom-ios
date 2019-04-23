@@ -190,6 +190,12 @@
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:nil];
 }
 
+- (void)setupUserOnSpeaker:(NSString *)aUsername {
+    [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker" value:aUsername completion:^(EMError * _Nullable saError) {
+        
+    }];
+}
+
 #pragma mark - user
 // 申请上麦
 - (void)requestOnSpeaker:(LRRoomModel *)aRoom

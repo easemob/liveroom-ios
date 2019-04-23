@@ -160,7 +160,9 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     }
     
     if ([eventName isEqualToString:TALK_EVENT_NAME]) {
-        
+        LRSpeakerCellModel *model = userInfo.allValues.firstObject;
+        NSString *username = model.username;
+        [LRSpeakHelper.sharedInstance setupUserOnSpeaker:username];
     }
     
     if ([eventName isEqualToString:ARGUMENT_EVENT_NAME]) {

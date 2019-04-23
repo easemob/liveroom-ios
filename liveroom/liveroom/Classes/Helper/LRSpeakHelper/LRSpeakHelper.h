@@ -51,6 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 // 拒绝用户上麦申请
 - (void)forbidUserOnSpeaker:(NSString *)aUsername;
 
+// 指定用户发言(主持模式)
+- (void)setupUserOnSpeaker:(NSString *)aUsername;
+
 #pragma mark - user
 // 申请上麦
 - (void)requestOnSpeaker:(LRRoomModel *)aRoom
