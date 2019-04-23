@@ -227,10 +227,12 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 
 // 谁在说话回调 (在主持或者抢麦模式下，标注谁在说话)
 - (void)currentSpeaker:(NSString *)aSpeaker {
-    
+    if ([aSpeaker isEqualToString:kCurrentUsername]) {
+        [LRSpeakHelper.sharedInstance muteMyself:NO];
+    }else {
+        [LRSpeakHelper.sharedInstance muteMyself:YES];
+    }
 }
-
-// TODO: 设置会议属性，会议属性变化
 
 #pragma mark - getter
 - (UITableView *)tableView {
