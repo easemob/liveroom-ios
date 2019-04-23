@@ -9,6 +9,7 @@
 #import "LRSpeakViewController.h"
 #import "LRVolumeView.h"
 #import "LRSpeakerCell.h"
+#import "LRSpeakerEmptyCell.h"
 #import "LRSpeakerTypeView.h"
 #import "LRSpeakHelper.h"
 #import "LRRoomModel.h"
@@ -74,21 +75,18 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView
                  cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    UITableViewCell *cell;
     LRSpeakerCellModel *model = self.dataAry[indexPath.row];
-    LRSpeakerCell *cell;
-    if (model.username) {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"LRSpeakerOnCell"];
-        if (!cell) {
-            cell = [[LRSpeakerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LRSpeakerOnCell"];
-        }
+    if (model.username && model.username.length > 0) {
+        cell = [LRSpeakerCell speakerCellWithType:self.roomModel.roomType
+                                        tableView:tableView
+                                        cellModel:model];
     }else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"LRSpeakerOffCell"];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"LRSpeakerEmptyCell"];
         if (!cell) {
-            cell = [[LRSpeakerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LRSpeakerOffCell"];
+            cell = [[LRSpeakerEmptyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LRSpeakerEmptyCell"];
         }
     }
-    cell.model = model;
-    [cell updateSubViewUI];
     return cell;
 }
 

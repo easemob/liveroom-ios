@@ -26,27 +26,68 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 @property (nonatomic, strong) LRVolumeView *volumeView;
 @property (nonatomic, strong) UIView *lineView;
 
-// 音频开关按钮
-@property (nonatomic, strong) UIButton *voiceEnableBtn;
-// 指定说话按钮
-@property (nonatomic, strong) UIButton *talkBtn;
-// 抢麦按钮
-@property (nonatomic, strong) UIButton *argumentBtn;
-// 释放麦按钮
-@property (nonatomic, strong) UIButton *unArgumentBtn;
-// 断开按钮
-@property (nonatomic, strong) UIButton *disconnectBtn;
+//// 音频开关按钮
+//@property (nonatomic, strong) UIButton *voiceEnableBtn;
+//// 指定说话按钮
+//@property (nonatomic, strong) UIButton *talkBtn;
+//// 抢麦按钮
+//@property (nonatomic, strong) UIButton *argumentBtn;
+//// 释放麦按钮
+//@property (nonatomic, strong) UIButton *unArgumentBtn;
+//// 断开按钮
+//@property (nonatomic, strong) UIButton *disconnectBtn;
+
 @end
 
 @implementation LRSpeakerCell
 
++ (LRSpeakerCell *)speakerCellWithType:(LRRoomType)aType
+                             tableView:(UITableView *)aTableView
+                             cellModel:(id)aModel {
+    LRSpeakerCell *cell;
+    switch (aType) {
+        case LRRoomType_Host:
+        {
+            static NSString *hostCellId = @"Host";
+            cell = [aTableView dequeueReusableCellWithIdentifier:hostCellId];
+            if (!cell) {
+                cell = [[LRSpeakerHostCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:hostCellId];
+            }
+        }
+            break;
+        case LRRoomType_Communication:
+        {
+            static NSString *CommunicationCellId = @"Communication";
+            cell = [aTableView dequeueReusableCellWithIdentifier:CommunicationCellId];
+            if (!cell) {
+                cell = [[LRSpeakerCommunicationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommunicationCellId];
+            }
+        }
+            break;
+        case LRRoomType_Monopoly:
+        {
+            static NSString *MonopolyCellId = @"Monopoly";
+            cell = [aTableView dequeueReusableCellWithIdentifier:MonopolyCellId];
+            if (!cell) {
+                cell = [[LRSpeakerMonopolyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MonopolyCellId];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+   
+    [cell setModel:aModel];
+    [cell updateSubViewUI];
+    return cell;
+}
+
+
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        
         self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         self.backgroundColor = LRColor_HeightBlackColor;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        [self _setupSubViews];
     }
     return self;
 }
@@ -58,11 +99,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [self.contentView addSubview:self.crownImage];
     [self.contentView addSubview:self.volumeView];
     [self.contentView addSubview:self.lineView];
-    [self.contentView addSubview:self.voiceEnableBtn];
-    [self.contentView addSubview:self.talkBtn];
-    [self.contentView addSubview:self.argumentBtn];
-    [self.contentView addSubview:self.unArgumentBtn];
-    [self.contentView addSubview:self.disconnectBtn];
+
     
     [self.lightView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(10);
@@ -99,136 +136,12 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 }
 
 - (void)updateSubViewUI {
-    
-    BOOL voiceEnableBtnNeedShow = NO;
-    BOOL talkBtnNeedShow = NO;
-    BOOL argumentBtnNeedShow = NO;
-    BOOL disconnectBtnNeedShow = NO;
-    
-    // 如果有数据
-    if (![_model.username isEqualToString:@""]) {
-        self.nameLabel.text = _model.username;
-        self.lightView.backgroundColor = _model.speakOn ? [UIColor yellowColor] : LRColor_MiddleBlackColor;
-        if (_model.isAdmin) {
-            self.crownImage.hidden = NO;
-        }else {
-            self.crownImage.hidden = YES;
-        }
-        
-        voiceEnableBtnNeedShow = _model.type == LRRoomType_Communication && _model.isMyself;
-        
-        talkBtnNeedShow = _model.type == LRRoomType_Host && _model.isOwner;
-        
-        argumentBtnNeedShow = _model.type == LRRoomType_Monopoly && _model.isMyself;
-        
-        disconnectBtnNeedShow = (!_model.isMyself && _model.isOwner) || (_model.isMyself && !_model.isOwner);
-    } else {
-        self.nameLabel.text = @"已下线";
-        self.lightView.backgroundColor = LRColor_LowBlackColor;
+    self.nameLabel.text = _model.username;
+    self.lightView.backgroundColor = _model.speakOn ? [UIColor yellowColor] : LRColor_MiddleBlackColor;
+    if (_model.isAdmin) {
+        self.crownImage.hidden = NO;
+    }else {
         self.crownImage.hidden = YES;
-    }
-    
-    if (voiceEnableBtnNeedShow) {
-        self.voiceEnableBtn.hidden = NO;
-        [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(self.lightView);
-            make.width.equalTo(@100);
-            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
-        }];
-        
-        
-        if (self.model.speakOn) {
-            [self.voiceEnableBtn strokeWithColor:LRStrokeGreen];
-        }else {
-            [self.voiceEnableBtn strokeWithColor:LRStrokeLowBlack];
-        }
-        
-    }else {
-        [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            
-        }];
-        self.voiceEnableBtn.hidden = YES;
-    }
-    
-    if (talkBtnNeedShow) {
-        self.talkBtn.hidden = NO;
-        [self.talkBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(!voiceEnableBtnNeedShow ? self.contentView.mas_left: self.voiceEnableBtn.mas_right).offset(10);
-            make.width.equalTo(@60);
-            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
-        }];
-        
-        if (self.model.talkOn) {
-            [self.talkBtn strokeWithColor:LRStrokeGreen];
-        }else {
-            [self.talkBtn strokeWithColor:LRStrokeLowBlack];
-        }
-        
-    }else {
-        [self.talkBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            
-        }];
-        self.talkBtn.hidden = YES;
-    }
-    
-    if (argumentBtnNeedShow) {
-        self.argumentBtn.hidden = NO;
-        self.unArgumentBtn.hidden = NO;
-        [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(!talkBtnNeedShow ? self.contentView.mas_left: self.talkBtn.mas_right).offset(10);
-            make.width.equalTo(@60);
-            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
-        }];
-        
-        if (self.model.argumentOn) {
-            [self.argumentBtn strokeWithColor:LRStrokeGreen];
-        }else {
-            [self.argumentBtn strokeWithColor:LRStrokeLowBlack];
-        }
-        
-        [self.unArgumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(self.argumentBtn.mas_right).offset(10);
-            make.width.equalTo(@60);
-            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
-        }];
-        
-        if (self.model.unArgumentOn) {
-            [self.unArgumentBtn strokeWithColor:LRStrokeGreen];
-        }else {
-            [self.unArgumentBtn strokeWithColor:LRStrokeLowBlack];
-        }
-
-    }else {
-        [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            
-        }];
-        
-        [self.unArgumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            
-        }];
-        
-        self.argumentBtn.hidden = YES;
-        self.unArgumentBtn.hidden = YES;
-    }
-    
-    if (disconnectBtnNeedShow) {
-        self.disconnectBtn.hidden = NO;
-        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(!talkBtnNeedShow ? (!voiceEnableBtnNeedShow ? (!argumentBtnNeedShow ? self.contentView.mas_left: self.unArgumentBtn.mas_right) : self.voiceEnableBtn.mas_right) : self.talkBtn.mas_right).offset(10);
-
-            make.width.equalTo(@60);
-            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
-        }];
-    }else {
-        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            
-        }];
-        self.disconnectBtn.hidden = YES;
     }
 }
 
@@ -299,6 +212,188 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     return _volumeView;
 }
 
+- (UIView *)lineView {
+    if (!_lineView) {
+        _lineView = [[UIView alloc] init];
+        _lineView.backgroundColor = [UIColor blackColor];
+    }
+    return _lineView;
+}
+
+@end
+
+@implementation LRSpeakerCellModel
+- (instancetype)init {
+    if (self = [super init]) {
+        self.username = @"";
+    }
+    return self;
+}
+@end
+
+
+@interface LRSpeakerHostCell ()
+// 指定说话按钮
+@property (nonatomic, strong) UIButton *talkBtn;
+// 断开按钮
+@property (nonatomic, strong) UIButton *disconnectBtn;
+@end
+
+@implementation LRSpeakerHostCell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        [self _setupSubViews];
+    }
+    return self;
+}
+
+- (void)_setupSubViews {
+    [super _setupSubViews];
+    [self.contentView addSubview:self.talkBtn];
+    [self.contentView addSubview:self.disconnectBtn];
+}
+
+- (void)updateSubViewUI {
+    [super updateSubViewUI];
+    BOOL talkBtnNeedShow = self.model.type == LRRoomType_Host && self.model.isOwner;
+    
+    if (talkBtnNeedShow) {
+        self.talkBtn.hidden = NO;
+        [self.talkBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.left.equalTo(self.contentView.mas_left).offset(10);
+            make.width.equalTo(@60);
+            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+        }];
+        
+        if (self.model.talkOn) {
+            [self.talkBtn strokeWithColor:LRStrokeGreen];
+        }else {
+            [self.talkBtn strokeWithColor:LRStrokeLowBlack];
+        }
+        
+    }else {
+        [self.talkBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            
+        }];
+        self.talkBtn.hidden = YES;
+    }
+    
+    BOOL disconnectBtnNeedShow = (!self.model.isMyself && self.model.isOwner) || (self.model.isMyself && !self.model.isOwner);
+    
+    if (disconnectBtnNeedShow) {
+        self.disconnectBtn.hidden = NO;
+        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.left.equalTo(talkBtnNeedShow ?
+                              self.talkBtn.mas_right : self.contentView.mas_left).offset(10);
+            make.width.equalTo(@60);
+            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+        }];
+    }else {
+        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            
+        }];
+        self.disconnectBtn.hidden = YES;
+    }
+}
+
+- (UIButton *)talkBtn {
+    if (!_talkBtn) {
+        _talkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_talkBtn strokeWithColor:LRStrokeLowBlack];
+        [_talkBtn setTitle:@"发言" forState:UIControlStateNormal];
+        [_talkBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_talkBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
+        _talkBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        [_talkBtn addTarget:self action:@selector(talkerAction:)
+           forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _talkBtn;
+}
+
+- (UIButton *)disconnectBtn {
+    if (!_disconnectBtn) {
+        _disconnectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_disconnectBtn strokeWithColor:LRStrokeRed];
+        [_disconnectBtn setTitle:@"下麦" forState:UIControlStateNormal];
+        [_disconnectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_disconnectBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
+        _disconnectBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        [_disconnectBtn addTarget:self action:@selector(disconnectAction:)
+                 forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _disconnectBtn;
+}
+
+@end
+
+
+@interface LRSpeakerCommunicationCell ()
+// 音频开关按钮
+@property (nonatomic, strong) UIButton *voiceEnableBtn;
+// 断开按钮
+@property (nonatomic, strong) UIButton *disconnectBtn;
+@end
+
+@implementation LRSpeakerCommunicationCell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        [self _setupSubViews];
+    }
+    return self;
+}
+
+- (void)_setupSubViews {
+    [super _setupSubViews];
+    [self.contentView addSubview:self.voiceEnableBtn];
+    [self.contentView addSubview:self.disconnectBtn];
+}
+
+- (void)updateSubViewUI {
+    [super updateSubViewUI];
+    BOOL voiceEnableBtnNeedShow = self.model.type == LRRoomType_Communication && self.model.isMyself;
+    if (voiceEnableBtnNeedShow) {
+        self.voiceEnableBtn.hidden = NO;
+        [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.left.equalTo(self.lightView);
+            make.width.equalTo(@100);
+            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+        }];
+        
+        
+        if (self.model.speakOn) {
+            [self.voiceEnableBtn strokeWithColor:LRStrokeGreen];
+        }else {
+            [self.voiceEnableBtn strokeWithColor:LRStrokeLowBlack];
+        }
+    }else {
+        [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            
+        }];
+        self.voiceEnableBtn.hidden = YES;
+    }
+    
+    BOOL disconnectBtnNeedShow = (!self.model.isMyself && self.model.isOwner) || (self.model.isMyself && !self.model.isOwner);
+    
+    if (disconnectBtnNeedShow) {
+        self.disconnectBtn.hidden = NO;
+        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.left.equalTo(voiceEnableBtnNeedShow ?
+                              self.voiceEnableBtn.mas_right : self.contentView.mas_left).offset(10);
+            make.width.equalTo(@60);
+            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+        }];
+    }else {
+        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            
+        }];
+        self.disconnectBtn.hidden = YES;
+    }
+}
+
 - (UIButton *)voiceEnableBtn {
     if (!_voiceEnableBtn) {
         _voiceEnableBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -314,18 +409,92 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     return _voiceEnableBtn;
 }
 
-- (UIButton *)talkBtn {
-    if (!_talkBtn) {
-        _talkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_talkBtn strokeWithColor:LRStrokeLowBlack];
-        [_talkBtn setTitle:@"发言" forState:UIControlStateNormal];
-        [_talkBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_talkBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
-        _talkBtn.titleLabel.font = [UIFont systemFontOfSize:11];
-        [_talkBtn addTarget:self action:@selector(talkerAction:)
-           forControlEvents:UIControlEventTouchUpInside];
+
+- (UIButton *)disconnectBtn {
+    if (!_disconnectBtn) {
+        _disconnectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_disconnectBtn strokeWithColor:LRStrokeRed];
+        [_disconnectBtn setTitle:@"下麦" forState:UIControlStateNormal];
+        [_disconnectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_disconnectBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
+        _disconnectBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        [_disconnectBtn addTarget:self action:@selector(disconnectAction:)
+                 forControlEvents:UIControlEventTouchUpInside];
     }
-    return _talkBtn;
+    return _disconnectBtn;
+}
+
+@end
+
+@interface LRSpeakerMonopolyCell ()
+// 抢麦按钮
+@property (nonatomic, strong) UIButton *argumentBtn;
+// 释放麦按钮
+@property (nonatomic, strong) UIButton *unArgumentBtn;
+// 断开按钮
+@property (nonatomic, strong) UIButton *disconnectBtn;
+@end
+
+@implementation LRSpeakerMonopolyCell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        [self _setupSubViews];
+    }
+    return self;
+}
+
+- (void)_setupSubViews {
+    [super _setupSubViews];
+    [self.contentView addSubview:self.argumentBtn];
+    [self.contentView addSubview:self.unArgumentBtn];
+    [self.contentView addSubview:self.disconnectBtn];
+}
+
+- (void)updateSubViewUI {
+    [super updateSubViewUI];
+    
+    BOOL argumentBtnNeedShow = self.model.type == LRRoomType_Monopoly && self.model.isMyself;
+    if (argumentBtnNeedShow) {
+        self.argumentBtn.hidden = NO;
+        self.unArgumentBtn.hidden = NO;
+        [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.left.equalTo(self.contentView.mas_left).offset(10);
+            make.width.equalTo(@60);
+            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+        }];
+        
+        if (self.model.argumentOn) {
+            [self.argumentBtn strokeWithColor:LRStrokeGreen];
+        }else {
+            [self.argumentBtn strokeWithColor:LRStrokeLowBlack];
+        }
+        
+        [self.unArgumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.left.equalTo(self.argumentBtn.mas_right).offset(10);
+            make.width.equalTo(@60);
+            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+        }];
+        
+        if (self.model.unArgumentOn) {
+            [self.unArgumentBtn strokeWithColor:LRStrokeGreen];
+        }else {
+            [self.unArgumentBtn strokeWithColor:LRStrokeLowBlack];
+        }
+        
+    }else {
+        [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            
+        }];
+        
+        [self.unArgumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            
+        }];
+        
+        self.argumentBtn.hidden = YES;
+        self.unArgumentBtn.hidden = YES;
+    }
 }
 
 - (UIButton *)argumentBtn {
@@ -356,6 +525,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     return _unArgumentBtn;
 }
 
+
 - (UIButton *)disconnectBtn {
     if (!_disconnectBtn) {
         _disconnectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -370,21 +540,4 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     return _disconnectBtn;
 }
 
-- (UIView *)lineView {
-    if (!_lineView) {
-        _lineView = [[UIView alloc] init];
-        _lineView.backgroundColor = [UIColor blackColor];
-    }
-    return _lineView;
-}
-
-@end
-
-@implementation LRSpeakerCellModel
-- (instancetype)init {
-    if (self = [super init]) {
-        self.username = @"";
-    }
-    return self;
-}
 @end

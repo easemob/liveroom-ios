@@ -16,6 +16,24 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRSpeakerCell : UITableViewCell
 @property (nonatomic, strong) LRSpeakerCellModel *model;
 - (void)updateSubViewUI;
+
++ (LRSpeakerCell *)speakerCellWithType:(LRRoomType)aType
+                             tableView:(UITableView *)aTableView
+                             cellModel:(id)aModel;
+
+@end
+
+
+@interface LRSpeakerHostCell : LRSpeakerCell
+
+@end
+
+@interface LRSpeakerCommunicationCell : LRSpeakerCell
+
+@end
+
+@interface LRSpeakerMonopolyCell : LRSpeakerCell
+
 @end
 
 @interface LRSpeakerCellModel : NSObject
