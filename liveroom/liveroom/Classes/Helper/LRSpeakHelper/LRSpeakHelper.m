@@ -229,7 +229,8 @@
 
 // 是否静音自己
 - (void)muteMyself:(BOOL)isMute {
-    
+    [_delegates receiveSpeakerMute:kCurrentUsername mute:isMute];
+    [EMClient.sharedClient.conferenceManager updateConference:self.conference isMute:isMute];
 }
 
 #pragma mark - EMConferenceManagerDelegate
@@ -276,7 +277,7 @@
     if (![aConference.confId isEqualToString:aConference.confId]) {
         return;
     }
-    [_delegates receiveSpeakerMute:aStream.userName mute:aStream.enableVoice];
+    [_delegates receiveSpeakerMute:aStream.userName mute:!aStream.enableVoice];
 }
 
 // 管理员允许你上麦后会收到该回调
@@ -293,6 +294,12 @@
         [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_UI_ChangeRoleToAudience
                                                           object:nil];
     }
+}
+
+// 监听用户说话
+- (void)conferenceSpeakerDidChange:(EMCallConference *)aConference
+                 speakingStreamIds:(NSArray *)aStreamIds {
+    NSLog(@" -- %@", aStreamIds);
 }
 
 - (void)conferenceAttributesChanged:(EMCallConference *)aConference attributeAction:(EMConferenceAttributeAction)aAction

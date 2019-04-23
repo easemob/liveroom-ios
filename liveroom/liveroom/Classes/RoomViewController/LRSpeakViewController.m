@@ -16,12 +16,12 @@
 #define kMaxSpeakerCount 6
 
 
-static NSString *onMicEventName             = @"onMicEventName";
-static NSString *offMicEventName            = @"offMicEventName";
-static NSString *talkEventName              = @"talkEventName";
-static NSString *argumentEventName          = @"offMicEventName";
-static NSString *unArgumentEventName        = @"offMicEventName";
-static NSString *disconnectEventName        = @"disconnectEventName";
+static NSString *ON_MIC_EVENT_NAME              = @"onMicEventName";
+static NSString *OFF_MIC_EVENT_NAME             = @"offMicEventName";
+static NSString *TALK_EVENT_NAME                = @"talkEventName";
+static NSString *ARGUMENT_EVENT_NAME            = @"offMicEventName";
+static NSString *UN_ARGUMENT_EVENT_NAME         = @"offMicEventName";
+static NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 @interface LRSpeakViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakHelperDelegate>
 
@@ -88,8 +88,6 @@ static NSString *disconnectEventName        = @"disconnectEventName";
         }
     }
     cell.model = model;
-    cell.type = self.roomModel.roomType;
-    cell.isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
     [cell updateSubViewUI];
     return cell;
 }
@@ -109,8 +107,10 @@ static NSString *disconnectEventName        = @"disconnectEventName";
     }
     if (nModel) {
         nModel.username = aMember;
+        nModel.type = self.roomModel.roomType;
         nModel.isMute = isMute;
         nModel.isAdmin = isAdmin;
+        nModel.isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
         nModel.isMyself = [aMember isEqualToString:kCurrentUsername];
     }
     if (isAdmin) {
@@ -132,9 +132,11 @@ static NSString *disconnectEventName        = @"disconnectEventName";
         
         if (dModel) {
             dModel.username = @"";
+            dModel.type = self.roomModel.roomType;
             dModel.isMute = NO;
             dModel.isAdmin = NO;
             dModel.isMyself = NO;
+            dModel.isOwner = NO;
             // 将空的放到最后一个位置
         }
         [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
@@ -143,7 +145,31 @@ static NSString *disconnectEventName        = @"disconnectEventName";
 }
 
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo {
+    if ([eventName isEqualToString:ON_MIC_EVENT_NAME]) {
+        [LRSpeakHelper.sharedInstance muteMyself:NO];
+    }
     
+    if ([eventName isEqualToString:OFF_MIC_EVENT_NAME]) {
+        [LRSpeakHelper.sharedInstance muteMyself:YES];
+    }
+    
+    if ([eventName isEqualToString:TALK_EVENT_NAME]) {
+        
+    }
+    
+    if ([eventName isEqualToString:ARGUMENT_EVENT_NAME]) {
+        
+    }
+    
+    if ([eventName isEqualToString:UN_ARGUMENT_EVENT_NAME]) {
+        
+    }
+    
+    if ([eventName isEqualToString:DISCONNECT_EVENT_NAME]) {
+        LRSpeakerCellModel *model = userInfo.allValues.firstObject;
+        NSString *username = model.username;
+        [LRSpeakHelper.sharedInstance setupUserToAudiance:username];
+    }
 }
 
 #pragma mark - LRSpeakHelperDelegate
@@ -313,6 +339,8 @@ static NSString *disconnectEventName        = @"disconnectEventName";
 }
 
 - (void) updateSubViewUI {
+    
+    
     BOOL voiceEnableBtnNeedShow = NO;
     BOOL talkBtnNeedShow = NO;
     BOOL argumentBtnNeedShow = NO;
@@ -328,13 +356,13 @@ static NSString *disconnectEventName        = @"disconnectEventName";
             self.crownImage.hidden = YES;
         }
     
-        voiceEnableBtnNeedShow = self.type == LRRoomType_Communication && _model.isMyself;
+        voiceEnableBtnNeedShow = _model.type == LRRoomType_Communication && _model.isMyself;
         
-        talkBtnNeedShow = self.type == LRRoomType_Host && _isOwner;
+        talkBtnNeedShow = _model.type == LRRoomType_Host && _model.isOwner;
         
-        argumentBtnNeedShow = self.type == LRRoomType_Monopoly && _model.isMyself;
+        argumentBtnNeedShow = _model.type == LRRoomType_Monopoly && _model.isMyself;
         
-        disconnectBtnNeedShow = (!_model.isMyself && _isOwner) || (_model.isMyself && !_isOwner);
+        disconnectBtnNeedShow = (!_model.isMyself && _model.isOwner) || (_model.isMyself && !_model.isOwner);
     } else {
         self.nameLabel.text = @"已下线";
         self.lightView.backgroundColor = LRColor_LowBlackColor;
@@ -405,7 +433,7 @@ static NSString *disconnectEventName        = @"disconnectEventName";
         self.disconnectBtn.hidden = NO;
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(!argumentBtnNeedShow ? self.contentView.mas_left: self.argumentBtn.mas_right).offset(10);
+            make.left.equalTo(!voiceEnableBtnNeedShow ? (!argumentBtnNeedShow ? self.contentView.mas_left: self.unArgumentBtn.mas_right) : self.voiceEnableBtn.mas_right).offset(10);
             make.width.equalTo(@60);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
@@ -427,9 +455,9 @@ static NSString *disconnectEventName        = @"disconnectEventName";
     }
     
     if (aBtn.selected) {
-        [self btnSelectedWithEventName:onMicEventName];
+        [self btnSelectedWithEventName:ON_MIC_EVENT_NAME];
     }else {
-        [self btnSelectedWithEventName:offMicEventName];
+        [self btnSelectedWithEventName:OFF_MIC_EVENT_NAME];
     }
 }
 
@@ -441,7 +469,7 @@ static NSString *disconnectEventName        = @"disconnectEventName";
         [aBtn strokeWithColor:LRStrokeLowBlack];
     }
     
-    [self btnSelectedWithEventName:talkEventName];
+    [self btnSelectedWithEventName:TALK_EVENT_NAME];
 }
 
 - (void)argumentAction:(UIButton *)aBtn {
@@ -452,7 +480,7 @@ static NSString *disconnectEventName        = @"disconnectEventName";
         [aBtn strokeWithColor:LRStrokeLowBlack];
     }
     
-    [self btnSelectedWithEventName:argumentEventName];
+    [self btnSelectedWithEventName:ARGUMENT_EVENT_NAME];
 }
 
 - (void)unArgumentAction:(UIButton *)aBtn {
@@ -463,14 +491,13 @@ static NSString *disconnectEventName        = @"disconnectEventName";
         [aBtn strokeWithColor:LRStrokeLowBlack];
     }
     
-    [self btnSelectedWithEventName:unArgumentEventName];
+    [self btnSelectedWithEventName:UN_ARGUMENT_EVENT_NAME];
 }
 
 
 - (void)disconnectAction:(UIButton *)aBtn {
     aBtn.selected = !aBtn.selected;
-    
-    [self btnSelectedWithEventName:disconnectEventName];
+    [self btnSelectedWithEventName:DISCONNECT_EVENT_NAME];
 }
 
 - (void)btnSelectedWithEventName:(NSString *)aEventName {
