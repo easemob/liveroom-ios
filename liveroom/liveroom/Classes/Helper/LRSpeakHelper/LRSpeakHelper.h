@@ -51,8 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 // 拒绝用户上麦申请
 - (void)forbidUserOnSpeaker:(NSString *)aUsername;
 
-// 指定用户发言(主持模式)
+// 指定用户发言(主持模式, 抢麦模式)
 - (void)setupUserOnSpeaker:(NSString *)aUsername;
+
+// 取消用户发言(主持模式, 抢麦模式)
+- (void)setupUserOffSpeaker:(NSString *)aUsername;
 
 #pragma mark - user
 // 申请上麦
@@ -66,6 +69,15 @@ NS_ASSUME_NONNULL_BEGIN
 // 是否静音自己
 - (void)muteMyself:(BOOL)isMute;
 
+
+#pragma mark - argument mic
+// 抢麦
+- (void)argumentMic:(NSString *)aRoomId
+         completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aComplstion;
+
+// 释放麦
+- (void)unArgumentMic:(NSString *)aRoomId
+           completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aComplstion;
 @end
 
 NS_ASSUME_NONNULL_END

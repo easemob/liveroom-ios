@@ -30,6 +30,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @property (nonatomic, strong) NSMutableArray *memberList;
+
 @end
 
 @implementation LRSpeakViewController
@@ -113,7 +114,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
         nModel.isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
         nModel.isMyself = [aMember isEqualToString:kCurrentUsername];
         nModel.speakOn = !isMute;
-        nModel.argumentOn = NO;
+        nModel.argumentOn = self.roomModel.roomType == LRRoomType_Monopoly ? YES : NO;
         nModel.unArgumentOn = NO;
     }
     if (isAdmin) {
@@ -141,7 +142,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
             dModel.isMyself = NO;
             dModel.isOwner = NO;
             dModel.speakOn = NO;
-            dModel.argumentOn = NO;
+            dModel.argumentOn = self.roomModel.roomType == LRRoomType_Monopoly ? YES : NO;
             dModel.unArgumentOn = NO;
             
             [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
@@ -165,11 +166,27 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     }
     
     if ([eventName isEqualToString:ARGUMENT_EVENT_NAME]) {
-        
+        LRSpeakerCellModel *model = userInfo.allValues.firstObject;
+        __block NSString *username = model.username;
+        [LRSpeakHelper.sharedInstance argumentMic:self.roomModel.roomId
+                                       completion:^(NSString * _Nonnull errorInfo, BOOL success)
+         {
+             if (success) {
+                 [LRSpeakHelper.sharedInstance setupUserOnSpeaker:username];
+             }
+        }];
     }
     
     if ([eventName isEqualToString:UN_ARGUMENT_EVENT_NAME]) {
-        
+        LRSpeakerCellModel *model = userInfo.allValues.firstObject;
+        __block NSString *username = model.username;
+        [LRSpeakHelper.sharedInstance unArgumentMic:self.roomModel.roomId
+                                       completion:^(NSString * _Nonnull errorInfo, BOOL success)
+         {
+             if (success) {
+                 [LRSpeakHelper.sharedInstance setupUserOffSpeaker:username];
+             }
+         }];
     }
     
     if ([eventName isEqualToString:DISCONNECT_EVENT_NAME]) {
@@ -226,13 +243,45 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     [self.headerView setType:aType];
 }
 
-// 谁在说话回调 (在主持或者抢麦模式下，标注谁在说话)
-- (void)currentSpeaker:(NSString *)aSpeaker {
+// 谁在说话回调 (在主持模式下，标注谁在说话)
+- (void)currentHostTypeSpeakerChanged:(NSString *)aSpeaker {
     if ([aSpeaker isEqualToString:kCurrentUsername]) {
         [LRSpeakHelper.sharedInstance muteMyself:NO];
     }else {
         [LRSpeakHelper.sharedInstance muteMyself:YES];
     }
+}
+
+// 谁在说话回调 (在抢麦模式下，标注谁在说话)
+- (void)currentMonopolyTypeSpeakerChanged:(NSString *)aSpeaker {
+    
+    BOOL isMySelf = [aSpeaker isEqualToString:kCurrentUsername];
+    if (!isMySelf) {
+        [LRSpeakHelper.sharedInstance muteMyself:YES];
+    }else {
+        [LRSpeakHelper.sharedInstance muteMyself:NO];
+    }
+    
+    LRSpeakerCellModel *myModel = nil;
+    for (LRSpeakerCellModel *model in self.dataAry) {
+        if (model.isMyself) {
+            myModel = model;
+            break;
+        }
+    }
+    if (!myModel) {
+        return;
+    }
+    
+    if (isMySelf) {
+        myModel.argumentOn = NO;
+        myModel.unArgumentOn = YES;
+    }else {
+        myModel.argumentOn = aSpeaker.length == 0 ? YES : NO;
+        myModel.unArgumentOn = NO;
+    }
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - getter

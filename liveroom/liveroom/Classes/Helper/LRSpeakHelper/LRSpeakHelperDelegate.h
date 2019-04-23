@@ -27,8 +27,12 @@ NS_ASSUME_NONNULL_BEGIN
 // 房间属性变化
 - (void)roomTypeDidChange:(LRRoomType)aType;
 
-// 谁在说话回调 (在主持或者抢麦模式下，标注谁在说话)
-- (void)currentSpeaker:(NSString *)aSpeaker;
+// 谁在说话回调 (在主持模式下，标注谁在说话)
+- (void)currentHostTypeSpeakerChanged:(NSString *)aSpeaker;
+
+// 谁在说话回调 (在抢麦模式下，标注谁在说话)
+- (void)currentMonopolyTypeSpeakerChanged:(NSString *)aSpeaker;
+
 
 @end
 
