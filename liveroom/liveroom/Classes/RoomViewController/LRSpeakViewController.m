@@ -477,9 +477,6 @@ static NSString *disconnectEventName        = @"disconnectEventName";
     [self routerEventWithName:aEventName userInfo:@{@"key" : self.model}];
 }
 
-//- (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo {
-//    [[self nextResponder] routerEventWithName:eventName userInfo:userInfo];
-//}
 
 #pragma mark - getter
 - (UIView *)lightView {
