@@ -295,7 +295,8 @@
 
 - (void)joinRoomWithModel:(LRRoomModel *)aModel {
 
-    LRAlertController *alert = [LRAlertController showSuccessAlertWithTitle:aModel.roomname info:nil];
+    NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"True":@"False"];
+    LRAlertController *alert = [LRAlertController showSuccessAlertWithTitle:aModel.roomname info:info];
     alert.textField = [[UITextField alloc] init];
     LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"加入" callback:^(LRAlertController * _Nonnull alertController) {
         if (alertController.textField.text.length == 0) {
@@ -320,7 +321,6 @@
 - (void)reloadPage {
     [LRRequestManager.sharedInstance requestWithMethod:@"GET" urlString:@"http://turn2.easemob.com:8082/app/talk/rooms/0/200" parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
      {
-         NSLog(@"result---%@,error---%@", result,error);
          dispatch_async(dispatch_get_main_queue(), ^{
              if (!error) {
                  NSArray *list = result[@"list"];

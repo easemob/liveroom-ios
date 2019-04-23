@@ -21,6 +21,7 @@
 		90600135225DA55600CD8BAA /* LRSpeakerTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600130225DA55600CD8BAA /* LRSpeakerTypeView.m */; };
 		9060013E225EE35B00CD8BAA /* LRChatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9060013C225EE35B00CD8BAA /* LRChatHelper.m */; };
 		90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90600140225EE38B00CD8BAA /* LRSpeakHelper.m */; };
+		907F5BDF226EB6C1009ED60E /* UIResponder+LRRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 907F5BDE226EB6C1009ED60E /* UIResponder+LRRouter.m */; };
 		9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8A225603E70099C5BD /* LRSpeakViewController.m */; };
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
@@ -68,7 +69,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-                905F023F22697E250063D558 /* Hyphenate.framework in Embed Frameworks */,
+				905F023F22697E250063D558 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -101,6 +102,10 @@
 		9060013D225EE35B00CD8BAA /* LRChatHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRChatHelper.h; sourceTree = "<group>"; };
 		9060013F225EE38B00CD8BAA /* LRSpeakHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakHelper.h; sourceTree = "<group>"; };
 		90600140225EE38B00CD8BAA /* LRSpeakHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakHelper.m; sourceTree = "<group>"; };
+		907F5BDB226EB2FE009ED60E /* LRSpeakHelperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakHelperDelegate.h; sourceTree = "<group>"; };
+		907F5BDC226EB34E009ED60E /* LRChatHelperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRChatHelperDelegate.h; sourceTree = "<group>"; };
+		907F5BDD226EB6C1009ED60E /* UIResponder+LRRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIResponder+LRRouter.h"; sourceTree = "<group>"; };
+		907F5BDE226EB6C1009ED60E /* UIResponder+LRRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+LRRouter.m"; sourceTree = "<group>"; };
 		9080C4FB226D7B2100E1DCC5 /* LRTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRTypes.h; sourceTree = "<group>"; };
 		9083DC89225603E70099C5BD /* LRSpeakViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakViewController.h; sourceTree = "<group>"; };
 		9083DC8A225603E70099C5BD /* LRSpeakViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakViewController.m; sourceTree = "<group>"; };
@@ -177,7 +182,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
-                905F023E22697E250063D558 /* Hyphenate.framework in Frameworks */,
+				905F023E22697E250063D558 /* Hyphenate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +248,7 @@
 			children = (
 				9060013F225EE38B00CD8BAA /* LRSpeakHelper.h */,
 				90600140225EE38B00CD8BAA /* LRSpeakHelper.m */,
+				907F5BDB226EB2FE009ED60E /* LRSpeakHelperDelegate.h */,
 			);
 			path = LRSpeakHelper;
 			sourceTree = "<group>";
@@ -252,6 +258,7 @@
 			children = (
 				9060013D225EE35B00CD8BAA /* LRChatHelper.h */,
 				9060013C225EE35B00CD8BAA /* LRChatHelper.m */,
+				907F5BDC226EB34E009ED60E /* LRChatHelperDelegate.h */,
 			);
 			path = LRChatHelper;
 			sourceTree = "<group>";
@@ -287,7 +294,6 @@
 		90F2C66A2254C02A00A712B8 /* liveroom */ = {
 			isa = PBXGroup;
 			children = (
-				E096C5E32269B77D007908BB /* Hyphenate.framework */,
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
 				9080C4FB226D7B2100E1DCC5 /* LRTypes.h */,
 				90F2C6A32254C08600A712B8 /* Headers.h */,
@@ -339,6 +345,8 @@
 				90F2C6922254C08600A712B8 /* UIView+LRCategory.m */,
 				902B51EB2261BCFD000EC701 /* UIViewController+LRAlert.h */,
 				902B51EC2261BCFD000EC701 /* UIViewController+LRAlert.m */,
+				907F5BDD226EB6C1009ED60E /* UIResponder+LRRouter.h */,
+				907F5BDE226EB6C1009ED60E /* UIResponder+LRRouter.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -667,6 +675,7 @@
 				9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */,
 				E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */,
 				9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */,
+				907F5BDF226EB6C1009ED60E /* UIResponder+LRRouter.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
 				E04712F0225DEEB600F9910C /* LRVolumeView.m in Sources */,
 				90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */,

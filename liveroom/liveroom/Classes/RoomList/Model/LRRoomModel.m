@@ -17,7 +17,10 @@
     model.roomId = dict[@"roomId"];
     model.conferenceId = dict[@"rtcConfrId"];
     model.owner = dict[@"ownerName"];
-    model.roomType = LRRoomType_Communication; // 测试用
+    model.maxCount = [dict[@"rtcConfrAudienceLimit"] intValue];
+    model.createTime =  dict[@"rtcConfrCreateTime"];
+    model.allowAudienceOnSpeaker = [dict[@"allowAudienceTalk"] boolValue];
+    model.roomType = LRRoomType_Communication; // 默认值
     return model;
 }
 

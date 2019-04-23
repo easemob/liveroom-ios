@@ -8,31 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "LRTypes.h"
+#import "LRSpeakHelperDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-
-
-@protocol LRSpeakHelperDelegate <NSObject>
-
-@optional
-// 收到有人上麦
-- (void)receiveSomeoneOnSpeaker:(NSString *)aUsername mute:(BOOL)isMute;
-
-// 收到有人下麦
-- (void)receiveSomeoneOffSpeaker:(NSString *)aUsername;
-
-// 收到成员静音状态变化
-- (void)receiveSpeakerMute:(NSString *)aUsername
-                      mute:(BOOL)isMute;
-
-// 房间属性变化
-- (void)roomTypeDidChange:(LRRoomType)aType;
-
-// 谁在说话回调 (在主持或者抢麦模式下，标注谁在说话)
-- (void)currentSpeaker:(NSString *)aSpeaker;
-
-@end
 
 @class LRRoomModel;
 @interface LRSpeakHelper : NSObject
@@ -55,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 #pragma mark - admin
+// 设置房间属性
+- (void)setupRoomType:(LRRoomType)aType;
+
 // 自己上麦
 - (void)setupMySelfToSpeaker;
 
