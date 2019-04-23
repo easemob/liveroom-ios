@@ -43,7 +43,7 @@
     options.chatPort = 6717;
     options.chatServer = @"39.107.54.56";
     options.restServer = @"a1-hsb.easemob.com";
-    options.enableConsoleLog = YES;
+    options.enableConsoleLog = NO;
     [EMClient.sharedClient initializeSDKWithOptions:options];
 }
 
@@ -160,19 +160,19 @@
         NSString *action = msg.ext[kRequestKey];
         if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
         {
-            [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_OnSpeak_Request
+            [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_OnSpeak_Request_Notification
                                                               object:msg.from];
         }
         
         if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件
         {
-            [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_OnSpeak_Reject
+            [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_OnSpeak_Reject_Notification
                                                               object:msg.from];
         }
         
         if ([action isEqualToString:kRequestToBe_Audience]) // 收到下麦事件
         {
-            [NSNotificationCenter.defaultCenter postNotificationName:LR_Notification_Receive_ToBe_Audience
+            [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_ToBe_Audience_Notification
                                                               object:msg.from];
         }
     }

@@ -13,7 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol LRSpeakHelperDelegate <NSObject>
 @optional
 // 收到有人上麦
-- (void)receiveSomeoneOnSpeaker:(NSString *)aUsername mute:(BOOL)isMute;
+- (void)receiveSomeoneOnSpeaker:(NSString *)aUsername
+                       streamId:(NSString *)aStreamId
+                           mute:(BOOL)isMute;
 
 // 收到有人下麦
 - (void)receiveSomeoneOffSpeaker:(NSString *)aUsername;

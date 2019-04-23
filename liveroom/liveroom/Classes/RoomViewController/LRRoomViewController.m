@@ -73,22 +73,22 @@
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(showRequestInfo:)
-                                               name:LR_Notification_Receive_OnSpeak_Request
+                                               name:LR_Receive_OnSpeak_Request_Notification
                                              object:nil];
 
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(receiveRequestReject:)
-                                               name:LR_Notification_Receive_OnSpeak_Reject
+                                               name:LR_Receive_OnSpeak_Reject_Notification
                                              object:nil];
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(receiveRequestAgreed:)
-                                               name:LR_Notification_UI_ChangeRoleToSpeaker
+                                               name:LR_UI_ChangeRoleToSpeaker_Notification
                                              object:nil];
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(changeToAudience:)
-                                               name:LR_Notification_UI_ChangeRoleToAudience
+                                               name:LR_UI_ChangeRoleToAudience_Notification
                                              object:nil];
 }
 
