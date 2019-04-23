@@ -10,9 +10,9 @@
 
 @implementation LRVolumeView
 {
-    UIView *_lineView1;
-    UIView *_lineView2;
-    UIView *_lightView;
+    NSTimer *_timer;
+    NSArray *_speakAnimationImages;
+    UIImageView *_lightImageView;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -31,34 +31,51 @@
 }
 
 - (void)_setupSubviews {
-    self.backgroundColor = [UIColor blackColor];
+    _speakAnimationImages = @[@"voice1",@"voice2",@"voice3",@"voice4"];
+    self.backgroundColor = [UIColor clearColor];
+    _lightImageView = [[UIImageView alloc] init];
+    _lightImageView.image = [UIImage imageNamed:@"voice1"];
+    _lightImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self addSubview:_lightImageView];
+}
 
-    _lightView = [[UIView alloc] init];
-    _lightView.backgroundColor = UIColor.yellowColor;
-    _lineView1 = [[UIView alloc] init];
-    _lineView1.backgroundColor = LRColor_HeightBlackColor;
-    _lineView2 = [[UIView alloc] init];
-    _lineView2.backgroundColor = LRColor_HeightBlackColor;
-    
-    [self addSubview:_lightView];
-    [self addSubview:_lineView1];
-    [self addSubview:_lineView2];
+- (void)startSpeakAnimationImage
+{
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                       target:self
+                                                     selector:@selector(speakAnimationImage)
+                                                     userInfo:nil
+                                                      repeats:YES];
+}
+
+- (void)speakAnimationImage
+{
+    _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:0]];
+    NSUInteger value = (NSUInteger)arc4random() % 4;
+    NSUInteger count = [_speakAnimationImages count];
+    if (value >= count) {
+        _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages lastObject]];
+    } else {
+        _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:value]];
+    }
+}
+
+- (void)endSpeakAnimationImage
+{
+    [_timer invalidate];
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    _lightView.frame = CGRectMake(0, CGRectGetHeight(self.frame) * _progress, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) * (1 - _progress));
-    CGFloat height = CGRectGetHeight(self.frame) / 5;
-    _lineView1.frame = CGRectMake(0, height * 1, CGRectGetWidth(self.frame), height);
-    _lineView2.frame = CGRectMake(0, height * 3, CGRectGetWidth(self.frame), height);
+    _lightImageView.frame = self.bounds;
 }
 
 - (void)setProgress:(CGFloat)progress {
-    _progress = 1 - progress;
-    CGFloat height = _progress * CGRectGetHeight(self.frame);
-    CGRect frame = _lightView.frame;
-    frame.size.height = height;
-    _lightView.frame = frame;
+//    _progress = 1 - progress;
+//    CGFloat height = _progress * CGRectGetHeight(self.frame);
+//    CGRect frame = _lightView.frame;
+//    frame.size.height = height;
+//    _lightView.frame = frame;
 }
 
 @end
