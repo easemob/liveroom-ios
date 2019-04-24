@@ -9,14 +9,14 @@
 #import "LRSpeakerCell.h"
 #import "Headers.h"
 #import "LRVolumeView.h"
-
+#import "LRSpeakerCellModel.h"
 #import "UIResponder+LRRouter.h"
 
 NSString *ON_MIC_EVENT_NAME              = @"onMicEventName";
 NSString *OFF_MIC_EVENT_NAME             = @"offMicEventName";
 NSString *TALK_EVENT_NAME                = @"talkEventName";
-NSString *ARGUMENT_EVENT_NAME            = @"offMicEventName";
-NSString *UN_ARGUMENT_EVENT_NAME         = @"offMicEventName";
+NSString *ARGUMENT_EVENT_NAME            = @"argumentEventName";
+NSString *UN_ARGUMENT_EVENT_NAME         = @"unArgumentEventName";
 NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 @interface LRSpeakerCell ()
@@ -25,17 +25,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 @property (nonatomic, strong) UIImageView *crownImage;
 @property (nonatomic, strong) LRVolumeView *volumeView;
 @property (nonatomic, strong) UIView *lineView;
-
-//// 音频开关按钮
-//@property (nonatomic, strong) UIButton *voiceEnableBtn;
-//// 指定说话按钮
-//@property (nonatomic, strong) UIButton *talkBtn;
-//// 抢麦按钮
-//@property (nonatomic, strong) UIButton *argumentBtn;
-//// 释放麦按钮
-//@property (nonatomic, strong) UIButton *unArgumentBtn;
-//// 断开按钮
-//@property (nonatomic, strong) UIButton *disconnectBtn;
 
 @end
 
@@ -146,26 +135,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 }
 
 #pragma mark - actions
-- (void)voiceEnableAction:(UIButton *)aBtn {
-    if (!self.model.speakOn) {
-        [self btnSelectedWithEventName:ON_MIC_EVENT_NAME];
-    }else {
-        [self btnSelectedWithEventName:OFF_MIC_EVENT_NAME];
-    }
-}
-
-- (void)talkerAction:(UIButton *)aBtn {
-    [self btnSelectedWithEventName:TALK_EVENT_NAME];
-}
-
-- (void)argumentAction:(UIButton *)aBtn {
-    [self btnSelectedWithEventName:ARGUMENT_EVENT_NAME];
-}
-
-- (void)unArgumentAction:(UIButton *)aBtn {
-    [self btnSelectedWithEventName:UN_ARGUMENT_EVENT_NAME];
-}
-
 - (void)disconnectAction:(UIButton *)aBtn {
     [self btnSelectedWithEventName:DISCONNECT_EVENT_NAME];
 }
@@ -221,16 +190,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 }
 
 @end
-
-@implementation LRSpeakerCellModel
-- (instancetype)init {
-    if (self = [super init]) {
-        self.username = @"";
-    }
-    return self;
-}
-@end
-
 
 @interface LRSpeakerHostCell ()
 // 指定说话按钮
@@ -296,6 +255,11 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         }];
         self.disconnectBtn.hidden = YES;
     }
+}
+
+#pragma mark - actions
+- (void)talkerAction:(UIButton *)aBtn {
+    [self btnSelectedWithEventName:TALK_EVENT_NAME];
 }
 
 - (UIButton *)talkBtn {
@@ -394,6 +358,15 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     }
 }
 
+#pragma mark - actions
+- (void)voiceEnableAction:(UIButton *)aBtn {
+    if (!self.model.speakOn) {
+        [self btnSelectedWithEventName:ON_MIC_EVENT_NAME];
+    }else {
+        [self btnSelectedWithEventName:OFF_MIC_EVENT_NAME];
+    }
+}
+
 - (UIButton *)voiceEnableBtn {
     if (!_voiceEnableBtn) {
         _voiceEnableBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -433,6 +406,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 @property (nonatomic, strong) UIButton *unArgumentBtn;
 // 断开按钮
 @property (nonatomic, strong) UIButton *disconnectBtn;
+// 计时器timer
+@property (nonatomic, strong) UILabel *timerLabel;
 @end
 
 @implementation LRSpeakerMonopolyCell
@@ -466,8 +441,12 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         
         if (self.model.argumentOn) {
             [self.argumentBtn strokeWithColor:LRStrokeGreen];
+            [self.argumentBtn setTitleColor:LRColor_LessBlackColor forState:UIControlStateNormal];
+            self.argumentBtn.enabled = YES;
         }else {
             [self.argumentBtn strokeWithColor:LRStrokeLowBlack];
+            [self.argumentBtn setTitleColor:LRColor_MiddleBlackColor forState:UIControlStateNormal];
+            self.argumentBtn.enabled = NO;
         }
         
         [self.unArgumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -479,8 +458,12 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         
         if (self.model.unArgumentOn) {
             [self.unArgumentBtn strokeWithColor:LRStrokeGreen];
+            [self.unArgumentBtn setTitleColor:LRColor_LessBlackColor forState:UIControlStateNormal];
+            self.unArgumentBtn.enabled = YES;
         }else {
             [self.unArgumentBtn strokeWithColor:LRStrokeLowBlack];
+            [self.unArgumentBtn setTitleColor:LRColor_MiddleBlackColor forState:UIControlStateNormal];
+            self.unArgumentBtn.enabled = NO;
         }
         
     }else {
@@ -495,7 +478,35 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.argumentBtn.hidden = YES;
         self.unArgumentBtn.hidden = YES;
     }
+    
+    BOOL disconnectBtnNeedShow = (!self.model.isMyself && self.model.isOwner) || (self.model.isMyself && !self.model.isOwner);
+    
+    if (disconnectBtnNeedShow) {
+        self.disconnectBtn.hidden = NO;
+        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.left.equalTo(argumentBtnNeedShow ?
+                              self.unArgumentBtn.mas_right : self.contentView.mas_left).offset(10);
+            make.width.equalTo(@60);
+            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+        }];
+    }else {
+        [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            
+        }];
+        self.disconnectBtn.hidden = YES;
+    }
 }
+
+#pragma mark - actions
+- (void)argumentAction:(UIButton *)aBtn {
+    [self btnSelectedWithEventName:ARGUMENT_EVENT_NAME];
+}
+
+- (void)unArgumentAction:(UIButton *)aBtn {
+    [self btnSelectedWithEventName:UN_ARGUMENT_EVENT_NAME];
+}
+
 
 - (UIButton *)argumentBtn {
     if (!_argumentBtn) {

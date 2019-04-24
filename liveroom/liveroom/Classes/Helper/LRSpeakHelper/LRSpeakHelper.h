@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRSpeakHelper : NSObject
 @property (nonatomic, strong) NSString *adminId;
 @property (nonatomic, strong) EMCallConference *conference;
+@property (nonatomic, strong) LRRoomModel *roomModel;
 + (LRSpeakHelper *)sharedInstance;
 
 - (void)addDeelgate:(id<LRSpeakHelperDelegate>)aDelegate delegateQueue:(dispatch_queue_t _Nullable)aQueue;
@@ -51,8 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
 // 拒绝用户上麦申请
 - (void)forbidUserOnSpeaker:(NSString *)aUsername;
 
-// 指定用户发言(主持模式)
-- (void)setupUserOnSpeaker:(NSString *)aUsername;
+// 指定用户发言(主持模式, 抢麦模式)
+- (void)setupSpeakerMicOn:(NSString *)aUsername;
+
+// 取消用户发言(主持模式, 抢麦模式)
+- (void)setupSpeakerMicOff:(NSString *)aUsername;
 
 #pragma mark - user
 // 申请上麦
@@ -66,6 +70,15 @@ NS_ASSUME_NONNULL_BEGIN
 // 是否静音自己
 - (void)muteMyself:(BOOL)isMute;
 
+
+#pragma mark - argument mic
+// 抢麦
+- (void)argumentMic:(NSString *)aRoomId
+         completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aComplstion;
+
+// 释放麦
+- (void)unArgumentMic:(NSString *)aRoomId
+           completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aComplstion;
 @end
 
 NS_ASSUME_NONNULL_END

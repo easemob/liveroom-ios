@@ -6,16 +6,22 @@
 //  Copyright © 2019 Easemob. All rights reserved.
 //
 
+#import "Headers.h"
 #import "LRSpeakHelper.h"
 #import "LRGCDMulticastDelegate.h"
 #import "LRRoomModel.h"
 
+#define kKeepHandleTime 30
 
 @interface LRSpeakHelper () <EMConferenceManagerDelegate>
 {
     LRGCDMulticastDelegate <LRSpeakHelperDelegate> *_delegates;
+    NSString *_currentMonopolyTalker;
+    int _time;
 }
+
 @property (nonatomic, strong) NSString *pubStreamId;
+@property (nonatomic, strong) NSTimer *monopolyTimer;
 
 @end
 
@@ -190,10 +196,16 @@
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:nil];
 }
 
-- (void)setupUserOnSpeaker:(NSString *)aUsername {
-    [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker" value:aUsername completion:^(EMError * _Nullable saError) {
-        
-    }];
+- (void)setupSpeakerMicOn:(NSString *)aUsername {
+    [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker"
+                                                                       value:aUsername
+                                                                  completion:nil];
+}
+
+- (void)setupSpeakerMicOff:(NSString *)aUsername {
+    [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker"
+                                                                       value:@""
+                                                                  completion:nil];
 }
 
 #pragma mark - user
@@ -246,6 +258,88 @@
     [_delegates receiveSpeakerMute:kCurrentUsername mute:isMute];
     [EMClient.sharedClient.conferenceManager updateConference:self.conference isMute:isMute];
 }
+
+#pragma mark - argument mic
+// 抢麦
+- (void)argumentMic:(NSString *)aRoomId
+         completion:(void(^)(NSString *errorInfo, BOOL success))aComplstion {
+    NSString *url = [NSString stringWithFormat:@"http://turn2.easemob.com:8082/app/mic/%@/%@", aRoomId,kCurrentUsername];;
+    __block BOOL success = NO;
+    [LRRequestManager.sharedInstance requestWithMethod:@"GET"
+                                             urlString:url
+                                            parameters:nil
+                                                 token:nil
+                                            completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
+     {
+         success = [result[@"status"] boolValue];
+         if (aComplstion) {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 if (!error) {
+                     aComplstion(nil, success);
+                 }else {
+                     aComplstion(nil, success);
+                 }
+             });
+         }
+     }];
+}
+
+// 释放麦
+- (void)unArgumentMic:(NSString *)aRoomId
+           completion:(void(^)(NSString *errorInfo, BOOL success))aComplstion {
+    NSString *url = [NSString stringWithFormat:@"http://turn2.easemob.com:8082/app/discardmic/%@/%@", aRoomId,kCurrentUsername];;
+    [LRRequestManager.sharedInstance requestWithMethod:@"DELETE"
+                                             urlString:url
+                                            parameters:nil
+                                                 token:nil
+                                            completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             if (!error) {
+                 if (aComplstion) {
+                     aComplstion(nil, YES);
+                 }
+             }else {
+                 if (aComplstion) {
+                     aComplstion(nil, NO);
+                 }
+             }
+         });
+     }];
+}
+
+#pragma mark - Monopoly Timer
+- (void)updateMonopolyTimer {
+    _time--;
+    if (_time == 0) {
+        [self stopMonopolyTimer];
+        // 只有自己持有麦的时候才能释放麦
+        if ([_currentMonopolyTalker isEqualToString:kCurrentUsername]) {
+            [self setupSpeakerMicOff:kCurrentUsername];
+        }
+    }
+}
+
+// 启动倒计时
+- (void)startMonopolyTimer {
+    [self stopMonopolyTimer];
+    _time = kKeepHandleTime;
+    _monopolyTimer = [NSTimer timerWithTimeInterval:1
+                                             target:self
+                                           selector:@selector(updateMonopolyTimer)
+                                           userInfo:nil
+                                            repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_monopolyTimer forMode:NSRunLoopCommonModes];
+    [_monopolyTimer fire];
+}
+
+- (void)stopMonopolyTimer {
+    if (_monopolyTimer) {
+        [_monopolyTimer invalidate];
+        _monopolyTimer = nil;
+    }
+}
+
 
 #pragma mark - EMConferenceManagerDelegate
 
@@ -307,6 +401,13 @@
         [self setupMySelfToAudiance];
         [NSNotificationCenter.defaultCenter postNotificationName:LR_UI_ChangeRoleToAudience_Notification
                                                           object:nil];
+        if ([_currentMonopolyTalker isEqualToString:kCurrentUsername]) {
+            [self unArgumentMic:self.roomModel.roomId
+                     completion:^(NSString * _Nonnull errorInfo, BOOL success)
+             {
+                 [self setupSpeakerMicOff:kCurrentUsername];
+             }];
+        }
     }
 }
 
@@ -321,23 +422,33 @@
                        attributeKey:(NSString *)attrKey
                      attributeValue:(NSString *)attrValue {
     if ([attrKey isEqualToString:@"type"]) {
-        LRRoomType type = 0;
         if ([attrValue isEqualToString:@"communication"]) {
-            type = LRRoomType_Communication;
+            self.roomModel.roomType = LRRoomType_Communication;
         }
         if ([attrValue isEqualToString:@"host"]) {
-            type = LRRoomType_Host;
+            self.roomModel.roomType = LRRoomType_Host;
         }
         if ([attrValue isEqualToString:@"monopoly"]) {
-            type = LRRoomType_Monopoly;
+            self.roomModel.roomType = LRRoomType_Monopoly;
         }
-        if (type != 0) {
-            [_delegates roomTypeDidChange:type];
-        }
+        
+        [_delegates roomTypeDidChange:self.roomModel.roomType];
     }
     
     if ([attrKey isEqualToString:@"talker"]) {
-        [_delegates currentSpeaker:attrValue];
+        if (self.roomModel.roomType == LRRoomType_Host) {
+            [_delegates currentHostTypeSpeakerChanged:attrValue];
+        }
+        
+        if (self.roomModel.roomType == LRRoomType_Monopoly) {
+            _currentMonopolyTalker = attrValue;
+            if ([attrValue isEqualToString:@""]) {
+                [self stopMonopolyTimer];
+            }else {
+                [self startMonopolyTimer];
+            }
+            [_delegates currentMonopolyTypeSpeakerChanged:attrValue];
+        }
     }
 }
 
