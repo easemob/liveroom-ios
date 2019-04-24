@@ -11,11 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LRVolumeView : UIView
-@property (nonatomic) CGFloat progress;
-
-- (void)startSpeakAnimationImage;
-
-- (void)endSpeakAnimationImage;
+@property (nonatomic) NSUInteger progress;
 
 @end
 
