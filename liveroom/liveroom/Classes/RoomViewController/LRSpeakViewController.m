@@ -46,6 +46,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self _setupSubViews];
+    LRSpeakHelper.sharedInstance.roomModel = _roomModel;
     [self.headerView setType:LRRoomType_Communication];
     for (int i = 0; i < kMaxSpeakerCount; i++) {
         LRSpeakerCellModel *model = [[LRSpeakerCellModel alloc] init];

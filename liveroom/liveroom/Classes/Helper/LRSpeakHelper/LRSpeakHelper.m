@@ -16,9 +16,10 @@
 @interface LRSpeakHelper () <EMConferenceManagerDelegate>
 {
     LRGCDMulticastDelegate <LRSpeakHelperDelegate> *_delegates;
-    LRRoomType _roomType;
+    NSString *_currentMonopolyTalker;
     int _time;
 }
+
 @property (nonatomic, strong) NSString *pubStreamId;
 @property (nonatomic, strong) NSTimer *monopolyTimer;
 
@@ -312,7 +313,10 @@
     _time--;
     if (_time == 0) {
         [self stopMonopolyTimer];
-        [self setupUserOffSpeaker:kCurrentUsername];
+        // 只有自己持有麦的时候才能释放麦
+        if ([_currentMonopolyTalker isEqualToString:kCurrentUsername]) {
+            [self setupUserOffSpeaker:kCurrentUsername];
+        }
     }
 }
 
@@ -397,6 +401,13 @@
         [self setupMySelfToAudiance];
         [NSNotificationCenter.defaultCenter postNotificationName:LR_UI_ChangeRoleToAudience_Notification
                                                           object:nil];
+        if ([_currentMonopolyTalker isEqualToString:kCurrentUsername]) {
+            [self unArgumentMic:self.roomModel.roomId
+                     completion:^(NSString * _Nonnull errorInfo, BOOL success)
+             {
+                 [self setupUserOffSpeaker:kCurrentUsername];
+             }];
+        }
     }
 }
 
@@ -411,27 +422,26 @@
                        attributeKey:(NSString *)attrKey
                      attributeValue:(NSString *)attrValue {
     if ([attrKey isEqualToString:@"type"]) {
-        _roomType = 0;
         if ([attrValue isEqualToString:@"communication"]) {
-            _roomType = LRRoomType_Communication;
+            self.roomModel.roomType = LRRoomType_Communication;
         }
         if ([attrValue isEqualToString:@"host"]) {
-            _roomType = LRRoomType_Host;
+            self.roomModel.roomType = LRRoomType_Host;
         }
         if ([attrValue isEqualToString:@"monopoly"]) {
-            _roomType = LRRoomType_Monopoly;
+            self.roomModel.roomType = LRRoomType_Monopoly;
         }
-        if (_roomType != 0) {
-            [_delegates roomTypeDidChange:_roomType];
-        }
+        
+        [_delegates roomTypeDidChange:self.roomModel.roomType];
     }
     
     if ([attrKey isEqualToString:@"talker"]) {
-        if (_roomType == LRRoomType_Host) {
+        if (self.roomModel.roomType == LRRoomType_Host) {
             [_delegates currentHostTypeSpeakerChanged:attrValue];
         }
         
-        if (_roomType == LRRoomType_Monopoly) {
+        if (self.roomModel.roomType == LRRoomType_Monopoly) {
+            _currentMonopolyTalker = attrValue;
             if ([attrValue isEqualToString:@""]) {
                 [self stopMonopolyTimer];
             }else {
