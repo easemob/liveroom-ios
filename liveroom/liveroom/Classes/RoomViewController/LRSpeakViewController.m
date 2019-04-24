@@ -163,7 +163,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     if ([eventName isEqualToString:TALK_EVENT_NAME]) {
         LRSpeakerCellModel *model = userInfo.allValues.firstObject;
         NSString *username = model.username;
-        [LRSpeakHelper.sharedInstance setupUserOnSpeaker:username];
+        [LRSpeakHelper.sharedInstance setupSpeakerMicOn:username];
     }
     
     if ([eventName isEqualToString:ARGUMENT_EVENT_NAME]) {
@@ -173,7 +173,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
                                        completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              if (success) {
-                 [LRSpeakHelper.sharedInstance setupUserOnSpeaker:username];
+                 [LRSpeakHelper.sharedInstance setupSpeakerMicOn:username];
              }
         }];
     }
@@ -185,7 +185,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
                                        completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              if (success) {
-                 [LRSpeakHelper.sharedInstance setupUserOffSpeaker:username];
+                 [LRSpeakHelper.sharedInstance setupSpeakerMicOff:username];
              }
          }];
     }

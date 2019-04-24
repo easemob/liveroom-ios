@@ -196,13 +196,13 @@
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:nil];
 }
 
-- (void)setupUserOnSpeaker:(NSString *)aUsername {
+- (void)setupSpeakerMicOn:(NSString *)aUsername {
     [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker"
                                                                        value:aUsername
                                                                   completion:nil];
 }
 
-- (void)setupUserOffSpeaker:(NSString *)aUsername {
+- (void)setupSpeakerMicOff:(NSString *)aUsername {
     [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker"
                                                                        value:@""
                                                                   completion:nil];
@@ -315,7 +315,7 @@
         [self stopMonopolyTimer];
         // 只有自己持有麦的时候才能释放麦
         if ([_currentMonopolyTalker isEqualToString:kCurrentUsername]) {
-            [self setupUserOffSpeaker:kCurrentUsername];
+            [self setupSpeakerMicOff:kCurrentUsername];
         }
     }
 }
@@ -405,7 +405,7 @@
             [self unArgumentMic:self.roomModel.roomId
                      completion:^(NSString * _Nonnull errorInfo, BOOL success)
              {
-                 [self setupUserOffSpeaker:kCurrentUsername];
+                 [self setupSpeakerMicOff:kCurrentUsername];
              }];
         }
     }

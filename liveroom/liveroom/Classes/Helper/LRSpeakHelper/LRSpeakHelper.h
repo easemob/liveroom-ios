@@ -53,10 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)forbidUserOnSpeaker:(NSString *)aUsername;
 
 // 指定用户发言(主持模式, 抢麦模式)
-- (void)setupUserOnSpeaker:(NSString *)aUsername;
+- (void)setupSpeakerMicOn:(NSString *)aUsername;
 
 // 取消用户发言(主持模式, 抢麦模式)
-- (void)setupUserOffSpeaker:(NSString *)aUsername;
+- (void)setupSpeakerMicOff:(NSString *)aUsername;
 
 #pragma mark - user
 // 申请上麦
