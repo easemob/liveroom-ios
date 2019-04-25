@@ -39,43 +39,21 @@
     [self addSubview:_lightImageView];
 }
 
-- (void)startSpeakAnimationImage
-{
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1
-                                                       target:self
-                                                     selector:@selector(speakAnimationImage)
-                                                     userInfo:nil
-                                                      repeats:YES];
-}
-
-- (void)speakAnimationImage
-{
-    _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:0]];
-    NSUInteger value = (NSUInteger)arc4random() % 4;
-    NSUInteger count = [_speakAnimationImages count];
-    if (value >= count) {
-        _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages lastObject]];
-    } else {
-        _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:value]];
-    }
-}
-
-- (void)endSpeakAnimationImage
-{
-    [_timer invalidate];
-}
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     _lightImageView.frame = self.bounds;
 }
 
-- (void)setProgress:(CGFloat)progress {
-//    _progress = 1 - progress;
-//    CGFloat height = _progress * CGRectGetHeight(self.frame);
-//    CGRect frame = _lightView.frame;
-//    frame.size.height = height;
-//    _lightView.frame = frame;
+- (void)setProgress:(NSUInteger)progress {
+    _progress = progress;
+    if (progress != 0) {
+        NSUInteger value = 1+ (NSUInteger)arc4random() % 3;
+        _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:value]];
+    } else {
+        _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:progress]];
+    }
+    
 }
 
 @end

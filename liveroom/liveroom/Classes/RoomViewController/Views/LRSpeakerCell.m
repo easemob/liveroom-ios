@@ -312,6 +312,21 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [super _setupSubViews];
     [self.contentView addSubview:self.voiceEnableBtn];
     [self.contentView addSubview:self.disconnectBtn];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(streamIdsNoti:) name:LR_Stream_Did_Speaking_Notification object:nil];
+}
+
+- (void)streamIdsNoti:(NSNotification *)notification
+{
+    NSArray *array = notification.object;
+    if (array.count != 0) {
+        for (NSString *streamId in array) {
+            if ([streamId isEqualToString:self.model.streamId]) {
+                [self.volumeView setProgress:1];
+            }
+        }
+    } else {
+        [self.volumeView setProgress:0];
+    }
 }
 
 - (void)updateSubViewUI {
@@ -356,7 +371,11 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         }];
         self.disconnectBtn.hidden = YES;
     }
+    
+
 }
+
+
 
 #pragma mark - actions
 - (void)voiceEnableAction:(UIButton *)aBtn {
