@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface LRVoiceRoomTabbar : UIView
-@property (nonatomic) id <LRVoiceRoomTabbarDelgate> delegate;
+@property (nonatomic, weak) id <LRVoiceRoomTabbarDelgate> delegate;
 @end
 
 NS_ASSUME_NONNULL_END
