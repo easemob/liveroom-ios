@@ -430,7 +430,7 @@
 
 - (void)dealloc
 {
-    
+    LRSpeakHelper.sharedInstance.roomModel = nil;
 }
 
 @end

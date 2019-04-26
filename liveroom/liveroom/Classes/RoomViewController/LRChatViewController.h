@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @class LRRoomModel;
 @interface LRChatViewController : UIViewController
-@property (nonatomic, strong) LRRoomModel *roomModel;
+@property (nonatomic, weak) LRRoomModel *roomModel;
 - (void)sendText:(NSString *)aText;
 @end
 

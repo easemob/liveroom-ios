@@ -203,6 +203,9 @@
 }
 
 - (void)setupSpeakerMicOff:(NSString *)aUsername {
+    if (!self.roomModel) {
+        return;
+    }
     [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker"
                                                                        value:@""
                                                                   completion:nil];
