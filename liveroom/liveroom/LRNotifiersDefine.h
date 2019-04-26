@@ -23,5 +23,7 @@
 #define LR_UI_ChangeRoleToAudience_Notification         @"ChangeRoleToAudience"
 
 #define LR_Stream_Did_Speaking_Notification             @"StreamDidSpeaking"
+#define LR_Remain_Speaking_timer_Notification             @"speakingTimer"
+#define LR_Un_Argument_Speaker_Notification             @"unArgumentSpeaker"
 
 #endif /* LRNotifiersDefine_h */

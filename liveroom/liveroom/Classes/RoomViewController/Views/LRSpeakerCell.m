@@ -77,6 +77,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         self.backgroundColor = LRColor_HeightBlackColor;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(streamIdsNoti:) name:LR_Stream_Did_Speaking_Notification object:nil];
     }
     return self;
 }
@@ -122,6 +123,22 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     }];
     
     [self layoutIfNeeded];
+    
+}
+
+- (void)streamIdsNoti:(NSNotification *)notification
+{
+    NSArray *array = notification.object;
+    NSLog(@"array----%@", array);
+    if (array.count != 0) {
+        for (NSString *streamId in array) {
+            if ([streamId isEqualToString:self.model.streamId]) {
+                [self.volumeView setProgress:1];
+            }
+        }
+    } else {
+        [self.volumeView setProgress:0];
+    }
 }
 
 - (void)updateSubViewUI {
@@ -187,6 +204,11 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         _lineView.backgroundColor = [UIColor blackColor];
     }
     return _lineView;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
@@ -312,21 +334,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [super _setupSubViews];
     [self.contentView addSubview:self.voiceEnableBtn];
     [self.contentView addSubview:self.disconnectBtn];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(streamIdsNoti:) name:LR_Stream_Did_Speaking_Notification object:nil];
-}
-
-- (void)streamIdsNoti:(NSNotification *)notification
-{
-    NSArray *array = notification.object;
-    if (array.count != 0) {
-        for (NSString *streamId in array) {
-            if ([streamId isEqualToString:self.model.streamId]) {
-                [self.volumeView setProgress:1];
-            }
-        }
-    } else {
-        [self.volumeView setProgress:0];
-    }
 }
 
 - (void)updateSubViewUI {
@@ -433,8 +440,38 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self _setupSubViews];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remainSpeakingTimerNoti:) name:LR_Remain_Speaking_timer_Notification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unArgumentSpeakerNoti:) name:LR_Un_Argument_Speaker_Notification object:nil];
     }
     return self;
+}
+
+- (void)remainSpeakingTimerNoti:(NSNotification *)notification
+{
+    NSDictionary *dict = notification.object;
+    NSString *speakingUserName = [dict objectForKey:@"currentSpeakingUsername"];
+    NSNumber *remainSpeakingTime = [dict objectForKey:@"remainSpeakingTime"];
+    self.timerLabel.text = nil;
+    int time = [remainSpeakingTime intValue];
+    if ([speakingUserName isEqualToString:self.model.username]) {
+        if (time != 0) {
+            self.timerLabel.text = [NSString stringWithFormat:@"%ds",time];
+            self.timerLabel.hidden = NO;
+        } else {
+            self.timerLabel.text = nil;
+            self.timerLabel.hidden = YES;
+        }
+    }
+    
+}
+
+- (void)unArgumentSpeakerNoti:(NSNotification *)notification
+{
+    NSString *unArgumentSpeaker = notification.object;
+    if ([unArgumentSpeaker isEqualToString:@""]) {
+        self.timerLabel.text = nil;
+        self.timerLabel.hidden = YES;
+    }
 }
 
 - (void)_setupSubViews {
@@ -442,6 +479,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [self.contentView addSubview:self.argumentBtn];
     [self.contentView addSubview:self.unArgumentBtn];
     [self.contentView addSubview:self.disconnectBtn];
+    [self.contentView addSubview:self.timerLabel];
 }
 
 - (void)updateSubViewUI {
@@ -515,6 +553,11 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         }];
         self.disconnectBtn.hidden = YES;
     }
+    
+    [self.timerLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.nameLabel);
+        make.right.equalTo(self.volumeView.mas_left).offset(-10);
+    }];
 }
 
 #pragma mark - actions
@@ -524,6 +567,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 - (void)unArgumentAction:(UIButton *)aBtn {
     [self btnSelectedWithEventName:UN_ARGUMENT_EVENT_NAME];
+    self.timerLabel.text = nil;
+    self.timerLabel.hidden = YES;
 }
 
 
@@ -568,6 +613,17 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
                  forControlEvents:UIControlEventTouchUpInside];
     }
     return _disconnectBtn;
+}
+
+- (UILabel *)timerLabel {
+    if (!_timerLabel) {
+        _timerLabel = [[UILabel alloc] init];
+        _timerLabel.font = [UIFont systemFontOfSize:14];
+        [_timerLabel setTextColor:LRColor_LessBlackColor];
+        _timerLabel.textAlignment = NSTextAlignmentCenter;
+        _timerLabel.hidden = YES;
+    }
+    return _timerLabel;
 }
 
 @end

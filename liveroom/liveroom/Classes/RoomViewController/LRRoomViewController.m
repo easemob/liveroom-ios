@@ -376,6 +376,7 @@
         return;
     }
     self.applyOnSpeakBtn.selected = YES;
+    
     [LRSpeakHelper.sharedInstance requestOnSpeaker:self.roomModel completion:^(NSString * _Nonnull errorInfo, BOOL success)
     {
         if (!success) {
@@ -427,5 +428,9 @@
     return _inputBar;
 }
 
+- (void)dealloc
+{
+    
+}
 
 @end
