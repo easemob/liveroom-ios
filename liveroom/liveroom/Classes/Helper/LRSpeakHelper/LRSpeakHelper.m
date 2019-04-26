@@ -318,6 +318,7 @@
             [self setupSpeakerMicOff:kCurrentUsername];
         }
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:LR_Remain_Speaking_timer_Notification object:@{@"currentSpeakingUsername":_currentMonopolyTalker,@"remainSpeakingTime":[NSNumber numberWithInt:_time]}];
 }
 
 // 启动倒计时
@@ -337,6 +338,8 @@
     if (_monopolyTimer) {
         [_monopolyTimer invalidate];
         _monopolyTimer = nil;
+        NSLog(@"_currentMonopolyTalker----%@", _currentMonopolyTalker);
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Un_Argument_Speaker_Notification object:_currentMonopolyTalker];
     }
 }
 

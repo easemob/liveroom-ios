@@ -150,4 +150,22 @@
     }
 }
 
+
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//    if (self.textField.text.length == 0) {
+//        if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarCancelAction:)]) {
+//            [self.delegate searchBarCancelAction:self];
+//        }
+//    } else {
+//        if (self.delegate && [self.delegate respondsToSelector:@selector(searchBarShouldBeginEditing:)]) {
+//            [self.delegate searchBarShouldBeginEditing:self];
+//        }
+//    }
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(searchTextDidChangeWithString:)]) {
+//        [self.delegate searchTextDidChangeWithString:string];
+//    }
+//    return YES;
+//}
+
 @end

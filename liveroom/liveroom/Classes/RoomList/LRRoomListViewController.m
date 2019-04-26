@@ -176,7 +176,12 @@
     if (cell == nil) {
         cell = [[LRVoiceChatRoomListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    LRRoomModel *model = [self.dataArray objectAtIndex:indexPath.row];
+    LRRoomModel *model = nil;
+    if (tableView == self.tableView) {
+        model = [self.dataArray objectAtIndex:indexPath.row];
+    } else {
+        model = [self.searchResults objectAtIndex:indexPath.row];
+    }
     cell.model = model;
     return cell;
 }
@@ -290,9 +295,7 @@
     }
 }
 
-
 #pragma mark - Actions
-
 - (void)joinRoomWithModel:(LRRoomModel *)aModel {
 
     NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"True":@"False"];
