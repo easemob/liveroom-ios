@@ -47,6 +47,13 @@
     return _searchResults;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self autoReload];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self _setupSubviews];

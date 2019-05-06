@@ -46,6 +46,12 @@
     self.layer.borderWidth = 2.5;
 }
 
+- (void)cellStrokeWithColor:(UIColor *)aColor borderWidth:(CGFloat)width
+{
+    self.layer.borderColor = aColor.CGColor;
+    self.layer.borderWidth = width;
+}
+
 - (void)disableStroke {
     self.layer.borderColor = [UIColor clearColor].CGColor;
     self.layer.borderWidth = 0;

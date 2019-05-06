@@ -128,8 +128,10 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 // 删除speaker
 - (void)removeMemberFromDataAry:(NSString *)aMemeber {
     LRSpeakerCellModel *dModel = nil;
+    int i = 0;
         for (LRSpeakerCellModel *model in self.dataAry) {
             if ([model.username isEqualToString:aMemeber]) {
+                i ++;
                 dModel = model;
                 break;
             }
@@ -146,7 +148,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
             dModel.argumentOn = self.roomModel.roomType == LRRoomType_Monopoly ? YES : NO;
             dModel.unArgumentOn = NO;
             
-            [self.dataAry replaceObjectAtIndex:5 withObject:dModel];
+            [self.dataAry replaceObjectAtIndex:i withObject:dModel];
         }
     [self.tableView reloadData];
 }

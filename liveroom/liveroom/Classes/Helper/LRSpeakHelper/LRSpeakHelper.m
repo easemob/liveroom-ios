@@ -422,7 +422,6 @@
                  speakingStreamIds:(NSArray *)aStreamIds {
     [NSNotificationCenter.defaultCenter postNotificationName:LR_Stream_Did_Speaking_Notification
                                                       object:aStreamIds];
-    NSLog(@"aStreamIds------%@", aStreamIds);
 }
 
 - (void)conferenceAttributesChanged:(EMCallConference *)aConference attributeAction:(EMConferenceAttributeAction)aAction
