@@ -296,6 +296,7 @@
 
 - (void)memberListAction {
     LRRoomInfoViewController *membersVC = [[LRRoomInfoViewController alloc] init];
+    membersVC.roomID = self.roomModel.roomId;
     [self presentViewController:membersVC animated:YES completion:^{
         
     }];

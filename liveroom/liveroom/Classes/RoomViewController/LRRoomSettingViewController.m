@@ -49,7 +49,6 @@
         make.centerY.equalTo(self.closeButton.imageView);
     }];
     
-    // LRColor_HeightBlackColor  LRColor_MiddleBlackColor  LRColor_LowBlackColor
     self.backGroundView = [[UIView alloc] init];
     self.backGroundView.layer.borderWidth = 2;
     self.backGroundView.layer.borderColor = LRColor_LowBlackColor.CGColor;
@@ -75,7 +74,7 @@
     
     self.roomProfileLabel = [[UILabel alloc] init];
     self.roomProfileLabel.numberOfLines = 0;
-//    [self.roomProfileLabel setText:[NSString stringWithFormat:@"房间id：%@\n密码password：%@\n聊天室chatroomid：%@\n会议confrenceid：%@\n音质模式voicequality：%@\n互动主播speakerlimited：%d\n房间人数memberlimited：%d\n创建时间createtime：%@\n允许观众申请上麦applyAllow：%d\n互动模式type：%ld",_model.roomId,_rommPassword,_model.roomId,_model.conferenceId,@"highlevel",_speakerLimited,_model.maxCount,_model.createTime,_model.allowAudienceOnSpeaker,_model.roomType]];
+    
     NSString *roomType = nil;
     if (_model.roomType == 1) {
         roomType = @"communication";
