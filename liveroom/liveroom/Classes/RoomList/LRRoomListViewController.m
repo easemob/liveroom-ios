@@ -329,6 +329,7 @@
 }
 
 - (void)reloadPage {
+    
     [LRRequestManager.sharedInstance requestWithMethod:@"GET" urlString:@"http://turn2.easemob.com:8082/app/talk/rooms/0/200" parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
      {
          dispatch_async(dispatch_get_main_queue(), ^{

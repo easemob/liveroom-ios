@@ -26,6 +26,8 @@
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) UITableView *searchResultTableView;
 
+@property (nonatomic, strong) NSString *cursor;
+
 @end
 
 @implementation LRRoomInfoViewController
@@ -49,16 +51,43 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSArray *array = @[@{@"memberName":@"shengxi",@"isOwner":@YES},@{@"memberName":@"jiepeng",@"isOwner":@NO},@{@"memberName":@"donghai",@"isOwner":@NO}];
+    [self autoReload];
     
-//    [EMClient sharedClient].roomManager get;
-    
-    for (NSDictionary *dict in array) {
+    [self _setupSubviews];
+}
+
+- (void)autoReload {
+    [self.tableView.mj_header beginRefreshing];
+    self.cursor = @"";
+    [self reloadPage];
+}
+
+- (void)reloadPage {
+    EMError *error;
+    EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:self.roomID error:&error];
+    if (!error) {
+        [self.dataArray removeAllObjects];
+        NSString *owner = chatroom.owner;
+        NSDictionary *dict = @{@"memberName":owner,@"isOwner":@YES};
         LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
         [self.dataArray addObject:model];
     }
     
-    [self _setupSubviews];
+     EMCursorResult *result = [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.roomID cursor:self.cursor pageSize:50 error:&error];
+    if (!error) {
+        NSArray *list = result.list;
+        for (NSString *membersName in list) {
+            NSDictionary *dict = @{@"memberName":membersName,@"isOwner":@NO};
+            LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
+            [self.dataArray addObject:model];
+        }
+    }
+    [self endReload];
+}
+
+- (void)endReload {
+    [self.tableView.mj_header endRefreshing];
+    [self.tableView reloadData];
 }
 
 - (void)_setupSubviews
@@ -88,6 +117,7 @@
     }];
     
     [self _setupSearch];
+    [self _setupRefresh];
 }
 
 - (void)_setupSearch
@@ -140,6 +170,11 @@
     UITapGestureRecognizer *tapSRTableView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSRTableViewAction:)];
     tapSRTableView.delegate = self;
     [self.searchResultTableView addGestureRecognizer:tapSRTableView];
+    
+}
+
+- (void)_setupRefresh {
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reloadPage)];
 }
 
 #pragma mark - GestureRecognizer
