@@ -211,4 +211,10 @@
     }
 }
 
+- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
+                        reason:(EMChatroomBeKickedReason)aReason {
+    [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_Chatroom_Destory_Notification
+                                                      object:aChatroom.chatroomId];
+}
+
 @end

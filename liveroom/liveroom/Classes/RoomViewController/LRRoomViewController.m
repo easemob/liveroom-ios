@@ -91,6 +91,11 @@
                                            selector:@selector(changeToAudience:)
                                                name:LR_UI_ChangeRoleToAudience_Notification
                                              object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(chatroomDidDestory:)
+                                               name:LR_Receive_Chatroom_Destory_Notification
+                                             object:nil];
 }
 
 // 收到上麦申请
@@ -134,6 +139,13 @@
 - (void)changeToAudience:(NSNotification *)aNoti {
     self.applyOnSpeakBtn.hidden = NO;
     self.applyOnSpeakBtn.selected = NO;
+}
+
+- (void)chatroomDidDestory:(NSNotification *)aNoti {
+    NSString *roomId = (NSString *)aNoti.object;
+    if ([roomId isEqualToString:self.roomModel.roomId]) {
+        [self closeWindowAction];
+    }
 }
 
 #pragma mark - subviews
