@@ -129,7 +129,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 - (void)streamIdsNoti:(NSNotification *)notification
 {
     NSArray *array = notification.object;
-    NSLog(@"array----%@", array);
     if (array.count != 0) {
         for (NSString *streamId in array) {
             if ([streamId isEqualToString:self.model.streamId]) {
@@ -236,6 +235,9 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 - (void)updateSubViewUI {
     [super updateSubViewUI];
+    if (self.model.isAdmin) {
+        [self.contentView cellStrokeWithColor:LRColor_LowBlackColor borderWidth:2.0];
+    }
     BOOL talkBtnNeedShow = self.model.type == LRRoomType_Host && self.model.isOwner;
     
     if (talkBtnNeedShow) {
@@ -360,7 +362,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         }];
         self.voiceEnableBtn.hidden = YES;
     }
-    
+
     BOOL disconnectBtnNeedShow = (!self.model.isMyself && self.model.isOwner) || (self.model.isMyself && !self.model.isOwner);
     
     if (disconnectBtnNeedShow) {
@@ -457,12 +459,14 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         if (time != 0) {
             self.timerLabel.text = [NSString stringWithFormat:@"%ds",time];
             self.timerLabel.hidden = NO;
+            [self.contentView cellStrokeWithColor:LRColor_LowBlackColor borderWidth:2.0];
         } else {
             self.timerLabel.text = nil;
             self.timerLabel.hidden = YES;
+            [self.contentView disableStroke];
         }
     }
-    
+
 }
 
 - (void)unArgumentSpeakerNoti:(NSNotification *)notification
@@ -471,6 +475,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     if ([unArgumentSpeaker isEqualToString:@""]) {
         self.timerLabel.text = nil;
         self.timerLabel.hidden = YES;
+        [self.contentView disableStroke];
     }
 }
 

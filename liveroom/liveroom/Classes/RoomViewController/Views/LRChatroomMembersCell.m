@@ -61,9 +61,9 @@
     leftLine.backgroundColor = [UIColor grayColor];
     [self.contentView addSubview:leftLine];
     [leftLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).offset(0.5);
-        make.bottom.equalTo(self.contentView);
+        make.top.equalTo(self.contentView).offset(0.25);
+        make.left.equalTo(self.contentView);
+        make.bottom.equalTo(self.contentView).offset(-0.25);
         make.width.equalTo(@0.5);
     }];
     
@@ -96,21 +96,6 @@
         make.width.equalTo(@13);
         make.height.equalTo(@12);
     }];
-    
-    self.exitMemberButton = [[UIButton alloc] init];
-    [self.exitMemberButton setTitle:@"踢出 exit" forState:UIControlStateNormal];
-    self.exitMemberButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
-    self.exitMemberButton.layer.borderColor = [UIColor grayColor].CGColor;
-    self.exitMemberButton.layer.borderWidth = 0.5;
-    [self.exitMemberButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    [self.exitMemberButton addTarget:self action:@selector(exitMemberButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:self.exitMemberButton];
-    [self.exitMemberButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView.mas_centerY);
-        make.right.equalTo(self.contentView).offset(-16);
-        make.width.equalTo(@60);
-        make.height.equalTo(@20);
-    }];
 }
 
 - (void)setModel:(LRChatroomMembersModel *)model
@@ -125,13 +110,6 @@
     } else {
         self.exitMemberButton.hidden = NO;
         self.ownerIconImageView.hidden = YES;
-    }
-}
-
-- (void)exitMemberButtonAction
-{
-    if ([self.delegate respondsToSelector:@selector(chatroomMembersExit:)]) {
-        [self.delegate chatroomMembersExit:self.exitMemberButton];
     }
 }
 

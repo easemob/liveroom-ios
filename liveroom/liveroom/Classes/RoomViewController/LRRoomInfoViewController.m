@@ -50,6 +50,9 @@
     [super viewDidLoad];
     
     NSArray *array = @[@{@"memberName":@"shengxi",@"isOwner":@YES},@{@"memberName":@"jiepeng",@"isOwner":@NO},@{@"memberName":@"donghai",@"isOwner":@NO}];
+    
+//    [EMClient sharedClient].roomManager get;
+    
     for (NSDictionary *dict in array) {
         LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
         [self.dataArray addObject:model];
@@ -80,7 +83,7 @@
     [self.view addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.centerY.equalTo(self.closeButton);
+        make.centerY.equalTo(self.closeButton.imageView);
         make.height.equalTo(@31);
     }];
     

@@ -14,7 +14,7 @@
 #import "LRRoomModel.h"
 #import "Headers.h"
 #import "LRRoomInfoViewController.h"
-
+#import "LRRoomSettingViewController.h"
 #import "UIViewController+LRAlert.h"
 
 #import "LRChatHelper.h"
@@ -66,6 +66,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
     [self joinChatAndConferenceRoom];
+    
 }
 
 - (void)regieterNotifiers {
@@ -309,7 +310,11 @@
 }
 
 - (void)settingsAction {
-    
+    LRRoomSettingViewController *settingVC = [[LRRoomSettingViewController alloc] init];
+    settingVC.rommPassword = _password;
+    settingVC.speakerLimited = 6;
+    settingVC.model = _roomModel;
+    [self presentViewController:settingVC animated:YES completion:nil];
 }
 
 - (void)closeWindowAction {

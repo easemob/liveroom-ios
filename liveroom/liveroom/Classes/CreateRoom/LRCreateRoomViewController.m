@@ -63,7 +63,7 @@
     [self.view addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.centerY.equalTo(self.closeButton);
+        make.centerY.equalTo(self.closeButton.imageView);
     }];
     
     self.voiceChatroomIDTextField = [[UITextField alloc] init];
@@ -116,10 +116,12 @@
     
     self.speakerTypeButton = [[UIButton alloc] init];
     [self.speakerTypeButton setTitle:@"互动模式" forState:UIControlStateNormal];
-    [self.speakerTypeButton setTitleColor:LRColor_PureBlackColor forState:UIControlStateNormal];
+    [self.speakerTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.speakerTypeButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    self.speakerTypeButton.backgroundColor = [UIColor whiteColor];
-    self.speakerTypeButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    self.speakerTypeButton.backgroundColor = LRColor_HeightBlackColor;
+    [self.speakerTypeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -245, 0, 0)];
+    self.speakerTypeButton.layer.borderColor = LRColor_LowBlackColor.CGColor;
+    self.speakerTypeButton.layer.borderWidth = 2.5;
     [self.speakerTypeButton addTarget:self action:@selector(speakerTypeButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.speakerTypeButton];
     [self.speakerTypeButton mas_makeConstraints:^(MASConstraintMaker *make) {
