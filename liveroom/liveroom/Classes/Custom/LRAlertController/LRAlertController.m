@@ -298,7 +298,7 @@ typedef enum : NSUInteger {
 {
     NSDictionary *userInfo = aNoti.userInfo;
     CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect textFieldFrame = [self.textField convertRect:self.textField.bounds toView:self.view];
+    CGRect textFieldFrame = [self.alertView convertRect:self.alertView.bounds toView:self.view];
     CGFloat keyboardTop = self.view.bounds.size.height - keyboardFrame.size.height;
     CGFloat currentBottom = textFieldFrame.origin.y + textFieldFrame.size.height;
     CGFloat needMovePx = 0;

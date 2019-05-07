@@ -50,8 +50,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self autoReload];
-    
 }
 
 - (void)viewDidLoad {

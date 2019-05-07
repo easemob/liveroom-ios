@@ -341,7 +341,6 @@
     
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [LRChatHelper.sharedInstance leaveChatroomWithRoomId:self.roomModel.roomId completion:nil];
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
