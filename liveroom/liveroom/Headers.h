@@ -18,6 +18,8 @@
 #import "LRAlertController.h"
 
 #import "UIView+LRCategory.h"
+#import "NSString+Category.h"
+#import "NSDictionary+Category.h"
 
 #import <Hyphenate/Hyphenate.h>
 #import <Hyphenate/EMOptions+PrivateDeploy.h>

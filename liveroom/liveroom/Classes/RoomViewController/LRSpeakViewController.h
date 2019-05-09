@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRSpeakViewController : UIViewController
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, weak) LRRoomModel *roomModel;
+@property (nonatomic, strong) NSMutableArray *memberList;
 @end
 
 NS_ASSUME_NONNULL_END

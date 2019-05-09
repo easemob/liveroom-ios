@@ -18,7 +18,7 @@
 #define LR_Receive_OnSpeak_Reject_Notification          @"ReceiveOnSpeakReject"
 #define LR_Receive_ToBe_Audience_Notification           @"ReceiveToByAudience"
 
-#define LR_Receive_Chatroom_Destory_Notification        @"ReceiveChatroomDestory"
+#define LR_Receive_Conference_Destory_Notification        @"ReceiveConferenceDestory"
 
 
 #define LR_UI_ChangeRoleToSpeaker_Notification          @"ChangeRoleToSpeaker"

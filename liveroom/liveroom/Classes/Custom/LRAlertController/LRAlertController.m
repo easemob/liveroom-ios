@@ -234,8 +234,8 @@ typedef enum : NSUInteger {
 
 - (void)_setupTextField
 {
-    [self.textField setupTextField];
     [self.textField strokeWithColor:LRStrokeLowBlack];
+    [self.textField setupTextField];
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.textColor = UIColor.whiteColor;
     self.textField.delegate = self;
@@ -247,6 +247,10 @@ typedef enum : NSUInteger {
         make.height.equalTo(@kLRAlertItemHeight);
         make.bottom.equalTo(self.otherView.mas_top).offset(-15);
     }];
+    
+    
+    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topBackground)];
+    [self.view addGestureRecognizer:tapGR];
 }
 
 - (void)_setupActions
@@ -298,26 +302,27 @@ typedef enum : NSUInteger {
 {
     NSDictionary *userInfo = aNoti.userInfo;
     CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect textFieldFrame = [self.alertView convertRect:self.alertView.bounds toView:self.view];
+    CGRect alertFrame = [self.alertView convertRect:self.alertView.bounds toView:self.view];
     CGFloat keyboardTop = self.view.bounds.size.height - keyboardFrame.size.height;
-    CGFloat currentBottom = textFieldFrame.origin.y + textFieldFrame.size.height;
+    CGFloat currentBottom = alertFrame.origin.y + alertFrame.size.height;
     CGFloat needMovePx = 0;
     if (keyboardTop < currentBottom) {
         needMovePx = currentBottom - keyboardTop;
     }
-    if (needMovePx != 0) {
-        CGRect frame = self.alertView.frame;
-        frame.origin.y -= needMovePx;
-        self.alertView.frame = frame;
-    }else {
-        self.alertView.center = self.view.center;
-    }
+    self.alertView.transform = CGAffineTransformMakeTranslation(0, -needMovePx);
 }
 
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.view endEditing:YES];
     return YES;
+}
+
+#pragma mark - actions
+- (void)topBackground {
+    if (self.textField) {
+        [self.textField resignFirstResponder];
+    }
 }
 
 @end

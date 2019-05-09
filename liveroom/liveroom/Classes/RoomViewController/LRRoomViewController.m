@@ -60,7 +60,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self regieterNotifiers];
-    
     [self _setupSubViews];
     [self _updateHeaderView];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
@@ -94,15 +93,20 @@
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(chatroomDidDestory:)
-                                               name:LR_Receive_Chatroom_Destory_Notification
+                                               name:LR_Receive_Conference_Destory_Notification
                                              object:nil];
 }
 
 // 收到上麦申请
 - (void)showRequestInfo:(NSNotification *)aNoti  {
-    NSString *username = aNoti.object;
+    NSDictionary *dict = aNoti.object;
+    NSString *username = dict[@"from"];
+    NSString *confid = dict[@"confid"];
+    if (![confid isEqualToString:self.roomModel.conferenceId]) {
+        return;
+    }
     if (username) {
-        NSString *info = [NSString stringWithFormat:@"%@申请上麦", username];
+        NSString *info = [NSString stringWithFormat:@"收到%@申请上麦", username];
         LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
         LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
             [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
@@ -127,13 +131,13 @@
 // 上麦申请被拒绝
 - (void)receiveRequestReject:(NSNotification *)aNoti {
     NSDictionary *dict = aNoti.object;
-    if (dict.count > 0) {
-        if ([dict.allKeys.firstObject isEqualToString:self.roomModel.roomId]) {
-            self.applyOnSpeakBtn.selected = NO;
-            self.applyOnSpeakBtn.hidden = NO;
-            [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
-        }
+    NSString *confid = dict[@"confid"];
+    if (![confid isEqualToString:self.roomModel.conferenceId]) {
+        return;
     }
+    self.applyOnSpeakBtn.selected = NO;
+    self.applyOnSpeakBtn.hidden = NO;
+    [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
 }
 
 - (void)changeToAudience:(NSNotification *)aNoti {
@@ -142,8 +146,8 @@
 }
 
 - (void)chatroomDidDestory:(NSNotification *)aNoti {
-    NSString *roomId = (NSString *)aNoti.object;
-    if ([roomId isEqualToString:self.roomModel.roomId]) {
+    NSString *confId = (NSString *)aNoti.object;
+    if ([confId isEqualToString:self.roomModel.conferenceId]) {
         [self closeWindowAction];
     }
 }
@@ -331,10 +335,16 @@
 }
 
 - (void)closeWindowAction {
-    if (self.isOwner) {
+    if (self.isOwner)
+    {
         NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
         url = [url stringByAppendingString:self.roomModel.roomId];
-        [LRRequestManager.sharedInstance requestWithMethod:@"DELETE" urlString:url parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error) {
+        [LRRequestManager.sharedInstance requestWithMethod:@"DELETE"
+                                                 urlString:url
+                                                parameters:nil
+                                                     token:nil
+                                                completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
+        {
             [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
         }];
     }
@@ -392,6 +402,12 @@
     if (self.applyOnSpeakBtn.selected == YES) {
         return;
     }
+    
+    if (self.speakerVC.memberList.count >= 6) {
+        [self showErrorAlertWithTitle:@"申请失败" info:@"当前主播数量已满"];
+        return;
+    }
+    
     self.applyOnSpeakBtn.selected = YES;
     
     [LRSpeakHelper.sharedInstance requestOnSpeaker:self.roomModel completion:^(NSString * _Nonnull errorInfo, BOOL success)

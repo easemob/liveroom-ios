@@ -32,7 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)leaveSpeakRoomWithRoomId:(NSString *)aRoomId
                       completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
-
 #pragma mark - admin
 // 设置房间属性
 - (void)setupRoomType:(LRRoomType)aType;
@@ -79,6 +78,22 @@ NS_ASSUME_NONNULL_BEGIN
 // 释放麦
 - (void)unArgumentMic:(NSString *)aRoomId
            completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aComplstion;
+
+// 播放音乐(只有群主可以操作)
+- (void)playAudioMix:(BOOL)isPlay;
+@end
+
+@interface LRConferenceAttr : NSObject
+@property (nonatomic, assign) BOOL isMusicPlay;
+@property (nonatomic, strong) NSString *talker;
+@property (nonatomic, strong) NSString *typeStr;
+
+- (instancetype)initWithDict:(NSDictionary *)aDict;
+
+- (NSString *)toJsonString;
+
+- (LRRoomType)roomType;
+
 @end
 
 NS_ASSUME_NONNULL_END
