@@ -52,10 +52,12 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 
 // Join
-#define kRequestKey @"em_conference_op"
+#define kRequestAction @"em_conference_op"
 #define kRequestToBe_Speaker @"request_tobe_speaker"                // 申请上麦
 #define kRequestToBe_Audience @"request_tobe_audience"              // 申请下麦
 #define kRequestToBe_Rejected @"request_tobe_rejected"              // 拒绝上麦申请
+
+#define kRequestConferenceId  @"em_conference_id"
 
 
 // define

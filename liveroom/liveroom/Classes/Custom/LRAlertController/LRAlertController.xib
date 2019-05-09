@@ -86,9 +86,9 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="CTw-Wn-lFO" secondAttribute="trailing" constant="38" id="Col-fz-DXv"/>
+                <constraint firstAttribute="trailing" secondItem="CTw-Wn-lFO" secondAttribute="trailing" priority="750" constant="38" id="Col-fz-DXv"/>
                 <constraint firstItem="CTw-Wn-lFO" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" priority="250" id="P5S-oZ-vdz"/>
-                <constraint firstItem="CTw-Wn-lFO" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="gdq-vk-GCD"/>
+                <constraint firstItem="CTw-Wn-lFO" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" priority="750" id="gdq-vk-GCD"/>
             </constraints>
             <point key="canvasLocation" x="73.599999999999994" y="52.173913043478265"/>
         </view>

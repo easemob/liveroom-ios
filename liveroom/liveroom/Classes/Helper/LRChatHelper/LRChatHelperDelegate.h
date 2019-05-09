@@ -20,5 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didReceiveRoomLikeActionWithRoomId:(NSString *)aChatroomId;
 
 - (void)didReceiveRoomGiftActionWithRoomId:(NSString *)aChatroomId;
+
+- (void)didReceiveRoomDestory:(NSString *)aChatroomId;
 @end
 NS_ASSUME_NONNULL_END

@@ -157,23 +157,25 @@
 #pragma mark - EMChatManagerDelegate
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages {
     for (EMMessage *msg in aCmdMessages) {
-        NSString *action = msg.ext[kRequestKey];
+        NSString *action = msg.ext[kRequestAction];
+        NSString *confid = msg.ext[kRequestConferenceId];
+       
         if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
         {
             [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_OnSpeak_Request_Notification
-                                                              object:msg.from];
+                                                              object:@{@"from":msg.from,@"confid":confid}];
         }
         
         if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件
         {
             [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_OnSpeak_Reject_Notification
-                                                              object:msg.from];
+                                                              object:@{@"from":msg.from,@"confid":confid}];
         }
         
         if ([action isEqualToString:kRequestToBe_Audience]) // 收到下麦事件
         {
             [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_ToBe_Audience_Notification
-                                                              object:msg.from];
+                                                              object:@{@"from":msg.from,@"confid":confid}];
         }
     }
 }
@@ -210,5 +212,6 @@
                                           timestamp:msg.timestamp];
     }
 }
+
 
 @end

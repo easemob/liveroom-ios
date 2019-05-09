@@ -50,8 +50,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self autoReload];
-    
 }
 
 - (void)viewDidLoad {
@@ -306,7 +304,7 @@
 - (void)joinRoomWithModel:(LRRoomModel *)aModel {
 
     NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"True":@"False"];
-    LRAlertController *alert = [LRAlertController showSuccessAlertWithTitle:aModel.roomname info:info];
+    LRAlertController *alert = [LRAlertController showTextAlertWithTitle:aModel.roomname info:info];
     alert.textField = [[UITextField alloc] init];
     LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"加入" callback:^(LRAlertController * _Nonnull alertController) {
         if (alertController.textField.text.length == 0) {

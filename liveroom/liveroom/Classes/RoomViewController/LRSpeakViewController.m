@@ -29,7 +29,6 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
-@property (nonatomic, strong) NSMutableArray *memberList;
 
 @end
 
@@ -280,7 +279,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
         myModel.argumentOn = NO;
         myModel.unArgumentOn = YES;
     }else {
-        myModel.argumentOn = aSpeaker.length == 0 ? YES : NO;
+        myModel.argumentOn = [aSpeaker isEqualToString:@""] ? YES : NO;
         myModel.unArgumentOn = NO;
     }
     
