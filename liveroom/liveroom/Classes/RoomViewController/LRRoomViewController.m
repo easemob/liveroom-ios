@@ -19,6 +19,7 @@
 
 #import "LRChatHelper.h"
 #import "LRSpeakHelper.h"
+#import <AVFoundation/AVFoundation.h>
 
 #define kPadding 15
 #define kHeaderViewHeight 45
@@ -39,6 +40,9 @@
 @property (nonatomic, strong) NSString *password;
 
 @property (nonatomic, strong) UIButton *applyOnSpeakBtn;
+
+@property (nonatomic, strong) AVAudioPlayer *player;
+
 @end
 
 @implementation LRRoomViewController
@@ -266,6 +270,13 @@
                                                    completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              self->_conferenceJoined = success;
+             if (success) {
+                 if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
+//                     NSURL *url = [[NSBundle mainBundle] URLForResource:@"f_000143" withExtension:@".mp3"];
+                     NSString *url = [NSBundle.mainBundle pathForResource:@"music" ofType:@"mp3"];
+                     [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
+                 }
+             }
              dispatch_semaphore_signal(semaphore);
          }];
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
@@ -330,6 +341,9 @@
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [LRChatHelper.sharedInstance leaveChatroomWithRoomId:self.roomModel.roomId completion:nil];
     
+    if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
+        [EMClient.sharedClient.conferenceManager stopAudioMixing];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
