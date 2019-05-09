@@ -330,7 +330,6 @@
 		90F2C66A2254C02A00A712B8 /* liveroom */ = {
 			isa = PBXGroup;
 			children = (
-				E00EE56E228424D60043C235 /* music.mp3 */,
 				E00EE55E228403D30043C235 /* Hyphenate.framework */,
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
 				9080C4FB226D7B2100E1DCC5 /* LRTypes.h */,
@@ -498,6 +497,7 @@
 		90F2C6F22254C09400A712B8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E00EE56E228424D60043C235 /* music.mp3 */,
 				E0780CCE226EE374008CF34E /* voice1@2x.png */,
 				E0780CCD226EE374008CF34E /* voice1@3x.png */,
 				E0780CCF226EE374008CF34E /* voice2@2x.png */,
