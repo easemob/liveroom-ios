@@ -119,12 +119,11 @@
             break;
     }
     if (value) {
-        [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"type"
-                                                                           value:value
-                                                                      completion:^(EMError * _Nullable saError)
-         {
-             
-         }];
+        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"type"
+                                                                  value:value
+                                                             completion:^(EMError *aError) {
+            
+        }];
     }
 }
 
@@ -197,18 +196,18 @@
 }
 
 - (void)setupSpeakerMicOn:(NSString *)aUsername {
-    [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker"
-                                                                       value:aUsername
-                                                                  completion:nil];
+    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"talker"
+                                                              value:aUsername
+                                                         completion:nil];
 }
 
 - (void)setupSpeakerMicOff:(NSString *)aUsername {
     if (!self.roomModel) {
         return;
     }
-    [EMClient.sharedClient.conferenceManager addAndUpdateConferenceAttribute:@"talker"
-                                                                       value:@""
-                                                                  completion:nil];
+    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"talker"
+                                                              value:@""
+                                                         completion:nil];
 }
 
 #pragma mark - user
