@@ -40,8 +40,8 @@
 @property (nonatomic, strong) NSString *password;
 
 @property (nonatomic, strong) UIButton *applyOnSpeakBtn;
-
-@property (nonatomic, strong) AVAudioPlayer *player;
+@property (nonatomic, strong) NSMutableArray *itemAry;
+@property (nonatomic, assign) BOOL select;
 
 @end
 
@@ -130,6 +130,7 @@
 - (void)receiveRequestAgreed:(NSNotification *)aNoti {
     self.applyOnSpeakBtn.hidden = YES;
     self.applyOnSpeakBtn.selected = NO;
+    
 }
 
 // 上麦申请被拒绝
@@ -210,55 +211,63 @@
 }
 
 - (void)_updateHeaderView {
-    NSMutableArray *itemAry = [NSMutableArray array];
+    self.itemAry = [NSMutableArray array];
     if (_type == LRUserType_Admin) {
-        [itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"pause"]
+        NSString *imageName;
+        if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
+            imageName = @"pause";
+            self.select = YES;
+        } else {
+            imageName = @"play";
+            self.select = NO;
+        }
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
+                            itemWithImageName:imageName
                             target:self
                             action:@selector(musicPlayAction)]];
         
-        [itemAry addObject:[LRVoiceRoomHeaderItem
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"userList"]
                             target:self
                             action:@selector(memberListAction)]];
         
-        [itemAry addObject:[LRVoiceRoomHeaderItem
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"share"]
                             target:self
                             action:@selector(shareAction)]];
         
-        [itemAry addObject:[LRVoiceRoomHeaderItem
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"settings"]
                             target:self
                             action:@selector(settingsAction)]];
         
-        [itemAry addObject:[LRVoiceRoomHeaderItem
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"close"]
                             target:self
                             action:@selector(closeWindowAction)]];
     }else {
-        [itemAry addObject:[LRVoiceRoomHeaderItem
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"userList"]
                             target:self
                             action:@selector(memberListAction)]];
         
-        [itemAry addObject:[LRVoiceRoomHeaderItem
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"share"]
                             target:self
                             action:@selector(shareAction)]];
         
-        [itemAry addObject:[LRVoiceRoomHeaderItem
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"settings"]
                             target:self
                             action:@selector(settingsAction)]];
         
-        [itemAry addObject:[LRVoiceRoomHeaderItem
+        [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImage:[UIImage imageNamed:@"close"]
                             target:self
                             action:@selector(closeWindowAction)]];
     }
     
-    [self.headerView setActionList:itemAry];
+    [self.headerView setActionList:self.itemAry];
 }
 
 #pragma mark - actions
@@ -287,9 +296,10 @@
          {
              self->_conferenceJoined = success;
              if (success) {
-                 if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
-                     NSString *url = [NSBundle.mainBundle pathForResource:@"music" ofType:@"mp3"];
-                     [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
+                 if (self.isOwner) {
+                     if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
+                         [[LRSpeakHelper sharedInstance] playAudioMix:YES];
+                     }
                  }
              }
              dispatch_semaphore_signal(semaphore);
@@ -328,8 +338,22 @@
     }];
 }
 
-- (void)musicPlayAction {
-    
+- (void)musicPlayAction{
+    if (self.isOwner) {
+        UIButton *button = [self.itemAry firstObject];
+        if (self.select) {
+            [self musicPlayButton:button ImageName:@"play" select:NO playAudioMix:NO];
+        } else {
+            [self musicPlayButton:button ImageName:@"pause" select:YES playAudioMix:YES];
+        }
+    }
+}
+
+- (void)musicPlayButton:(UIButton *)button ImageName:(NSString *)imageName select:(BOOL)isSelect playAudioMix:(BOOL)isPlay
+{
+    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    self.select = isSelect;
+    [[LRSpeakHelper sharedInstance] playAudioMix:isPlay];
 }
 
 - (void)shareAction {

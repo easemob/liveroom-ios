@@ -29,14 +29,14 @@
 - (instancetype)init {
     if (self = [super init]) {
         _delegates = (LRGCDMulticastDelegate<LRChatHelperDelegate> *)[[LRGCDMulticastDelegate alloc] init];
-        [self _registerImSDK];
+        [self registerImSDK];
         [self _registerIMDelegates];
     }
     return self;
 }
 
 #pragma mark - private
-- (void)_registerImSDK {
+- (EMOptions *)registerImSDK {
     // 1100181024084247#voicechatroom
     EMOptions *options = [EMOptions optionsWithAppkey:@"1100181023201864#voicechatroom"];
     options.enableDnsConfig = NO;
@@ -45,6 +45,7 @@
     options.restServer = @"a1-hsb.easemob.com";
     options.enableConsoleLog = NO;
     [EMClient.sharedClient initializeSDKWithOptions:options];
+    return options;
 }
 
 #pragma mark - getter
