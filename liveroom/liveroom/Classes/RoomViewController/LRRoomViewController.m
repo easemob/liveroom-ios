@@ -288,7 +288,6 @@
              self->_conferenceJoined = success;
              if (success) {
                  if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
-//                     NSURL *url = [[NSBundle mainBundle] URLForResource:@"f_000143" withExtension:@".mp3"];
                      NSString *url = [NSBundle.mainBundle pathForResource:@"music" ofType:@"mp3"];
                      [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
                  }
@@ -401,11 +400,11 @@
 }
 
 - (void)likeAction {
-    [LRChatHelper.sharedInstance sendLikeToChatroom:_roomModel.roomId completion:nil];
+    [_chatVC sendLike];
 }
 
 - (void)giftAction {
-    [LRChatHelper.sharedInstance sendGiftToChatroom:_roomModel.roomId completion:nil];
+    [_chatVC sendGift];
 }
 
 - (void)sendAction:(NSString *)aText {

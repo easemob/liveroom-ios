@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRChatViewController : UIViewController
 @property (nonatomic, weak) LRRoomModel *roomModel;
 - (void)sendText:(NSString *)aText;
+- (void)sendLike;
+- (void)sendGift;
 @end
 
 @interface LRChatCell : UITableViewCell

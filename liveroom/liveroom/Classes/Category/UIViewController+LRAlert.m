@@ -12,7 +12,7 @@
 @implementation UIViewController (LRAlert)
 - (void)showErrorAlertWithTitle:(NSString *)aTitle info:(NSString *)aInfo {
     LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:aTitle info:aInfo];
-    LRAlertAction *action = [LRAlertAction alertActionTitle:@"确定" callback:nil];
+//    LRAlertAction *action = [LRAlertAction alertActionTitle:@"确定" callback:nil];
     [self presentViewController:alert animated:YES completion:nil];
 }
 

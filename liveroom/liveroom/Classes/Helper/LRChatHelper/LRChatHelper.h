@@ -46,9 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (void)sendLikeToChatroom:(NSString *)aChatroomId
+                   likeMsg:(NSString *)aMsg
                 completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 - (void)sendGiftToChatroom:(NSString *)aChatroomId
+                    giftMsg:(NSString *)aMsg
                 completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 

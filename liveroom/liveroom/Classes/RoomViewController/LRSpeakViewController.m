@@ -152,6 +152,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     [self.tableView reloadData];
 }
 
+// cell上按钮点击事件
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo {
     if ([eventName isEqualToString:ON_MIC_EVENT_NAME]) {
         [LRSpeakHelper.sharedInstance muteMyself:NO];

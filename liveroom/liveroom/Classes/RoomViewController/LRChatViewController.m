@@ -59,6 +59,32 @@
                  timestamp:[[NSDate new] timeIntervalSince1970]];
 }
 
+- (void)sendLike {
+    NSString *likeMsg = @"like + 1";
+    [LRChatHelper.sharedInstance sendLikeToChatroom:self.roomModel.roomId
+                                            likeMsg:likeMsg
+                                         completion:^(NSString * _Nonnull errorInfo, BOOL success) {
+        
+    }];
+
+    [self addMessageToData:likeMsg
+                  fromUser:LRChatHelper.sharedInstance.currentUser
+                 timestamp:[[NSDate new] timeIntervalSince1970]];
+}
+
+- (void)sendGift {
+    NSString *giftMsg = @"send a gift";
+    [LRChatHelper.sharedInstance sendLikeToChatroom:self.roomModel.roomId
+                                            likeMsg:giftMsg
+                                         completion:^(NSString * _Nonnull errorInfo, BOOL success) {
+                                             
+                                         }];
+    
+    [self addMessageToData:giftMsg
+                  fromUser:LRChatHelper.sharedInstance.currentUser
+                 timestamp:[[NSDate new] timeIntervalSince1970]];
+}
+
 #pragma mark - private
 - (void)addMessageToData:(NSString *)aMessage fromUser:(NSString *)aUsername timestamp:(long long)aTimestamp{
     NSString *str = [self dateFormatter:aTimestamp];

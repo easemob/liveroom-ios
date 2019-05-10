@@ -35,7 +35,7 @@
     self.backgroundColor = [UIColor clearColor];
     _lightImageView = [[UIImageView alloc] init];
     _lightImageView.image = [UIImage imageNamed:@"voice1"];
-    _lightImageView.contentMode = UIViewContentModeScaleAspectFit;
+    _lightImageView.contentMode = UIViewContentModeScaleToFill;
     [self addSubview:_lightImageView];
 }
 
