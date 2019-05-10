@@ -241,7 +241,6 @@
 				9083DC8A225603E70099C5BD /* LRSpeakViewController.m */,
 				9058DF8F2258D7A900699AB2 /* LRChatViewController.h */,
 				9058DF902258D7A900699AB2 /* LRChatViewController.m */,
-				E04712DE225C8CEF00F9910C /* find@2x.png */,
 				901A54D82254CA9700F00186 /* LRRoomViewController.h */,
 				901A54D92254CA9700F00186 /* LRRoomViewController.m */,
 				E04712D9225C503400F9910C /* LRRoomInfoViewController.h */,
@@ -521,6 +520,7 @@
 				E0A7E6F6226D802400AE6C6F /* creat@2x.png */,
 				E0A7E6F7226D802400AE6C6F /* creat@3x.png */,
 				E04712FF22606E7900F9910C /* delete_input@2x.png */,
+				E04712DE225C8CEF00F9910C /* find@2x.png */,
 				90F2C6F32254C09400A712B8 /* add@2x.png */,
 			);
 			path = Resources;

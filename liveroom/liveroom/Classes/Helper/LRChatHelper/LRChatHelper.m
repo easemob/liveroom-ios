@@ -145,13 +145,15 @@
 }
 
 - (void)sendLikeToChatroom:(NSString *)aChatroomId
+                   likeMsg:(NSString *)aMsg
                 completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
-    //TODO: 发送点赞
+    [self sendMessageToChatroom:aChatroomId message:aMsg completion:aCompletion];
 }
 
 - (void)sendGiftToChatroom:(NSString *)aChatroomId
+                   giftMsg:(NSString *)aMsg
                 completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
-    //TODO: 发送礼物
+    [self sendMessageToChatroom:aChatroomId message:aMsg completion:aCompletion];
 }
 
 #pragma mark - EMChatManagerDelegate
