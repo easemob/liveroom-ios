@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (LRVoiceRoomHeaderItem *)itemWithImage:(UIImage *)aImg
                                   target:(id __nullable)aTarget
                                   action:(SEL __nullable)aAction;
+
++ (LRVoiceRoomHeaderItem *)itemWithImageName:(NSString *)aImgName
+                                  target:(id __nullable)aTarget
+                                  action:(SEL __nullable)aAction;
 @end
 
 @interface LRVoiceRoomHeader : UIView

@@ -11,10 +11,12 @@
 #import "LRSettingSwitch.h"
 #import "LRRoomOptions.h"
 
+
 #define kPadding 16
 @interface LRSettingViewController () <UITableViewDelegate, UITableViewDataSource, LRSettingSwitchDelegate>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UITableView *tableView;
+@property (strong, nonatomic) UIView *footerView;
 
 @end
 
@@ -54,6 +56,39 @@
         make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
     }];
     
+    self.footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 70)];
+    self.footerView.backgroundColor = [UIColor clearColor];
+    self.tableView.tableFooterView = self.footerView;
+    
+    UIButton *logoutButton = [[UIButton alloc] init];
+    [logoutButton setBackgroundColor:[UIColor whiteColor]];
+    [logoutButton setTitle:[NSString stringWithFormat:@"退出 (%@)", [EMClient sharedClient].currentUsername] forState:UIControlStateNormal];
+    [logoutButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [logoutButton addTarget:self action:@selector(logoutAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.footerView addSubview:logoutButton];
+    [logoutButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.footerView).offset(20);
+        make.left.equalTo(self.footerView);
+        make.right.equalTo(self.footerView);
+        make.height.equalTo(@50);
+    }];
+}
+
+- (void)logoutAction
+{
+    [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
+        if (!aError) {
+            EMOptions *options = [LRChatHelper sharedInstance].registerImSDK;
+            options.isAutoLogin = NO;
+            [[LRRoomOptions sharedOptions] archive];
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_ACCOUNT_LOGIN_CHANGED
+                                                                object:@NO];
+        } else {
+            LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"退出登录失败"
+                                                                                       info:aError.errorDescription];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+    }];
 }
 
 #pragma mark - TablevViewDataSource

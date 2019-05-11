@@ -235,7 +235,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 - (void)updateSubViewUI {
     [super updateSubViewUI];
-    if (self.model.isAdmin) {
+    if (self.model.isOwner) {
         [self.contentView cellStrokeWithColor:LRColor_LowBlackColor borderWidth:2.0];
     }
     BOOL talkBtnNeedShow = self.model.type == LRRoomType_Host && self.model.isOwner;
@@ -459,11 +459,9 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         if (time != 0) {
             self.timerLabel.text = [NSString stringWithFormat:@"%ds",time];
             self.timerLabel.hidden = NO;
-            [self.contentView cellStrokeWithColor:LRColor_LowBlackColor borderWidth:2.0];
         } else {
             self.timerLabel.text = nil;
             self.timerLabel.hidden = YES;
-            [self.contentView disableStroke];
         }
     }
 
@@ -527,6 +525,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             [self.unArgumentBtn setTitleColor:LRColor_MiddleBlackColor forState:UIControlStateNormal];
             self.unArgumentBtn.enabled = NO;
         }
+        [self.contentView cellStrokeWithColor:LRColor_LowBlackColor borderWidth:2.0];
         
     }else {
         [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {

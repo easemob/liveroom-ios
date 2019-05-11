@@ -160,7 +160,6 @@
 // 设置用户为主播
 - (void)setupUserToSpeaker:(NSString *)aUsername {
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
-    
     [EMClient.sharedClient.conferenceManager
      changeMemberRoleWithConfId:self.conference.confId
      memberNames:@[applyUid] role:EMConferenceRoleSpeaker
@@ -211,6 +210,12 @@
 
 // 播放音乐
 - (void)playMusic:(BOOL)isPlay {
+    if (isPlay) {
+        NSString *url = [NSBundle.mainBundle pathForResource:@"music" ofType:@"mp3"];
+        [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
+    } else {
+        [EMClient.sharedClient.conferenceManager stopAudioMixing];
+    }
 }
 
 #pragma mark - user
@@ -320,6 +325,9 @@
 
 - (void)playAudioMix:(BOOL)isPlay {
     // 设置会议属性
+    self.lrAttr.isMusicPlay = isPlay;
+    [self setAttr:[self.lrAttr toJsonString]];
+
 }
 
 - (void)startAudioMix {
@@ -493,7 +501,12 @@
         [_delegates currentMonopolyTypeSpeakerChanged:_currentMonopolyTalker];
     }
     
-    [self playMusic:self.lrAttr.isMusicPlay];
+    if ([dic objectForKey:@"music"]) {
+        [self playMusic:YES];
+    } else {
+        [self playMusic:NO];
+    }
+    
 }
 
 #pragma mark - getter

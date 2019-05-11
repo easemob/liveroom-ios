@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSString *currentUser;
 
 + (LRChatHelper *)sharedInstance;
-
+- (EMOptions *)registerImSDK;
 - (void)addDeelgate:(id<LRChatHelperDelegate>)aDelegate
       delegateQueue:(dispatch_queue_t  _Nullable)aQueue;
 

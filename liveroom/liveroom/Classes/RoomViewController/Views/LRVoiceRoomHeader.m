@@ -31,6 +31,18 @@
     return btn;
 }
 
++ (LRVoiceRoomHeaderItem *)itemWithImageName:(NSString *)aImgName
+                                      target:(id __nullable)aTarget
+                                      action:(SEL __nullable)aAction
+{
+    LRVoiceRoomHeaderItem *btn = [LRVoiceRoomHeaderItem buttonWithType:UIButtonTypeCustom];
+    [btn setImage:[UIImage imageNamed:aImgName] forState:UIControlStateNormal];
+    [btn strokeWithColor:LRStrokeLowBlack];
+    if (aAction) btn.action = aAction;
+    if (aTarget) btn.target = aTarget;
+    return btn;
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         
