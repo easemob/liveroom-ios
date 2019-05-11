@@ -69,7 +69,6 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
     [self joinChatAndConferenceRoom];
-    
 }
 
 - (void)regieterNotifiers {
@@ -298,7 +297,7 @@
              if (success) {
                  if (self.isOwner) {
                      if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
-                         [[LRSpeakHelper sharedInstance] playAudioMix:YES];
+                         [[LRSpeakHelper sharedInstance] setAudioPlay:YES];
                      }
                  }
              }
@@ -342,18 +341,18 @@
     if (self.isOwner) {
         UIButton *button = [self.itemAry firstObject];
         if (self.select) {
-            [self musicPlayButton:button ImageName:@"play" select:NO playAudioMix:NO];
+            [self musicPlayButton:button ImageName:@"play" select:NO setAudioPlay:NO];
         } else {
-            [self musicPlayButton:button ImageName:@"pause" select:YES playAudioMix:YES];
+            [self musicPlayButton:button ImageName:@"pause" select:YES setAudioPlay:YES];
         }
     }
 }
 
-- (void)musicPlayButton:(UIButton *)button ImageName:(NSString *)imageName select:(BOOL)isSelect playAudioMix:(BOOL)isPlay
+- (void)musicPlayButton:(UIButton *)button ImageName:(NSString *)imageName select:(BOOL)isSelect setAudioPlay:(BOOL)isPlay
 {
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     self.select = isSelect;
-    [[LRSpeakHelper sharedInstance] playAudioMix:isPlay];
+    [[LRSpeakHelper sharedInstance] setAudioPlay:isPlay];
 }
 
 - (void)shareAction {

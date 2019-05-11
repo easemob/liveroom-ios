@@ -193,8 +193,6 @@
         if (msg.body.type != EMMessageBodyTypeText) {
             continue;
         }
-        
-        // TODO: 解析gift， like 事件
         BOOL isLike = NO;
         if (isLike) {
             [_delegates didReceiveRoomLikeActionWithRoomId:msg.conversationId];

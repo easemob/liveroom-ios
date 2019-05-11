@@ -41,6 +41,12 @@
         _delegates = (LRGCDMulticastDelegate<LRSpeakHelperDelegate> *)[[LRGCDMulticastDelegate alloc] init];
         [EMClient.sharedClient.conferenceManager addDelegate:self delegateQueue:nil];
         
+        // 监听输出设备变化
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(audioRouteChangeListenerCallback:)
+                                                     name:AVAudioSessionRouteChangeNotification
+                                                   object:[AVAudioSession sharedInstance]];
+        
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(agreedToBeAudience:)
                                                    name:LR_Receive_ToBe_Audience_Notification
@@ -70,6 +76,9 @@
                                                            completion:^(EMCallConference *aCall, EMError *aError)
      {
          if (!aError) {
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                 [weakSelf loudspeaker];
+             });
              weakSelf.conference = aCall;
              [EMClient.sharedClient.conferenceManager startMonitorSpeaker:weakSelf.conference
                                                              timeInterval:500
@@ -323,7 +332,7 @@
      }];
 }
 
-- (void)playAudioMix:(BOOL)isPlay {
+- (void)setAudioPlay:(BOOL)isPlay {
     // 设置会议属性
     self.lrAttr.isMusicPlay = isPlay;
     [self setAttr:[self.lrAttr toJsonString]];
@@ -385,7 +394,7 @@
                                                         streamId:aStream.streamId
                                                  remoteVideoView:nil
                                                       completion:^(EMError *aError) {
-                                                          
+//                                                          [self loudspeaker];
                                                       }];
     
     [_delegates receiveSomeoneOnSpeaker:aStream.userName
@@ -519,6 +528,43 @@
         _lrAttr = [[LRConferenceAttr alloc] init];
     }
     return _lrAttr;
+}
+
+
+- (BOOL)hasHeadset {
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    AVAudioSessionRouteDescription *currentRoute = [audioSession currentRoute];
+    for (AVAudioSessionPortDescription *output in currentRoute.outputs) {
+        if ([[output portType] isEqualToString:AVAudioSessionPortHeadphones]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+// 设置音频输出端
+- (void)loudspeaker {
+    if ([self hasHeadset]) {
+        [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+    }else {
+        [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+    }
+}
+
+- (void)audioRouteChangeListenerCallback:(NSNotification *)notification {
+    NSDictionary *interuptionDict = notification.userInfo;
+    NSInteger routeChangeReason   = [[interuptionDict
+                                      valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+    switch (routeChangeReason) {
+        case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+            break;
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            break;
+        case AVAudioSessionRouteChangeReasonCategoryChange:
+            break;
+    }
 }
 
 @end

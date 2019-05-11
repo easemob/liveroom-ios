@@ -148,6 +148,10 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     }else {
         self.crownImage.hidden = YES;
     }
+    
+    if (self.model.isMyself) {
+        [self.contentView strokeWithColor:LRStrokeLowBlack];
+    }
 }
 
 #pragma mark - actions

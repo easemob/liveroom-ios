@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
            completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aComplstion;
 
 // 播放音乐(只有群主可以操作)
-- (void)playAudioMix:(BOOL)isPlay;
+- (void)setAudioPlay:(BOOL)isPlay;
 @end
 
 @interface LRConferenceAttr : NSObject

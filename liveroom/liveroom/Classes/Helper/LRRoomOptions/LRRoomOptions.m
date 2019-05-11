@@ -15,7 +15,7 @@ static LRRoomOptions *options = nil;
 {
     self = [super init];
     if (self) {
-        self.version = @"1.01";
+        self.version = @"1.0";
         self.speakerNumber = 6;
         self.isAllowAudienceApplyInteract = YES;
         self.audioQuality = @"100";

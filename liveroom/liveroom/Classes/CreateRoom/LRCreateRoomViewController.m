@@ -204,10 +204,11 @@
         return;
     }
     
+    LRRoomOptions *options = [LRRoomOptions sharedOptions];
     id body = @{@"roomName":self.voiceChatroomIDTextField.text,
                 @"password":self.passwordTextField.text,
                 @"allowAudienceTalk":@YES,
-                @"imChatRoomMaxusers":@100,
+                @"imChatRoomMaxusers":@([options.audioQuality intValue]),
                 @"desc":@"desc",
                 @"confrDelayMillis":@3600,
                 @"memRole":@1
