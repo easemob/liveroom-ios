@@ -20,7 +20,7 @@ static LRRoomOptions *options = nil;
         self.isAllowAudienceApplyInteract = YES;
         self.audioQuality = @"100";
         self.isAllowApplyAsSpeaker = NO;
-        self.isAutomaticallyTurnOnMusic = YES;
+        self.isAutomaticallyTurnOnMusic = NO;
     }
     return self;
 }

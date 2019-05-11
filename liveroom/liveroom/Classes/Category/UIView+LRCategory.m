@@ -36,7 +36,7 @@
             break;
         case LRStrokeGreen:
         {
-            color = [UIColor greenColor];
+            color = LRColor_LessGreenColor;
         }
             break;
         default:

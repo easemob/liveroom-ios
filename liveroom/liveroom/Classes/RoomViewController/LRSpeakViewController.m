@@ -244,15 +244,30 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 - (void)roomTypeDidChange:(LRRoomType)aType {
     self.roomModel.roomType = aType;
     [self.headerView setType:aType];
+    if (aType == LRRoomType_Host && [self.roomModel.owner isEqualToString:kCurrentUsername]) {
+        // 如果是主持模式，且当前账号是管理员，直接上麦
+//        [LRSpeakHelper.sharedInstance setupSpeakerMicOn:kCurrentUsername];
+    }
 }
 
 // 谁在说话回调 (在主持模式下，标注谁在说话)
 - (void)currentHostTypeSpeakerChanged:(NSString *)aSpeaker {
+    // 首先更新自己发布声音的情况
     if ([aSpeaker isEqualToString:kCurrentUsername]) {
         [LRSpeakHelper.sharedInstance muteMyself:NO];
     }else {
         [LRSpeakHelper.sharedInstance muteMyself:YES];
     }
+    
+    for (LRSpeakerCellModel *model in self.dataAry) {
+        if ([aSpeaker isEqualToString:model.username]) {
+            model.talkOn = YES;
+        }else {
+            model.talkOn = NO;
+        }
+    }
+    
+    [self.tableView reloadData];
 }
 
 // 谁在说话回调 (在抢麦模式下，标注谁在说话)

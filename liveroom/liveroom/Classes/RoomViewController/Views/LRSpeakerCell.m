@@ -163,7 +163,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [self routerEventWithName:aEventName userInfo:@{@"key" : self.model}];
 }
 
-
 #pragma mark - getter
 - (UIView *)lightView {
     if (!_lightView) {
@@ -239,9 +238,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 - (void)updateSubViewUI {
     [super updateSubViewUI];
-    if (self.model.isOwner) {
-        [self.contentView cellStrokeWithColor:LRColor_LowBlackColor borderWidth:2.0];
-    }
+
     BOOL talkBtnNeedShow = self.model.type == LRRoomType_Host && self.model.isOwner;
     
     if (talkBtnNeedShow) {
@@ -287,7 +284,9 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 #pragma mark - actions
 - (void)talkerAction:(UIButton *)aBtn {
-    [self btnSelectedWithEventName:TALK_EVENT_NAME];
+    if (self.model.talkOn == NO) {
+        [self btnSelectedWithEventName:TALK_EVENT_NAME];
+    }
 }
 
 - (UIButton *)talkBtn {

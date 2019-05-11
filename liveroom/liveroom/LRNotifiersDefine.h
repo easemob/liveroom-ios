@@ -27,6 +27,9 @@
 #define LR_Stream_Did_Speaking_Notification             @"StreamDidSpeaking"
 #define LR_Remain_Speaking_timer_Notification             @"speakingTimer"
 #define LR_Un_Argument_Speaker_Notification             @"unArgumentSpeaker"
-#define LR_User_To_Speaker_Notification             @"userToSpeaker"
+#define LR_User_To_Speaker_Notification                     @"userToSpeaker"
+
+// account
+#define LR_Did_Login_Other_Device_Notification             @"didLoginOtherDevice"
 
 #endif /* LRNotifiersDefine_h */

@@ -22,6 +22,15 @@
 
 @implementation LRSettingViewController
 
+- (instancetype)init {
+    if (self = [super init]) {
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(logoutAction)
+                                                   name:LR_Did_Login_Other_Device_Notification
+                                                 object:nil];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
@@ -76,7 +85,7 @@
 
 - (void)logoutAction
 {
-    [[EMClient sharedClient] logout:YES completion:^(EMError *aError) {
+    [[EMClient sharedClient] logout:NO completion:^(EMError *aError) {
         if (!aError) {
             EMOptions *options = [LRChatHelper sharedInstance].registerImSDK;
             options.isAutoLogin = NO;
@@ -84,8 +93,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_ACCOUNT_LOGIN_CHANGED
                                                                 object:@NO];
         } else {
-            LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"退出登录失败"
-                                                                                       info:aError.errorDescription];
+            LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"退出登录失败" info:aError.errorDescription];
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }];
