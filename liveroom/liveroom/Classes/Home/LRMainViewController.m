@@ -14,7 +14,7 @@
 #import "LRTabBar.h"
 #import "LRRoomModel.h"
 
-@interface LRMainViewController () <UITabBarControllerDelegate, LRTabBarDelegate>
+@interface LRMainViewController () <UITabBarControllerDelegate, LRTabBarDelegate, EMClientDelegate>
 
 @property (nonatomic, strong) LRRoomListViewController *voiceChatRoomListVC;
 @property (nonatomic, strong) LRSettingViewController *settingVC;
@@ -27,6 +27,7 @@
 {
     [super viewWillAppear:animated];
     self.tabBar.hidden = YES;
+    [EMClient.sharedClient addDelegate:self delegateQueue:nil];
 }
 
 - (void)viewDidLoad {
@@ -79,6 +80,11 @@
         LRRoomViewController *lrVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
         [self presentViewController:lrVC animated:YES completion:nil];
     }
+}
+
+// 被踢
+- (void)userAccountDidLoginFromOtherDevice {
+    [NSNotificationCenter.defaultCenter postNotificationName:LR_Did_Login_Other_Device_Notification object:nil];
 }
 
 @end

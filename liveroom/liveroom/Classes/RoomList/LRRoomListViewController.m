@@ -305,7 +305,9 @@
 
     NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"True":@"False"];
     LRAlertController *alert = [LRAlertController showTextAlertWithTitle:aModel.roomname info:info];
-    alert.textField = [[UITextField alloc] init];
+    UITextField *pwdTextField = [[UITextField alloc] init];
+    pwdTextField.placeholder = @"请输入密码";
+    alert.textField = pwdTextField;
     LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"加入" callback:^(LRAlertController * _Nonnull alertController) {
         if (alertController.textField.text.length == 0) {
             return;
@@ -337,11 +339,16 @@
                  if (list) {
                      for (NSDictionary *dic in list) {
                          LRRoomModel *model = [LRRoomModel roomWithDict:dic];
+                         if ([model.owner isEqualToString:kCurrentUsername]) {
+                             // 如果发现列表中有自己建立的房间，直接解散。
+                             [self destoryMyRoom:model];
+                             continue;
+                         }
                          [self.dataArray addObject:model];
                      }
                  }
              }else {
-                 // TODO: error alert
+        
              }
              [self endReload];
          });
@@ -351,6 +358,16 @@
 - (void)endReload {
     [self.tableView.mj_header endRefreshing];
     [self.tableView reloadData];
+}
+
+- (void)destoryMyRoom:(LRRoomModel *)aModel {
+    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
+    url = [url stringByAppendingString:aModel.roomId];
+    [LRRequestManager.sharedInstance requestWithMethod:@"DELETE"
+                                             urlString:url
+                                            parameters:nil
+                                                 token:nil
+                                            completion:nil];
 }
 
 @end

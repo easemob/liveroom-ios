@@ -59,6 +59,7 @@
 
 #pragma mark register delegates
 - (void)_registerIMDelegates {
+    [EMClient.sharedClient addDelegate:self delegateQueue:nil];
     [EMClient.sharedClient.chatManager addDelegate:self delegateQueue:nil];
     [EMClient.sharedClient.roomManager addDelegate:self delegateQueue:nil];
 }
@@ -193,8 +194,6 @@
         if (msg.body.type != EMMessageBodyTypeText) {
             continue;
         }
-        
-        // TODO: 解析gift， like 事件
         BOOL isLike = NO;
         if (isLike) {
             [_delegates didReceiveRoomLikeActionWithRoomId:msg.conversationId];
@@ -215,6 +214,5 @@
                                           timestamp:msg.timestamp];
     }
 }
-
 
 @end

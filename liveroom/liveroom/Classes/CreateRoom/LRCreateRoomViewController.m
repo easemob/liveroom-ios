@@ -21,7 +21,7 @@
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UILabel *chatroomIDLabel;
 @property (nonatomic, strong) UILabel *passwordLabel;
-@property (nonatomic, strong) UIButton *speakerTypeButton;
+@property (nonatomic, strong) LRCreateBtn *speakerTypeButton;
 @property (nonatomic, strong) UILabel *speakerTypeLabel;
 @property (nonatomic, strong) UIButton *submitButton;
 
@@ -114,12 +114,12 @@
         make.right.equalTo(self.view).offset(-kPadding);
     }];
     
-    self.speakerTypeButton = [[UIButton alloc] init];
+    self.speakerTypeButton = [[LRCreateBtn alloc] init];
     [self.speakerTypeButton setTitle:@"互动模式" forState:UIControlStateNormal];
     [self.speakerTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.speakerTypeButton.titleLabel.font = [UIFont systemFontOfSize:17];
     self.speakerTypeButton.backgroundColor = LRColor_HeightBlackColor;
-    [self.speakerTypeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -245, 0, 0)];
+    self.speakerTypeButton.titleRect = CGRectMake(15, 0, 185, 48);
     self.speakerTypeButton.layer.borderColor = LRColor_LowBlackColor.CGColor;
     self.speakerTypeButton.layer.borderWidth = 2.5;
     [self.speakerTypeButton addTarget:self action:@selector(speakerTypeButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -190,8 +190,8 @@
     
     
     [alert addAction:communicationAction];
-    [alert addAction:monopolyAction];
     [alert addAction:hostAction];
+    [alert addAction:monopolyAction];
 
     [self presentViewController:alert animated:YES completion:nil];
 }
@@ -204,10 +204,11 @@
         return;
     }
     
+    LRRoomOptions *options = [LRRoomOptions sharedOptions];
     id body = @{@"roomName":self.voiceChatroomIDTextField.text,
                 @"password":self.passwordTextField.text,
                 @"allowAudienceTalk":@YES,
-                @"imChatRoomMaxusers":@100,
+                @"imChatRoomMaxusers":@([options.audioQuality intValue]),
                 @"desc":@"desc",
                 @"confrDelayMillis":@3600,
                 @"memRole":@1
@@ -235,5 +236,26 @@
         });
     }];
 }
+
+@end
+
+
+@implementation LRCreateBtn
+
+- (CGRect)titleRectForContentRect:(CGRect)contentRect{
+    if (!CGRectIsEmpty(self.titleRect) && !CGRectEqualToRect(self.titleRect, CGRectZero)) {
+        return self.titleRect;
+    }
+    return [super titleRectForContentRect:contentRect];
+}
+
+- (CGRect)imageRectForContentRect:(CGRect)contentRect{
+    
+    if (!CGRectIsEmpty(self.imageRect) && !CGRectEqualToRect(self.imageRect, CGRectZero)) {
+        return self.imageRect;
+    }
+    return [super imageRectForContentRect:contentRect];
+}
+
 
 @end

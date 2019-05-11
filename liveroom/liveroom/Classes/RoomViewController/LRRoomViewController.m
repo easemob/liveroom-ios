@@ -69,7 +69,6 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
     [self joinChatAndConferenceRoom];
-    
 }
 
 - (void)regieterNotifiers {
@@ -99,6 +98,10 @@
                                            selector:@selector(chatroomDidDestory:)
                                                name:LR_Receive_Conference_Destory_Notification
                                              object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didLoginOtherDevice:)
+                                               name:LR_Did_Login_Other_Device_Notification
+                                             object:nil];
 }
 
 // 收到上麦申请
@@ -109,20 +112,25 @@
     if (![confid isEqualToString:self.roomModel.conferenceId]) {
         return;
     }
-    if (username) {
-        NSString *info = [NSString stringWithFormat:@"收到%@申请上麦", username];
-        LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
-        LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
-            [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
-        }];
-        
-        LRAlertAction *reject = [LRAlertAction alertActionTitle:@"拒绝" callback:^(LRAlertController * _Nonnull alertController) {
-            [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
-        }];
-        [alert addAction:agreed];
-        [alert addAction:reject];
-        
-        [self presentViewController:alert animated:YES completion:nil];
+    
+    LRRoomOptions *options = [LRRoomOptions sharedOptions];
+    if (options.isAllowApplyAsSpeaker) {
+        [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
+    }else {
+        if (username) {
+            NSString *info = [NSString stringWithFormat:@"收到%@申请上麦", username];
+            LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
+            LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
+                [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
+            }];
+            
+            LRAlertAction *reject = [LRAlertAction alertActionTitle:@"拒绝" callback:^(LRAlertController * _Nonnull alertController) {
+                [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
+            }];
+            [alert addAction:agreed];
+            [alert addAction:reject];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
     }
 }
 
@@ -143,6 +151,10 @@
     self.applyOnSpeakBtn.selected = NO;
     self.applyOnSpeakBtn.hidden = NO;
     [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
+}
+
+- (void)didLoginOtherDevice:(NSNotification *)aNoti {
+    [self closeWindowAction];
 }
 
 - (void)changeToAudience:(NSNotification *)aNoti {
@@ -295,13 +307,6 @@
                                                    completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              self->_conferenceJoined = success;
-             if (success) {
-                 if (self.isOwner) {
-                     if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
-                         [[LRSpeakHelper sharedInstance] playAudioMix:YES];
-                     }
-                 }
-             }
              dispatch_semaphore_signal(semaphore);
          }];
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
@@ -324,7 +329,16 @@
             
             if (self.isOwner) { // 群主自动上麦
                 [LRSpeakHelper.sharedInstance setupMySelfToSpeaker];
-                [LRSpeakHelper.sharedInstance setupRoomType:self.roomModel.roomType];
+                LRConferenceAttr *attr = [[LRConferenceAttr alloc] init];
+                attr.roomType = self.roomModel.roomType;
+                if (self.roomModel.roomType == LRRoomType_Host) {
+                    attr.talker = kCurrentUsername;
+                }
+                if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
+                    attr.isMusicPlay = YES;
+                }
+                
+                [LRSpeakHelper.sharedInstance setConferenceAttr:attr];
             }
         });
     });
@@ -342,18 +356,18 @@
     if (self.isOwner) {
         UIButton *button = [self.itemAry firstObject];
         if (self.select) {
-            [self musicPlayButton:button ImageName:@"play" select:NO playAudioMix:NO];
+            [self musicPlayButton:button ImageName:@"play" select:NO setAudioPlay:NO];
         } else {
-            [self musicPlayButton:button ImageName:@"pause" select:YES playAudioMix:YES];
+            [self musicPlayButton:button ImageName:@"pause" select:YES setAudioPlay:YES];
         }
     }
 }
 
-- (void)musicPlayButton:(UIButton *)button ImageName:(NSString *)imageName select:(BOOL)isSelect playAudioMix:(BOOL)isPlay
+- (void)musicPlayButton:(UIButton *)button ImageName:(NSString *)imageName select:(BOOL)isSelect setAudioPlay:(BOOL)isPlay
 {
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     self.select = isSelect;
-    [[LRSpeakHelper sharedInstance] playAudioMix:isPlay];
+    [[LRSpeakHelper sharedInstance] setAudioPlay:isPlay];
 }
 
 - (void)shareAction {

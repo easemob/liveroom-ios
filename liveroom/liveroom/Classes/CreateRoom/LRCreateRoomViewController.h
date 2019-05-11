@@ -11,7 +11,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LRCreateRoomViewController : UIViewController
+@end
 
+@interface LRCreateBtn : UIButton
+@property (nonatomic,assign) CGRect titleRect;
+@property (nonatomic,assign) CGRect imageRect;
 @end
 
 NS_ASSUME_NONNULL_END

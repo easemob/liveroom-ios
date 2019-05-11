@@ -44,7 +44,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define LRColor_MiddleBlackColor RGBACOLOR(51, 51, 51, 1)
 #define LRColor_LowBlackColor RGBACOLOR(102, 102, 102, 1)
 #define LRColor_LessBlackColor RGBACOLOR(202, 202, 202, 1)
-
+#define LRColor_LessGreenColor RGBACOLOR(0, 130, 0, 1)
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
 // Account
