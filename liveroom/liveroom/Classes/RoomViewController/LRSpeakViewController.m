@@ -246,7 +246,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     [self.headerView setType:aType];
     if (aType == LRRoomType_Host && [self.roomModel.owner isEqualToString:kCurrentUsername]) {
         // 如果是主持模式，且当前账号是管理员，直接上麦
-//        [LRSpeakHelper.sharedInstance setupSpeakerMicOn:kCurrentUsername];
+        [LRSpeakHelper.sharedInstance setupSpeakerMicOn:kCurrentUsername];
     }
 }
 

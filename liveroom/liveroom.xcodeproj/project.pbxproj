@@ -26,6 +26,7 @@
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
 		90B4907F2284240400F2EBCC /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B4907E2284240400F2EBCC /* NSString+Category.m */; };
 		90B490852284340300F2EBCC /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B490842284340300F2EBCC /* NSDictionary+Category.m */; };
+		90B490872286AC7B00F2EBCC /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90B490862286AC7A00F2EBCC /* Social.framework */; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
 		90F2C6752254C02B00A712B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6742254C02B00A712B8 /* Assets.xcassets */; };
 		90F2C6782254C02B00A712B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6762254C02B00A712B8 /* LaunchScreen.storyboard */; };
@@ -132,6 +133,7 @@
 		90B4907E2284240400F2EBCC /* NSString+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
 		90B490832284340300F2EBCC /* NSDictionary+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
 		90B490842284340300F2EBCC /* NSDictionary+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
+		90B490862286AC7A00F2EBCC /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		90F2C6682254C02A00A712B8 /* liveroom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = liveroom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F2C6722254C02A00A712B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90F2C6742254C02B00A712B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90B490872286AC7B00F2EBCC /* Social.framework in Frameworks */,
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
 				E00EE55F228403D30043C235 /* Hyphenate.framework in Frameworks */,
 			);
@@ -226,6 +229,7 @@
 		8A492E73331EE2825162353A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				90B490862286AC7A00F2EBCC /* Social.framework */,
 				E00EE564228410500043C235 /* AVFoundation.framework */,
 				789E70471AB662ABBFC025F0 /* libPods-liveroom.a */,
 			);
@@ -931,7 +935,7 @@
 					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
 				);
 				INFOPLIST_FILE = liveroom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -968,7 +972,7 @@
 					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
 				);
 				INFOPLIST_FILE = liveroom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

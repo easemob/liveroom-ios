@@ -65,7 +65,6 @@
         }
         return;
     }
-    //是模态视图
     LRCreateRoomViewController *createVC = [[LRCreateRoomViewController alloc] init];
     [self presentViewController:createVC animated:YES completion:nil];
 }
@@ -86,5 +85,6 @@
 - (void)userAccountDidLoginFromOtherDevice {
     [NSNotificationCenter.defaultCenter postNotificationName:LR_Did_Login_Other_Device_Notification object:nil];
 }
+
 
 @end
