@@ -371,7 +371,13 @@
 }
 
 - (void)shareAction {
+    //是模态视图
+    NSString *str = [NSString stringWithFormat:@"房间: %@\n房主: %@\n密码: %@\n下载地址: %@", self.roomModel.roomname, self.roomModel.owner, _password ,@"https://www.easemob.com"];
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = str;
     
+    
+    [self showTipsAlertWithTitle:@"内容已复制" info:@"已将房间信息复制到粘贴板，\n请您直接粘贴到要分享的软件中。"];
 }
 
 - (void)settingsAction {
