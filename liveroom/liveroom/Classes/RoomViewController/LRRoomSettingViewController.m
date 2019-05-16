@@ -50,8 +50,8 @@
     }];
     
     self.backGroundView = [[UIView alloc] init];
-    self.backGroundView.layer.borderWidth = 2;
-    self.backGroundView.layer.borderColor = LRColor_LowBlackColor.CGColor;
+//    self.backGroundView.layer.borderWidth = 2;
+//    self.backGroundView.layer.borderColor = LRColor_LowBlackColor.CGColor;
     self.backGroundView.backgroundColor = LRColor_HeightBlackColor;
     [self.view addSubview:self.backGroundView];
     [self.backGroundView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -76,14 +76,14 @@
     self.roomProfileLabel.numberOfLines = 0;
     
     NSString *roomType = nil;
-    if (_model.roomType == 1) {
+    if (_model.roomType == LRRoomType_Communication) {
         roomType = @"communication";
-    } else if (_model.roomType == 2) {
+    } else if (_model.roomType == LRRoomType_Host) {
         roomType = @"host";
     } else {
         roomType = @"monopoly";
     }
-    NSString *allowAudienceOnSpeaker = _model.allowAudienceOnSpeaker? @"ture" : @"false";
+    NSString *allowAudienceOnSpeaker = _model.allowAudienceOnSpeaker? @"true" : @"false";
     NSString *info = [NSString stringWithFormat:@"房间id：%@\n密码password：%@\n聊天室chatroomid：%@\n会议confrenceid：%@\n音质模式voicequality：%@\n互动主播speakerlimited：%d\n房间人数memberlimited：%d\n创建时间createtime：%@\n允许观众申请上麦applyAllow：%@\n互动模式type：%@",_model.roomId,_rommPassword,_model.roomId,_model.conferenceId,@"highlevel",_speakerLimited,_model.maxCount,_model.createTime,allowAudienceOnSpeaker,roomType];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6;
@@ -96,7 +96,7 @@
     [self.roomProfileLabel setTextColor:RGBACOLOR(155, 155, 155, 1)];
     [self.backGroundView addSubview:self.roomProfileLabel];
     [self.roomProfileLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.roomNameLabel.mas_bottom);
+        make.top.equalTo(self.roomNameLabel.mas_bottom).offset(6);
         make.left.equalTo(self.backGroundView).offset(kPadding);
         make.right.equalTo(self.backGroundView).offset(-kPadding);
     }];

@@ -26,6 +26,7 @@
 @property (nonatomic, strong) LRSearchBar *searchBar;
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, strong) UITableView *searchResultTableView;
+@property (nonatomic, strong) UIView *noResultView;
 
 @end
 
@@ -88,7 +89,7 @@
     self.searchBar = [[LRSearchBar alloc] init];
     self.searchBar.placeholderString = @"输入voiceChatroomID";
     self.searchBar.placeholderTextFont = 17;
-    self.searchBar.placeholderTextColor = RGBACOLOR(255, 255, 255, 0.6);
+    self.searchBar.placeholderTextColor = RGBACOLOR(255, 255, 255, 0.3);
     self.searchBar.height = 48;
     LRFindView *findView = [[LRFindView alloc] init];
     self.searchBar.leftView = findView;
@@ -129,6 +130,37 @@
     UITapGestureRecognizer *tapSRTableView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSRTableViewAction:)];
     tapSRTableView.delegate = self;
     [self.searchResultTableView addGestureRecognizer:tapSRTableView];
+    [self.view addSubview:self.searchResultTableView];
+    [self.searchResultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.searchBar.mas_bottom).offset(12);
+        make.left.equalTo(self.view).offset(kPadding - 1);
+        make.right.equalTo(self.view).offset(-kPadding + 1);
+        make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
+    }];
+    self.searchResultTableView.hidden = YES;
+    
+    self.noResultView = [[UIView alloc] init];
+    self.noResultView.backgroundColor = LRColor_HeightBlackColor;
+    [self.view addSubview:self.noResultView];
+    [self.noResultView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.searchBar.mas_bottom).offset(12);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+        make.height.equalTo(@48);
+    }];
+    self.noResultView.hidden = YES;
+    
+    UILabel *noResultTextLabel = [[UILabel alloc] init];
+    noResultTextLabel.text = @"没有当前房间，请输入正在进行的房间号码";
+    noResultTextLabel.font = [UIFont boldSystemFontOfSize:14];
+    [noResultTextLabel setTextColor:LRColor_LessBlackColor];
+    [self.noResultView addSubview:noResultTextLabel];
+    [noResultTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.noResultView).offset(10);
+        make.left.equalTo(self.noResultView).offset(10);
+        make.right.equalTo(self.noResultView).offset(-10);
+    }];
+
 }
 
 #pragma mark - GestureRecognizer
@@ -210,13 +242,7 @@
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
                 self.isSearching = YES;
                 self.tableView.hidden = YES;
-                [self.view addSubview:self.searchResultTableView];
-                [self.searchResultTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.searchBar.mas_bottom).offset(12);
-                    make.left.equalTo(self.view).offset(kPadding - 1);
-                    make.right.equalTo(self.view).offset(-kPadding + 1);
-                    make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
-                }];
+                self.searchResultTableView.hidden = NO;
             }
         }
     }
@@ -229,7 +255,8 @@
     self.isSearching = NO;
     [self.searchResults removeAllObjects];
     [self.searchResultTableView reloadData];
-    [self.searchResultTableView removeFromSuperview];
+    self.searchResultTableView.hidden = YES;
+    self.noResultView.hidden = YES;
     self.tableView.hidden = NO;
 }
 
@@ -241,6 +268,11 @@
     __weak typeof(self) weakself = self;
     [[LRRealtimeSearch shared] realtimeSearchWithSource:self.dataArray searchText:aString collationStringSelector:@selector(roomname) resultBlock:^(NSArray *results) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (results.count == 0) {
+                self.noResultView.hidden = NO;
+            } else {
+                self.noResultView.hidden = YES;
+            }
             [weakself.searchResults removeAllObjects];
             [weakself.searchResults addObjectsFromArray:results];
             [weakself.searchResultTableView reloadData];
@@ -303,12 +335,12 @@
 #pragma mark - Actions
 - (void)joinRoomWithModel:(LRRoomModel *)aModel {
 
-    NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"True":@"False"];
+    NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"true":@"false"];
     LRAlertController *alert = [LRAlertController showTextAlertWithTitle:aModel.roomname info:info];
     UITextField *pwdTextField = [[UITextField alloc] init];
-    pwdTextField.placeholder = @"请输入密码";
+    pwdTextField.placeholder = @"输入密码";
     alert.textField = pwdTextField;
-    LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"加入" callback:^(LRAlertController * _Nonnull alertController) {
+    LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"观众加入" callback:^(LRAlertController * _Nonnull alertController) {
         if (alertController.textField.text.length == 0) {
             return;
         }
@@ -316,9 +348,7 @@
         [self presentViewController:vroomVC animated:YES completion:nil];
     }];
     
-    LRAlertAction *cancelAction = [LRAlertAction alertActionTitle:@"取消" callback:nil];
     [alert addAction:joinAction];
-    [alert addAction:cancelAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
 

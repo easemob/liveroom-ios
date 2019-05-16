@@ -25,7 +25,6 @@
 {
     LRVoiceRoomHeaderItem *btn = [LRVoiceRoomHeaderItem buttonWithType:UIButtonTypeCustom];
     [btn setImage:aImg forState:UIControlStateNormal];
-    [btn strokeWithColor:LRStrokeLowBlack];
     if (aAction) btn.action = aAction;
     if (aTarget) btn.target = aTarget;
     return btn;
@@ -37,7 +36,6 @@
 {
     LRVoiceRoomHeaderItem *btn = [LRVoiceRoomHeaderItem buttonWithType:UIButtonTypeCustom];
     [btn setImage:[UIImage imageNamed:aImgName] forState:UIControlStateNormal];
-    [btn strokeWithColor:LRStrokeLowBlack];
     if (aAction) btn.action = aAction;
     if (aTarget) btn.target = aTarget;
     return btn;

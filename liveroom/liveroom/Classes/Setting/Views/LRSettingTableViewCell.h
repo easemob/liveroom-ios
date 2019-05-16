@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRSettingTableViewCell : UITableViewCell
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *details;
+@property (nonatomic, strong) NSString *detailsText;
 @end
 
 NS_ASSUME_NONNULL_END

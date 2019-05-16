@@ -14,7 +14,7 @@
 #import "LRChatroomMembersModel.h"
 
 #define kPadding 16
-@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate,UIGestureRecognizerDelegate>
+@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate,UIGestureRecognizerDelegate,LRChatroomMembersCellDelegate>
 
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -50,7 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self autoReload];
     
     [self _setupSubviews];
@@ -64,11 +64,12 @@
 
 - (void)reloadPage {
     EMError *error;
+    NSString *owner;
     EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:self.roomID error:&error];
     if (!error) {
         [self.dataArray removeAllObjects];
-        NSString *owner = chatroom.owner;
-        NSDictionary *dict = @{@"memberName":owner,@"isOwner":@YES};
+        owner = chatroom.owner;
+        NSDictionary *dict = @{@"memberName":owner,@"isOwner":@YES,@"ownerName":owner};
         LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
         [self.dataArray addObject:model];
     }
@@ -77,7 +78,7 @@
     if (!error) {
         NSArray *list = result.list;
         for (NSString *membersName in list) {
-            NSDictionary *dict = @{@"memberName":membersName,@"isOwner":@NO};
+            NSDictionary *dict = @{@"memberName":membersName,@"isOwner":@NO,@"ownerName":owner};
             LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
             [self.dataArray addObject:model];
         }
@@ -128,8 +129,8 @@
     self.searchBar.placeholderTextFont = 12;
     self.searchBar.inputTextColor = [UIColor clearColor];
     self.searchBar.placeholderTextColor = [UIColor grayColor];
-    self.searchBar.strokeColor = [UIColor grayColor];
-    self.searchBar.strokeWidth = 0.5;
+    self.searchBar.strokeColor = LRColor_LessBlackColor;
+    self.searchBar.strokeWidth = 2;
     self.searchBar.height = 32;
     LRFindView *findView = [[LRFindView alloc] init];
     self.searchBar.leftView = findView;
@@ -233,6 +234,7 @@
         model = [self.searchResults objectAtIndex:indexPath.row];
     }
     cell.model = model;
+    cell.delegate = self;
     return cell;
 }
 
@@ -289,6 +291,20 @@
             [weakself.searchResults addObjectsFromArray:results];
             [weakself.searchResultTableView reloadData];
         });
+    }];
+}
+
+#pragma mark - LRChatroomMembersCellDelegate
+- (void)chatroomMembersExit:(LRChatroomMembersModel *)model
+{
+    [[EMClient sharedClient].roomManager removeMembers:@[model.memberName] fromChatroom:self.roomID completion:^(EMChatroom *aChatroom, EMError *aError) {
+        if (!aError) {
+            NSLog(@"踢人成功----");
+            [self.dataArray removeObject:model];
+            [self.tableView reloadData];
+        } else {
+            NSLog(@"踢人失败----");
+        }
     }];
 }
 

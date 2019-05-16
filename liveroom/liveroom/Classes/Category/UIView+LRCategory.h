@@ -20,7 +20,7 @@ typedef enum : NSUInteger {
 
 @interface UIView (Stroke)
 - (void)strokeWithColor:(LRStrokeColor)aColor;
-- (void)cellStrokeWithColor:(UIColor *)aColor borderWidth:(CGFloat)width;
+- (void)cellWithContentView:(UIView *)contentView StrokeWithColor:(UIColor *)aColor borderWidth:(CGFloat)width;
 - (void)disableStroke;
 @end
 
