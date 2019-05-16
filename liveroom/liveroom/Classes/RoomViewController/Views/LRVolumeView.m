@@ -48,7 +48,7 @@
 - (void)setProgress:(NSUInteger)progress {
     _progress = progress;
     if (progress != 0) {
-        NSUInteger value = 1+ (NSUInteger)arc4random() % 3;
+        NSUInteger value = 1 + (NSUInteger)arc4random() % 3;
         _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:value]];
     } else {
         _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:progress]];

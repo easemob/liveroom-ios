@@ -361,6 +361,50 @@
 }
 
 
+// 自动同意下麦申请
+- (void)agreedToBeAudience:(NSNotification *)aNoti  {
+    NSDictionary *dict = aNoti.object;
+    NSString *username = dict[@"from"];
+    NSString *confid = dict[@"confid"];
+    if (!self.roomModel || ![confid isEqualToString:self.roomModel.conferenceId]) {
+        return;
+    }
+    [self setupUserToAudiance:username];
+}
+
+// 设置会议属性
+- (void)updateAttrToServer:(NSString *)attrInfo {
+    NSLog(@"--- attr info -- %@",attrInfo);
+    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"attrs" value:attrInfo completion:nil];
+}
+
+// 解析会议属性
+- (void)parseAttrInfo:(NSString *)attrInfo {
+    NSLog(@"parseAttrInfo --- %@", attrInfo);
+    NSDictionary *dic = [attrInfo toDict];
+    self.lrAttr = [[LRConferenceAttr alloc] initWithDict:dic];
+    self.roomModel.roomType = [self.lrAttr roomType];
+    [_delegates roomTypeDidChange:self.roomModel.roomType];
+    
+    if (self.roomModel.roomType == LRRoomType_Host) {
+        [_delegates currentHostTypeSpeakerChanged:self.lrAttr.talker];
+    }
+    
+    if (self.roomModel.roomType == LRRoomType_Monopoly) {
+        _currentMonopolyTalker = self.lrAttr.talker;
+        if ([_currentMonopolyTalker isEqualToString:@""]) {
+            [self stopMonopolyTimer];
+        }else {
+            [self startMonopolyTimer];
+        }
+        [_delegates currentMonopolyTypeSpeakerChanged:_currentMonopolyTalker];
+    }
+    
+    [self playMusic:self.lrAttr.isMusicPlay];
+    
+}
+
+
 #pragma mark - EMConferenceManagerDelegate
 
 // 收到新的流发布，直接关注
@@ -451,49 +495,6 @@
     if ([attrKey isEqualToString:@"attrs"]) {
         [self parseAttrInfo:attrValue];
     }
-}
-
-// 自动同意下麦申请
-- (void)agreedToBeAudience:(NSNotification *)aNoti  {
-    NSDictionary *dict = aNoti.object;
-    NSString *username = dict[@"from"];
-    NSString *confid = dict[@"confid"];
-    if (!self.roomModel || ![confid isEqualToString:self.roomModel.conferenceId]) {
-        return;
-    }
-    [self setupUserToAudiance:username];
-}
-
-// 设置会议属性
-- (void)updateAttrToServer:(NSString *)attrInfo {
-    NSLog(@"--- attr info -- %@",attrInfo);
-    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"attrs" value:attrInfo completion:nil];
-}
-
-// 解析会议属性
-- (void)parseAttrInfo:(NSString *)attrInfo {
-    NSLog(@"parseAttrInfo --- %@", attrInfo);
-    NSDictionary *dic = [attrInfo toDict];
-    self.lrAttr = [[LRConferenceAttr alloc] initWithDict:dic];
-    self.roomModel.roomType = [self.lrAttr roomType];
-    [_delegates roomTypeDidChange:self.roomModel.roomType];
-    
-    if (self.roomModel.roomType == LRRoomType_Host) {
-        [_delegates currentHostTypeSpeakerChanged:self.lrAttr.talker];
-    }
-    
-    if (self.roomModel.roomType == LRRoomType_Monopoly) {
-        _currentMonopolyTalker = self.lrAttr.talker;
-        if ([_currentMonopolyTalker isEqualToString:@""]) {
-            [self stopMonopolyTimer];
-        }else {
-            [self startMonopolyTimer];
-        }
-        [_delegates currentMonopolyTypeSpeakerChanged:_currentMonopolyTalker];
-    }
-    
-    [self playMusic:self.lrAttr.isMusicPlay];
-    
 }
 
 #pragma mark - getter

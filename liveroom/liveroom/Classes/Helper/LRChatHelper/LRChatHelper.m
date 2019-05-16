@@ -59,7 +59,6 @@
 
 #pragma mark register delegates
 - (void)_registerIMDelegates {
-    [EMClient.sharedClient addDelegate:self delegateQueue:nil];
     [EMClient.sharedClient.chatManager addDelegate:self delegateQueue:nil];
     [EMClient.sharedClient.roomManager addDelegate:self delegateQueue:nil];
 }
@@ -214,5 +213,21 @@
                                           timestamp:msg.timestamp];
     }
 }
+
+- (void)userDidJoinChatroom:(EMChatroom *)aChatroom user:(NSString *)aUsername {
+    if ([aUsername isEqualToString:@"系统管理员"]) {
+        return;
+    }
+    [_delegates userDidJoin:aUsername];
+}
+
+- (void)userDidLeaveChatroom:(EMChatroom *)aChatroom user:(NSString *)aUsername {
+    if ([aUsername isEqualToString:@"系统管理员"]) {
+        return;
+    }
+    [_delegates userDidLeave:aUsername];
+}
+
+
 
 @end
