@@ -118,15 +118,16 @@
     EMStreamParam *param = [[EMStreamParam alloc] init];
     param.streamName = kCurrentUsername;
     param.enableVideo = NO;
-    // todo dujiepeng. 根据不同模式设置是否可以说话
-    param.isMute = YES;
+    // 如果是互动模式，上麦可以直接说话
+    __block BOOL isMute = self.roomModel.roomType == LRRoomType_Communication;
+    param.isMute = isMute;
     [EMClient.sharedClient.conferenceManager publishConference:self.conference
                                                    streamParam:param
                                                     completion:^(NSString *aPubStreamId, EMError *aError)
      {
          if(!aError) {
              weakSekf.pubStreamId = aPubStreamId;
-             [self->_delegates receiveSomeoneOnSpeaker:kCurrentUsername streamId:aPubStreamId mute:YES];
+             [self->_delegates receiveSomeoneOnSpeaker:kCurrentUsername streamId:aPubStreamId mute:isMute];
          }
      }];
 }

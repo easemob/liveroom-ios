@@ -331,6 +331,7 @@
                 [LRSpeakHelper.sharedInstance setupMySelfToSpeaker];
                 LRConferenceAttr *attr = [[LRConferenceAttr alloc] init];
                 attr.roomType = self.roomModel.roomType;
+                // 如果是主持模式，管理员直接持麦
                 if (self.roomModel.roomType == LRRoomType_Host) {
                     attr.talker = kCurrentUsername;
                 }
@@ -339,6 +340,7 @@
                 }
                 
                 [LRSpeakHelper.sharedInstance setConferenceAttr:attr];
+
             }
         });
     });
