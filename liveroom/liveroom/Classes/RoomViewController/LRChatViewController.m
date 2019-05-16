@@ -11,9 +11,13 @@
 #import "LRRoomModel.h"
 #import "Headers.h"
 
-@interface LRChatViewController ()<UITableViewDelegate, UITableViewDataSource, LRChatHelperDelegate>
+@interface LRChatViewController ()<UITableViewDelegate, UITableViewDataSource, LRChatHelperDelegate, CAAnimationDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
+@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) CABasicAnimation *animation;
+
 
 @end
 
@@ -40,6 +44,13 @@
     if ([aChatroomId isEqualToString:_roomModel.roomId]) {
         [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp];
     }
+    if ([aMessage isEqualToString:@"like + 1"]) {
+        [self animationImageName:@"like"];
+    }
+    
+    if ([aMessage isEqualToString:@"send a gift"]) {
+        [self animationImageName:@"giftcard"];
+    }
 }
 
 #pragma mark - public
@@ -61,6 +72,8 @@
 
 - (void)sendLike {
     NSString *likeMsg = @"like + 1";
+    [self audioPlayerWithName:@"like" type:@"wav"];
+    [self animationImageName:@"like"];
     [LRChatHelper.sharedInstance sendLikeToChatroom:self.roomModel.roomId
                                             likeMsg:likeMsg
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
@@ -74,6 +87,8 @@
 
 - (void)sendGift {
     NSString *giftMsg = @"send a gift";
+    [self audioPlayerWithName:@"gift" type:@"wav"];
+    [self animationImageName:@"giftcard"];
     [LRChatHelper.sharedInstance sendLikeToChatroom:self.roomModel.roomId
                                             likeMsg:giftMsg
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
@@ -83,6 +98,31 @@
     [self addMessageToData:giftMsg
                   fromUser:LRChatHelper.sharedInstance.currentUser
                  timestamp:[[NSDate new] timeIntervalSince1970]];
+}
+
+- (void)animationImageName:(NSString *)imageName
+{
+    self.imageView.image = [UIImage imageNamed:imageName];
+    // 设置属性
+    self.animation.keyPath = @"transform.scale";
+    self.animation.toValue = @0;
+    // 设置动态执行次数 MAXFLOAT是无限次数
+    self.animation.repeatCount = 1;
+    // 设置动画执行时长
+    self.animation.duration = 0.5;
+    // 自动反转(怎么样去,怎么样回来)
+    self.animation.autoreverses = YES;
+    [self.imageView.layer addAnimation:self.animation forKey:nil];
+}
+
+- (void)audioPlayerWithName:(NSString *)audioName type:(NSString *)type
+{
+    NSString *string = [[NSBundle mainBundle] pathForResource:audioName ofType:type];
+    NSURL *url = [NSURL fileURLWithPath:string];
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    self.audioPlayer.volume = 10;
+    self.audioPlayer.numberOfLoops = 0;
+    [self.audioPlayer play];
 }
 
 #pragma mark - private
@@ -122,6 +162,16 @@
     return cell;
 }
 
+#pragma mark - CAAnimationDelegate
+- (void)animationDidStart:(CAAnimation *)anim
+{
+    self.imageView.hidden = NO;
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    self.imageView.hidden = YES;
+}
 
 #pragma mark - subviews;
 - (void)_setupSubViews {
@@ -129,6 +179,16 @@
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.left.top.bottom.equalTo(self.view);
     }];
+    
+    [self.view addSubview:self.imageView];
+    [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(20);
+        make.right.equalTo(self.view).offset(-20);
+        make.width.height.equalTo(@30);
+    }];
+    
+    self.animation = [CABasicAnimation animation];
+    self.animation.delegate = self;
 }
 
 #pragma mark - getter
@@ -144,6 +204,15 @@
         _tableView.dataSource = self;
     }
     return _tableView;
+}
+
+- (UIImageView *)imageView
+{
+    if (!_imageView) {
+        _imageView = [[UIImageView alloc] init];
+        _imageView.hidden = YES;
+    }
+    return _imageView;
 }
 
 - (NSMutableArray *)dataAry {

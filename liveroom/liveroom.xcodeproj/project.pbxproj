@@ -47,6 +47,8 @@
 		E00EE55F228403D30043C235 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E00EE55E228403D30043C235 /* Hyphenate.framework */; };
 		E00EE561228403EF0043C235 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E00EE55E228403D30043C235 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E00EE56F228424D60043C235 /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E00EE56E228424D60043C235 /* music.mp3 */; };
+		E00EE574228AD0B10043C235 /* gift.wav in Resources */ = {isa = PBXBuildFile; fileRef = E00EE572228AD0AF0043C235 /* gift.wav */; };
+		E00EE575228AD0B10043C235 /* like.wav in Resources */ = {isa = PBXBuildFile; fileRef = E00EE573228AD0B00043C235 /* like.wav */; };
 		E03ADD872275BFEA0030C4D6 /* LRRoomSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E03ADD862275BFEA0030C4D6 /* LRRoomSettingViewController.m */; };
 		E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C22259A77C00F9910C /* LRSearchBar.m */; };
 		E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C52259A77C00F9910C /* LRRealtimeSearch.m */; };
@@ -170,6 +172,8 @@
 		E00EE55E228403D30043C235 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		E00EE564228410500043C235 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E00EE56E228424D60043C235 /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = music.mp3; sourceTree = "<group>"; };
+		E00EE572228AD0AF0043C235 /* gift.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gift.wav; sourceTree = "<group>"; };
+		E00EE573228AD0B00043C235 /* like.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = like.wav; sourceTree = "<group>"; };
 		E03ADD852275BFEA0030C4D6 /* LRRoomSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomSettingViewController.h; sourceTree = "<group>"; };
 		E03ADD862275BFEA0030C4D6 /* LRRoomSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomSettingViewController.m; sourceTree = "<group>"; };
 		E04712C22259A77C00F9910C /* LRSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSearchBar.m; sourceTree = "<group>"; };
@@ -508,6 +512,8 @@
 		90F2C6F22254C09400A712B8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E00EE572228AD0AF0043C235 /* gift.wav */,
+				E00EE573228AD0B00043C235 /* like.wav */,
 				E00EE56E228424D60043C235 /* music.mp3 */,
 				E0780CCE226EE374008CF34E /* voice1@2x.png */,
 				E0780CCD226EE374008CF34E /* voice1@3x.png */,
@@ -656,12 +662,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E00EE575228AD0B10043C235 /* like.wav in Resources */,
 				E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */,
 				E04712DF225C8CEF00F9910C /* find@2x.png in Resources */,
 				E0780CD5226EE375008CF34E /* voice1@3x.png in Resources */,
 				E0A7E6F9226D802400AE6C6F /* close2@3x.png in Resources */,
 				E0A7E6FB226D802400AE6C6F /* creat@3x.png in Resources */,
 				E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */,
+				E00EE574228AD0B10043C235 /* gift.wav in Resources */,
 				E0780CD4226EE375008CF34E /* voice3@3x.png in Resources */,
 				90F2C6782254C02B00A712B8 /* LaunchScreen.storyboard in Resources */,
 				E0780CDB226EE375008CF34E /* voice4@2x.png in Resources */,

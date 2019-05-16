@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @protocol LRChatroomMembersCellDelegate <NSObject>
-- (void)chatroomMembersExit:(UIButton *)button;
+- (void)chatroomMembersExit:(LRChatroomMembersModel *)model;
 @end
 
 NS_ASSUME_NONNULL_END

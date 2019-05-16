@@ -9,6 +9,7 @@
 #import "LRSpeakerEmptyCell.h"
 
 @interface LRSpeakerEmptyCell ()
+@property (nonatomic, strong) UIView *emptyLightView;
 @property (nonatomic, strong) UILabel *infoLabel;
 @property (nonatomic, strong) UIView *lineView;
 @end
@@ -28,13 +29,20 @@
 
 #pragma mark - subviews
 - (void)_setupSubViews {
+    [self.contentView addSubview:self.emptyLightView];
     [self.contentView addSubview:self.infoLabel];
     [self.contentView addSubview:self.lineView];
+    
+    [self.emptyLightView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView).offset(10);
+        make.centerY.equalTo(self.infoLabel);
+        make.right.equalTo(self.infoLabel.mas_left).offset(-5);
+        make.width.height.equalTo(@8);
+    }];
     
     [self.infoLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).offset(10);
         make.right.equalTo(self.contentView).offset(-10);
-        make.left.equalTo(self.contentView).offset(10);
         make.bottom.equalTo(self.lineView.mas_top).offset(-10);
     }];
     
@@ -63,4 +71,15 @@
     }
     return _lineView;
 }
+
+- (UIView *)emptyLightView {
+    if (!_emptyLightView) {
+        _emptyLightView = [[UIView alloc] init];
+        _emptyLightView.layer.masksToBounds = YES;
+        _emptyLightView.layer.cornerRadius = 4;
+        _emptyLightView.backgroundColor = LRColor_MiddleBlackColor;
+    }
+    return _emptyLightView;
+}
+
 @end

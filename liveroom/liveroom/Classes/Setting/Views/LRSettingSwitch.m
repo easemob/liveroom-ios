@@ -8,7 +8,7 @@
 
 #import "LRSettingSwitch.h"
 
-#define kPadding 1
+#define kPadding 3
 @interface LRSettingSwitch ()
 
 @property (nonatomic, strong) UIView *tagView;

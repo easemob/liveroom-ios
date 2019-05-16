@@ -11,7 +11,7 @@
 #import "LRGCDMulticastDelegate.h"
 #import "LRRoomModel.h"
 
-#define kKeepHandleTime 30
+#define kKeepHandleTime 30.00
 
 @interface LRSpeakHelper () <EMConferenceManagerDelegate>
 {

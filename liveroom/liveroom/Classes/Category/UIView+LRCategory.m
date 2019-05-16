@@ -46,10 +46,47 @@
     self.layer.borderWidth = 2.5;
 }
 
-- (void)cellStrokeWithColor:(UIColor *)aColor borderWidth:(CGFloat)width
+- (void)cellWithContentView:(UIView *)contentView StrokeWithColor:(UIColor *)aColor borderWidth:(CGFloat)width
 {
-    self.layer.borderColor = aColor.CGColor;
-    self.layer.borderWidth = width;
+    UIView *topLine = [[UIView alloc] init];
+    topLine.backgroundColor = aColor;
+    [contentView addSubview:topLine];
+    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(contentView);
+        make.left.equalTo(contentView);
+        make.right.equalTo(contentView);
+        make.height.equalTo(@(width));
+    }];
+    
+    UIView *bottomLine = [[UIView alloc] init];
+    bottomLine.backgroundColor = aColor;
+    [contentView addSubview:bottomLine];
+    [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(contentView).offset(-width);
+        make.left.equalTo(contentView);
+        make.right.equalTo(contentView);
+        make.height.equalTo(@(width));
+    }];
+    
+    UIView *leftLine = [[UIView alloc] init];
+    leftLine.backgroundColor = aColor;
+    [contentView addSubview:leftLine];
+    [leftLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(contentView).offset(width);
+        make.left.equalTo(contentView);
+        make.bottom.equalTo(contentView).offset(-width);
+        make.width.equalTo(@(width));
+    }];
+    
+    UIView *rightLine = [[UIView alloc] init];
+    rightLine.backgroundColor = aColor;
+    [contentView addSubview:rightLine];
+    [rightLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(contentView).offset(width);
+        make.bottom.equalTo(contentView).offset(-width);
+        make.right.equalTo(contentView);
+        make.width.equalTo(@(width));
+    }];
 }
 
 - (void)disableStroke {

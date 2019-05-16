@@ -39,10 +39,12 @@
     self.textField = [[UITextField alloc] init];
     self.textField.delegate = self;
     self.textField.font = [UIFont systemFontOfSize:16];
-    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.textField.returnKeyType = UIReturnKeyDone;
-    UIButton *clear = [self.textField valueForKey:@"_clearButton"];
+    UIButton *clear = [self.
+                       textField valueForKey:@"_clearButton"];
     [clear setImage:[UIImage imageNamed:@"delete_input"] forState:UIControlStateNormal];
+    clear.imageEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
+    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.textField setupTextField];
     [self.textField strokeWithColor:LRStrokeLowBlack];
     [self addSubview:self.textField];

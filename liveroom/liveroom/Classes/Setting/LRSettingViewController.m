@@ -150,16 +150,14 @@
     
     LRRoomOptions *options = [LRRoomOptions sharedOptions];
     
-    cell.detailTextLabel.text = nil;
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
     if (section == 0) {
         [self displayWithCell:cell title:@"版本version" details:nil detailText:options.version accessoryType:UITableViewCellAccessoryNone switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 1) {
-        [self displayWithCell:cell title:@"speakerNumberLimited default" details:@"默认创建voicechatroom互动主播数" detailText:[NSString stringWithFormat:@"%d", options.speakerNumber] accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:NO];
+        [self displayWithCell:cell title:@"speakerNumberLimited default" details:@"默认创建voicechatroom互动主播数" detailText:[NSString stringWithFormat:@"%d", options.speakerNumber] accessoryType:UITableViewCellAccessoryNone switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 2) {
         [self displayWithCell:cell title:@"Allow apply for interact default" details:@"允许观众申请连麦" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:options.isAllowAudienceApplyInteract isAnimated:YES];
     } else if (section == 3) {
-        [self displayWithCell:cell title:@"audio quality default" details:@"默认音质参数" detailText:@"highleve(unmix)" accessoryType:UITableViewCellAccessoryDisclosureIndicator switchControl:nil isSwitch:NO isAnimated:YES];
+        [self displayWithCell:cell title:@"audio quality default" details:@"默认音质参数" detailText:@"highleve(unmix)" accessoryType:UITableViewCellAccessoryNone switchControl:nil isSwitch:NO isAnimated:YES];
     } else if (section == 4) {
         [self displayWithCell:cell title:@"audio agree to apply as speaker" details:@"自动允许上麦申请" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:options.isAllowApplyAsSpeaker isAnimated:YES];
     } else if (section == 5) {
@@ -178,7 +176,7 @@
         cell.details = details;
     }
     if (detailText) {
-        cell.detailTextLabel.text = detailText;
+        cell.detailsText = detailText;
     }
     if (accessoryType) {
         cell.accessoryType = accessoryType;
