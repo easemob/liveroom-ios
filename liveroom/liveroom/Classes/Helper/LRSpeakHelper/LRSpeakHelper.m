@@ -23,7 +23,6 @@
 
 @property (nonatomic, strong) NSString *pubStreamId;
 @property (nonatomic, strong) NSTimer *monopolyTimer;
-@property (nonatomic, strong) LRConferenceAttr *lrAttr;
 @end
 
 @implementation LRSpeakHelper
@@ -96,6 +95,7 @@
 // 离开语音会议
 - (void)leaveSpeakRoomWithRoomId:(NSString *)aRoomId
                       completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    _isPlaying = NO;
     [EMClient.sharedClient.conferenceManager leaveConference:self.conference
                                                   completion:^(EMError *aError)
      {
@@ -108,8 +108,32 @@
 
 // 设置房间属性
 - (void)setupRoomType:(LRRoomType)aType {
-    self.lrAttr.roomType = aType;
-    [self updateAttrToServer:[self.lrAttr toJsonString]];
+    NSString *value;
+    switch (aType) {
+        case LRRoomType_Communication:
+        {
+            value = @"communication";
+        }
+            break;
+        case LRRoomType_Host:
+        {
+            value = @"host";
+        }
+            break;
+        case LRRoomType_Monopoly:
+        {
+            value = @"monopoly";
+        }
+            break;
+        default:
+            break;
+    }
+    if (value) {
+        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"type" value:value completion:^(EMError *aError)
+        {
+                                                                 
+        }];
+    }
 }
 
 // 发布自己的流，并更新ui
@@ -118,8 +142,11 @@
     EMStreamParam *param = [[EMStreamParam alloc] init];
     param.streamName = kCurrentUsername;
     param.enableVideo = NO;
-    // 如果是互动模式，上麦可以直接说话
-    __block BOOL isMute = self.roomModel.roomType == LRRoomType_Communication;
+    // 如果是互动模式 主播模式(群主)，上麦可以直接说话
+    __block BOOL isMute = YES;
+    BOOL isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
+    isMute = !((isOwner && self.roomModel.roomType == LRRoomType_Host)
+               || (self.roomModel.roomType == LRRoomType_Communication));
     param.isMute = isMute;
     [EMClient.sharedClient.conferenceManager publishConference:self.conference
                                                    streamParam:param
@@ -184,16 +211,15 @@
 }
 
 - (void)setupSpeakerMicOn:(NSString *)aUsername {
-    self.lrAttr.talker = aUsername;
-    [self updateAttrToServer:[self.lrAttr toJsonString]];
+    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"talker" value:aUsername completion:nil];
+
 }
 
 - (void)setupSpeakerMicOff:(NSString *)aUsername {
     if (!self.roomModel) {
         return;
     }
-    self.lrAttr.talker = @"";
-    [self updateAttrToServer:[self.lrAttr toJsonString]];
+    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"talker" value:@"" completion:nil];
 }
 
 // 播放音乐
@@ -202,7 +228,7 @@
         return;
     }
     if (isPlay) {
-        NSString *url = [NSBundle.mainBundle pathForResource:@"music" ofType:@"mp3"];
+        NSURL *url = [NSBundle.mainBundle URLForResource:@"music" withExtension:@"mp3"];
         EMError *error = [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
         NSLog(@"error -- %@",error);
     } else {
@@ -318,13 +344,10 @@
 
 - (void)setAudioPlay:(BOOL)isPlay {
     // 设置会议属性
-    self.lrAttr.isMusicPlay = isPlay;
-    [self updateAttrToServer:[self.lrAttr toJsonString]];
-
-}
-
-- (void)setConferenceAttr :(LRConferenceAttr *)aAttr {
-    [self updateAttrToServer:[aAttr toJsonString]];
+    NSString *music = isPlay ? @"music" : @"";
+    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"music" value:music completion:^(EMError *aError) {
+        
+    }];
 }
 
 #pragma mark - Monopoly Timer
@@ -372,39 +395,6 @@
     }
     [self setupUserToAudiance:username];
 }
-
-// 设置会议属性
-- (void)updateAttrToServer:(NSString *)attrInfo {
-    NSLog(@"--- attr info -- %@",attrInfo);
-    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"attrs" value:attrInfo completion:nil];
-}
-
-// 解析会议属性
-- (void)parseAttrInfo:(NSString *)attrInfo {
-    NSLog(@"parseAttrInfo --- %@", attrInfo);
-    NSDictionary *dic = [attrInfo toDict];
-    self.lrAttr = [[LRConferenceAttr alloc] initWithDict:dic];
-    self.roomModel.roomType = [self.lrAttr roomType];
-    [_delegates roomTypeDidChange:self.roomModel.roomType];
-    
-    if (self.roomModel.roomType == LRRoomType_Host) {
-        [_delegates currentHostTypeSpeakerChanged:self.lrAttr.talker];
-    }
-    
-    if (self.roomModel.roomType == LRRoomType_Monopoly) {
-        _currentMonopolyTalker = self.lrAttr.talker;
-        if ([_currentMonopolyTalker isEqualToString:@""]) {
-            [self stopMonopolyTimer];
-        }else {
-            [self startMonopolyTimer];
-        }
-        [_delegates currentMonopolyTypeSpeakerChanged:_currentMonopolyTalker];
-    }
-    
-    [self playMusic:self.lrAttr.isMusicPlay];
-    
-}
-
 
 #pragma mark - EMConferenceManagerDelegate
 
@@ -489,27 +479,58 @@
                                                       object:aStreamIds];
 }
 
+
+// 会议属性修改
 - (void)conferenceAttributeUpdated:(EMCallConference *)aConference
-                   attributeAction:(EMConferenceAttributeAction)aAction
-                      attributeKey:(NSString *)attrKey
-                    attributeValue:(NSString *)attrValue {
-    if ([attrKey isEqualToString:@"attrs"]) {
-        [self parseAttrInfo:attrValue];
+                        attributes:(NSArray <EMConferenceAttribute *>*)attrs{
+    NSString *talker = nil;
+    BOOL isPlay = NO;
+    for (EMConferenceAttribute *attr in attrs) {
+        NSLog(@"attr.key -- %@  value -- %@",attr.key, attr.value);
+        if ([attr.key isEqualToString:@"type"]) {
+            NSString *roomType = attr.value;
+            if ([roomType isEqualToString:@"communication"]) {
+                self.roomModel.roomType = LRRoomType_Communication;
+            }else if ([roomType isEqualToString:@"host"]) {
+                self.roomModel.roomType = LRRoomType_Host;
+            }else if ([roomType isEqualToString:@"monopoly"]) {
+                self.roomModel.roomType = LRRoomType_Monopoly;
+            }
+            [_delegates roomTypeDidChange:self.roomModel.roomType];
+        }
+        if ([attr.key isEqualToString:@"talker"]) {
+            talker = attr.value;
+        }
+        
+        if ([attr.key isEqualToString:@"music"]) {
+            isPlay = attr.value && attr.value.length > 0;
+        }
     }
+    
+    
+    if (talker) {
+        if (self.roomModel.roomType == LRRoomType_Host) {
+            [_delegates currentHostTypeSpeakerChanged:talker];
+        }
+        if (self.roomModel.roomType == LRRoomType_Monopoly) {
+            _currentMonopolyTalker = talker;
+            if ([_currentMonopolyTalker isEqualToString:@""]) {
+                [self stopMonopolyTimer];
+            }else {
+                [self startMonopolyTimer];
+            }
+            [_delegates currentMonopolyTypeSpeakerChanged:_currentMonopolyTalker];
+        }
+    }
+    
+    [self playMusic:isPlay];
+    
 }
 
 #pragma mark - getter
 - (NSString *)adminId {
     return self.conference.adminIds.firstObject;
 }
-
-- (LRConferenceAttr *)lrAttr {
-    if (!_lrAttr) {
-        _lrAttr = [[LRConferenceAttr alloc] init];
-    }
-    return _lrAttr;
-}
-
 
 - (BOOL)hasHeadset {
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -545,72 +566,6 @@
         case AVAudioSessionRouteChangeReasonCategoryChange:
             break;
     }
-}
-
-
-@end
-
-
-@implementation LRConferenceAttr
-
-- (instancetype)init {
-    if (self = [super init]) {
-        self.talker = @"";
-        self.roomType = LRRoomType_Communication;
-        self.isMusicPlay = NO;
-    }
-    return self;
-}
-
-- (instancetype)initWithDict:(NSDictionary *)aDict {
-    if (self = [super init]) {
-        self.roomType = aDict[@"type"] ?  [self typeFromStr:aDict[@"type"]] : LRRoomType_Communication;
-        self.talker = aDict[@"talker"] ?: @"";
-        self.isMusicPlay = aDict[@"music"] ? YES : NO;
-    }
-    return self;
-}
-
-- (NSString *)toJsonString {
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    [dic setObject:[self strFromType:self.roomType] forKey:@"type"];
-    [dic setObject:self.talker forKey:@"talker"];
-    if (self.isMusicPlay) {
-        [dic setObject:@"music" forKey:@"music"];
-    }
-    return [dic toJsonString];
-}
-
-
-- (NSString *)strFromType:(LRRoomType)aType {
-    NSString *str = @"communication";
-    switch (aType) {
-        case LRRoomType_Communication:
-            return @"communication";
-            break;
-        case LRRoomType_Host:
-            return @"host";
-            break;
-        case LRRoomType_Monopoly:
-            return @"monopoly";
-            break;
-        default:
-            break;
-    }
-    return str;
-}
-
-- (LRRoomType)typeFromStr:(NSString *)aStr {
-    if ([aStr isEqualToString:@"communication"]) {
-        return LRRoomType_Communication;
-    }
-    if ([aStr isEqualToString:@"host"]) {
-        return LRRoomType_Host;
-    }
-    if ([aStr isEqualToString:@"monopoly"]) {
-        return LRRoomType_Monopoly;
-    }
-    return LRRoomType_Communication;
 }
 
 
