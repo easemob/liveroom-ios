@@ -175,6 +175,7 @@
 // 设置用户为主播
 - (void)setupUserToSpeaker:(NSString *)aUsername {
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
+    [LRChatHelper.sharedInstance sendUserOnMicMsg:aUsername aChatroomId:_roomModel.roomId];
     [EMClient.sharedClient.conferenceManager
      changeMemberRoleWithConfId:self.conference.confId
      memberNames:@[applyUid] role:EMConferenceRoleSpeaker
@@ -186,7 +187,7 @@
 // 设置用户为听众
 - (void)setupUserToAudiance:(NSString *)aUsername {
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
-    
+    [LRChatHelper.sharedInstance sendUserOffMicMsg:aUsername aChatroomId:_roomModel.roomId];
     [EMClient.sharedClient.conferenceManager
      changeMemberRoleWithConfId:self.conference.confId
      memberNames:@[applyUid]

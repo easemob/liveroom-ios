@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-static NSString *lrOptions_Version = @"Appkey";
 static NSString *lrOptions_SpeakerNumber = @"SpeakerNumber";
 static NSString *lrOptions_AllowAudienceApplyInteract = @"AllowAudienceApplyInteract";
 static NSString *lrOptions_AudioQuality = @"AudioQuality";

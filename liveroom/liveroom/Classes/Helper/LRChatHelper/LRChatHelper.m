@@ -157,6 +157,20 @@
     [self sendMessageToChatroom:aChatroomId message:aMsg completion:aCompletion];
 }
 
+- (void)sendUserOnMicMsg:(NSString *)username
+          aChatroomId:(NSString *)aChatroomId {
+    [self sendMessageToChatroom:aChatroomId
+                        message:[NSString stringWithFormat:@"[@%@]上麦",username]
+                     completion:nil];
+}
+
+- (void)sendUserOffMicMsg:(NSString *)username
+           aChatroomId:(NSString *)aChatroomId {
+    [self sendMessageToChatroom:aChatroomId
+                        message:[NSString stringWithFormat:@"[@%@]下麦",username]
+                     completion:nil];
+}
+
 #pragma mark - EMChatManagerDelegate
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages {
     for (EMMessage *msg in aCmdMessages) {

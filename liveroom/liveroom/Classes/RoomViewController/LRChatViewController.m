@@ -45,7 +45,7 @@
     {
         [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp];
     }
-    if ([aMessage isEqualToString:@"like + 1"]) {
+    if ([aMessage isEqualToString:@"like +1"]) {
         [self animationImageName:@"like"];
     }
     
@@ -84,7 +84,7 @@
 }
 
 - (void)sendLike {
-    NSString *likeMsg = @"like + 1";
+    NSString *likeMsg = @"like +1";
     [self audioPlayerWithName:@"like" type:@"wav"];
     [self animationImageName:@"like"];
     [LRChatHelper.sharedInstance sendLikeToChatroom:self.roomModel.roomId
@@ -102,8 +102,8 @@
     NSString *giftMsg = @"send a gift";
     [self audioPlayerWithName:@"gift" type:@"wav"];
     [self animationImageName:@"giftcard"];
-    [LRChatHelper.sharedInstance sendLikeToChatroom:self.roomModel.roomId
-                                            likeMsg:giftMsg
+    [LRChatHelper.sharedInstance sendGiftToChatroom:self.roomModel.roomId
+                                            giftMsg:giftMsg
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
                                              
                                          }];

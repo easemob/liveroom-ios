@@ -53,7 +53,11 @@ NS_ASSUME_NONNULL_BEGIN
                     giftMsg:(NSString *)aMsg
                 completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
+- (void)sendUserOnMicMsg:(NSString *)username
+          aChatroomId:(NSString *)aChatroomId;
 
+- (void)sendUserOffMicMsg:(NSString *)username
+          aChatroomId:(NSString *)aChatroomId;
 
 @end
 

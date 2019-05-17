@@ -15,7 +15,6 @@ static LRRoomOptions *options = nil;
 {
     self = [super init];
     if (self) {
-        self.version = @"1.0";
         self.speakerNumber = 6;
         self.isAllowAudienceApplyInteract = YES;
         self.audioQuality = @"50";
@@ -51,7 +50,6 @@ static LRRoomOptions *options = nil;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init]) {
-        self.version = [aDecoder decodeObjectForKey:lrOptions_Version];
         self.speakerNumber = [aDecoder decodeIntForKey:lrOptions_SpeakerNumber];
         self.isAllowAudienceApplyInteract = [aDecoder decodeBoolForKey:lrOptions_AllowAudienceApplyInteract];
         self.audioQuality = [aDecoder decodeObjectForKey:lrOptions_AudioQuality];
@@ -61,10 +59,17 @@ static LRRoomOptions *options = nil;
     return self;
 }
 
+- (NSString *)version {
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    NSString *build = [infoDictionary objectForKey:@"CFBundleVersion"];
+    return [NSString stringWithFormat:@"%@(%@)",version, build];
+}
+
+
 // 归档
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.version forKey:lrOptions_Version];
     [aCoder encodeInt:self.speakerNumber forKey:lrOptions_SpeakerNumber];
     [aCoder encodeBool:self.isAllowAudienceApplyInteract forKey:lrOptions_AllowAudienceApplyInteract];
     [aCoder encodeObject:self.audioQuality forKey:lrOptions_AudioQuality];
