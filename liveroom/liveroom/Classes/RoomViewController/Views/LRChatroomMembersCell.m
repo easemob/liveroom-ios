@@ -37,45 +37,7 @@
 
 - (void)_setupSubviews
 {
-    UIView *topLine = [[UIView alloc] init];
-    topLine.backgroundColor = [UIColor grayColor];
-    [self.contentView addSubview:topLine];
-    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(0.5);
-        make.left.equalTo(self.contentView);
-        make.right.equalTo(self.contentView);
-        make.height.equalTo(@0.5);
-    }];
-    
-    UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = [UIColor grayColor];
-    [self.contentView addSubview:bottomLine];
-    [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.contentView);
-        make.left.equalTo(self.contentView);
-        make.right.equalTo(self.contentView);
-        make.height.equalTo(@0.5);
-    }];
-    
-    UIView *leftLine = [[UIView alloc] init];
-    leftLine.backgroundColor = [UIColor grayColor];
-    [self.contentView addSubview:leftLine];
-    [leftLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(0.25);
-        make.left.equalTo(self.contentView);
-        make.bottom.equalTo(self.contentView).offset(-0.25);
-        make.width.equalTo(@0.5);
-    }];
-    
-    UIView *rightLine = [[UIView alloc] init];
-    rightLine.backgroundColor = [UIColor grayColor];
-    [self.contentView addSubview:rightLine];
-    [rightLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
-        make.bottom.equalTo(self.contentView);
-        make.right.equalTo(self.contentView);
-        make.width.equalTo(@0.5);
-    }];
+    [self cellWithContentView:self StrokeWithColor:LRColor_LessBlackColor borderWidth:2];
     
     self.memberNameLabel = [[UILabel alloc] init];
     self.memberNameLabel.font = [UIFont systemFontOfSize:17.0];
@@ -88,7 +50,7 @@
     }];
     
     self.ownerIconImageView = [[UIImageView alloc] init];
-    self.ownerIconImageView.image = [UIImage imageNamed:@"crown"];
+    self.ownerIconImageView.image = [UIImage imageNamed:@"king"];
     [self.contentView addSubview:self.ownerIconImageView];
     [self.ownerIconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView.mas_centerY);
@@ -96,6 +58,28 @@
         make.width.equalTo(@13);
         make.height.equalTo(@12);
     }];
+    
+    self.exitMemberButton = [[UIButton alloc] init];
+    [self.exitMemberButton setTitle:@"踢出 exit" forState:UIControlStateNormal];
+    self.exitMemberButton.titleLabel.font = [UIFont systemFontOfSize:10];
+    self.exitMemberButton.layer.borderColor = LRColor_LessBlackColor.CGColor;
+    self.exitMemberButton.layer.borderWidth = 1;
+    [self.exitMemberButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [self.exitMemberButton addTarget:self action:@selector(exitMemberButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:self.exitMemberButton];
+    [self.exitMemberButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.right.equalTo(self.contentView).offset(-16);
+        make.width.equalTo(@50);
+        make.height.equalTo(@20);
+    }];
+}
+
+- (void)exitMemberButtonAction
+{
+    if ([self.delegate respondsToSelector:@selector(chatroomMembersExit:)]) {
+        [self.delegate chatroomMembersExit:_model];
+    }
 }
 
 - (void)setModel:(LRChatroomMembersModel *)model
@@ -108,8 +92,13 @@
         self.exitMemberButton.hidden = YES;
         self.ownerIconImageView.hidden = NO;
     } else {
-        self.exitMemberButton.hidden = NO;
-        self.ownerIconImageView.hidden = YES;
+        if ([[EMClient sharedClient].currentUsername isEqualToString:_model.ownerName]) {
+            self.exitMemberButton.hidden = NO;
+            self.ownerIconImageView.hidden = YES;
+        } else {
+            self.exitMemberButton.hidden = YES;
+            self.ownerIconImageView.hidden = YES;
+        }
     }
 }
 

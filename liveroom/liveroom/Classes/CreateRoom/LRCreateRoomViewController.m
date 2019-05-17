@@ -21,7 +21,8 @@
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UILabel *chatroomIDLabel;
 @property (nonatomic, strong) UILabel *passwordLabel;
-@property (nonatomic, strong) LRCreateBtn *speakerTypeButton;
+@property (nonatomic, strong) UIView *speakerTypeView;
+@property (nonatomic, strong) UILabel *speakerTypeTextLabel;
 @property (nonatomic, strong) UILabel *speakerTypeLabel;
 @property (nonatomic, strong) UIButton *submitButton;
 
@@ -67,7 +68,7 @@
     }];
     
     self.voiceChatroomIDTextField = [[UITextField alloc] init];
-    self.voiceChatroomIDTextField.placeholder = @"房间号 voiceChatroomID";
+    self.voiceChatroomIDTextField.placeholder = @"房间 name";
     [self.voiceChatroomIDTextField setupTextField];
     [self.voiceChatroomIDTextField strokeWithColor:LRStrokeLowBlack];
     [self.view addSubview:self.voiceChatroomIDTextField];
@@ -79,13 +80,13 @@
     }];
     
     self.chatroomIDLabel = [[UILabel alloc] init];
-    self.chatroomIDLabel.text = @"房间号必须由8位的字母、数字组成。Room number must consist of 8-digit letters and numbers.";
-    [self.chatroomIDLabel setTextColor:[UIColor whiteColor]];
+    self.chatroomIDLabel.text = @"房间号可以由字母、数字组成，不支持中文。Room numbers can be composed of letters and numbers, and Chinese is not supported.";
+    [self.chatroomIDLabel setTextColor:RGBACOLOR(255, 255, 255, 0.3)];
     self.chatroomIDLabel.numberOfLines = 2;
     self.chatroomIDLabel.font = [UIFont systemFontOfSize:10];
     [self.view addSubview:self.chatroomIDLabel];
     [self.chatroomIDLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.voiceChatroomIDTextField.mas_bottom);
+        make.top.equalTo(self.voiceChatroomIDTextField.mas_bottom).offset(4);
         make.left.equalTo(self.view).offset(kPadding);
         make.right.equalTo(self.view).offset(-kPadding);
     }];
@@ -103,42 +104,57 @@
     }];
     
     self.passwordLabel = [[UILabel alloc] init];
-    self.passwordLabel.text = @"密码最多不能超过16位。Passwords should not exceed 16 bits at most.";
-    [self.passwordLabel setTextColor:[UIColor whiteColor]];
+    self.passwordLabel.text = @"请输入密码不能为空。Please enter a password that cannot be empty.";
+    [self.passwordLabel setTextColor:RGBACOLOR(255, 255, 255, 0.3)];
     self.passwordLabel.numberOfLines = 2;
     self.passwordLabel.font = [UIFont systemFontOfSize:10];
     [self.view addSubview:self.passwordLabel];
     [self.passwordLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.passwordTextField.mas_bottom);
+        make.top.equalTo(self.passwordTextField.mas_bottom).offset(4);
         make.left.equalTo(self.view).offset(kPadding);
         make.right.equalTo(self.view).offset(-kPadding);
     }];
     
-    self.speakerTypeButton = [[LRCreateBtn alloc] init];
-    [self.speakerTypeButton setTitle:@"互动模式" forState:UIControlStateNormal];
-    [self.speakerTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.speakerTypeButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    self.speakerTypeButton.backgroundColor = LRColor_HeightBlackColor;
-    self.speakerTypeButton.titleRect = CGRectMake(15, 0, 185, 48);
-    self.speakerTypeButton.layer.borderColor = LRColor_LowBlackColor.CGColor;
-    self.speakerTypeButton.layer.borderWidth = 2.5;
-    [self.speakerTypeButton addTarget:self action:@selector(speakerTypeButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.speakerTypeButton];
-    [self.speakerTypeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.speakerTypeView = [[UIView alloc] init];
+    [self.speakerTypeView strokeWithColor:LRStrokeLowBlack];
+    self.speakerTypeView.backgroundColor = LRColor_HeightBlackColor;
+    self.speakerTypeView.userInteractionEnabled = YES;
+    [self.view addSubview:self.speakerTypeView];
+    [self.speakerTypeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.passwordLabel.mas_bottom).offset(12);
         make.left.equalTo(self.view).offset(kPadding);
         make.right.equalTo(self.view).offset(-kPadding);
         make.height.equalTo(@48);
     }];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(speakerTypeTap)];
+    [self.speakerTypeView addGestureRecognizer:tap];
+    
+    self.speakerTypeTextLabel = [[UILabel alloc] init];
+    self.speakerTypeTextLabel.text = @"互动模式";
+    self.speakerTypeTextLabel.font = [UIFont systemFontOfSize:17];
+    [self.speakerTypeTextLabel setTextColor:[UIColor whiteColor]];
+    [self.speakerTypeView addSubview:self.speakerTypeTextLabel];
+    [self.speakerTypeTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.speakerTypeView).offset(15);
+        make.centerY.equalTo(self.speakerTypeView);
+    }];
+    
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.image = [UIImage imageNamed:@"extend"];
+    [self.speakerTypeView addSubview:imageView];
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.speakerTypeView);
+        make.right.equalTo(self.speakerTypeView).offset(-15);
+    }];
     
     self.speakerTypeLabel = [[UILabel alloc] init];
     self.speakerTypeLabel.text = @"设置房间的玩法模式。Set up the play mode of the room.";
-    [self.speakerTypeLabel setTextColor:[UIColor whiteColor]];
+    [self.speakerTypeLabel setTextColor:RGBACOLOR(255, 255, 255, 0.3)];
     self.speakerTypeLabel.numberOfLines = 2;
     self.speakerTypeLabel.font = [UIFont systemFontOfSize:10];
     [self.view addSubview:self.speakerTypeLabel];
     [self.speakerTypeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.speakerTypeButton.mas_bottom);
+        make.top.equalTo(self.speakerTypeView.mas_bottom).offset(4);
         make.left.equalTo(self.view).offset(kPadding);
         make.right.equalTo(self.view).offset(-kPadding);
     }];
@@ -163,28 +179,29 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)speakerTypeButtonAction
+#pragma mark UITapGestureRecognizer
+- (void)speakerTypeTap
 {
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"互动模式下所有主播可以自由发言;\n抢麦模式下所有主播通过抢麦获得发言权;\n主持模式下管理员分配的主播获得发言权;\n"];
 
     LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"互动模式"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
                                           {
-                                              [self.speakerTypeButton setTitle:@"互动模式" forState:UIControlStateNormal];
+                                              self.speakerTypeTextLabel.text = @"互动模式";
                                               self->_type = LRRoomType_Communication;
                                           }];
     
     LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式"
                                                            callback:^(LRAlertController * _Nonnull alertController)
                                      {
-                                         [self.speakerTypeButton setTitle:@"抢麦模式" forState:UIControlStateNormal];
+                                         self.speakerTypeTextLabel.text = @"抢麦模式";
                                          self->_type = LRRoomType_Monopoly;
                                      }];
     
     LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
                                                        callback:^(LRAlertController * _Nonnull alertController)
                                  {
-                                     [self.speakerTypeButton setTitle:@"主持模式" forState:UIControlStateNormal];
+                                     self.speakerTypeTextLabel.text = @"主持模式";
                                      self->_type = LRRoomType_Host;
                                  }];
     

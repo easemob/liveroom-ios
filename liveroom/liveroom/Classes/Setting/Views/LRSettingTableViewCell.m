@@ -10,6 +10,7 @@
 @interface LRSettingTableViewCell ()
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *detailsLabel;
+@property (nonatomic, strong) UILabel *detailsTextLabel;
 @end
 @implementation LRSettingTableViewCell
 
@@ -37,9 +38,14 @@
     self.detailsLabel.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.detailsLabel];
     
-    [self.detailTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.detailsTextLabel = [[UILabel alloc] init];
+    [self.detailsTextLabel setTextColor:LRColor_LowBlackColor];
+    self.detailsTextLabel.font = [UIFont systemFontOfSize:14];
+    self.detailsTextLabel.backgroundColor = [UIColor clearColor];
+    [self.contentView addSubview:self.detailsTextLabel];
+    [self.detailsTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_centerY);
-        make.right.equalTo(self).offset(-36);
+        make.right.equalTo(self).offset(-16);
     }];
 }
 
@@ -55,6 +61,12 @@
     _details = details;
     _detailsLabel.text = _details;
     [self setNeedsLayout];
+}
+
+- (void)setDetailsText:(NSString *)detailsText
+{
+    _detailsText = detailsText;
+    _detailsTextLabel.text = _detailsText;
 }
 
 - (void)drawRect:(CGRect)rect

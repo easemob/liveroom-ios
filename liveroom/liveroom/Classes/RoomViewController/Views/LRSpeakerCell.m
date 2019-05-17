@@ -107,7 +107,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [self.crownImage mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.nameLabel);
         make.left.equalTo(self.nameLabel.mas_right).offset(5);
-        make.height.width.equalTo(@25);
+        make.width.equalTo(@13);
+        make.height.width.equalTo(@12);
     }];
     
     [self.volumeView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -142,7 +143,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
 - (void)updateSubViewUI {
     self.nameLabel.text = _model.username;
-    self.lightView.backgroundColor = _model.speakOn ? [UIColor yellowColor] : LRColor_MiddleBlackColor;
+    self.lightView.backgroundColor = _model.speakOn ? [UIColor greenColor] : LRColor_MiddleBlackColor;
     if (_model.isAdmin) {
         self.crownImage.hidden = NO;
     }else {
@@ -150,7 +151,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     }
     
     if (self.model.isMyself) {
-        [self.contentView strokeWithColor:LRStrokeLowBlack];
+        [self.contentView cellWithContentView:self.contentView StrokeWithColor:LRColor_LowBlackColor borderWidth:2];
     }
 }
 
@@ -169,7 +170,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         _lightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
         _lightView.layer.masksToBounds = YES;
         _lightView.layer.cornerRadius = 4;
-        _lightView.backgroundColor = [UIColor yellowColor];
+        _lightView.backgroundColor = [UIColor greenColor];
     }
     return _lightView;
 }
@@ -186,7 +187,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 - (UIImageView *)crownImage {
     if (!_crownImage) {
         _crownImage = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _crownImage.image = [UIImage imageNamed:@"crown"];
+        _crownImage.image = [UIImage imageNamed:@"king"];
     }
     return _crownImage;
 }
@@ -194,7 +195,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 - (LRVolumeView *)volumeView {
     if (!_volumeView) {
         _volumeView = [[LRVolumeView alloc] initWithFrame:CGRectZero];
-        _volumeView.backgroundColor = [UIColor blackColor];
         _volumeView.progress = 0.5;
     }
     return _volumeView;
@@ -498,7 +498,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
             make.left.equalTo(self.contentView.mas_left).offset(10);
-            make.width.equalTo(@60);
+            make.width.equalTo(@80);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
         
@@ -507,7 +507,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             [self.argumentBtn setTitleColor:LRColor_LessBlackColor forState:UIControlStateNormal];
             self.argumentBtn.enabled = YES;
         }else {
-            [self.argumentBtn strokeWithColor:LRStrokeLowBlack];
+            [self.argumentBtn disableStroke];
             [self.argumentBtn setTitleColor:LRColor_MiddleBlackColor forState:UIControlStateNormal];
             self.argumentBtn.enabled = NO;
         }
@@ -515,20 +515,20 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [self.unArgumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
             make.left.equalTo(self.argumentBtn.mas_right).offset(10);
-            make.width.equalTo(@60);
+            make.width.equalTo(@80);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
         
         if (self.model.unArgumentOn) {
-            [self.unArgumentBtn strokeWithColor:LRStrokeGreen];
+            [self.unArgumentBtn strokeWithColor:LRStrokeRed];
             [self.unArgumentBtn setTitleColor:LRColor_LessBlackColor forState:UIControlStateNormal];
             self.unArgumentBtn.enabled = YES;
         }else {
-            [self.unArgumentBtn strokeWithColor:LRStrokeLowBlack];
+            [self.unArgumentBtn disableStroke];
             [self.unArgumentBtn setTitleColor:LRColor_MiddleBlackColor forState:UIControlStateNormal];
             self.unArgumentBtn.enabled = NO;
         }
-        [self.contentView cellStrokeWithColor:LRColor_LowBlackColor borderWidth:2.0];
+        [self.contentView cellWithContentView:self.contentView StrokeWithColor:LRColor_LowBlackColor borderWidth:2];
         
     }else {
         [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -582,8 +582,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 - (UIButton *)argumentBtn {
     if (!_argumentBtn) {
         _argumentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_argumentBtn strokeWithColor:LRStrokeLowBlack];
         [_argumentBtn setTitle:@"抢麦" forState:UIControlStateNormal];
+        [_argumentBtn setBackgroundColor:[UIColor blackColor]];
         [_argumentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_argumentBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _argumentBtn.titleLabel.font = [UIFont systemFontOfSize:11];
@@ -596,8 +596,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 - (UIButton *)unArgumentBtn {
     if (!_unArgumentBtn) {
         _unArgumentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_unArgumentBtn strokeWithColor:LRStrokeLowBlack];
         [_unArgumentBtn setTitle:@"释放麦" forState:UIControlStateNormal];
+        [_unArgumentBtn setBackgroundColor:[UIColor blackColor]];
         [_unArgumentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_unArgumentBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _unArgumentBtn.titleLabel.font = [UIFont systemFontOfSize:11];

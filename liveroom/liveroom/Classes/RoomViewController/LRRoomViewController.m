@@ -25,7 +25,7 @@
 #define kHeaderViewHeight 45
 #define kInputViewHeight 64
 
-@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate, LRSpeakHelperDelegate> {
+@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate, LRSpeakHelperDelegate, EMChatroomManagerDelegate> {
     BOOL _chatJoined;
     BOOL _conferenceJoined;
     BOOL _chatLeave;
@@ -69,6 +69,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
     [self joinChatAndConferenceRoom];
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)regieterNotifiers {
@@ -194,11 +195,12 @@
         make.top.equalTo(self.headerView.mas_bottom).offset(5);
         make.left.equalTo(self.headerView);
         make.right.equalTo(self.headerView);
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 80));
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 140));
     }];
 
     [self.chatVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 90));
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 90 - 60));
+        make.top.equalTo(self.speakerVC.view.mas_bottom).offset(10);
         make.left.equalTo(self.speakerVC.view);
         make.right.equalTo(self.speakerVC.view);
         make.bottom.equalTo(self.inputBar.mas_top);
@@ -227,10 +229,10 @@
     if (_type == LRUserType_Admin) {
         NSString *imageName;
         if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
-            imageName = @"pause";
+            imageName = @"musicalpause";
             self.select = YES;
         } else {
-            imageName = @"play";
+            imageName = @"musicalplay";
             self.select = NO;
         }
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
@@ -239,42 +241,42 @@
                             action:@selector(musicPlayAction)]];
         
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"userList"]
+                            itemWithImage:[UIImage imageNamed:@"members"]
                             target:self
                             action:@selector(memberListAction)]];
         
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"share"]
+                            itemWithImage:[UIImage imageNamed:@"share-1"]
                             target:self
                             action:@selector(shareAction)]];
         
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"settings"]
+                            itemWithImage:[UIImage imageNamed:@"setting"]
                             target:self
                             action:@selector(settingsAction)]];
         
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"close"]
+                            itemWithImage:[UIImage imageNamed:@"closed"]
                             target:self
                             action:@selector(closeWindowAction)]];
     }else {
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"userList"]
+                            itemWithImage:[UIImage imageNamed:@"members"]
                             target:self
                             action:@selector(memberListAction)]];
         
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"share"]
+                            itemWithImage:[UIImage imageNamed:@"share-1"]
                             target:self
                             action:@selector(shareAction)]];
         
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"settings"]
+                            itemWithImage:[UIImage imageNamed:@"setting"]
                             target:self
                             action:@selector(settingsAction)]];
         
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
-                            itemWithImage:[UIImage imageNamed:@"close"]
+                            itemWithImage:[UIImage imageNamed:@"closed"]
                             target:self
                             action:@selector(closeWindowAction)]];
     }
@@ -358,9 +360,9 @@
     if (self.isOwner) {
         UIButton *button = [self.itemAry firstObject];
         if (self.select) {
-            [self musicPlayButton:button ImageName:@"play" select:NO setAudioPlay:NO];
+            [self musicPlayButton:button ImageName:@"musicalplay" select:NO setAudioPlay:NO];
         } else {
-            [self musicPlayButton:button ImageName:@"pause" select:YES setAudioPlay:YES];
+            [self musicPlayButton:button ImageName:@"musicalpause" select:YES setAudioPlay:YES];
         }
     }
 }
@@ -417,6 +419,26 @@
     [self.view endEditing:YES];
 }
 
+#pragma mark - EMChatroomManagerDelegate
+- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
+                        reason:(EMChatroomBeKickedReason)aReason
+{
+
+    [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
+    [LRChatHelper.sharedInstance leaveChatroomWithRoomId:self.roomModel.roomId completion:nil];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+//    LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"被房主移出聊天室"
+//                                                                               info:nil];
+//    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark - touchesBegan
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+
 #pragma mark - LRVoiceRoomTabbarDelgate
 - (void)inputViewHeightDidChanged:(CGFloat)aChangeHeight
                          duration:(CGFloat)aDuration
@@ -427,6 +449,9 @@
         [UIView animateWithDuration:aDuration animations:^{
             self.headerView.alpha = 0;
             self.speakerVC.view.alpha = 0;
+            [self.chatVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.headerView.mas_bottom).offset(50);
+            }];
         }];
     } else {
         [UIView animateWithDuration:aDuration animations:^{

@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LRChatroomMembersModel : NSObject
 
+@property (nonatomic, strong) NSString *ownerName;
 @property (nonatomic, strong) NSString *memberName;
 @property (nonatomic, assign) BOOL isOwner;
 

@@ -31,6 +31,7 @@
 }
 
 - (void)_setupSubviews {
+    
     _speakAnimationImages = @[@"voice1",@"voice2",@"voice3",@"voice4"];
     self.backgroundColor = [UIColor clearColor];
     _lightImageView = [[UIImageView alloc] init];
