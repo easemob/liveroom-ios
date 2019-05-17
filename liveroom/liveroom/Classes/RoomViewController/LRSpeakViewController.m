@@ -98,57 +98,46 @@ extern NSString * const DISCONNECT_EVENT_NAME;
                   streamId:(NSString *)aStreamId
                       mute:(BOOL)isMute
                      admin:(BOOL)isAdmin{
-    
-    LRSpeakerCellModel *nModel = nil;
-    for (LRSpeakerCellModel *model in self.dataAry) {
-        if ([model.username isEqualToString:@""]) {
-            nModel = model; // 取第一个空的cell赋值
-            break;
+    @synchronized (self.dataAry) {
+        LRSpeakerCellModel *nModel = nil;
+        for (LRSpeakerCellModel *model in self.dataAry) {
+            if ([model.username isEqualToString:@""]) {
+                nModel = model; // 取第一个空的cell赋值
+                break;
+            }
         }
+        if (nModel) {
+            nModel.username = aMember;
+            nModel.type = self.roomModel.roomType;
+            nModel.streamId = aStreamId;
+            nModel.isAdmin = isAdmin;
+            nModel.isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
+            nModel.isMyself = [aMember isEqualToString:kCurrentUsername];
+            nModel.speakOn = !isMute;
+            nModel.argumentOn = self.roomModel.roomType == LRRoomType_Monopoly ? YES : NO;
+            nModel.unArgumentOn = NO;
+        }
+        if (isAdmin) {
+            [self.dataAry replaceObjectAtIndex:0 withObject:nModel];
+        }
+        
     }
-    if (nModel) {
-        nModel.username = aMember;
-        nModel.type = self.roomModel.roomType;
-        nModel.streamId = aStreamId;
-        nModel.isAdmin = isAdmin;
-        nModel.isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
-        nModel.isMyself = [aMember isEqualToString:kCurrentUsername];
-        nModel.speakOn = !isMute;
-        nModel.argumentOn = self.roomModel.roomType == LRRoomType_Monopoly ? YES : NO;
-        nModel.unArgumentOn = NO;
-    }
-    if (isAdmin) {
-        [self.dataAry replaceObjectAtIndex:0 withObject:nModel];
-    }
-    
     [self.tableView reloadData];
 }
 
 // 删除speaker
 - (void)removeMemberFromDataAry:(NSString *)aMemeber {
     LRSpeakerCellModel *dModel = nil;
-    int i = 0;
-        for (LRSpeakerCellModel *model in self.dataAry) {
-            if ([model.username isEqualToString:aMemeber]) {
-                i ++;
-                dModel = model;
-                break;
-            }
+    for (LRSpeakerCellModel *model in self.dataAry) {
+        if ([model.username isEqualToString:aMemeber]) {
+            dModel = model;
+            break;
         }
-        
-        if (dModel) {
-            dModel.username = @"";
-            dModel.streamId = @"";
-            dModel.type = self.roomModel.roomType;
-            dModel.isAdmin = NO;
-            dModel.isMyself = NO;
-            dModel.isOwner = NO;
-            dModel.speakOn = NO;
-            dModel.argumentOn = self.roomModel.roomType == LRRoomType_Monopoly ? YES : NO;
-            dModel.unArgumentOn = NO;
-            
-            [self.dataAry replaceObjectAtIndex:i withObject:dModel];
-        }
+    }
+    if (dModel) {
+        [self.dataAry removeObject:dModel];
+        [self.dataAry addObject:[[LRSpeakerCellModel alloc] init]];
+    }
     [self.tableView reloadData];
 }
 
