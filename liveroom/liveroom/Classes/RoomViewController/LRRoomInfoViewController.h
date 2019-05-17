@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "LRRoomModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LRRoomInfoViewController : UIViewController
-@property (nonatomic, strong) NSString *roomID;
+@property (nonatomic, strong) LRRoomModel *model;
 @end
 
 NS_ASSUME_NONNULL_END

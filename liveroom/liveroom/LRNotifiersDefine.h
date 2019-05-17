@@ -32,4 +32,7 @@
 // account
 #define LR_Did_Login_Other_Device_Notification             @"didLoginOtherDevice"
 
+#define LR_Kicked_Out_Chatroom_Notification             @"KickedOutChatroom"
+#define LR_Back_Chatroom_Notification             @"ReturnChatroom"
+
 #endif /* LRNotifiersDefine_h */

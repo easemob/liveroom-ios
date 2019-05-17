@@ -60,6 +60,11 @@
     return self;
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[EMClient sharedClient].roomManager removeDelegate:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
@@ -102,6 +107,9 @@
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didLoginOtherDevice:)
                                                name:LR_Did_Login_Other_Device_Notification
+                                             object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(backChatroom:)
+                                               name:LR_Back_Chatroom_Notification
                                              object:nil];
 }
 
@@ -168,6 +176,10 @@
     if ([confId isEqualToString:self.roomModel.conferenceId]) {
         [self closeWindowAction];
     }
+}
+
+- (void)backChatroom:(NSNotification *)aNoti {
+    [self leaveChatroomAndKickedOutNotification];
 }
 
 #pragma mark - subviews
@@ -348,7 +360,7 @@
 
 - (void)memberListAction {
     LRRoomInfoViewController *membersVC = [[LRRoomInfoViewController alloc] init];
-    membersVC.roomID = self.roomModel.roomId;
+    membersVC.model = self.roomModel;
     [self presentViewController:membersVC animated:YES completion:^{
         
     }];
@@ -421,14 +433,17 @@
 - (void)didDismissFromChatroom:(EMChatroom *)aChatroom
                         reason:(EMChatroomBeKickedReason)aReason
 {
+    [self leaveChatroomAndKickedOutNotification];
+}
 
+- (void)leaveChatroomAndKickedOutNotification
+{
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [LRChatHelper.sharedInstance leaveChatroomWithRoomId:self.roomModel.roomId completion:nil];
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-//    LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"被房主移出聊天室"
-//                                                                               info:nil];
-//    [self presentViewController:alertController animated:YES completion:nil];
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Kicked_Out_Chatroom_Notification object:nil];
+    }];
 }
 
 #pragma mark - touchesBegan
