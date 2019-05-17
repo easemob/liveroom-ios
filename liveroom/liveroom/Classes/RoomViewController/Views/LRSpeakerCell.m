@@ -534,8 +534,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             [self.unArgumentBtn setTitleColor:LRColor_MiddleBlackColor forState:UIControlStateNormal];
             self.unArgumentBtn.enabled = NO;
         }
-        [self.contentView cellWithContentView:self.contentView StrokeWithColor:LRColor_LowBlackColor borderWidth:2];
-        
     }else {
         [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             

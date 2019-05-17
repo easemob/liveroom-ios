@@ -375,7 +375,10 @@
     }
 }
 
-- (void)musicPlayButton:(UIButton *)button ImageName:(NSString *)imageName select:(BOOL)isSelect setAudioPlay:(BOOL)isPlay
+- (void)musicPlayButton:(UIButton *)button
+              ImageName:(NSString *)imageName
+                 select:(BOOL)isSelect
+           setAudioPlay:(BOOL)isPlay
 {
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     self.select = isSelect;
