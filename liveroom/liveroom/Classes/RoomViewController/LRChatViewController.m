@@ -107,7 +107,7 @@
     self.animation.keyPath = @"transform.scale";
     self.animation.toValue = @0;
     // 设置动态执行次数 MAXFLOAT是无限次数
-    self.animation.repeatCount = 1;
+    self.animation.repeatCount = 0;
     // 设置动画执行时长
     self.animation.duration = 0.5;
     // 自动反转(怎么样去,怎么样回来)
@@ -165,12 +165,16 @@
 #pragma mark - CAAnimationDelegate
 - (void)animationDidStart:(CAAnimation *)anim
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:LR_LikeAndGift_Button_Action_Notification object:@NO];
     self.imageView.hidden = NO;
 }
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    self.imageView.hidden = YES;
+    if (flag) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_LikeAndGift_Button_Action_Notification object:@YES];
+        self.imageView.hidden = YES;
+    }
 }
 
 #pragma mark - subviews;
