@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LRRoomModel, LRConferenceAttr;
+@class LRRoomModel;
 @interface LRSpeakHelper : NSObject
 @property (nonatomic, strong) NSString *adminId;
 @property (nonatomic, strong) EMCallConference *conference;
@@ -82,19 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 // 播放音乐(只有群主可以操作)
 - (void)setAudioPlay:(BOOL)isPlay;
 
-// 一次性更新所有会议属性
-- (void)setConferenceAttr:(LRConferenceAttr *)aAttr;
 @end
 
-@interface LRConferenceAttr : NSObject
-@property (nonatomic, assign) BOOL isMusicPlay;
-@property (nonatomic, strong) NSString *talker;
-@property (nonatomic, assign) LRRoomType roomType;
-
-- (instancetype)initWithDict:(NSDictionary *)aDict;
-
-- (NSString *)toJsonString;
-
-@end
 
 NS_ASSUME_NONNULL_END

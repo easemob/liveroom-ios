@@ -41,7 +41,8 @@
                                 message:(NSString *)aMessage
                                fromUser:(NSString *)fromUser
                               timestamp:(long long)aTimestamp {
-    if ([aChatroomId isEqualToString:_roomModel.roomId]) {
+    if ([aChatroomId isEqualToString:_roomModel.roomId])
+    {
         [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp];
     }
     if ([aMessage isEqualToString:@"like + 1"]) {
@@ -51,6 +52,18 @@
     if ([aMessage isEqualToString:@"send a gift"]) {
         [self animationImageName:@"giftcard"];
     }
+}
+
+- (void)userDidJoin:(NSString *)aUsername {
+    [self addMessageToData:@"来了"
+                  fromUser:aUsername
+                 timestamp:[[NSDate new] timeIntervalSince1970]];
+}
+
+- (void)userDidLeave:(NSString *)aUsername {
+    [self addMessageToData:@"走了"
+                  fromUser:aUsername
+                 timestamp:[[NSDate new] timeIntervalSince1970]];
 }
 
 #pragma mark - public

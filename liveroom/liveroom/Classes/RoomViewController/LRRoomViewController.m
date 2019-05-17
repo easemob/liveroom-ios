@@ -330,17 +330,15 @@
             }
             
             if (self.isOwner) { // 群主自动上麦
+                [LRSpeakHelper.sharedInstance setupRoomType:self.roomModel.roomType];
                 [LRSpeakHelper.sharedInstance setupMySelfToSpeaker];
-                LRConferenceAttr *attr = [[LRConferenceAttr alloc] init];
-                attr.roomType = self.roomModel.roomType;
+                // 如果是主持模式，管理员直接持麦
                 if (self.roomModel.roomType == LRRoomType_Host) {
-                    attr.talker = kCurrentUsername;
+                    [LRSpeakHelper.sharedInstance setupSpeakerMicOn:kCurrentUsername];
                 }
                 if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
-                    attr.isMusicPlay = YES;
+                    [LRSpeakHelper.sharedInstance setAudioPlay:YES];
                 }
-                
-                [LRSpeakHelper.sharedInstance setConferenceAttr:attr];
             }
         });
     });
