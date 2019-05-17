@@ -14,7 +14,7 @@
 #import "LRChatroomMembersModel.h"
 
 #define kPadding 16
-@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate,UIGestureRecognizerDelegate,LRChatroomMembersCellDelegate>
+@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate,UIGestureRecognizerDelegate,LRChatroomMembersCellDelegate, EMChatroomManagerDelegate>
 
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -54,6 +54,7 @@
     [self autoReload];
     
     [self _setupSubviews];
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)autoReload {
@@ -65,7 +66,7 @@
 - (void)reloadPage {
     EMError *error;
     NSString *owner;
-    EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:self.roomID error:&error];
+    EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:self.model.roomId error:&error];
     if (!error) {
         [self.dataArray removeAllObjects];
         owner = chatroom.owner;
@@ -74,7 +75,7 @@
         [self.dataArray addObject:model];
     }
     
-     EMCursorResult *result = [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.roomID cursor:self.cursor pageSize:50 error:&error];
+     EMCursorResult *result = [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.model.roomId cursor:self.cursor pageSize:50 error:&error];
     if (!error) {
         NSArray *list = result.list;
         for (NSString *membersName in list) {
@@ -197,6 +198,15 @@
     return YES;
 }
 
+#pragma mark - EMChatroomManagerDelegate
+- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
+                        reason:(EMChatroomBeKickedReason)aReason
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Back_Chatroom_Notification object:nil];
+    }];
+}
+
 #pragma mark - TouchesBegan
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
@@ -297,14 +307,20 @@
 #pragma mark - LRChatroomMembersCellDelegate
 - (void)chatroomMembersExit:(LRChatroomMembersModel *)model
 {
-    [[EMClient sharedClient].roomManager removeMembers:@[model.memberName] fromChatroom:self.roomID completion:^(EMChatroom *aChatroom, EMError *aError) {
+    [[EMClient sharedClient].roomManager removeMembers:@[model.memberName] fromChatroom:self.model.roomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+        NSString *title = nil;
+        NSString *info = nil;
         if (!aError) {
-            NSLog(@"踢人成功----");
+            title = @"踢人成功";
             [self.dataArray removeObject:model];
             [self.tableView reloadData];
         } else {
-            NSLog(@"踢人失败----");
+            title = @"踢人失败";
+            info = aError.errorDescription;
         }
+        LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:title
+                                                                                   info:info];
+        [self presentViewController:alertController animated:YES completion:nil];
     }];
 }
 
@@ -365,6 +381,11 @@
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
+}
+
+- (void)dealloc
+{
+    [[EMClient sharedClient].roomManager removeDelegate:self];
 }
 
 @end

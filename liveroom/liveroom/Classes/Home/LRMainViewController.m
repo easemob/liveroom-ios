@@ -35,6 +35,8 @@
     [self _setupSubviews];
 
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(kickedOutChatroom:) name:LR_Kicked_Out_Chatroom_Notification object:nil];
+    
 }
 
 - (void)_setupSubviews
@@ -79,6 +81,12 @@
         LRRoomViewController *lrVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
         [self presentViewController:lrVC animated:YES completion:nil];
     }
+}
+
+- (void)kickedOutChatroom:(NSNotification *)aNoti {
+    LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"被房主移出聊天室"
+                                                                               info:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 // 被踢

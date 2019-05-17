@@ -9,7 +9,7 @@
 #import "LRRoomSettingViewController.h"
 
 #define kPadding 16
-@interface LRRoomSettingViewController ()
+@interface LRRoomSettingViewController () <EMChatroomManagerDelegate>
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *backGroundView;
@@ -22,6 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self _setupSubviews];
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)_setupSubviews
@@ -50,8 +51,6 @@
     }];
     
     self.backGroundView = [[UIView alloc] init];
-//    self.backGroundView.layer.borderWidth = 2;
-//    self.backGroundView.layer.borderColor = LRColor_LowBlackColor.CGColor;
     self.backGroundView.backgroundColor = LRColor_HeightBlackColor;
     [self.view addSubview:self.backGroundView];
     [self.backGroundView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -106,6 +105,20 @@
 - (void)closeButtonAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - EMChatroomManagerDelegate
+- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
+                        reason:(EMChatroomBeKickedReason)aReason
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Back_Chatroom_Notification object:nil];
+    }];
+}
+
+- (void)dealloc
+{
+    [[EMClient sharedClient].roomManager removeDelegate:self];
 }
 
 @end

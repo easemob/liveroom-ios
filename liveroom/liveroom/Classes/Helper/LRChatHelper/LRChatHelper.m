@@ -10,7 +10,7 @@
 #import "LRGCDMulticastDelegate.h"
 #import "Headers.h"
 
-@interface LRChatHelper () <EMChatManagerDelegate, EMChatroomManagerDelegate>
+@interface LRChatHelper () <EMChatManagerDelegate, EMChatroomManagerDelegate, EMClientDelegate>
 {
     LRGCDMulticastDelegate <LRChatHelperDelegate> *_delegates;
 }

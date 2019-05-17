@@ -245,8 +245,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.talkBtn.hidden = NO;
         [self.talkBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(self.contentView.mas_left).offset(10);
-            make.width.equalTo(@60);
+            make.left.equalTo(self.nameLabel.mas_left);
+            make.width.equalTo(@80);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
         
@@ -269,9 +269,12 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.disconnectBtn.hidden = NO;
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(talkBtnNeedShow ?
-                              self.talkBtn.mas_right : self.contentView.mas_left).offset(10);
-            make.width.equalTo(@60);
+            if (talkBtnNeedShow) {
+                make.left.equalTo(self.talkBtn.mas_right).offset(10);
+            } else {
+                make.left.equalTo(self.nameLabel.mas_left);
+            }
+            make.width.equalTo(@80);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
     }else {
@@ -348,7 +351,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.voiceEnableBtn.hidden = NO;
         [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(self.lightView);
+            make.left.equalTo(self.nameLabel.mas_left);
             make.width.equalTo(@100);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];
@@ -372,8 +375,11 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.disconnectBtn.hidden = NO;
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
-            make.left.equalTo(voiceEnableBtnNeedShow ?
-                              self.voiceEnableBtn.mas_right : self.contentView.mas_left).offset(10);
+            if (voiceEnableBtnNeedShow) {
+                make.left.equalTo(self.voiceEnableBtn.mas_right).offset(10);
+            } else {
+                make.left.equalTo(self.nameLabel.mas_left);
+            }
             make.width.equalTo(@60);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
         }];

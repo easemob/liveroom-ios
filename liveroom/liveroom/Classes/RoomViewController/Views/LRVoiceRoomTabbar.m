@@ -38,6 +38,10 @@
                                              selector:@selector(keyboardWillHidden:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(likeButtonAction:)
+                                               name:LR_LikeAndGift_Button_Action_Notification
+                                             object:nil];
     
 }
 
@@ -56,6 +60,17 @@
     CGFloat duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
     if (_delegate && [_delegate respondsToSelector:@selector(inputViewHeightDidChanged:duration:show:)]) {
         [_delegate inputViewHeightDidChanged:keyboardEndFrame.origin.y duration:duration show:NO];
+    }
+}
+
+- (void)likeButtonAction:(NSNotification *)aNoti {
+    BOOL isEnabled = [aNoti.object boolValue];;
+    if (isEnabled) {
+        self.likeBtn.userInteractionEnabled = YES;
+        self.giftBtn.userInteractionEnabled = YES;
+    } else {
+        self.likeBtn.userInteractionEnabled = NO;
+        self.giftBtn.userInteractionEnabled = NO;
     }
 }
 
