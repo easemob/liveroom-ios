@@ -41,7 +41,9 @@
 
 @property (nonatomic, strong) UIButton *applyOnSpeakBtn;
 @property (nonatomic, strong) NSMutableArray *itemAry;
-@property (nonatomic, assign) BOOL select;
+@property (nonatomic, assign) BOOL isSelect;
+@property (nonatomic, assign) BOOL isKickedOut;
+@property (nonatomic, strong) NSString *errorInfo;
 
 @end
 
@@ -60,8 +62,15 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [[EMClient sharedClient].roomManager removeDelegate:self];
 }
 
@@ -74,7 +83,6 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
     [self joinChatAndConferenceRoom];
-    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)regieterNotifiers {
@@ -211,11 +219,10 @@
     }];
 
     [self.chatVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 90 - 60));
-        make.top.equalTo(self.speakerVC.view.mas_bottom).offset(10);
         make.left.equalTo(self.speakerVC.view);
         make.right.equalTo(self.speakerVC.view);
         make.bottom.equalTo(self.inputBar.mas_top);
+        make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 90 - 60));
     }];
 
     [self.inputBar mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -242,10 +249,10 @@
         NSString *imageName;
         if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
             imageName = @"musicalpause";
-            self.select = YES;
+            self.isSelect = YES;
         } else {
             imageName = @"musicalplay";
-            self.select = NO;
+            self.isSelect = NO;
         }
         [self.itemAry addObject:[LRVoiceRoomHeaderItem
                             itemWithImageName:imageName
@@ -321,6 +328,7 @@
                                                    completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              self->_conferenceJoined = success;
+             self->_errorInfo = errorInfo;
              dispatch_semaphore_signal(semaphore);
          }];
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
@@ -367,7 +375,7 @@
 - (void)musicPlayAction{
     if (self.isOwner) {
         UIButton *button = [self.itemAry firstObject];
-        if (self.select) {
+        if (self.isSelect) {
             [self musicPlayButton:button ImageName:@"musicalplay" select:NO setAudioPlay:NO];
         } else {
             [self musicPlayButton:button ImageName:@"musicalpause" select:YES setAudioPlay:YES];
@@ -381,7 +389,7 @@
            setAudioPlay:(BOOL)isPlay
 {
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-    self.select = isSelect;
+    self.isSelect = isSelect;
     [[LRSpeakHelper sharedInstance] setAudioPlay:isPlay];
 }
 
@@ -390,7 +398,6 @@
     NSString *str = [NSString stringWithFormat:@"房间: %@\n房主: %@\n密码: %@\n下载地址: %@", self.roomModel.roomname, self.roomModel.owner, _password ,@"https://www.easemob.com"];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = str;
-    
     
     [self showTipsAlertWithTitle:@"内容已复制" info:@"已将房间信息复制到粘贴板，\n请您直接粘贴到要分享的软件中。"];
 }
@@ -423,7 +430,11 @@
     if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
         [EMClient.sharedClient.conferenceManager stopAudioMixing];
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        if ([self->_errorInfo isEqualToString:@"Password is illegal"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_Join_Conference_Password_Error_Notification object:nil];
+        }
+    }];
 }
 
 - (void)chatTapAction:(UITapGestureRecognizer *)tapGr {
@@ -434,6 +445,7 @@
 - (void)didDismissFromChatroom:(EMChatroom *)aChatroom
                         reason:(EMChatroomBeKickedReason)aReason
 {
+    self.isKickedOut = YES;
     [self leaveChatroomAndKickedOutNotification];
 }
 
@@ -447,12 +459,6 @@
     }];
 }
 
-#pragma mark - touchesBegan
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [self.view endEditing:YES];
-}
-
 #pragma mark - LRVoiceRoomTabbarDelgate
 - (void)inputViewHeightDidChanged:(CGFloat)aChangeHeight
                          duration:(CGFloat)aDuration
@@ -463,14 +469,17 @@
         [UIView animateWithDuration:aDuration animations:^{
             self.headerView.alpha = 0;
             self.speakerVC.view.alpha = 0;
-            [self.chatVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.headerView.mas_bottom).offset(50);
+            [self.chatVC.view mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 30));
             }];
         }];
     } else {
         [UIView animateWithDuration:aDuration animations:^{
             self.headerView.alpha = 1;
             self.speakerVC.view.alpha = 1;
+            [self.chatVC.view mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 90 - 60));
+            }];
         }];
     }
     
@@ -482,6 +491,7 @@
     }];
     
     [self.view layoutIfNeeded];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LR_ChatView_Tableview_Roll_Notification object:nil];
 }
 
 - (void)likeAction {

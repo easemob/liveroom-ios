@@ -37,6 +37,8 @@
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(kickedOutChatroom:) name:LR_Kicked_Out_Chatroom_Notification object:nil];
     
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(joinConferencePasswordError:) name:LR_Join_Conference_Password_Error_Notification object:nil];
+    
 }
 
 - (void)_setupSubviews
@@ -84,8 +86,14 @@
 }
 
 - (void)kickedOutChatroom:(NSNotification *)aNoti {
-    LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"被房主移出聊天室"
-                                                                               info:nil];
+    LRAlertController *alertController = [LRAlertController showTipsAlertWithTitle:@"提示"
+                                                                               info:@"您被房主移出房间"];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)joinConferencePasswordError:(NSNotification *)aNoti {
+    LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"错误 Error"
+                                                                               info:@"房间密码错误，请重新加入"];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 

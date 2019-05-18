@@ -19,9 +19,7 @@ typedef void(^LRAlertActionCallback)(LRAlertController *alertController);
 
 typedef void(^CloseBlock)(void);
 
-
 @interface LRAlertController : UIViewController
-
 @property (nonatomic, copy) CloseBlock closeBlock;
 @property (nonatomic, strong) UITextField *textField;
 
@@ -41,5 +39,6 @@ typedef void(^CloseBlock)(void);
 - (void)addAction:(LRAlertAction *)aAction;
 
 @end
+
 
 NS_ASSUME_NONNULL_END

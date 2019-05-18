@@ -34,6 +34,20 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self _setupSubViews];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(chatTableviewRoll:)
+                                                 name:LR_ChatView_Tableview_Roll_Notification
+                                               object:nil];
+}
+
+- (void)chatTableviewRoll:(NSNotification *)aNoti
+{
+    if (self.dataAry.count > 0) {
+        [self.tableView reloadData];
+        NSIndexPath *lastIndex = [NSIndexPath indexPathForRow:self.dataAry.count - 1 inSection:0];
+        [self.tableView scrollToRowAtIndexPath:lastIndex atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
 }
 
 #pragma mark - LRChatHelperDelegate
