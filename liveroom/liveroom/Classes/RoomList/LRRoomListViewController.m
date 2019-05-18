@@ -342,6 +342,9 @@
     alert.textField = pwdTextField;
     LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"观众加入" callback:^(LRAlertController * _Nonnull alertController) {
         if (alertController.textField.text.length == 0) {
+            LRAlertController *alertController = [LRAlertController showTipsAlertWithTitle:@"提示"
+                                                                                      info:@"请输入房间密码"];
+            [self presentViewController:alertController animated:YES completion:nil];
             return;
         }
         LRRoomViewController *vroomVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Audiance roomModel:aModel password:alertController.textField.text];

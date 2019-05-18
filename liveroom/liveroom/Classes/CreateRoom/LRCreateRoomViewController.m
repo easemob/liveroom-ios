@@ -221,6 +221,12 @@
         return;
     }
     
+    if (self.passwordTextField.text.length == 0) {
+        LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"请输入房间密码"];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    
     LRRoomOptions *options = [LRRoomOptions sharedOptions];
     id body = @{@"roomName":self.voiceChatroomIDTextField.text,
                 @"password":self.passwordTextField.text,
