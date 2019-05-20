@@ -26,6 +26,8 @@
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
 		90B4907F2284240400F2EBCC /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B4907E2284240400F2EBCC /* NSString+Category.m */; };
 		90B490852284340300F2EBCC /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B490842284340300F2EBCC /* NSDictionary+Category.m */; };
+		90D7752F2290010000120190 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90D7752E2290010000120190 /* Hyphenate.framework */; };
+		90D775302290010000120190 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 90D7752E2290010000120190 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
 		90F2C6752254C02B00A712B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6742254C02B00A712B8 /* Assets.xcassets */; };
 		90F2C6782254C02B00A712B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6762254C02B00A712B8 /* LaunchScreen.storyboard */; };
@@ -47,8 +49,6 @@
 		E00EE574228AD0B10043C235 /* gift.wav in Resources */ = {isa = PBXBuildFile; fileRef = E00EE572228AD0AF0043C235 /* gift.wav */; };
 		E00EE575228AD0B10043C235 /* like.wav in Resources */ = {isa = PBXBuildFile; fileRef = E00EE573228AD0B00043C235 /* like.wav */; };
 		E03ADD872275BFEA0030C4D6 /* LRRoomSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E03ADD862275BFEA0030C4D6 /* LRRoomSettingViewController.m */; };
-		E0448126228EC1B60035ED66 /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0448125228EC1B60035ED66 /* Hyphenate.framework */; };
-		E0448128228EC1C00035ED66 /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0448125228EC1B60035ED66 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C22259A77C00F9910C /* LRSearchBar.m */; };
 		E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C52259A77C00F9910C /* LRRealtimeSearch.m */; };
 		E04712CD2259B3F600F9910C /* LRSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712CB2259B3F600F9910C /* LRSettingTableViewCell.m */; };
@@ -85,7 +85,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E0448128228EC1C00035ED66 /* Hyphenate.framework in Embed Frameworks */,
+				90D775302290010000120190 /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +135,7 @@
 		90B490832284340300F2EBCC /* NSDictionary+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
 		90B490842284340300F2EBCC /* NSDictionary+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
 		90B490862286AC7A00F2EBCC /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		90D7752E2290010000120190 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hyphenate.framework; path = liveroom/Hyphenate.framework; sourceTree = "<group>"; };
 		90F2C6682254C02A00A712B8 /* liveroom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = liveroom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F2C6722254C02A00A712B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90F2C6742254C02B00A712B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -174,7 +175,6 @@
 		E00EE573228AD0B00043C235 /* like.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = like.wav; sourceTree = "<group>"; };
 		E03ADD852275BFEA0030C4D6 /* LRRoomSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomSettingViewController.h; sourceTree = "<group>"; };
 		E03ADD862275BFEA0030C4D6 /* LRRoomSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomSettingViewController.m; sourceTree = "<group>"; };
-		E0448125228EC1B60035ED66 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		E04712C22259A77C00F9910C /* LRSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSearchBar.m; sourceTree = "<group>"; };
 		E04712C32259A77C00F9910C /* LRRealtimeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRealtimeSearch.h; sourceTree = "<group>"; };
 		E04712C42259A77C00F9910C /* LRSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSearchBar.h; sourceTree = "<group>"; };
@@ -221,7 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
-				E0448126228EC1B60035ED66 /* Hyphenate.framework in Frameworks */,
+				90D7752F2290010000120190 /* Hyphenate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +321,7 @@
 		90F2C65F2254C02A00A712B8 = {
 			isa = PBXGroup;
 			children = (
+				90D7752E2290010000120190 /* Hyphenate.framework */,
 				90F2C66A2254C02A00A712B8 /* liveroom */,
 				90F2C6692254C02A00A712B8 /* Products */,
 				B9C7747847F2506381338B9D /* Pods */,
@@ -339,7 +340,6 @@
 		90F2C66A2254C02A00A712B8 /* liveroom */ = {
 			isa = PBXGroup;
 			children = (
-				E0448125228EC1B60035ED66 /* Hyphenate.framework */,
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
 				9080C4FB226D7B2100E1DCC5 /* LRTypes.h */,
 				90F2C6A32254C08600A712B8 /* Headers.h */,

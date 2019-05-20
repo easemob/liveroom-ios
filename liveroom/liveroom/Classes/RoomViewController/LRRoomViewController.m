@@ -312,8 +312,7 @@
     dispatch_queue_t queue = dispatch_queue_create("com.easemob.liveroom", DISPATCH_QUEUE_CONCURRENT);
     dispatch_group_async(group, queue, ^{
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        [LRChatHelper.sharedInstance joinChatroomWithRoomId:weakSelf.roomModel.roomId
-                                                 completion:^(NSString * _Nonnull errorInfo, BOOL success)
+        [LRChatHelper.sharedInstance joinChatroomWithCompletion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              self->_chatJoined = success;
              dispatch_semaphore_signal(semaphore);
@@ -323,7 +322,7 @@
     
     dispatch_group_async(group, queue, ^{
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        [LRSpeakHelper.sharedInstance joinSpeakRoomWithRoomId:weakSelf.roomModel.conferenceId
+        [LRSpeakHelper.sharedInstance joinSpeakRoomWithConferenceId:weakSelf.roomModel.conferenceId
                                                      password:weakSelf.password
                                                    completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
@@ -341,7 +340,7 @@
             }
             
             if (!self->_conferenceJoined) {
-                [LRChatHelper.sharedInstance leaveChatroomWithRoomId:weakSelf.roomModel.roomId completion:nil];
+                [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
             }
             
             if (!self->_conferenceJoined || !self->_chatJoined) {
@@ -376,8 +375,10 @@
     if (self.isOwner) {
         UIButton *button = [self.itemAry firstObject];
         if (self.isSelect) {
+            [LRChatHelper.sharedInstance sendMessageFromNoti:@"停止歌曲"];
             [self musicPlayButton:button ImageName:@"musicalplay" select:NO setAudioPlay:NO];
         } else {
+            [LRChatHelper.sharedInstance sendMessageFromNoti:@"开始歌曲"];
             [self musicPlayButton:button ImageName:@"musicalpause" select:YES setAudioPlay:YES];
         }
     }
@@ -426,7 +427,7 @@
     }
     
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
-    [LRChatHelper.sharedInstance leaveChatroomWithRoomId:self.roomModel.roomId completion:nil];
+    [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
     if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
         [EMClient.sharedClient.conferenceManager stopAudioMixing];
     }
@@ -452,7 +453,7 @@
 - (void)leaveChatroomAndKickedOutNotification
 {
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
-    [LRChatHelper.sharedInstance leaveChatroomWithRoomId:self.roomModel.roomId completion:nil];
+    [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
     
     [self dismissViewControllerAnimated:YES completion:^{
         [[NSNotificationCenter defaultCenter] postNotificationName:LR_Kicked_Out_Chatroom_Notification object:nil];
@@ -569,9 +570,9 @@
     return _inputBar;
 }
 
-- (void)dealloc
-{
-    LRSpeakHelper.sharedInstance.roomModel = nil;
-}
+//- (void)dealloc
+//{
+//    LRSpeakHelper.sharedInstance.roomModel = nil;
+//}
 
 @end

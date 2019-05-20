@@ -66,11 +66,11 @@
 }
 
 // 加入语音会议
-- (void)joinSpeakRoomWithRoomId:(NSString *)aRoomId
+- (void)joinSpeakRoomWithConferenceId:(NSString *)aConferenceId
                        password:(NSString *)aPassword
                      completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     __weak typeof(self) weakSelf = self;
-    [EMClient.sharedClient.conferenceManager joinConferenceWithConfId:aRoomId
+    [EMClient.sharedClient.conferenceManager joinConferenceWithConfId:aConferenceId
                                                              password:aPassword
                                                            completion:^(EMCallConference *aCall, EMError *aError)
      {
@@ -175,7 +175,7 @@
 // 设置用户为主播
 - (void)setupUserToSpeaker:(NSString *)aUsername {
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
-    [LRChatHelper.sharedInstance sendUserOnMicMsg:aUsername aChatroomId:_roomModel.roomId];
+    [LRChatHelper.sharedInstance sendUserOnMicMsg:aUsername];
     [EMClient.sharedClient.conferenceManager
      changeMemberRoleWithConfId:self.conference.confId
      memberNames:@[applyUid] role:EMConferenceRoleSpeaker
@@ -187,7 +187,7 @@
 // 设置用户为听众
 - (void)setupUserToAudiance:(NSString *)aUsername {
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
-    [LRChatHelper.sharedInstance sendUserOffMicMsg:aUsername aChatroomId:_roomModel.roomId];
+    [LRChatHelper.sharedInstance sendUserOffMicMsg:aUsername];
     [EMClient.sharedClient.conferenceManager
      changeMemberRoleWithConfId:self.conference.confId
      memberNames:@[applyUid]

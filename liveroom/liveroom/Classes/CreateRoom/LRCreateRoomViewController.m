@@ -227,6 +227,12 @@
         return;
     }
     
+    if (self.passwordTextField.text.length > 16) {
+        LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"密码最多16位"];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    
     LRRoomOptions *options = [LRRoomOptions sharedOptions];
     id body = @{@"roomName":self.voiceChatroomIDTextField.text,
                 @"password":self.passwordTextField.text,

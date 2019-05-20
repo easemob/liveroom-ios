@@ -15,13 +15,14 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
-@property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) CABasicAnimation *animation;
-
 
 @end
 
 @implementation LRChatViewController
+
+- (void)dealloc {
+    NSLog(@"LRChatViewController---------------%s",  __func__);
+}
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -34,10 +35,15 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self _setupSubViews];
-    
+    LRChatHelper.sharedInstance.roomModel = _roomModel;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(chatTableviewRoll:)
                                                  name:LR_ChatView_Tableview_Roll_Notification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sendMessageNoti:)
+                                                 name:LR_Send_Messages_Notification
                                                object:nil];
 }
 
@@ -57,7 +63,7 @@
                               timestamp:(long long)aTimestamp {
     if ([aChatroomId isEqualToString:_roomModel.roomId])
     {
-        [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp];
+        [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp / 1000];
     }
     if ([aMessage isEqualToString:@"like +1"]) {
         [self animationImageName:@"like"];
@@ -68,16 +74,11 @@
     }
 }
 
-- (void)userDidJoin:(NSString *)aUsername {
-    [self addMessageToData:@"来了"
-                  fromUser:aUsername
-                 timestamp:[[NSDate new] timeIntervalSince1970]];
-}
 
-- (void)userDidLeave:(NSString *)aUsername {
-    [self addMessageToData:@"走了"
-                  fromUser:aUsername
-                 timestamp:[[NSDate new] timeIntervalSince1970]];
+#pragma mark - notification
+- (void)sendMessageNoti:(NSNotification *)aNoti {
+    NSString *text = aNoti.object;
+    [self sendText:text];
 }
 
 #pragma mark - public
@@ -85,9 +86,8 @@
     if (!aText || aText.length == 0) {
         return;
     }
-    [LRChatHelper.sharedInstance sendMessageToChatroom:self.roomModel.roomId
-                                               message:aText
-                                            completion:^(NSString * _Nonnull errorInfo, BOOL success)
+    [LRChatHelper.sharedInstance sendMessage:aText
+                                  completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {
          // 此处没有处理发送失败的情况，不论发送是否成功，均上屏;
      }];
@@ -101,8 +101,7 @@
     NSString *likeMsg = @"like +1";
     [self audioPlayerWithName:@"like" type:@"wav"];
     [self animationImageName:@"like"];
-    [LRChatHelper.sharedInstance sendLikeToChatroom:self.roomModel.roomId
-                                            likeMsg:likeMsg
+    [LRChatHelper.sharedInstance sendLikeMessage:likeMsg
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
         
     }];
@@ -116,8 +115,8 @@
     NSString *giftMsg = @"send a gift";
     [self audioPlayerWithName:@"gift" type:@"wav"];
     [self animationImageName:@"giftcard"];
-    [LRChatHelper.sharedInstance sendGiftToChatroom:self.roomModel.roomId
-                                            giftMsg:giftMsg
+    
+    [LRChatHelper.sharedInstance sendGiftMessage:giftMsg
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
                                              
                                          }];
@@ -129,17 +128,28 @@
 
 - (void)animationImageName:(NSString *)imageName
 {
-    self.imageView.image = [UIImage imageNamed:imageName];
-    // 设置属性
-    self.animation.keyPath = @"transform.scale";
-    self.animation.toValue = @0;
-    // 设置动态执行次数 MAXFLOAT是无限次数
-    self.animation.repeatCount = 0;
-    // 设置动画执行时长
-    self.animation.duration = 0.5;
-    // 自动反转(怎么样去,怎么样回来)
-    self.animation.autoreverses = YES;
-    [self.imageView.layer addAnimation:self.animation forKey:nil];
+    UIView * view = [self.view.superview viewWithTag:99999];
+    if (view) {
+        [view removeFromSuperview];
+    }
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
+    imageView.tag = 99999;
+    imageView.alpha = 0.05;
+    [self.view.superview addSubview:imageView];
+
+    imageView.frame = CGRectMake(0, 0, 90, 90);
+    imageView.center = self.view.superview.center;
+    [UIView animateWithDuration:0.3 animations:^{
+        imageView.alpha = 0.9;
+        imageView.frame = CGRectInset(imageView.frame, 10, 10);
+    } completion:^(BOOL finished) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (imageView) {
+                [imageView removeFromSuperview];
+            }
+        });
+    }];
 }
 
 - (void)audioPlayerWithName:(NSString *)audioName type:(NSString *)type
@@ -217,9 +227,6 @@
         make.right.equalTo(self.view).offset(-20);
         make.width.height.equalTo(@30);
     }];
-    
-    self.animation = [CABasicAnimation animation];
-    self.animation.delegate = self;
 }
 
 #pragma mark - getter
@@ -235,15 +242,6 @@
         _tableView.dataSource = self;
     }
     return _tableView;
-}
-
-- (UIImageView *)imageView
-{
-    if (!_imageView) {
-        _imageView = [[UIImageView alloc] init];
-        _imageView.hidden = YES;
-    }
-    return _imageView;
 }
 
 - (NSMutableArray *)dataAry {

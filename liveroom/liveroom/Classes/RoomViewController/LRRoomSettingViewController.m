@@ -76,11 +76,11 @@
     
     NSString *roomType = nil;
     if (_model.roomType == LRRoomType_Communication) {
-        roomType = @"communication";
+        roomType = @"互动模式";
     } else if (_model.roomType == LRRoomType_Host) {
-        roomType = @"host";
+        roomType = @"主持模式";
     } else {
-        roomType = @"monopoly";
+        roomType = @"抢麦模式";
     }
     NSString *allowAudienceOnSpeaker = _model.allowAudienceOnSpeaker? @"true" : @"false";
     NSString *info = [NSString stringWithFormat:@"房间id：%@\n密码password：%@\n聊天室chatroomid：%@\n会议confrenceid：%@\n音质模式voicequality：%@\n互动主播speakerlimited：%d\n房间人数memberlimited：%d\n创建时间createtime：%@\n允许观众申请上麦applyAllow：%@\n互动模式type：%@",_model.roomId,_rommPassword,_model.roomId,_model.conferenceId,@"highlevel",_speakerLimited,_model.maxCount,_model.createTime,allowAudienceOnSpeaker,roomType];
