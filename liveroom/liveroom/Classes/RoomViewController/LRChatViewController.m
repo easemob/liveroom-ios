@@ -20,10 +20,6 @@
 
 @implementation LRChatViewController
 
-- (void)dealloc {
-    NSLog(@"LRChatViewController---------------%s",  __func__);
-}
-
 - (instancetype)init {
     if (self = [super init]) {
         [LRChatHelper.sharedInstance addDeelgate:self delegateQueue:nil];
