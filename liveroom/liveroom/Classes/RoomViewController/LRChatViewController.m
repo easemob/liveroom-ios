@@ -131,18 +131,25 @@
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     imageView.tag = 99999;
-    imageView.alpha = 0.05;
+    imageView.alpha = 0.5;
     [self.view.superview addSubview:imageView];
 
     imageView.frame = CGRectMake(0, 0, 90, 90);
     imageView.center = self.view.superview.center;
     [UIView animateWithDuration:0.3 animations:^{
         imageView.alpha = 0.9;
-        imageView.frame = CGRectInset(imageView.frame, 10, 10);
+        imageView.frame = CGRectInset(imageView.frame, 20, 20);
     } completion:^(BOOL finished) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (imageView) {
-                [imageView removeFromSuperview];
+                [UIView animateWithDuration:0.3 animations:^{
+                    imageView.alpha = 0.1;
+                    imageView.frame = CGRectInset(imageView.frame, 25, 25);
+                } completion:^(BOOL finished) {
+                    if (imageView) {
+                        [imageView removeFromSuperview];
+                    }
+                }];
             }
         });
     }];
