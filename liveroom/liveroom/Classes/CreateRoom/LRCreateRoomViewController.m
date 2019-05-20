@@ -130,7 +130,7 @@
     [self.speakerTypeView addGestureRecognizer:tap];
     
     self.speakerTypeTextLabel = [[UILabel alloc] init];
-    self.speakerTypeTextLabel.text = @"互动模式";
+    self.speakerTypeTextLabel.text = @"自由麦模式";
     self.speakerTypeTextLabel.font = [UIFont systemFontOfSize:17];
     [self.speakerTypeTextLabel setTextColor:[UIColor whiteColor]];
     [self.speakerTypeView addSubview:self.speakerTypeTextLabel];
@@ -182,12 +182,12 @@
 #pragma mark UITapGestureRecognizer
 - (void)speakerTypeTap
 {
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"互动模式下所有主播可以自由发言;\n抢麦模式下所有主播通过抢麦获得发言权;\n主持模式下管理员分配的主播获得发言权;\n"];
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"自由麦模式下所有主播可以自由发言;\n抢麦模式下所有主播通过抢麦获得发言权;\n主持模式下管理员分配的主播获得发言权;\n"];
 
-    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"互动模式"
+    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
                                           {
-                                              self.speakerTypeTextLabel.text = @"互动模式";
+                                              self.speakerTypeTextLabel.text = @"自由麦模式";
                                               self->_type = LRRoomType_Communication;
                                           }];
     

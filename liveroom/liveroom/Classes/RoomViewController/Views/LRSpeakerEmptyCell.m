@@ -57,9 +57,9 @@
 - (UILabel *)infoLabel {
     if (!_infoLabel) {
         _infoLabel = [[UILabel alloc] init];
-        _infoLabel.textColor = [UIColor whiteColor];
+        _infoLabel.textColor = LRColor_MiddleBlackColor;
         _infoLabel.font = [UIFont boldSystemFontOfSize:19];
-        _infoLabel.text = @"已下线";
+        _infoLabel.text = @"disconnect";
     }
     return _infoLabel;
 }

@@ -60,6 +60,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define kRequestConferenceId  @"em_conference_id"
 
 
+// ExtMsg
+#define kMessageGift      @"send a gift."
+#define kMessageFavourite @"like +1."
+
 // define
 #define LRLog(x)  DDLogInfo(x);
 

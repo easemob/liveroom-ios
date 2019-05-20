@@ -92,16 +92,16 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 
     
     [self.lightView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView).offset(10);
+        make.left.equalTo(self.contentView).offset(12);
         make.centerY.equalTo(self.nameLabel);
         make.right.equalTo(self.nameLabel.mas_left).offset(-5);
         make.width.height.equalTo(@8);
     }];
     
     [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(10);
+        make.top.equalTo(self.contentView).offset(8);
         make.right.lessThanOrEqualTo(self.volumeView.mas_left).offset(-32);
-        make.bottom.equalTo(self.lineView.mas_top).offset(-10).priorityLow();
+        make.bottom.equalTo(self.lineView.mas_top).offset(-8).priorityLow();
     }];
     
     [self.crownImage mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -131,10 +131,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 {
     NSArray *array = notification.object;
     if (array.count != 0) {
-        for (NSString *streamId in array) {
-            if ([streamId isEqualToString:self.model.streamId]) {
-                [self.volumeView setProgress:1];
-            }
+        if ([array containsObject:self.model.streamId]) {
+            [self.volumeView setProgress:1];
         }
     } else {
         [self.volumeView setProgress:0];
@@ -244,10 +242,10 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     if (talkBtnNeedShow) {
         self.talkBtn.hidden = NO;
         [self.talkBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
             make.left.equalTo(self.nameLabel.mas_left);
             make.width.equalTo(@80);
-            make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+            make.bottom.equalTo(self.lineView.mas_top).offset(-3);
         }];
         
         if (self.model.talkOn) {
@@ -358,9 +356,9 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         
         
         if (self.model.speakOn) {
-            [self.voiceEnableBtn strokeWithColor:LRStrokeGreen];
-        }else {
             [self.voiceEnableBtn strokeWithColor:LRStrokeLowBlack];
+        }else {
+            [self.voiceEnableBtn strokeWithColor:LRStrokeGreen];
         }
     }else {
         [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -413,6 +411,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [_voiceEnableBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_voiceEnableBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _voiceEnableBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        _voiceEnableBtn.backgroundColor = LRColor_PureBlackColor;
         [_voiceEnableBtn addTarget:self action:@selector(voiceEnableAction:)
                   forControlEvents:UIControlEventTouchUpInside];
     }
@@ -591,6 +590,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [_argumentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_argumentBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _argumentBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        _argumentBtn.backgroundColor = [UIColor blackColor];
         [_argumentBtn addTarget:self action:@selector(argumentAction:)
                forControlEvents:UIControlEventTouchUpInside];
     }
@@ -605,6 +605,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [_unArgumentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_unArgumentBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _unArgumentBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        _unArgumentBtn.backgroundColor = [UIColor blackColor];
         [_unArgumentBtn addTarget:self action:@selector(unArgumentAction:)
                  forControlEvents:UIControlEventTouchUpInside];
     }
@@ -620,6 +621,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [_disconnectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_disconnectBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _disconnectBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        _disconnectBtn.backgroundColor = [UIColor blackColor];
         [_disconnectBtn addTarget:self action:@selector(disconnectAction:)
                  forControlEvents:UIControlEventTouchUpInside];
     }
