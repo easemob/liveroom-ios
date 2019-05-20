@@ -266,6 +266,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     if (!isMySelf) {
         [LRSpeakHelper.sharedInstance muteMyself:YES];
     }else {
+        [LRChatHelper.sharedInstance sendMessageFromNoti:@"抢麦成功"];
         [LRSpeakHelper.sharedInstance muteMyself:NO];
     }
     
