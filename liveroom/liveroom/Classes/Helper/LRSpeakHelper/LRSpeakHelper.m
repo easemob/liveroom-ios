@@ -345,10 +345,11 @@
 
 - (void)setAudioPlay:(BOOL)isPlay {
     // 设置会议属性
-    NSString *music = isPlay ? @"music" : @"";
-    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"music" value:music completion:^(EMError *aError) {
-        
-    }];
+    if (isPlay) {
+        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"music" value:@"music.mpy" completion:nil];
+    }else {
+        [EMClient.sharedClient.conferenceManager deleteAttributeWithKey:@"music" completion:nil];
+    }
 }
 
 #pragma mark - Monopoly Timer
@@ -504,7 +505,7 @@
         }
         
         if ([attr.key isEqualToString:@"music"]) {
-            isPlay = attr.value && attr.value.length > 0;
+            isPlay = attr.action == EMConferenceAttributeAdd ? YES : NO;
         }
     }
     
