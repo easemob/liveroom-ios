@@ -199,33 +199,11 @@
     return cell;
 }
 
-#pragma mark - CAAnimationDelegate
-- (void)animationDidStart:(CAAnimation *)anim
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:LR_LikeAndGift_Button_Action_Notification object:@NO];
-    self.imageView.hidden = NO;
-}
-
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
-{
-    if (flag) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:LR_LikeAndGift_Button_Action_Notification object:@YES];
-        self.imageView.hidden = YES;
-    }
-}
-
 #pragma mark - subviews;
 - (void)_setupSubViews {
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.left.top.bottom.equalTo(self.view);
-    }];
-    
-    [self.view addSubview:self.imageView];
-    [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(20);
-        make.right.equalTo(self.view).offset(-20);
-        make.width.height.equalTo(@30);
     }];
 }
 
