@@ -15,13 +15,14 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
-@property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, weak) CABasicAnimation *animation;
-
 
 @end
 
 @implementation LRChatViewController
+
+- (void)dealloc {
+    NSLog(@"LRChatViewController---------------%s",  __func__);
+}
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -127,17 +128,28 @@
 
 - (void)animationImageName:(NSString *)imageName
 {
-    self.imageView.image = [UIImage imageNamed:imageName];
-    // 设置属性
-    self.animation.keyPath = @"transform.scale";
-    self.animation.toValue = @0;
-    // 设置动态执行次数 MAXFLOAT是无限次数
-    self.animation.repeatCount = 0;
-    // 设置动画执行时长
-    self.animation.duration = 0.5;
-    // 自动反转(怎么样去,怎么样回来)
-    self.animation.autoreverses = YES;
-    [self.imageView.layer addAnimation:self.animation forKey:nil];
+    UIView * view = [self.view.superview viewWithTag:99999];
+    if (view) {
+        [view removeFromSuperview];
+    }
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
+    imageView.tag = 99999;
+    imageView.alpha = 0.05;
+    [self.view.superview addSubview:imageView];
+
+    imageView.frame = CGRectMake(0, 0, 90, 90);
+    imageView.center = self.view.superview.center;
+    [UIView animateWithDuration:0.3 animations:^{
+        imageView.alpha = 0.9;
+        imageView.frame = CGRectInset(imageView.frame, 10, 10);
+    } completion:^(BOOL finished) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (imageView) {
+                [imageView removeFromSuperview];
+            }
+        });
+    }];
 }
 
 - (void)audioPlayerWithName:(NSString *)audioName type:(NSString *)type
@@ -215,9 +227,6 @@
         make.right.equalTo(self.view).offset(-20);
         make.width.height.equalTo(@30);
     }];
-    
-    self.animation = [CABasicAnimation animation];
-    self.animation.delegate = self;
 }
 
 #pragma mark - getter
@@ -233,15 +242,6 @@
         _tableView.dataSource = self;
     }
     return _tableView;
-}
-
-- (UIImageView *)imageView
-{
-    if (!_imageView) {
-        _imageView = [[UIImageView alloc] init];
-        _imageView.hidden = YES;
-    }
-    return _imageView;
 }
 
 - (NSMutableArray *)dataAry {
