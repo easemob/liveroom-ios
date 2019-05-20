@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LRSpeakHelper : NSObject
 @property (nonatomic, strong) NSString *adminId;
 @property (nonatomic, strong) EMCallConference *conference;
-@property (nonatomic, strong) LRRoomModel * _Nullable roomModel;
+@property (nonatomic, weak) LRRoomModel * _Nullable roomModel;
 + (LRSpeakHelper *)sharedInstance;
 
 - (void)addDeelgate:(id<LRSpeakHelperDelegate>)aDelegate delegateQueue:(dispatch_queue_t _Nullable)aQueue;
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeDelegate:(id<LRSpeakHelperDelegate>)aDelegate;
 
 // 加入语音会议
-- (void)joinSpeakRoomWithRoomId:(NSString *)aRoomId
+- (void)joinSpeakRoomWithConferenceId:(NSString *)aRoomId
                        password:(NSString *)aPassword
                      completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 

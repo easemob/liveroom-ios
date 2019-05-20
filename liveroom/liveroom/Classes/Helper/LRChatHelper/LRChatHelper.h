@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "LRChatHelperDelegate.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
+@class LRRoomModel;
 @interface LRChatHelper : NSObject
 
 @property (nonatomic, readonly) BOOL isLoggedIn;
 @property (nonatomic, strong, readonly) NSString *currentUser;
+@property (nonatomic, weak) LRRoomModel * _Nullable roomModel;
 
 + (LRChatHelper *)sharedInstance;
 - (EMOptions *)registerImSDK;
@@ -33,31 +34,25 @@ NS_ASSUME_NONNULL_BEGIN
                        completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
 
 #pragma mark - chatroom
-- (void)joinChatroomWithRoomId:(NSString *)aChatroomId
-                    completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
+- (void)joinChatroomWithCompletion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
-- (void)leaveChatroomWithRoomId:(NSString *)aChatroomId
-                     completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
+- (void)leaveChatroomWithCompletion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 #pragma mark - message
-- (void)sendMessageToChatroom:(NSString *)aChatroomId
-                      message:(NSString *)aMessage
+- (void)sendMessage:(NSString *)aMessage
          completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
+- (void)sendLikeMessage:(NSString *)aMessage
+                    completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
-- (void)sendLikeToChatroom:(NSString *)aChatroomId
-                   likeMsg:(NSString *)aMsg
+- (void)sendGiftMessage:(NSString *)aMessage
                 completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
-- (void)sendGiftToChatroom:(NSString *)aChatroomId
-                    giftMsg:(NSString *)aMsg
-                completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
+- (void)sendMessageFromNoti:(NSString *)aMsg;
 
-- (void)sendUserOnMicMsg:(NSString *)username
-          aChatroomId:(NSString *)aChatroomId;
+- (void)sendUserOnMicMsg:(NSString *)username;
 
-- (void)sendUserOffMicMsg:(NSString *)username
-          aChatroomId:(NSString *)aChatroomId;
+- (void)sendUserOffMicMsg:(NSString *)username;
 
 @end
 

@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) CABasicAnimation *animation;
+@property (nonatomic, weak) CABasicAnimation *animation;
 
 
 @end
@@ -34,10 +34,15 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     [self _setupSubViews];
-    
+    LRChatHelper.sharedInstance.roomModel = _roomModel;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(chatTableviewRoll:)
                                                  name:LR_ChatView_Tableview_Roll_Notification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sendMessageNoti:)
+                                                 name:LR_Send_Messages_Notification
                                                object:nil];
 }
 
@@ -57,7 +62,7 @@
                               timestamp:(long long)aTimestamp {
     if ([aChatroomId isEqualToString:_roomModel.roomId])
     {
-        [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp];
+        [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp / 1000];
     }
     if ([aMessage isEqualToString:@"like +1"]) {
         [self animationImageName:@"like"];
@@ -68,16 +73,11 @@
     }
 }
 
-- (void)userDidJoin:(NSString *)aUsername {
-    [self addMessageToData:@"来了"
-                  fromUser:aUsername
-                 timestamp:[[NSDate new] timeIntervalSince1970]];
-}
 
-- (void)userDidLeave:(NSString *)aUsername {
-    [self addMessageToData:@"走了"
-                  fromUser:aUsername
-                 timestamp:[[NSDate new] timeIntervalSince1970]];
+#pragma mark - notification
+- (void)sendMessageNoti:(NSNotification *)aNoti {
+    NSString *text = aNoti.object;
+    [self sendText:text];
 }
 
 #pragma mark - public
@@ -85,9 +85,8 @@
     if (!aText || aText.length == 0) {
         return;
     }
-    [LRChatHelper.sharedInstance sendMessageToChatroom:self.roomModel.roomId
-                                               message:aText
-                                            completion:^(NSString * _Nonnull errorInfo, BOOL success)
+    [LRChatHelper.sharedInstance sendMessage:aText
+                                  completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {
          // 此处没有处理发送失败的情况，不论发送是否成功，均上屏;
      }];
@@ -101,8 +100,7 @@
     NSString *likeMsg = @"like +1";
     [self audioPlayerWithName:@"like" type:@"wav"];
     [self animationImageName:@"like"];
-    [LRChatHelper.sharedInstance sendLikeToChatroom:self.roomModel.roomId
-                                            likeMsg:likeMsg
+    [LRChatHelper.sharedInstance sendLikeMessage:likeMsg
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
         
     }];
@@ -116,8 +114,8 @@
     NSString *giftMsg = @"send a gift";
     [self audioPlayerWithName:@"gift" type:@"wav"];
     [self animationImageName:@"giftcard"];
-    [LRChatHelper.sharedInstance sendGiftToChatroom:self.roomModel.roomId
-                                            giftMsg:giftMsg
+    
+    [LRChatHelper.sharedInstance sendGiftMessage:giftMsg
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
                                              
                                          }];

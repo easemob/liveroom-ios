@@ -9,6 +9,7 @@
 #import "LRChatHelper.h"
 #import "LRGCDMulticastDelegate.h"
 #import "Headers.h"
+#import "LRRoomModel.h"
 
 @interface LRChatHelper () <EMChatManagerDelegate, EMChatroomManagerDelegate, EMClientDelegate>
 {
@@ -102,20 +103,22 @@
      }];
 }
 #pragma mark - chatroom
-- (void)joinChatroomWithRoomId:(NSString *)aChatroomId
-                    completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
-    [EMClient.sharedClient.roomManager joinChatroom:aChatroomId
+- (void)joinChatroomWithCompletion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    [EMClient.sharedClient.roomManager joinChatroom:_roomModel.roomId
                                          completion:^(EMChatroom *aChatroom, EMError *aError)
      {
          if (aCompletion) {
+             if (!aError) {
+                 [self sendMessageFromNoti:@"我来了"];
+             }
              aCompletion(aError.errorDescription, !aError);
          }
      }];
 }
 
-- (void)leaveChatroomWithRoomId:(NSString *)aChatroomId
-                     completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
-    [EMClient.sharedClient.roomManager leaveChatroom:aChatroomId
+- (void)leaveChatroomWithCompletion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+    [self sendMessageFromNoti:@"我走了"];
+    [EMClient.sharedClient.roomManager leaveChatroom:_roomModel.roomId
                                           completion:^(EMError *aError)
      {
          if (aCompletion) {
@@ -125,13 +128,12 @@
 }
 
 #pragma mark - message
-- (void)sendMessageToChatroom:(NSString *)aChatroomId
-                      message:(NSString *)aMessage
+- (void)sendMessage:(NSString *)aMessage
                    completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aMessage];
-    EMMessage *msg = [[EMMessage alloc] initWithConversationID:aChatroomId
+    EMMessage *msg = [[EMMessage alloc] initWithConversationID:_roomModel.roomId
                                                           from:EMClient.sharedClient.currentUsername
-                                                            to:aChatroomId
+                                                            to:_roomModel.roomId
                                                           body:body
                                                            ext:nil];
     msg.chatType = EMChatTypeChatRoom;
@@ -145,30 +147,26 @@
     }];
 }
 
-- (void)sendLikeToChatroom:(NSString *)aChatroomId
-                   likeMsg:(NSString *)aMsg
+- (void)sendLikeMessage:(NSString *)aMessage
                 completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
-    [self sendMessageToChatroom:aChatroomId message:aMsg completion:aCompletion];
+    [self sendMessage:aMessage completion:aCompletion];
 }
 
-- (void)sendGiftToChatroom:(NSString *)aChatroomId
-                   giftMsg:(NSString *)aMsg
+- (void)sendGiftMessage:(NSString *)aMessage
                 completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
-    [self sendMessageToChatroom:aChatroomId message:aMsg completion:aCompletion];
+    [self sendMessage:aMessage completion:aCompletion];
 }
 
-- (void)sendUserOnMicMsg:(NSString *)username
-          aChatroomId:(NSString *)aChatroomId {
-    [self sendMessageToChatroom:aChatroomId
-                        message:[NSString stringWithFormat:@"[@%@]上麦",username]
-                     completion:nil];
+- (void)sendMessageFromNoti:(NSString *)aMsg {
+    [[NSNotificationCenter defaultCenter] postNotificationName:LR_Send_Messages_Notification object:aMsg];
 }
 
-- (void)sendUserOffMicMsg:(NSString *)username
-           aChatroomId:(NSString *)aChatroomId {
-    [self sendMessageToChatroom:aChatroomId
-                        message:[NSString stringWithFormat:@"[@%@]下麦",username]
-                     completion:nil];
+- (void)sendUserOnMicMsg:(NSString *)username {
+    [self sendMessageFromNoti:[NSString stringWithFormat:@"[@%@]上麦",username]];
+}
+
+- (void)sendUserOffMicMsg:(NSString *)username{
+    [self sendMessageFromNoti:[NSString stringWithFormat:@"[@%@]下麦",username]];
 }
 
 #pragma mark - EMChatManagerDelegate
@@ -228,20 +226,8 @@
     }
 }
 
-- (void)userDidJoinChatroom:(EMChatroom *)aChatroom user:(NSString *)aUsername {
-    if ([aUsername isEqualToString:@"系统管理员"]) {
-        return;
-    }
-    [_delegates userDidJoin:aUsername];
+- (void)dealloc {
+    
 }
-
-- (void)userDidLeaveChatroom:(EMChatroom *)aChatroom user:(NSString *)aUsername {
-    if ([aUsername isEqualToString:@"系统管理员"]) {
-        return;
-    }
-    [_delegates userDidLeave:aUsername];
-}
-
-
 
 @end

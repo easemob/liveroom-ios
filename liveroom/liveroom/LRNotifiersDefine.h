@@ -33,10 +33,11 @@
 #define LR_Did_Login_Other_Device_Notification             @"didLoginOtherDevice"
 
 #define LR_Kicked_Out_Chatroom_Notification             @"KickedOutChatroom"
-#define LR_Back_Chatroom_Notification             @"ReturnChatroom"
+#define LR_Back_Chatroom_Notification                       @"ReturnChatroom"
 #define LR_Join_Conference_Password_Error_Notification             @"joinConferencePasswordError"
 #define LR_LikeAndGift_Button_Action_Notification             @"likeAndGiftButtonAction"
 #define LR_ChatView_Tableview_Roll_Notification             @"chatTableviewRoll"
+#define LR_Send_Messages_Notification             @"chatViewSendMessage"
 
 
 #endif /* LRNotifiersDefine_h */
