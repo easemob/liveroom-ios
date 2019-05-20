@@ -82,8 +82,8 @@
             break;
         case LRRoomType_Communication:
         {
-            self.titleLabel.text = @"互动模式";
-            self.infoLabel.text = @"互动模式下所有主播可以自由发言";
+            self.titleLabel.text = @"自由麦模式";
+            self.infoLabel.text = @"自由麦模式下所有主播可以自由发言";
         }
             break;
         default:

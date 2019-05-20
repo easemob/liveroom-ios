@@ -142,7 +142,7 @@
     EMStreamParam *param = [[EMStreamParam alloc] init];
     param.streamName = kCurrentUsername;
     param.enableVideo = NO;
-    // 如果是互动模式 主播模式(群主)，上麦可以直接说话
+    // 如果是自由麦模式 主播模式(群主)，上麦可以直接说话
     __block BOOL isMute = YES;
     BOOL isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
     isMute = !((isOwner && self.roomModel.roomType == LRRoomType_Host)

@@ -135,7 +135,7 @@
         [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
     }else {
         if (username) {
-            NSString *info = [NSString stringWithFormat:@"收到%@申请上麦", username];
+            NSString *info = [NSString stringWithFormat:@"%@ 申请上麦自由麦，同意么?", username];
             LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
             LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
                 [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
@@ -347,7 +347,7 @@
                 [self closeWindowAction];
                 return ;
             }
-            
+        
             if (self.isOwner) { // 群主自动上麦
                 [LRSpeakHelper.sharedInstance setupRoomType:self.roomModel.roomType];
                 [LRSpeakHelper.sharedInstance setupMySelfToSpeaker];
@@ -359,6 +359,7 @@
                     [LRSpeakHelper.sharedInstance setAudioPlay:YES];
                 }
             }
+            [LRChatHelper.sharedInstance sendMessageFromNoti:@"我来了"];
         });
     });
 }
@@ -412,6 +413,7 @@
 }
 
 - (void)closeWindowAction {
+    [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
     if (self.isOwner)
     {
         NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
@@ -454,7 +456,6 @@
 {
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
-    
     [self dismissViewControllerAnimated:YES completion:^{
         [[NSNotificationCenter defaultCenter] postNotificationName:LR_Kicked_Out_Chatroom_Notification object:nil];
     }];
