@@ -61,11 +61,11 @@
     {
         [self addMessageToData:aMessage fromUser:fromUser timestamp:aTimestamp / 1000];
     }
-    if ([aMessage isEqualToString:@"like +1"]) {
+    if ([aMessage isEqualToString:kMessageFavourite]) {
         [self animationImageName:@"like"];
     }
     
-    if ([aMessage isEqualToString:@"send a gift"]) {
+    if ([aMessage isEqualToString:kMessageGift]) {
         [self animationImageName:@"giftcard"];
     }
 }
@@ -94,30 +94,28 @@
 }
 
 - (void)sendLike {
-    NSString *likeMsg = @"like +1";
     [self audioPlayerWithName:@"like" type:@"wav"];
     [self animationImageName:@"like"];
-    [LRChatHelper.sharedInstance sendLikeMessage:likeMsg
+    [LRChatHelper.sharedInstance sendLikeMessage:kMessageFavourite
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
         
     }];
 
-    [self addMessageToData:likeMsg
+    [self addMessageToData:kMessageFavourite
                   fromUser:LRChatHelper.sharedInstance.currentUser
                  timestamp:[[NSDate new] timeIntervalSince1970]];
 }
 
 - (void)sendGift {
-    NSString *giftMsg = @"send a gift";
     [self audioPlayerWithName:@"gift" type:@"wav"];
     [self animationImageName:@"giftcard"];
     
-    [LRChatHelper.sharedInstance sendGiftMessage:giftMsg
+    [LRChatHelper.sharedInstance sendGiftMessage:kMessageGift
                                          completion:^(NSString * _Nonnull errorInfo, BOOL success) {
                                              
                                          }];
     
-    [self addMessageToData:giftMsg
+    [self addMessageToData:kMessageGift
                   fromUser:LRChatHelper.sharedInstance.currentUser
                  timestamp:[[NSDate new] timeIntervalSince1970]];
 }
@@ -160,7 +158,7 @@
     NSString *string = [[NSBundle mainBundle] pathForResource:audioName ofType:type];
     NSURL *url = [NSURL fileURLWithPath:string];
     self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
-    self.audioPlayer.volume = 10;
+    self.audioPlayer.volume = 100;
     self.audioPlayer.numberOfLoops = 0;
     [self.audioPlayer play];
 }

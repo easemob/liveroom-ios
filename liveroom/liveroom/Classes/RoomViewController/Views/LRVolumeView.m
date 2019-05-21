@@ -53,8 +53,7 @@
         _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:value]];
     } else {
         _lightImageView.image = [UIImage imageNamed:[_speakAnimationImages objectAtIndex:progress]];
-    }
-    
+    }   
 }
 
 @end

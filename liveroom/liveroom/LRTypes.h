@@ -12,7 +12,7 @@
 
 // 会议模式
 typedef enum : NSUInteger {
-    LRRoomType_Communication = 1,   // 互动模式
+    LRRoomType_Communication = 1,   // 自由麦模式
     LRRoomType_Host,                // 主持模式
     LRRoomType_Monopoly             // 抢麦模式
 } LRRoomType;

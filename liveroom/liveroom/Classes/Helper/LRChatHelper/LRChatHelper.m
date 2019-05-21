@@ -108,16 +108,12 @@
                                          completion:^(EMChatroom *aChatroom, EMError *aError)
      {
          if (aCompletion) {
-             if (!aError) {
-                 [self sendMessageFromNoti:@"我来了"];
-             }
              aCompletion(aError.errorDescription, !aError);
          }
      }];
 }
 
 - (void)leaveChatroomWithCompletion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
-    [self sendMessageFromNoti:@"我走了"];
     [EMClient.sharedClient.roomManager leaveChatroom:_roomModel.roomId
                                           completion:^(EMError *aError)
      {
