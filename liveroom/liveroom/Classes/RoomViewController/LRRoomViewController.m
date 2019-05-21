@@ -91,7 +91,7 @@
     [LRSpeakHelper.sharedInstance addDeelgate:self delegateQueue:nil];
     
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(showRequestInfo:)
+                                           selector:@selector(parseRequestNoti:)
                                                name:LR_Receive_OnSpeak_Request_Notification
                                              object:nil];
 
@@ -124,7 +124,7 @@
 }
 
 // 收到上麦申请
-- (void)showRequestInfo:(NSNotification *)aNoti  {
+- (void)parseRequestNoti:(NSNotification *)aNoti  {
     NSDictionary *dict = aNoti.object;
     NSString *username = dict[@"from"];
     NSString *confid = dict[@"confid"];
@@ -147,10 +147,10 @@
 }
 
 - (void)showRequestInfoFromRequestList {
-    if (_requestList.count == 0) {
+    if (_isAlertShow) {
         return;
     }
-    if (_isAlertShow) {
+    if (_requestList.count == 0) {
         return;
     }
     __weak typeof(self) weakSelf = self;
