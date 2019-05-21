@@ -11,7 +11,7 @@
 #import "LRRoomModel.h"
 #import "Headers.h"
 
-@interface LRChatViewController ()<UITableViewDelegate, UITableViewDataSource, LRChatHelperDelegate, CAAnimationDelegate>
+@interface LRChatViewController ()<UITableViewDelegate, UITableViewDataSource, LRChatHelperDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
@@ -135,7 +135,7 @@
     imageView.frame = CGRectMake(0, 0, 90, 90);
     imageView.center = self.view.superview.center;
     [UIView animateWithDuration:0.3 animations:^{
-        imageView.alpha = 0.9;
+        imageView.alpha = 1;
         imageView.frame = CGRectInset(imageView.frame, 20, 20);
     } completion:^(BOOL finished) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

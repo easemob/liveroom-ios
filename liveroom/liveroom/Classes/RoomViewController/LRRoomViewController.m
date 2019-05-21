@@ -44,6 +44,8 @@
 @property (nonatomic, assign) BOOL isSelect;
 @property (nonatomic, assign) BOOL isKickedOut;
 @property (nonatomic, strong) NSString *errorInfo;
+@property (nonatomic, strong) NSMutableArray *requestList;
+@property (nonatomic) BOOL isAlertShow;
 
 @end
 
@@ -89,7 +91,7 @@
     [LRSpeakHelper.sharedInstance addDeelgate:self delegateQueue:nil];
     
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(showRequestInfo:)
+                                           selector:@selector(parseRequestNoti:)
                                                name:LR_Receive_OnSpeak_Request_Notification
                                              object:nil];
 
@@ -122,7 +124,7 @@
 }
 
 // 收到上麦申请
-- (void)showRequestInfo:(NSNotification *)aNoti  {
+- (void)parseRequestNoti:(NSNotification *)aNoti  {
     NSDictionary *dict = aNoti.object;
     NSString *username = dict[@"from"];
     NSString *confid = dict[@"confid"];
@@ -135,20 +137,43 @@
         [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
     }else {
         if (username) {
-            NSString *info = [NSString stringWithFormat:@"%@ 申请上麦自由麦，同意么?", username];
-            LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
-            LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
-                [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
-            }];
-            
-            LRAlertAction *reject = [LRAlertAction alertActionTitle:@"拒绝" callback:^(LRAlertController * _Nonnull alertController) {
-                [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
-            }];
-            [alert addAction:agreed];
-            [alert addAction:reject];
-            [self presentViewController:alert animated:YES completion:nil];
+            if (!_requestList) {
+                _requestList = [NSMutableArray array];
+            }
+            [_requestList addObject:username];
+            [self showRequestInfoFromRequestList];
         }
     }
+}
+
+- (void)showRequestInfoFromRequestList {
+    if (_isAlertShow) {
+        return;
+    }
+    if (_requestList.count == 0) {
+        return;
+    }
+    __weak typeof(self) weakSelf = self;
+    NSString *username = _requestList.firstObject;
+    NSString *info = [NSString stringWithFormat:@"%@ 申请上麦自由麦，同意么?", username];
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
+    LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
+        weakSelf.isAlertShow = NO;
+        [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
+        [weakSelf.requestList removeObjectAtIndex:0];
+        [weakSelf showRequestInfoFromRequestList];
+    }];
+    
+    LRAlertAction *reject = [LRAlertAction alertActionTitle:@"拒绝" callback:^(LRAlertController * _Nonnull alertController) {
+        weakSelf.isAlertShow = NO;
+        [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
+        [weakSelf.requestList removeObjectAtIndex:0];
+        [weakSelf showRequestInfoFromRequestList];
+    }];
+    [alert addAction:agreed];
+    [alert addAction:reject];
+    _isAlertShow = YES;
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 // 上麦申请被同意
@@ -417,7 +442,7 @@
     [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
     if (self.isOwner)
     {
-        NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
+        NSString *url = @"http://tcapp.easemob.com/app/huangcl/delete/talk/room/";
         url = [url stringByAppendingString:self.roomModel.roomId];
         [LRRequestManager.sharedInstance requestWithMethod:@"DELETE"
                                                  urlString:url

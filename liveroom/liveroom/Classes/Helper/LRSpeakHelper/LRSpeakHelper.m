@@ -75,7 +75,7 @@
                                                            completion:^(EMCallConference *aCall, EMError *aError)
      {
          if (!aError) {
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                  [weakSelf loudspeaker];
              });
              weakSelf.conference = aCall;
@@ -298,7 +298,7 @@
 // 抢麦
 - (void)argumentMic:(NSString *)aRoomId
          completion:(void(^)(NSString *errorInfo, BOOL success))aComplstion {
-    NSString *url = [NSString stringWithFormat:@"http://turn2.easemob.com:8082/app/mic/%@/%@", aRoomId,kCurrentUsername];;
+    NSString *url = [NSString stringWithFormat:@"http://tcapp.easemob.com/app/mic/%@/%@", aRoomId,kCurrentUsername];;
     __block BOOL success = NO;
     [LRRequestManager.sharedInstance requestWithMethod:@"GET"
                                              urlString:url
@@ -322,7 +322,7 @@
 // 释放麦
 - (void)unArgumentMic:(NSString *)aRoomId
            completion:(void(^)(NSString *errorInfo, BOOL success))aComplstion {
-    NSString *url = [NSString stringWithFormat:@"http://turn2.easemob.com:8082/app/discardmic/%@/%@", aRoomId,kCurrentUsername];;
+    NSString *url = [NSString stringWithFormat:@"http://tcapp.easemob.com/app/discardmic/%@/%@", aRoomId,kCurrentUsername];;
     [LRRequestManager.sharedInstance requestWithMethod:@"DELETE"
                                              urlString:url
                                             parameters:nil
@@ -487,7 +487,6 @@
                         attributes:(NSArray <EMConferenceAttribute *>*)attrs{
     NSString *talker = nil;
     for (EMConferenceAttribute *attr in attrs) {
-        NSLog(@"attr.key -- %@  value -- %@",attr.key, attr.value);
         if ([attr.key isEqualToString:@"type"]) {
             NSString *roomType = attr.value;
             if ([roomType isEqualToString:@"communication"]) {
@@ -511,7 +510,6 @@
             }
         }
     }
-    
     
     if (talker) {
         if (self.roomModel.roomType == LRRoomType_Host) {
