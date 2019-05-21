@@ -503,8 +503,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.argumentBtn.hidden = NO;
         self.unArgumentBtn.hidden = NO;
         [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
-            make.left.equalTo(self.contentView.mas_left).offset(10);
+            make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
+            make.left.equalTo(self.nameLabel.mas_left);
             make.width.equalTo(@80);
             make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];

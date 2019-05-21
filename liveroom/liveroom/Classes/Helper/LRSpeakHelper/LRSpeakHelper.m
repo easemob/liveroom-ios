@@ -346,7 +346,7 @@
 - (void)setAudioPlay:(BOOL)isPlay {
     // 设置会议属性
     if (isPlay) {
-        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"music" value:@"music.mpy" completion:nil];
+        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"music" value:@"music.mp3" completion:nil];
     }else {
         [EMClient.sharedClient.conferenceManager deleteAttributeWithKey:@"music" completion:nil];
     }

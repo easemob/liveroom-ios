@@ -6,24 +6,28 @@ PODS:
   - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
   - Masonry (1.1.0)
+  - MBProgressHUD (1.1.0)
   - MJRefresh (3.1.16)
 
 DEPENDENCIES:
   - CocoaLumberjack (~> 3.4.2)
   - Masonry (~> 1.1.0)
+  - MBProgressHUD
   - MJRefresh
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - CocoaLumberjack
     - Masonry
+    - MBProgressHUD
     - MJRefresh
 
 SPEC CHECKSUMS:
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
 
-PODFILE CHECKSUM: b02c8890c4a6d819d44acfd9b1a3f4b91f03562a
+PODFILE CHECKSUM: 848ed570dc0e56e6c9721f8fbbff8df7a56e5124
 
 COCOAPODS: 1.5.3
