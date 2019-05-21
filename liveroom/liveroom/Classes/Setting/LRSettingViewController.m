@@ -85,7 +85,10 @@
 
 - (void)logoutAction
 {
+    [self showHudInView:self.view hint:@"正在退出..."];
+    __weak typeof(self) weakself = self;
     [[EMClient sharedClient] logout:NO completion:^(EMError *aError) {
+        [weakself hideHud];
         if (!aError) {
             EMOptions *options = [LRChatHelper sharedInstance].registerImSDK;
             options.isAutoLogin = NO;
