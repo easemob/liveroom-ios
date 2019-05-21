@@ -86,8 +86,9 @@
 }
 
 - (void)kickedOutChatroom:(NSNotification *)aNoti {
+    NSString *info = aNoti.object;
     LRAlertController *alertController = [LRAlertController showTipsAlertWithTitle:@"提示"
-                                                                               info:@"您被房主移出房间"];
+                                                                               info:info];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 

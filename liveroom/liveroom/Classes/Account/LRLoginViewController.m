@@ -52,10 +52,13 @@
 - (IBAction)loginAction:(id)sender
 {
     if (![self validationInputInfo]) return;
+    [self showHudInView:self.view hint:@"正在登录..."];
+    __weak typeof(self) weakself = self;
     [LRChatHelper.sharedInstance asyncLoginWithUsername:self.usernameTextField.text
                                              password:self.passwordTextField.text
                                            completion:^(NSString * _Nonnull errorInfo, BOOL success)
     {
+        [weakself hideHud];
         if (success) {
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_ACCOUNT_LOGIN_CHANGED
                                                                 object:@YES];
@@ -70,14 +73,14 @@
 // 注册
 - (IBAction)registerAction:(id)sender
 {
-    
     if (![self validationInputInfo]) return;
-    
-    
+    [self showHudInView:self.view hint:@"正在注册..."];
+    __weak typeof(self) weakself = self;
     [LRChatHelper.sharedInstance asyncRegisterWithUsername:self.usernameTextField.text
                                                 password:self.passwordTextField.text
                                               completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {
+         [weakself hideHud];
          if (success) {
              LRAlertController *alertController = [LRAlertController showSuccessAlertWithTitle:@"注册成功"
                                                                                   info:nil];

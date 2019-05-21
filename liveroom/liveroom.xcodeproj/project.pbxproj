@@ -24,8 +24,6 @@
 		907F5BF2226F238E009ED60E /* LRSpeakerCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 907F5BF1226F238E009ED60E /* LRSpeakerCellModel.m */; };
 		9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8A225603E70099C5BD /* LRSpeakViewController.m */; };
 		9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9083DC8E225606B10099C5BD /* LRGCDMulticastDelegate.m */; };
-		90AF195222927E760009376C /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90D7753122927DED00120190 /* Hyphenate.framework */; };
-		90AF195322927E760009376C /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 90D7753122927DED00120190 /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		90B4907F2284240400F2EBCC /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B4907E2284240400F2EBCC /* NSString+Category.m */; };
 		90B490852284340300F2EBCC /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B490842284340300F2EBCC /* NSDictionary+Category.m */; };
 		90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6712254C02A00A712B8 /* Main.storyboard */; };
@@ -48,6 +46,9 @@
 		E00EE56F228424D60043C235 /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E00EE56E228424D60043C235 /* music.mp3 */; };
 		E00EE574228AD0B10043C235 /* gift.wav in Resources */ = {isa = PBXBuildFile; fileRef = E00EE572228AD0AF0043C235 /* gift.wav */; };
 		E00EE575228AD0B10043C235 /* like.wav in Resources */ = {isa = PBXBuildFile; fileRef = E00EE573228AD0B00043C235 /* like.wav */; };
+		E02617EE2292B1AE00B8B2AE /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E02617ED2292B1AE00B8B2AE /* UIViewController+HUD.m */; };
+		E02617FC2293D41900B8B2AE /* Hyphenate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E02617FB2293D41900B8B2AE /* Hyphenate.framework */; };
+		E02617FE2293D42200B8B2AE /* Hyphenate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E02617FB2293D41900B8B2AE /* Hyphenate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E03ADD872275BFEA0030C4D6 /* LRRoomSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E03ADD862275BFEA0030C4D6 /* LRRoomSettingViewController.m */; };
 		E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C22259A77C00F9910C /* LRSearchBar.m */; };
 		E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712C52259A77C00F9910C /* LRRealtimeSearch.m */; };
@@ -85,7 +86,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				90AF195322927E760009376C /* Hyphenate.framework in Embed Frameworks */,
+				E02617FE2293D42200B8B2AE /* Hyphenate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,7 +136,6 @@
 		90B490832284340300F2EBCC /* NSDictionary+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
 		90B490842284340300F2EBCC /* NSDictionary+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
 		90B490862286AC7A00F2EBCC /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		90D7753122927DED00120190 /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		90F2C6682254C02A00A712B8 /* liveroom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = liveroom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F2C6722254C02A00A712B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90F2C6742254C02B00A712B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -173,6 +173,9 @@
 		E00EE56E228424D60043C235 /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = music.mp3; sourceTree = "<group>"; };
 		E00EE572228AD0AF0043C235 /* gift.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gift.wav; sourceTree = "<group>"; };
 		E00EE573228AD0B00043C235 /* like.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = like.wav; sourceTree = "<group>"; };
+		E02617EC2292B1AD00B8B2AE /* UIViewController+HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HUD.h"; sourceTree = "<group>"; };
+		E02617ED2292B1AE00B8B2AE /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
+		E02617FB2293D41900B8B2AE /* Hyphenate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Hyphenate.framework; sourceTree = "<group>"; };
 		E03ADD852275BFEA0030C4D6 /* LRRoomSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomSettingViewController.h; sourceTree = "<group>"; };
 		E03ADD862275BFEA0030C4D6 /* LRRoomSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomSettingViewController.m; sourceTree = "<group>"; };
 		E04712C22259A77C00F9910C /* LRSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSearchBar.m; sourceTree = "<group>"; };
@@ -221,7 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */,
-				90AF195222927E760009376C /* Hyphenate.framework in Frameworks */,
+				E02617FC2293D41900B8B2AE /* Hyphenate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,7 +342,7 @@
 		90F2C66A2254C02A00A712B8 /* liveroom */ = {
 			isa = PBXGroup;
 			children = (
-				90D7753122927DED00120190 /* Hyphenate.framework */,
+				E02617FB2293D41900B8B2AE /* Hyphenate.framework */,
 				90F2C68E2254C08600A712B8 /* TCDefine.h */,
 				9080C4FB226D7B2100E1DCC5 /* LRTypes.h */,
 				90F2C6A32254C08600A712B8 /* Headers.h */,
@@ -397,6 +400,8 @@
 				90B4907E2284240400F2EBCC /* NSString+Category.m */,
 				90B490832284340300F2EBCC /* NSDictionary+Category.h */,
 				90B490842284340300F2EBCC /* NSDictionary+Category.m */,
+				E02617EC2292B1AD00B8B2AE /* UIViewController+HUD.h */,
+				E02617ED2292B1AE00B8B2AE /* UIViewController+HUD.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -766,6 +771,7 @@
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
 				902B51ED2261BCFD000EC701 /* UIViewController+LRAlert.m in Sources */,
+				E02617EE2292B1AE00B8B2AE /* UIViewController+HUD.m in Sources */,
 				90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */,
 				E04712D7225B61F000F9910C /* LRTabBar.m in Sources */,
 				E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */,

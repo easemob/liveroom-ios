@@ -27,4 +27,5 @@
 #import "LRSpeakHelper.h"
 #import "LRRequestManager.h"
 #import "LRRoomOptions.h"
+#import "UIViewController+HUD.h"
 #endif /* Headers_h */

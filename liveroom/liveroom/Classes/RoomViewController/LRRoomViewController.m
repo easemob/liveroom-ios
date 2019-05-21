@@ -187,7 +187,7 @@
 }
 
 - (void)backChatroom:(NSNotification *)aNoti {
-    [self leaveChatroomAndKickedOutNotification];
+    [self leaveChatroomAndKickedOutNotification:@"您被房主移出房间"];
 }
 
 #pragma mark - subviews
@@ -307,7 +307,7 @@
 
 - (void)joinChatAndConferenceRoom {
     __weak typeof(self) weakSelf = self;
-    
+    [self showHudInView:self.view hint:@"正在加入房间..."];
     dispatch_group_t group = dispatch_group_create();
     dispatch_queue_t queue = dispatch_queue_create("com.easemob.liveroom", DISPATCH_QUEUE_CONCURRENT);
     dispatch_group_async(group, queue, ^{
@@ -335,6 +335,7 @@
     
     dispatch_group_notify(group, queue, ^{
         dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
             if (!self->_chatJoined) {
                 [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:weakSelf.roomModel.conferenceId completion:nil];
             }
@@ -449,15 +450,19 @@
                         reason:(EMChatroomBeKickedReason)aReason
 {
     self.isKickedOut = YES;
-    [self leaveChatroomAndKickedOutNotification];
+    if (aReason == EMChatroomBeKickedReasonBeRemoved) {
+        [self leaveChatroomAndKickedOutNotification:@"您被房主移出房间"];
+    } else if (aReason == EMChatroomBeKickedReasonDestroyed) {
+        [self leaveChatroomAndKickedOutNotification:@"房间被销毁"];
+    }
 }
 
-- (void)leaveChatroomAndKickedOutNotification
+- (void)leaveChatroomAndKickedOutNotification:(NSString *)aReason
 {
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
     [self dismissViewControllerAnimated:YES completion:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Kicked_Out_Chatroom_Notification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Kicked_Out_Chatroom_Notification object:aReason];
     }];
 }
 
