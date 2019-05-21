@@ -486,7 +486,6 @@
 - (void)conferenceAttributeUpdated:(EMCallConference *)aConference
                         attributes:(NSArray <EMConferenceAttribute *>*)attrs{
     NSString *talker = nil;
-    BOOL isPlay = NO;
     for (EMConferenceAttribute *attr in attrs) {
         NSLog(@"attr.key -- %@  value -- %@",attr.key, attr.value);
         if ([attr.key isEqualToString:@"type"]) {
@@ -505,7 +504,11 @@
         }
         
         if ([attr.key isEqualToString:@"music"]) {
-            isPlay = attr.action == EMConferenceAttributeAdd ? YES : NO;
+            if (attr.action == EMConferenceAttributeAdd) {
+                [self playMusic:YES];
+            }else if (attr.action == EMConferenceAttributeDelete) {
+                [self playMusic:NO];
+            }
         }
     }
     
@@ -524,9 +527,6 @@
             [_delegates currentMonopolyTypeSpeakerChanged:_currentMonopolyTalker];
         }
     }
-    
-    [self playMusic:isPlay];
-    
 }
 
 #pragma mark - getter

@@ -350,7 +350,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
             make.left.equalTo(self.nameLabel.mas_left);
-            make.width.equalTo(@100);
+            make.width.equalTo(@60);
             make.bottom.equalTo(self.lineView.mas_top).offset(-8);
         }];
         
