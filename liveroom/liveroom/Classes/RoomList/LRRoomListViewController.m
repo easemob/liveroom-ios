@@ -362,7 +362,7 @@
 
 - (void)reloadPage {
     
-    [LRRequestManager.sharedInstance requestWithMethod:@"GET" urlString:@"http://turn2.easemob.com:8082/app/talk/rooms/0/200" parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
+    [LRRequestManager.sharedInstance requestWithMethod:@"GET" urlString:@"http://tcapp.easemob.com/app/talk/rooms/0/200" parameters:nil token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
      {
          dispatch_async(dispatch_get_main_queue(), ^{
              if (!error) {
@@ -393,7 +393,7 @@
 }
 
 - (void)destoryMyRoom:(LRRoomModel *)aModel {
-    NSString *url = @"http://turn2.easemob.com:8082/app/huangcl/delete/talk/room/";
+    NSString *url = @"http://tcapp.easemob.com/app/huangcl/delete/talk/room/";
     url = [url stringByAppendingString:aModel.roomId];
     [LRRequestManager.sharedInstance requestWithMethod:@"DELETE"
                                              urlString:url

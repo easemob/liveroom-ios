@@ -34,16 +34,16 @@
     [self.contentView addSubview:self.lineView];
     
     [self.emptyLightView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView).offset(10);
+        make.left.equalTo(self.contentView).offset(5);
         make.centerY.equalTo(self.infoLabel);
         make.right.equalTo(self.infoLabel.mas_left).offset(-5);
         make.width.height.equalTo(@8);
     }];
     
     [self.infoLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(10);
+        make.top.equalTo(self.contentView).offset(5);
         make.right.equalTo(self.contentView).offset(-10);
-        make.bottom.equalTo(self.lineView.mas_top).offset(-10);
+        make.bottom.equalTo(self.lineView.mas_top).offset(-5);
     }];
     
     [self.lineView mas_remakeConstraints:^(MASConstraintMaker *make) {

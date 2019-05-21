@@ -245,7 +245,7 @@
     
     __weak typeof(self) weakSelf = self;
     
-    NSString *url = [NSString stringWithFormat:@"http://turn2.easemob.com:8082/app/%@/create/talk/room", kCurrentUsername];;
+    NSString *url = [NSString stringWithFormat:@"http://tcapp.easemob.com/app/%@/create/talk/room", kCurrentUsername];;
     
     [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:url parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
     {
