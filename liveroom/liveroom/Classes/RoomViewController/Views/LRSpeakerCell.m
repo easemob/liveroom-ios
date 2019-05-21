@@ -554,13 +554,8 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
             make.left.equalTo(argumentBtnNeedShow ?
                               self.unArgumentBtn.mas_right : self.contentView.mas_left).offset(10);
-<<<<<<< HEAD
             make.width.equalTo(@80);
             make.bottom.equalTo(self.lineView.mas_top).offset(-10);
-=======
-            make.width.equalTo(@60);
-            make.bottom.equalTo(self.lineView.mas_top).offset(-8);
->>>>>>> easemob/dev
         }];
     }else {
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
