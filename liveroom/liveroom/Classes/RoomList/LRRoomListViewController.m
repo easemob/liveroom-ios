@@ -67,7 +67,7 @@
 {
     self.view.backgroundColor = [UIColor blackColor];
     self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.text = @"选择房间 Chose a voiceChatroom";
+    self.titleLabel.text = @"选择房间";
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.font = [UIFont systemFontOfSize:15];
     [self.view addSubview:self.titleLabel];
@@ -87,7 +87,7 @@
 - (void)_setupSearch
 {
     self.searchBar = [[LRSearchBar alloc] init];
-    self.searchBar.placeholderString = @"输入voiceChatroomID";
+    self.searchBar.placeholderString = @"输入房间名称";
     self.searchBar.placeholderTextFont = 17;
     self.searchBar.placeholderTextColor = RGBACOLOR(255, 255, 255, 0.3);
     self.searchBar.height = 48;

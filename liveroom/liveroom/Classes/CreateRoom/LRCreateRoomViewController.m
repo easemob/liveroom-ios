@@ -182,7 +182,7 @@
 #pragma mark UITapGestureRecognizer
 - (void)speakerTypeTap
 {
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"自由麦模式下所有主播可以自由发言;\n抢麦模式下所有主播通过抢麦获得发言权;\n主持模式下管理员分配的主播获得发言权;\n"];
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"自由麦模式下所有主播可以自由发言;\n主持模式下管理员分配的主播获得发言权;\n抢麦模式下所有主播通过抢麦获得发言权;"];
 
     LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
@@ -191,6 +191,13 @@
                                               self->_type = LRRoomType_Communication;
                                           }];
     
+    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
+                                                       callback:^(LRAlertController * _Nonnull alertController)
+                                 {
+                                     self.speakerTypeTextLabel.text = @"主持模式";
+                                     self->_type = LRRoomType_Host;
+                                 }];
+    
     LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式"
                                                            callback:^(LRAlertController * _Nonnull alertController)
                                      {
@@ -198,12 +205,6 @@
                                          self->_type = LRRoomType_Monopoly;
                                      }];
     
-    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
-                                                       callback:^(LRAlertController * _Nonnull alertController)
-                                 {
-                                     self.speakerTypeTextLabel.text = @"主持模式";
-                                     self->_type = LRRoomType_Host;
-                                 }];
     
     
     [alert addAction:communicationAction];
