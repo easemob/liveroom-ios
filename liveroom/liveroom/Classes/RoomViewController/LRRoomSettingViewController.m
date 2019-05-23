@@ -9,7 +9,7 @@
 #import "LRRoomSettingViewController.h"
 
 #define kPadding 16
-@interface LRRoomSettingViewController () <EMChatroomManagerDelegate>
+@interface LRRoomSettingViewController ()
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *backGroundView;
@@ -22,7 +22,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self _setupSubviews];
-    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(exitChatroom:) name:LR_Exit_Chatroom_Notification
+                                             object:nil];
 }
 
 - (void)_setupSubviews
@@ -101,24 +104,19 @@
     }];
 }
 
+#pragma mark - NSNotification
+- (void)exitChatroom:(NSNotification *)aNoti
+{
+    NSString *info = aNoti.object;
+    [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.model.conferenceId completion:nil];
+    [self showHint:info];
+    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark ButtonAction
 - (void)closeButtonAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - EMChatroomManagerDelegate
-- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
-                        reason:(EMChatroomBeKickedReason)aReason
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Back_Chatroom_Notification object:nil];
-    }];
-}
-
-- (void)dealloc
-{
-    [[EMClient sharedClient].roomManager removeDelegate:self];
 }
 
 @end

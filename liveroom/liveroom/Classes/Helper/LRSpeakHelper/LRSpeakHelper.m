@@ -175,13 +175,30 @@
 // 设置用户为主播
 - (void)setupUserToSpeaker:(NSString *)aUsername {
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
-    [LRChatHelper.sharedInstance sendUserOnMicMsg:aUsername];
+    if ([self isInChatroom:aUsername]) {
+        [LRChatHelper.sharedInstance sendUserOnMicMsg:aUsername];
+    }
     [EMClient.sharedClient.conferenceManager
      changeMemberRoleWithConfId:self.conference.confId
      memberNames:@[applyUid] role:EMConferenceRoleSpeaker
      completion:^(EMError *aError) {
-         
+
      }];
+}
+
+- (BOOL)isInChatroom:(NSString *)aUsername
+{
+    EMError *error;
+    EMCursorResult *aResult = [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.roomModel.roomId cursor:nil pageSize:500 error:&error];
+    if (!error) {
+        NSArray *list = aResult.list;
+        for (NSString *username in list) {
+            if ([username isEqualToString:aUsername]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
 }
 
 // 设置用户为听众

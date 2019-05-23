@@ -25,7 +25,7 @@
 #define kHeaderViewHeight 45
 #define kInputViewHeight 64
 
-@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate, LRSpeakHelperDelegate, EMChatroomManagerDelegate> {
+@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate, LRSpeakHelperDelegate, LRChatHelperDelegate> {
     BOOL _chatJoined;
     BOOL _conferenceJoined;
     BOOL _chatLeave;
@@ -42,10 +42,11 @@
 @property (nonatomic, strong) UIButton *applyOnSpeakBtn;
 @property (nonatomic, strong) NSMutableArray *itemAry;
 @property (nonatomic, assign) BOOL isSelect;
-@property (nonatomic, assign) BOOL isKickedOut;
 @property (nonatomic, strong) NSString *errorInfo;
+@property (nonatomic, strong) NSString *roomErrorInfo;
 @property (nonatomic, strong) NSMutableArray *requestList;
 @property (nonatomic) BOOL isAlertShow;
+@property (nonatomic) BOOL isShareAlertShow;
 
 @end
 
@@ -64,18 +65,6 @@
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[EMClient sharedClient].roomManager removeDelegate:self];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
@@ -89,6 +78,7 @@
 
 - (void)regieterNotifiers {
     [LRSpeakHelper.sharedInstance addDeelgate:self delegateQueue:nil];
+    [LRChatHelper.sharedInstance addDeelgate:self delegateQueue:nil];
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(parseRequestNoti:)
@@ -118,10 +108,10 @@
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didLoginOtherDevice:)
                                                name:LR_Did_Login_Other_Device_Notification
                                              object:nil];
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(backChatroom:)
-                                               name:LR_Back_Chatroom_Notification
-                                             object:nil];
+    
+    
 }
+
 
 // 收到上麦申请
 - (void)parseRequestNoti:(NSNotification *)aNoti  {
@@ -207,12 +197,9 @@
 - (void)chatroomDidDestory:(NSNotification *)aNoti {
     NSString *confId = (NSString *)aNoti.object;
     if ([confId isEqualToString:self.roomModel.conferenceId]) {
+        [self showHint:@"房间被销毁"];
         [self closeWindowAction];
     }
-}
-
-- (void)backChatroom:(NSNotification *)aNoti {
-    [self leaveChatroomAndKickedOutNotification:@"您被房主移出房间"];
 }
 
 #pragma mark - subviews
@@ -340,6 +327,7 @@
         [LRChatHelper.sharedInstance joinChatroomWithCompletion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              self->_chatJoined = success;
+             self->_roomErrorInfo = errorInfo;
              dispatch_semaphore_signal(semaphore);
          }];
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
@@ -370,6 +358,9 @@
             }
             
             if (!self->_conferenceJoined || !self->_chatJoined) {
+                if ([self->_roomErrorInfo containsString:@"do not find"]) {
+                    [self showHint:@"房间不存在"];
+                }
                 [self closeWindowAction];
                 return ;
             }
@@ -422,6 +413,7 @@
 }
 
 - (void)shareAction {
+    _isShareAlertShow = YES;
     //是模态视图
     NSString *str = [NSString stringWithFormat:@"房间: %@\n房主: %@\n密码: %@\n下载地址: %@", self.roomModel.roomname, self.roomModel.owner, _password ,@"https://www.easemob.com"];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -459,36 +451,11 @@
     if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
         [EMClient.sharedClient.conferenceManager stopAudioMixing];
     }
-    [self dismissViewControllerAnimated:YES completion:^{
-        if ([self->_errorInfo isEqualToString:@"Password is illegal"]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:LR_Join_Conference_Password_Error_Notification object:nil];
-        }
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)chatTapAction:(UITapGestureRecognizer *)tapGr {
     [self.view endEditing:YES];
-}
-
-#pragma mark - EMChatroomManagerDelegate
-- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
-                        reason:(EMChatroomBeKickedReason)aReason
-{
-    self.isKickedOut = YES;
-    if (aReason == EMChatroomBeKickedReasonBeRemoved) {
-        [self leaveChatroomAndKickedOutNotification:@"您被房主移出房间"];
-    } else if (aReason == EMChatroomBeKickedReasonDestroyed) {
-        [self leaveChatroomAndKickedOutNotification:@"房间被销毁"];
-    }
-}
-
-- (void)leaveChatroomAndKickedOutNotification:(NSString *)aReason
-{
-    [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
-    [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
-    [self dismissViewControllerAnimated:YES completion:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Kicked_Out_Chatroom_Notification object:aReason];
-    }];
 }
 
 #pragma mark - LRVoiceRoomTabbarDelgate
@@ -524,6 +491,18 @@
     
     [self.view layoutIfNeeded];
     [[NSNotificationCenter defaultCenter] postNotificationName:LR_ChatView_Tableview_Roll_Notification object:nil];
+}
+
+#pragma mark - LRChatHelperDelegate
+- (void)didExitChatroom:(NSString *)aReason
+{
+    [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
+    [self showHint:aReason];
+    if (_isShareAlertShow) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)likeAction {
@@ -601,9 +580,10 @@
     return _inputBar;
 }
 
-//- (void)dealloc
-//{
-//    LRSpeakHelper.sharedInstance.roomModel = nil;
-//}
+- (void)dealloc
+{
+    [LRSpeakHelper.sharedInstance removeDelegate:self];
+    [LRChatHelper.sharedInstance removeDelegate:self];
+}
 
 @end

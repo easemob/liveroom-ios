@@ -14,7 +14,7 @@
 #import "LRChatroomMembersModel.h"
 
 #define kPadding 16
-@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate,UIGestureRecognizerDelegate,LRChatroomMembersCellDelegate, EMChatroomManagerDelegate>
+@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate,UIGestureRecognizerDelegate,LRChatroomMembersCellDelegate>
 
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -54,7 +54,10 @@
     [self autoReload];
     
     [self _setupSubviews];
-    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(exitChatroom:) name:LR_Exit_Chatroom_Notification
+                                                 object:nil];
 }
 
 - (void)autoReload {
@@ -179,6 +182,15 @@
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(reloadPage)];
 }
 
+#pragma mark - NSNotification
+- (void)exitChatroom:(NSNotification *)aNoti
+{
+    NSString *info = aNoti.object;
+    [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.model.conferenceId completion:nil];
+    [self showHint:info];
+    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - GestureRecognizer
 -(void)tapTableViewAction:(UITapGestureRecognizer *)tapRecognizer
 {
@@ -196,15 +208,6 @@
         return NO;
     }
     return YES;
-}
-
-#pragma mark - EMChatroomManagerDelegate
-- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
-                        reason:(EMChatroomBeKickedReason)aReason
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Back_Chatroom_Notification object:nil];
-    }];
 }
 
 #pragma mark - TouchesBegan
@@ -378,14 +381,7 @@
 
 - (void)closeButtonAction
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-}
-
-- (void)dealloc
-{
-    [[EMClient sharedClient].roomManager removeDelegate:self];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

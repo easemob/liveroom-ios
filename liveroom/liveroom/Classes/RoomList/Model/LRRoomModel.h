@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) int maxCount;
 @property (nonatomic) BOOL allowAudienceOnSpeaker;
 @property (nonatomic, copy) NSString *createTime;
+@property (nonatomic) int conferencePassword;
 @property (nonatomic, assign) LRRoomType roomType;
 
 + (instancetype)roomWithDict:(NSDictionary *)dict;

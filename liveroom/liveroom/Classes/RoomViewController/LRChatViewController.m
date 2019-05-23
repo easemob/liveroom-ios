@@ -70,18 +70,20 @@
     }
 }
 
-
 #pragma mark - notification
 - (void)sendMessageNoti:(NSNotification *)aNoti {
     NSString *text = aNoti.object;
     [self sendText:text];
 }
 
+
+
 #pragma mark - public
 - (void)sendText:(NSString *)aText {
     if (!aText || aText.length == 0) {
         return;
     }
+    NSLog(@"发送的消息-----%@", aText);
     [LRChatHelper.sharedInstance sendMessage:aText
                                   completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {
