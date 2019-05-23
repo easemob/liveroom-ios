@@ -20,6 +20,7 @@
     model.maxCount = [dict[@"rtcConfrAudienceLimit"] intValue];
     model.createTime =  dict[@"rtcConfrCreateTime"];
     model.allowAudienceOnSpeaker = [dict[@"allowAudienceTalk"] boolValue];
+    model.conferencePassword = [dict[@"rtcConfrPassword"] intValue];
     model.roomType = LRRoomType_Communication; // 默认值
     return model;
 }

@@ -36,7 +36,7 @@ typedef enum : NSUInteger {
 } LRAlertType;
 
 
-@interface LRAlertController () <UITextFieldDelegate, EMChatroomManagerDelegate>
+@interface LRAlertController () <UITextFieldDelegate>
 {
     NSString *_title;
     NSString *_info;
@@ -131,7 +131,6 @@ typedef enum : NSUInteger {
     if (self.textField) {
         [self registerKeyboardNotifiers];
     }
-    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
 }
 
 - (void)dealloc {
@@ -318,15 +317,6 @@ typedef enum : NSUInteger {
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.view endEditing:YES];
     return YES;
-}
-
-#pragma mark - EMChatroomManagerDelegate
-- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
-                        reason:(EMChatroomBeKickedReason)aReason
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:LR_Back_Chatroom_Notification object:nil];
-    }];
 }
 
 #pragma mark - actions

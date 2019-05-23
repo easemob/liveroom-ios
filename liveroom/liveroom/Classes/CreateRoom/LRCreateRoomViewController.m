@@ -222,6 +222,12 @@
         return;
     }
     
+    if ([self hasChinese:self.voiceChatroomIDTextField.text]) {
+        LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"房间号不支持中文"];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    
     if (self.passwordTextField.text.length == 0) {
         LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"请输入房间密码"];
         [self presentViewController:alert animated:YES completion:nil];
@@ -265,6 +271,18 @@
             }
         });
     }];
+}
+
+- (BOOL)hasChinese:(NSString *)str {
+    
+    for(int i=0; i< [str length];i++){
+        int a = [str characterAtIndex:i];
+        if( a > 0x4e00 && a < 0x9fff)
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 @end

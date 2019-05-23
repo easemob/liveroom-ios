@@ -23,5 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)didReceiveRoomDestory:(NSString *)aChatroomId;
 
+- (void)didExitChatroom:(NSString *)aReason;
+
 @end
 NS_ASSUME_NONNULL_END

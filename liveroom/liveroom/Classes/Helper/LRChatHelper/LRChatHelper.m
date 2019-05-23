@@ -158,6 +158,7 @@
 }
 
 - (void)sendUserOnMicMsg:(NSString *)username {
+    
     [self sendMessageFromNoti:[NSString stringWithFormat:@"[@%@]上麦",username]];
 }
 
@@ -193,6 +194,8 @@
 
 - (void)messagesDidReceive:(NSArray *)aMessages {
 
+    NSLog(@"接收的消息----------%@", aMessages);
+    
     for (EMMessage *msg in aMessages) {
         if (msg.chatType != EMChatTypeChatRoom) {
             continue;
@@ -220,6 +223,21 @@
                                            fromUser:msg.from
                                           timestamp:msg.timestamp];
     }
+}
+
+#pragma mark - EMChatroomManagerDelegate
+- (void)didDismissFromChatroom:(EMChatroom *)aChatroom
+                        reason:(EMChatroomBeKickedReason)aReason
+{
+    NSString *reason = nil;
+    if (aReason == EMChatroomBeKickedReasonBeRemoved) {
+        reason = @"您被房主移出房间";
+    } else if (aReason == EMChatroomBeKickedReasonDestroyed) {
+        reason = @"房间被销毁";
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:LR_Exit_Chatroom_Notification object:reason];
+
+    [_delegates didExitChatroom:reason];
 }
 
 - (void)dealloc {

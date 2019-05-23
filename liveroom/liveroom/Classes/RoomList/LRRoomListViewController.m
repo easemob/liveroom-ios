@@ -48,9 +48,9 @@
     return _searchResults;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidLoad {
@@ -342,9 +342,14 @@
     alert.textField = pwdTextField;
     LRAlertAction *joinAction = [LRAlertAction alertActionTitle:@"观众加入" callback:^(LRAlertController * _Nonnull alertController) {
         if (alertController.textField.text.length == 0) {
-            LRAlertController *alertController = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"请输入房间密码"];
-            [self presentViewController:alertController animated:YES completion:nil];
+            [self showHint:@"房间密码不能为空"];
             return;
+        } else {
+            NSString *conferencePassword = [NSString stringWithFormat:@"%d",aModel.conferencePassword];
+            if (![alertController.textField.text isEqualToString:conferencePassword]) {
+                [self showHint:@"房间密码错误"];
+                return;
+            }
         }
         LRRoomViewController *vroomVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Audiance roomModel:aModel password:alertController.textField.text];
         [self presentViewController:vroomVC animated:YES completion:nil];
