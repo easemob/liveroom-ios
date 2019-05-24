@@ -585,6 +585,7 @@
 
 - (void)dealloc
 {
+    NSLog(@" ---- lrRoVC - dealloc");
     [LRSpeakHelper.sharedInstance removeDelegate:self];
     [LRChatHelper.sharedInstance removeDelegate:self];
 }
