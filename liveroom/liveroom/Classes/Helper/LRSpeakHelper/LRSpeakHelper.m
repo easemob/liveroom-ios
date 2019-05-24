@@ -75,7 +75,8 @@
                                                            completion:^(EMCallConference *aCall, EMError *aError)
      {
          if (!aError) {
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                  [weakSelf loudspeaker];
              });
              weakSelf.conference = aCall;
@@ -234,7 +235,7 @@
     if (isPlay) {
         NSURL *url = [NSBundle.mainBundle URLForResource:@"music" withExtension:@"mp3"];
         EMError *error = [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
-        [EMClient.sharedClient.conferenceManager adjustAudioMixingVolume:30];
+        [EMClient.sharedClient.conferenceManager adjustAudioMixingVolume:20];
         NSLog(@"error -- %@",error);
     } else {
         [EMClient.sharedClient.conferenceManager stopAudioMixing];
