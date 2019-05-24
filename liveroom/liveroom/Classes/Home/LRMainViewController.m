@@ -34,7 +34,7 @@
     [super viewDidLoad];
     [self _setupSubviews];
 
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
 }
 
 - (void)_setupSubviews
@@ -83,7 +83,7 @@
 
 // 被踢
 - (void)userAccountDidLoginFromOtherDevice {
-    [NSNotificationCenter.defaultCenter postNotificationName:LR_Did_Login_Other_Device_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LR_Did_Login_Other_Device_Notification object:nil];
 }
 
 

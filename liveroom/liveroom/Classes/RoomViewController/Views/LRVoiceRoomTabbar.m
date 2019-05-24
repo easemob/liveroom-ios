@@ -38,7 +38,8 @@
                                              selector:@selector(keyboardWillHidden:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    [NSNotificationCenter.defaultCenter addObserver:self
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(likeButtonAction:)
                                                name:LR_LikeAndGift_Button_Action_Notification
                                              object:nil];

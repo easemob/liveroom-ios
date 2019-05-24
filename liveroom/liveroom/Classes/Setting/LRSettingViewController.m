@@ -24,7 +24,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(logoutAction)
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutAction)
                                                    name:LR_Did_Login_Other_Device_Notification
                                                  object:nil];
     }

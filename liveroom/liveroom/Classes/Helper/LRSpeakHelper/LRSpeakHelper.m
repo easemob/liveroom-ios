@@ -46,7 +46,7 @@
                                                      name:AVAudioSessionRouteChangeNotification
                                                    object:[AVAudioSession sharedInstance]];
         
-        [NSNotificationCenter.defaultCenter addObserver:self
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(agreedToBeAudience:)
                                                    name:LR_Receive_ToBe_Audience_Notification
                                                  object:nil];
@@ -174,31 +174,17 @@
 #pragma mark - admin
 // 设置用户为主播
 - (void)setupUserToSpeaker:(NSString *)aUsername {
-    NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
-    if ([self isInChatroom:aUsername]) {
-        [LRChatHelper.sharedInstance sendUserOnMicMsg:aUsername];
-    }
-    [EMClient.sharedClient.conferenceManager
-     changeMemberRoleWithConfId:self.conference.confId
-     memberNames:@[applyUid] role:EMConferenceRoleSpeaker
-     completion:^(EMError *aError) {
-
+    NSString *applyUid = [[EMClient sharedClient].conferenceManager
+                          getMemberNameWithAppkey:[EMClient sharedClient].options.appkey
+                          username:aUsername];
+    [LRChatHelper.sharedInstance sendUserOnMicMsg:aUsername];
+    [EMClient.sharedClient.conferenceManager changeMemberRoleWithConfId:self.conference.confId
+                                                            memberNames:@[applyUid]
+                                                                   role:EMConferenceRoleSpeaker
+                                                             completion:^(EMError *aError)
+     {
+         
      }];
-}
-
-- (BOOL)isInChatroom:(NSString *)aUsername
-{
-    EMError *error;
-    EMCursorResult *aResult = [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.roomModel.roomId cursor:nil pageSize:500 error:&error];
-    if (!error) {
-        NSArray *list = aResult.list;
-        for (NSString *username in list) {
-            if ([username isEqualToString:aUsername]) {
-                return YES;
-            }
-        }
-    }
-    return NO;
 }
 
 // 设置用户为听众
@@ -463,13 +449,13 @@
     if (aConference.role == EMConferenceRoleSpeaker) // 被设置为主播
     {
         [self setupMySelfToSpeaker];
-        [NSNotificationCenter.defaultCenter postNotificationName:LR_UI_ChangeRoleToSpeaker_Notification
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_UI_ChangeRoleToSpeaker_Notification
                                                           object:nil];
     }
     else if (aConference.role == EMConferenceRoleAudience) // 被设置为观众
     {
         [self setupMySelfToAudiance];
-        [NSNotificationCenter.defaultCenter postNotificationName:LR_UI_ChangeRoleToAudience_Notification
+        [[NSNotificationCenter defaultCenter] postNotificationName:LR_UI_ChangeRoleToAudience_Notification
                                                           object:nil];
         if ([_currentMonopolyTalker isEqualToString:kCurrentUsername]) {
             [self unArgumentMic:self.roomModel.roomId
@@ -488,14 +474,14 @@
     if (![aConference.confId isEqualToString:self.roomModel.conferenceId]) {
         return;
     }
-    [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_Conference_Destory_Notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_Conference_Destory_Notification
                                                       object:aConference.confId];
 }
 
 // 监听用户说话
 - (void)conferenceSpeakerDidChange:(EMCallConference *)aConference
                  speakingStreamIds:(NSArray *)aStreamIds {
-    [NSNotificationCenter.defaultCenter postNotificationName:LR_Stream_Did_Speaking_Notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:LR_Stream_Did_Speaking_Notification
                                                       object:aStreamIds];
 }
 

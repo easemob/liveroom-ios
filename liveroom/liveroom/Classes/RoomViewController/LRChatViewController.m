@@ -20,6 +20,10 @@
 
 @implementation LRChatViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         [LRChatHelper.sharedInstance addDeelgate:self delegateQueue:nil];
@@ -83,7 +87,7 @@
     if (!aText || aText.length == 0) {
         return;
     }
-    NSLog(@"发送的消息-----%@", aText);
+    NSLog(@" %@ -- 发送的消息-----%@", self, aText);
     [LRChatHelper.sharedInstance sendMessage:aText
                                   completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {

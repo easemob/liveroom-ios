@@ -265,7 +265,7 @@
                     [dic setObject:EMClient.sharedClient.currentUsername forKey:@"ownerName"];
                     [dic setObject:@(self->_type) forKey:@"type"];
                 }
-                [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:dic];
+                [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:dic];
             }else {
                 [self showErrorAlertWithTitle:@"失败" info:error.domain];
             }

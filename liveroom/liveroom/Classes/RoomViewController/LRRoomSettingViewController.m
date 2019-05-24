@@ -23,7 +23,7 @@
     [super viewDidLoad];
     [self _setupSubviews];
     
-    [NSNotificationCenter.defaultCenter addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(exitChatroom:) name:LR_Exit_Chatroom_Notification
                                              object:nil];
 }
