@@ -376,7 +376,8 @@
                     [LRSpeakHelper.sharedInstance setAudioPlay:YES];
                 }
             }
-            [LRChatHelper.sharedInstance sendMessageFromNoti:@"我来了"];
+//            [LRChatHelper.sharedInstance sendMessageFromNoti:@"我来了"];
+            [self.chatVC sendText:@"我来了"];
         });
     });
 }
@@ -431,7 +432,8 @@
 }
 
 - (void)closeWindowAction {
-    [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
+//    [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
+    [self.chatVC sendText:@"我走了"];
     if (self.isOwner)
     {
         NSString *url = @"http://tcapp.easemob.com/app/huangcl/delete/talk/room/";

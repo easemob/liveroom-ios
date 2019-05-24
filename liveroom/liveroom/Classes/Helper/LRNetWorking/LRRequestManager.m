@@ -36,7 +36,7 @@ static LRRequestManager *requestManager = nil;
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:method];
     NSDictionary *headers = nil;
-    if ([token isEqualToString:@""]) {
+    if (token.length != 0) {
         headers = @{@"content-type": @"application/json",@"Authorization":[NSString stringWithFormat:@"Bearer %@", token]};
     }else {
         headers = @{@"content-type": @"application/json"};
