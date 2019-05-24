@@ -57,7 +57,7 @@
     [super viewDidLoad];
     [self _setupSubviews];
     [self autoReload];
-    [NSNotificationCenter.defaultCenter addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(autoReload)
                                                name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED
                                              object:nil];

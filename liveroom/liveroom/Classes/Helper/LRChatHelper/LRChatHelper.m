@@ -174,19 +174,19 @@
        
         if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
         {
-            [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_OnSpeak_Request_Notification
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_OnSpeak_Request_Notification
                                                               object:@{@"from":msg.from,@"confid":confid}];
         }
         
         if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件
         {
-            [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_OnSpeak_Reject_Notification
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_OnSpeak_Reject_Notification
                                                               object:@{@"from":msg.from,@"confid":confid}];
         }
         
         if ([action isEqualToString:kRequestToBe_Audience]) // 收到下麦事件
         {
-            [NSNotificationCenter.defaultCenter postNotificationName:LR_Receive_ToBe_Audience_Notification
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_ToBe_Audience_Notification
                                                               object:@{@"from":msg.from,@"confid":confid}];
         }
     }

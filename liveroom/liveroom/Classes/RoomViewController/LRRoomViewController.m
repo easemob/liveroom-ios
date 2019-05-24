@@ -80,32 +80,32 @@
     [LRSpeakHelper.sharedInstance addDeelgate:self delegateQueue:nil];
     [LRChatHelper.sharedInstance addDeelgate:self delegateQueue:nil];
     
-    [NSNotificationCenter.defaultCenter addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(parseRequestNoti:)
                                                name:LR_Receive_OnSpeak_Request_Notification
                                              object:nil];
 
-    [NSNotificationCenter.defaultCenter addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(receiveRequestReject:)
                                                name:LR_Receive_OnSpeak_Reject_Notification
                                              object:nil];
     
-    [NSNotificationCenter.defaultCenter addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(receiveRequestAgreed:)
                                                name:LR_UI_ChangeRoleToSpeaker_Notification
                                              object:nil];
     
-    [NSNotificationCenter.defaultCenter addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(changeToAudience:)
                                                name:LR_UI_ChangeRoleToAudience_Notification
                                              object:nil];
     
-    [NSNotificationCenter.defaultCenter addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(chatroomDidDestory:)
                                                name:LR_Receive_Conference_Destory_Notification
                                              object:nil];
     
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didLoginOtherDevice:)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoginOtherDevice:)
                                                name:LR_Did_Login_Other_Device_Notification
                                              object:nil];
     
@@ -376,8 +376,7 @@
                     [LRSpeakHelper.sharedInstance setAudioPlay:YES];
                 }
             }
-//            [LRChatHelper.sharedInstance sendMessageFromNoti:@"我来了"];
-            [self.chatVC sendText:@"我来了"];
+            [LRChatHelper.sharedInstance sendMessageFromNoti:@"我来了"];
         });
     });
 }
@@ -432,8 +431,9 @@
 }
 
 - (void)closeWindowAction {
-//    [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
-    [self.chatVC sendText:@"我走了"];
+    if(_conferenceJoined && _chatJoined) {
+        [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
+    }
     if (self.isOwner)
     {
         NSString *url = @"http://tcapp.easemob.com/app/huangcl/delete/talk/room/";
@@ -444,7 +444,7 @@
                                                      token:nil
                                                 completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
         {
-            [NSNotificationCenter.defaultCenter postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
         }];
     }
     
@@ -531,11 +531,12 @@
     
     self.applyOnSpeakBtn.selected = YES;
     
+    __weak typeof(self) weakSelf = self;
     [LRSpeakHelper.sharedInstance requestOnSpeaker:self.roomModel completion:^(NSString * _Nonnull errorInfo, BOOL success)
     {
         if (!success) {
-            self.applyOnSpeakBtn.selected = NO;
-            [self showErrorAlertWithTitle:@"错误 Error" info:errorInfo];
+            weakSelf.applyOnSpeakBtn.selected = NO;
+            [weakSelf showErrorAlertWithTitle:@"错误 Error" info:errorInfo];
         }
     }];
 }
