@@ -12,6 +12,8 @@
 #import "LRSpeakerCellModel.h"
 #import "UIResponder+LRRouter.h"
 
+#define kBtnWidth 80
+
 NSString *ON_MIC_EVENT_NAME              = @"onMicEventName";
 NSString *OFF_MIC_EVENT_NAME             = @"offMicEventName";
 NSString *TALK_EVENT_NAME                = @"talkEventName";
@@ -246,7 +248,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [self.talkBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
             make.left.equalTo(self.nameLabel.mas_left);
-            make.width.equalTo(@80);
+            make.width.equalTo(@(kBtnWidth));
             make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];
         
@@ -274,7 +276,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             } else {
                 make.left.equalTo(self.nameLabel.mas_left);
             }
-            make.width.equalTo(@80);
+            make.width.equalTo(@(kBtnWidth));
             make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];
     }else {
@@ -352,7 +354,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [self.voiceEnableBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
             make.left.equalTo(self.nameLabel.mas_left);
-            make.width.equalTo(@60);
+            make.width.equalTo(@(kBtnWidth));
             make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];
         
@@ -380,7 +382,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
             } else {
                 make.left.equalTo(self.nameLabel.mas_left);
             }
-            make.width.equalTo(@60);
+            make.width.equalTo(@(kBtnWidth));
             make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];
     }else {
@@ -505,7 +507,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [self.argumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5);
             make.left.equalTo(self.nameLabel.mas_left);
-            make.width.equalTo(@80);
+            make.width.equalTo(@(kBtnWidth));
             make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];
         
@@ -520,10 +522,10 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         }
         
         [self.unArgumentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
+            make.top.bottom.equalTo(self.argumentBtn);
             make.left.equalTo(self.argumentBtn.mas_right).offset(10);
-            make.width.equalTo(@80);
-            make.bottom.equalTo(self.lineView.mas_top).offset(-6);
+            make.width.equalTo(@(kBtnWidth));
+//            make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];
         
         if (self.model.unArgumentOn) {
@@ -554,9 +556,12 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         self.disconnectBtn.hidden = NO;
         [self.disconnectBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(3);
-            make.left.equalTo(argumentBtnNeedShow ?
-                              self.unArgumentBtn.mas_right : self.contentView.mas_left).offset(10);
-            make.width.equalTo(@60);
+            if (argumentBtnNeedShow) {
+                make.left.equalTo(self.unArgumentBtn.mas_right).offset(10);
+            }else {
+                make.left.equalTo(self.nameLabel.mas_left);
+            }
+            make.width.equalTo(@(kBtnWidth));
             make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];
     }else {

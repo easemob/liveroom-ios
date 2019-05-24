@@ -34,7 +34,7 @@
     [self.contentView addSubview:self.lineView];
     
     [self.emptyLightView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView).offset(5);
+        make.left.equalTo(self.contentView).offset(12);
         make.centerY.equalTo(self.infoLabel);
         make.right.equalTo(self.infoLabel.mas_left).offset(-5);
         make.width.height.equalTo(@8);
