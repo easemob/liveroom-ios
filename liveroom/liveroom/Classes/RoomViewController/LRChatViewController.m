@@ -21,6 +21,7 @@
 @implementation LRChatViewController
 
 - (void)dealloc {
+    NSLog(@" ---- lrChVC - dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

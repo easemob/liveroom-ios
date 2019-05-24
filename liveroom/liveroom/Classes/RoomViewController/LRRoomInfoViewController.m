@@ -14,7 +14,7 @@
 #import "LRChatroomMembersModel.h"
 
 #define kPadding 16
-@interface LRRoomInfoViewController () <UITableViewDelegate,UITableViewDataSource,LRSearchBarDelegate,UIGestureRecognizerDelegate,LRChatroomMembersCellDelegate>
+@interface LRRoomInfoViewController () <UITableViewDelegate, UITableViewDataSource, LRSearchBarDelegate, LRChatroomMembersCellDelegate>
 
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -67,27 +67,33 @@
 }
 
 - (void)reloadPage {
-    EMError *error;
-    NSString *owner;
-    EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:self.model.roomId error:&error];
-    if (!error) {
-        [self.dataArray removeAllObjects];
-        owner = chatroom.owner;
-        NSDictionary *dict = @{@"memberName":owner,@"isOwner":@YES,@"ownerName":owner};
-        LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
-        [self.dataArray addObject:model];
-    }
-    
-     EMCursorResult *result = [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:self.model.roomId cursor:self.cursor pageSize:50 error:&error];
-    if (!error) {
-        NSArray *list = result.list;
-        for (NSString *membersName in list) {
-            NSDictionary *dict = @{@"memberName":membersName,@"isOwner":@NO,@"ownerName":owner};
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error;
+        NSString *owner;
+        EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:weakSelf.model.roomId error:&error];
+        if (!error) {
+            [weakSelf.dataArray removeAllObjects];
+            owner = chatroom.owner;
+            NSDictionary *dict = @{@"memberName":owner,@"isOwner":@YES,@"ownerName":owner};
             LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
-            [self.dataArray addObject:model];
+            [weakSelf.dataArray addObject:model];
         }
-    }
-    [self endReload];
+        
+        EMCursorResult *result = [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:weakSelf.model.roomId cursor:weakSelf.cursor pageSize:50 error:&error];
+        if (!error) {
+            NSArray *list = result.list;
+            for (NSString *membersName in list) {
+                NSDictionary *dict = @{@"memberName":membersName,@"isOwner":@NO,@"ownerName":owner};
+                LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
+                [weakSelf.dataArray addObject:model];
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+           [weakSelf endReload];
+        });
+    });
 }
 
 - (void)endReload {
@@ -111,7 +117,7 @@
     }];
     
     self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.text = @"成员 ChatroomMembers";
+    self.titleLabel.text = @"成员列表";
     [self.titleLabel setTextColor:[UIColor blackColor]];
     self.titleLabel.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:self.titleLabel];
@@ -129,7 +135,7 @@
 {
     self.searchBar = [[LRSearchBar alloc] init];
     [self.searchBar.textField setTextColor:LRColor_MiddleBlackColor];
-    self.searchBar.placeholderString = @"Search";
+    self.searchBar.placeholderString = @"搜索";
     self.searchBar.placeholderTextFont = 12;
     self.searchBar.inputTextColor = [UIColor clearColor];
     self.searchBar.placeholderTextColor = [UIColor grayColor];
@@ -162,7 +168,6 @@
         make.bottom.equalTo(self.view).offset(-LRSafeAreaBottomHeight - 49);
     }];
     UITapGestureRecognizer *tapTableView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTableViewAction:)];
-    tapTableView.delegate = self;
     [self.tableView addGestureRecognizer:tapTableView];
     
     self.searchResultTableView = [[UITableView alloc] init];
@@ -173,7 +178,6 @@
     self.searchResultTableView.delegate = self;
     self.searchResultTableView.dataSource = self;
     UITapGestureRecognizer *tapSRTableView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSRTableViewAction:)];
-    tapSRTableView.delegate = self;
     [self.searchResultTableView addGestureRecognizer:tapSRTableView];
     
 }

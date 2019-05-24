@@ -34,6 +34,11 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 
 @implementation LRSpeakViewController
 
+- (void)dealloc {
+    NSLog(@" ---- lrSPVC - dealloc");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         [LRSpeakHelper.sharedInstance addDeelgate:self delegateQueue:nil];
@@ -99,6 +104,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
                       mute:(BOOL)isMute
                      admin:(BOOL)isAdmin{
     @synchronized (self.dataAry) {
+        NSLog(@"---- 用户上麦 ---- %@",aMember);
         LRSpeakerCellModel *nModel = nil;
         for (LRSpeakerCellModel *model in self.dataAry) {
             if ([model.username isEqualToString:@""]) {
@@ -118,11 +124,10 @@ extern NSString * const DISCONNECT_EVENT_NAME;
             nModel.unArgumentOn = NO;
         }
         if (isAdmin) {
-            [self.dataAry replaceObjectAtIndex:0 withObject:nModel];
+            [self.dataAry exchangeObjectAtIndex:[self.dataAry indexOfObject:nModel] withObjectAtIndex:0];
         }
-        
+        [self.tableView reloadData];
     }
-    [self.tableView reloadData];
 }
 
 // 删除speaker
