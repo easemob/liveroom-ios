@@ -173,7 +173,9 @@
 
 #pragma mark - admin
 // 设置用户为主播
-- (void)setupUserToSpeaker:(NSString *)aUsername {
+- (void)setupUserToSpeaker:(NSString *)aUsername
+                completion:(void(^)(BOOL success, NSString *username))completion
+{
     NSString *applyUid = [[EMClient sharedClient].conferenceManager
                           getMemberNameWithAppkey:[EMClient sharedClient].options.appkey
                           username:aUsername];
@@ -183,7 +185,9 @@
                                                                    role:EMConferenceRoleSpeaker
                                                              completion:^(EMError *aError)
      {
-         
+         if (completion) {
+             completion(aError ? NO : YES, applyUid);
+         }
      }];
 }
 

@@ -253,9 +253,9 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         }];
         
         if (self.model.talkOn) {
-            [self.talkBtn strokeWithColor:LRStrokeGreen];
+            [self.talkBtn strokeWithColor:LRStrokePureBlack];
         }else {
-            [self.talkBtn strokeWithColor:LRStrokeLowBlack];
+            [self.talkBtn strokeWithColor:LRStrokeGreen];
         }
         
     }else {
@@ -297,9 +297,10 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 - (UIButton *)talkBtn {
     if (!_talkBtn) {
         _talkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_talkBtn strokeWithColor:LRStrokeLowBlack];
+        [_talkBtn strokeWithColor:LRStrokePureBlack];
         [_talkBtn setTitle:@"发言" forState:UIControlStateNormal];
         [_talkBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _talkBtn.backgroundColor = LRColor_PureBlackColor;
         [_talkBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _talkBtn.titleLabel.font = [UIFont systemFontOfSize:11];
         [_talkBtn addTarget:self action:@selector(talkerAction:)

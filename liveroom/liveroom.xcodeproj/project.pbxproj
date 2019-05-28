@@ -133,6 +133,7 @@
 		90B490832284340300F2EBCC /* NSDictionary+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
 		90B490842284340300F2EBCC /* NSDictionary+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
 		90B490862286AC7A00F2EBCC /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		90EAE796229D47BC002885B1 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		90F2C6682254C02A00A712B8 /* liveroom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = liveroom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F2C6722254C02A00A712B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90F2C6742254C02B00A712B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -229,6 +230,7 @@
 		8A492E73331EE2825162353A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				90EAE796229D47BC002885B1 /* ReplayKit.framework */,
 				90B490862286AC7A00F2EBCC /* Social.framework */,
 				E00EE564228410500043C235 /* AVFoundation.framework */,
 				789E70471AB662ABBFC025F0 /* libPods-liveroom.a */,

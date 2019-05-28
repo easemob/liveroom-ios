@@ -174,6 +174,9 @@
 - (void)addMessageToData:(NSString *)aMessage fromUser:(NSString *)aUsername timestamp:(long long)aTimestamp{
     NSString *str = [self dateFormatter:aTimestamp];
     NSString *from = aUsername;
+    if (!from) {
+        return;
+    }
     str = [NSString stringWithFormat:@"%@ %@ %@",str, from, aMessage];
     NSRange range = [str rangeOfString:from];
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:str];

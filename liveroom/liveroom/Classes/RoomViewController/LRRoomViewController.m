@@ -124,13 +124,21 @@
     
     LRRoomOptions *options = [LRRoomOptions sharedOptions];
     if (options.isAllowApplyAsSpeaker) {
-        [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
+        [LRSpeakHelper.sharedInstance setupUserToSpeaker:username
+                                              completion:^(BOOL success, NSString *username)
+        {
+            if (!success) {
+                [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
+            }
+        }];
     }else {
         if (username) {
             if (!_requestList) {
                 _requestList = [NSMutableArray array];
             }
-            [_requestList addObject:username];
+            @synchronized (self.requestList) {
+                [_requestList addObject:username];
+            }
             [self showRequestInfoFromRequestList];
         }
     }
@@ -143,13 +151,20 @@
     if (_requestList.count == 0) {
         return;
     }
+    
+    if (self.speakerVC.memberList.count >= 6) {
+        [self rejectAllRequestMember];
+        return ;
+    }
+    
     __weak typeof(self) weakSelf = self;
     NSString *username = _requestList.firstObject;
-    NSString *info = [NSString stringWithFormat:@"%@ 申请上麦自由麦，同意么?", username];
+    NSString *info = [NSString stringWithFormat:@"%@ 申请上麦，同意么?", username];
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
     LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
         weakSelf.isAlertShow = NO;
-        [LRSpeakHelper.sharedInstance setupUserToSpeaker:username];
+        [LRSpeakHelper.sharedInstance setupUserToSpeaker:username
+                                              completion:^(BOOL success, NSString * _Nonnull username) {}];
         [weakSelf.requestList removeObjectAtIndex:0];
         [weakSelf showRequestInfoFromRequestList];
     }];
@@ -164,6 +179,15 @@
     [alert addAction:reject];
     _isAlertShow = YES;
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)rejectAllRequestMember {
+    @synchronized (self.requestList) {
+        for (NSString *username in self.requestList) {
+            [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
+        }
+        [self.requestList removeAllObjects];
+    }
 }
 
 // 上麦申请被同意

@@ -43,7 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupMySelfToAudiance;
 
 // 设置用户角色为主播(群主设置Speaker上麦时使用)
-- (void)setupUserToSpeaker:(NSString *)aUsername;
+- (void)setupUserToSpeaker:(NSString *)aUsername
+                completion:(void(^)(BOOL success, NSString *username))completion;
 
 // 设置用户角色为观众(群主设置Speaker下麦时使用)
 - (void)setupUserToAudiance:(NSString *)aUsername;
@@ -60,11 +61,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - user
 // 申请上麦
 - (void)requestOnSpeaker:(LRRoomModel *)aRoom
-            completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion;
+            completion:(void(^_Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 // 申请下麦
 - (void)requestOffSpeaker:(LRRoomModel *)aRoom
-             completion:(void(^ _Nullable)(NSString *errorInfo, BOOL success))aCompletion;
+             completion:(void (^)(NSString *errorInfo, BOOL success))aCompletion;
 
 // 是否静音自己
 - (void)muteMyself:(BOOL)isMute;

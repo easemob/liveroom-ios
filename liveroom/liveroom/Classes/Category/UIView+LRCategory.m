@@ -39,6 +39,11 @@
             color = LRColor_LessGreenColor;
         }
             break;
+        case LRStrokePureBlack:
+        {
+            color = LRColor_PureBlackColor;
+        }
+            break;
         default:
             break;
     }
