@@ -75,7 +75,6 @@
                                                            completion:^(EMCallConference *aCall, EMError *aError)
      {
          if (!aError) {
-            
              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                  [weakSelf loudspeaker];
              });
@@ -235,13 +234,14 @@
     if (isPlay) {
         NSURL *url = [NSBundle.mainBundle URLForResource:@"music" withExtension:@"mp3"];
         EMError *error = [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
-        [EMClient.sharedClient.conferenceManager adjustAudioMixingVolume:20];
+        [EMClient.sharedClient.conferenceManager adjustAudioMixingVolume:30];
         NSLog(@"error -- %@",error);
     } else {
         [EMClient.sharedClient.conferenceManager stopAudioMixing];
     }
     _isPlaying = isPlay;
 }
+
 
 #pragma mark - user
 // 申请上麦
@@ -550,11 +550,13 @@
 
 // 设置音频输出端
 - (void)loudspeaker {
+    AVAudioSession *audioSession=[AVAudioSession sharedInstance];
     if ([self hasHeadset]) {
-        [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     }else {
-        [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
     }
+    [audioSession setActive:YES error:nil];
 }
 
 - (void)audioRouteChangeListenerCallback:(NSNotification *)notification {

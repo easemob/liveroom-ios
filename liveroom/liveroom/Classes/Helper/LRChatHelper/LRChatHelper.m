@@ -44,7 +44,7 @@
 //    options.chatPort = 6717;
 //    options.chatServer = @"39.107.54.56";
 //    options.restServer = @"a1-hsb.easemob.com";
-    options.enableConsoleLog = NO;
+    options.enableConsoleLog = YES;
     [EMClient.sharedClient initializeSDKWithOptions:options];
     return options;
 }
