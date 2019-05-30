@@ -71,6 +71,7 @@
     
     UIButton *logoutButton = [[UIButton alloc] init];
     [logoutButton setBackgroundColor:[UIColor whiteColor]];
+    
     [logoutButton setTitle:[NSString stringWithFormat:@"退出 (%@)", [EMClient sharedClient].currentUsername] forState:UIControlStateNormal];
     [logoutButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [logoutButton addTarget:self action:@selector(logoutAction) forControlEvents:UIControlEventTouchUpInside];

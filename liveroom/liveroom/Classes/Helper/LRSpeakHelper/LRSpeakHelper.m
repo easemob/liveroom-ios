@@ -75,15 +75,11 @@
                                                            completion:^(EMCallConference *aCall, EMError *aError)
      {
          if (!aError) {
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                 [weakSelf loudspeaker];
-             });
              weakSelf.conference = aCall;
              [EMClient.sharedClient.conferenceManager startMonitorSpeaker:weakSelf.conference
                                                              timeInterval:500
                                                                completion:^(EMError *aError)
               {
-                  
               }];
          }
          if (aCompletion) {
@@ -421,6 +417,7 @@
                                                         streamId:aStream.streamId
                                                  remoteVideoView:nil
                                                       completion:^(EMError *aError) {
+                                                          [self loudspeaker];
                                                       }];
     
     [_delegates receiveSomeoneOnSpeaker:aStream.userName
@@ -554,11 +551,11 @@
 
 // 设置音频输出端
 - (void)loudspeaker {
-    AVAudioSession *audioSession=[AVAudioSession sharedInstance];
-    if ([self hasHeadset]) {
-        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    }else {
-        [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
+    AVAudioSession* audioSession = [AVAudioSession sharedInstance];
+    if (![self hasHeadset]) {
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+    } else {
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
     }
     [audioSession setActive:YES error:nil];
 }

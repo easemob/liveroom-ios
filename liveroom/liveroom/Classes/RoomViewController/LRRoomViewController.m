@@ -556,7 +556,7 @@
     self.applyOnSpeakBtn.selected = YES;
     
     __weak typeof(self) weakSelf = self;
-    [LRSpeakHelper.sharedInstance requestOnSpeaker:self.roomModel completion:^(NSString * _Nonnull errorInfo, BOOL success)
+    [LRSpeakHelper.sharedInstance requestOnSpeaker:weakSelf.roomModel completion:^(NSString * _Nonnull errorInfo, BOOL success)
     {
         if (!success) {
             weakSelf.applyOnSpeakBtn.selected = NO;

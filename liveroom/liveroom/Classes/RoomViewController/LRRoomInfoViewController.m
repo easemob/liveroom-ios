@@ -15,7 +15,10 @@
 
 #define kPadding 16
 @interface LRRoomInfoViewController () <UITableViewDelegate, UITableViewDataSource, LRSearchBarDelegate, LRChatroomMembersCellDelegate>
-
+{
+    BOOL _currentUserIsOwner;
+    NSString *_ownerName;
+}
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
 
@@ -70,21 +73,21 @@
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error;
-        NSString *owner;
         EMChatroom *chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:weakSelf.model.roomId error:&error];
         if (!error) {
             [weakSelf.dataArray removeAllObjects];
-            owner = chatroom.owner;
-            NSDictionary *dict = @{@"memberName":owner,@"isOwner":@YES,@"ownerName":owner};
+            self->_ownerName = chatroom.owner;
+            NSDictionary *dict = @{@"memberName":self->_ownerName,@"isOwner":@YES,@"ownerName":self->_ownerName};
             LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
             [weakSelf.dataArray addObject:model];
+            self->_currentUserIsOwner = [EMClient.sharedClient.currentUsername isEqualToString:chatroom.owner];
         }
         
         EMCursorResult *result = [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:weakSelf.model.roomId cursor:weakSelf.cursor pageSize:50 error:&error];
         if (!error) {
             NSArray *list = result.list;
             for (NSString *membersName in list) {
-                NSDictionary *dict = @{@"memberName":membersName,@"isOwner":@NO,@"ownerName":owner};
+                NSDictionary *dict = @{@"memberName":membersName,@"isOwner":@NO,@"ownerName":self->_ownerName};
                 LRChatroomMembersModel *model = [LRChatroomMembersModel initWithChatroomMembersDict:dict];
                 [weakSelf.dataArray addObject:model];
             }
@@ -251,6 +254,8 @@
         model = [self.searchResults objectAtIndex:indexPath.row];
     }
     cell.model = model;
+    cell.exitMemberButton.hidden = !_currentUserIsOwner || [model.memberName isEqualToString:_ownerName];
+    cell.ownerIconImageView.hidden = ![model.memberName isEqualToString:_ownerName];
     cell.delegate = self;
     return cell;
 }

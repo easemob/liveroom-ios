@@ -238,10 +238,6 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 - (void)roomTypeDidChange:(LRRoomType)aType {
     self.roomModel.roomType = aType;
     [self.headerView setType:aType];
-    if (aType == LRRoomType_Host && [self.roomModel.owner isEqualToString:kCurrentUsername]) {
-        // 如果是主持模式，且当前账号是管理员，直接上麦
-        [LRSpeakHelper.sharedInstance setupSpeakerMicOn:kCurrentUsername];
-    }
 }
 
 // 谁在说话回调 (在主持模式下，标注谁在说话)

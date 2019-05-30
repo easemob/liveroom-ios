@@ -317,6 +317,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [_disconnectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_disconnectBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _disconnectBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        _disconnectBtn.backgroundColor = LRColor_PureBlackColor;
         [_disconnectBtn addTarget:self action:@selector(disconnectAction:)
                  forControlEvents:UIControlEventTouchUpInside];
     }
@@ -432,6 +433,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [_disconnectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_disconnectBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _disconnectBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        _disconnectBtn.backgroundColor = LRColor_PureBlackColor;
         [_disconnectBtn addTarget:self action:@selector(disconnectAction:)
                  forControlEvents:UIControlEventTouchUpInside];
     }
@@ -613,7 +615,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [_unArgumentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_unArgumentBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _unArgumentBtn.titleLabel.font = [UIFont systemFontOfSize:11];
-        _unArgumentBtn.backgroundColor = [UIColor blackColor];
+        _unArgumentBtn.backgroundColor = LRColor_PureBlackColor;
         [_unArgumentBtn addTarget:self action:@selector(unArgumentAction:)
                  forControlEvents:UIControlEventTouchUpInside];
     }
@@ -629,7 +631,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [_disconnectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_disconnectBtn setTitleColor:LRColor_LowBlackColor forState:UIControlStateSelected];
         _disconnectBtn.titleLabel.font = [UIFont systemFontOfSize:11];
-        _disconnectBtn.backgroundColor = [UIColor blackColor];
+        _disconnectBtn.backgroundColor = LRColor_PureBlackColor;
         [_disconnectBtn addTarget:self action:@selector(disconnectAction:)
                  forControlEvents:UIControlEventTouchUpInside];
     }
