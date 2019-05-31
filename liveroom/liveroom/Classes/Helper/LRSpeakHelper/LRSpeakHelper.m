@@ -235,6 +235,7 @@
         NSURL *url = [NSBundle.mainBundle URLForResource:@"music" withExtension:@"mp3"];
         EMError *error = [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
         [EMClient.sharedClient.conferenceManager adjustAudioMixingVolume:30];
+        [self loudspeaker];
         NSLog(@"error -- %@",error);
     } else {
         [EMClient.sharedClient.conferenceManager stopAudioMixing];
@@ -416,9 +417,10 @@
     [EMClient.sharedClient.conferenceManager subscribeConference:aConference
                                                         streamId:aStream.streamId
                                                  remoteVideoView:nil
-                                                      completion:^(EMError *aError) {
-                                                          [self loudspeaker];
-                                                      }];
+                                                      completion:^(EMError *aError)
+    {
+        [self loudspeaker];
+    }];
     
     [_delegates receiveSomeoneOnSpeaker:aStream.userName
                                streamId:aStream.streamId
@@ -533,11 +535,6 @@
     }
 }
 
-#pragma mark - getter
-- (NSString *)adminId {
-    return self.conference.adminIds.firstObject;
-}
-
 - (BOOL)hasHeadset {
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     AVAudioSessionRouteDescription *currentRoute = [audioSession currentRoute];
@@ -551,19 +548,21 @@
 
 // 设置音频输出端
 - (void)loudspeaker {
+    NSError *error = nil;
     AVAudioSession* audioSession = [AVAudioSession sharedInstance];
     if (![self hasHeadset]) {
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
+                      withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error];
     } else {
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
     }
-    [audioSession setActive:YES error:nil];
+    
+    [audioSession setActive:YES error:&error];
 }
 
 - (void)audioRouteChangeListenerCallback:(NSNotification *)notification {
     NSDictionary *interuptionDict = notification.userInfo;
-    NSInteger routeChangeReason   = [[interuptionDict
-                                      valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+    NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
     switch (routeChangeReason) {
         case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
             [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
@@ -573,7 +572,11 @@
             break;
         case AVAudioSessionRouteChangeReasonCategoryChange:
             break;
+        default:
+            break;
     }
+    
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 }
 
 

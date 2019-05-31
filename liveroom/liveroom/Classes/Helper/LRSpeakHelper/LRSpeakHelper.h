@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LRRoomModel;
 @interface LRSpeakHelper : NSObject
-@property (nonatomic, strong) NSString *adminId;
 @property (nonatomic, strong) EMCallConference *conference;
 @property (nonatomic, weak) LRRoomModel * _Nullable roomModel;
 + (LRSpeakHelper *)sharedInstance;

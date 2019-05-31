@@ -6,6 +6,7 @@
 //  Copyright © 2019 Easemob. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
 #import "LRChatHelper.h"
 #import "LRGCDMulticastDelegate.h"
 #import "Headers.h"
