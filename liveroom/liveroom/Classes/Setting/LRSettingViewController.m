@@ -71,6 +71,7 @@
     
     UIButton *logoutButton = [[UIButton alloc] init];
     [logoutButton setBackgroundColor:[UIColor whiteColor]];
+    
     [logoutButton setTitle:[NSString stringWithFormat:@"退出 (%@)", [EMClient sharedClient].currentUsername] forState:UIControlStateNormal];
     [logoutButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [logoutButton addTarget:self action:@selector(logoutAction) forControlEvents:UIControlEventTouchUpInside];
@@ -156,7 +157,7 @@
     if (section == 0) {
         [self displayWithCell:cell title:@"版本version" details:nil detailText:options.version accessoryType:UITableViewCellAccessoryNone switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 1) {
-        [self displayWithCell:cell title:@"speakerNumberLimited default" details:@"默认创建voicechatroom自由麦主播数" detailText:[NSString stringWithFormat:@"%d", options.speakerNumber] accessoryType:UITableViewCellAccessoryNone switchControl:nil isSwitch:NO isAnimated:NO];
+        [self displayWithCell:cell title:@"speakerNumberLimited default" details:@"默认创建voicechatroom主播数" detailText:[NSString stringWithFormat:@"%d", options.speakerNumber] accessoryType:UITableViewCellAccessoryNone switchControl:nil isSwitch:NO isAnimated:NO];
     } else if (section == 2) {
         [self displayWithCell:cell title:@"Allow apply for interact default" details:@"允许观众申请连麦" detailText:nil accessoryType:UITableViewCellAccessoryNone switchControl:switchControl isSwitch:options.isAllowAudienceApplyInteract isAnimated:YES];
     } else if (section == 3) {

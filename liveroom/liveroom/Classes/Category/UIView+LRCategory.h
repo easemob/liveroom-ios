@@ -15,7 +15,8 @@ typedef enum : NSUInteger {
     LRStrokeBlue,
     LRStrokeGreen,
     LRStrokeWhite,
-    LRStrokeLowBlack
+    LRStrokeLowBlack,
+    LRStrokePureBlack
 } LRStrokeColor;
 
 @interface UIView (Stroke)

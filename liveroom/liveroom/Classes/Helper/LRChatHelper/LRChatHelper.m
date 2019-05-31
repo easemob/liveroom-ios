@@ -6,6 +6,7 @@
 //  Copyright © 2019 Easemob. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
 #import "LRChatHelper.h"
 #import "LRGCDMulticastDelegate.h"
 #import "Headers.h"
@@ -38,13 +39,8 @@
 
 #pragma mark - private
 - (EMOptions *)registerImSDK {
-    // 1100181024084247#voicechatroom
     EMOptions *options = [EMOptions optionsWithAppkey:@"1100181024084247#voicechatroom"];
-//    options.enableDnsConfig = NO;
-//    options.chatPort = 6717;
-//    options.chatServer = @"39.107.54.56";
-//    options.restServer = @"a1-hsb.easemob.com";
-    options.enableConsoleLog = NO;
+    options.enableConsoleLog = YES;
     [EMClient.sharedClient initializeSDKWithOptions:options];
     return options;
 }
@@ -193,9 +189,6 @@
 }
 
 - (void)messagesDidReceive:(NSArray *)aMessages {
-
-    NSLog(@"接收的消息----------%@", aMessages);
-    
     for (EMMessage *msg in aMessages) {
         if (msg.chatType != EMChatTypeChatRoom) {
             continue;

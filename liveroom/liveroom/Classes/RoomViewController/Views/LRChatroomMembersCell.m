@@ -86,20 +86,6 @@
 {
     _model = model;
     _memberNameLabel.text = _model.memberName;
-    _isOwner = _model.isOwner;
-    
-    if (_isOwner) {
-        self.exitMemberButton.hidden = YES;
-        self.ownerIconImageView.hidden = NO;
-    } else {
-        if ([[EMClient sharedClient].currentUsername isEqualToString:_model.ownerName]) {
-            self.exitMemberButton.hidden = NO;
-            self.ownerIconImageView.hidden = YES;
-        } else {
-            self.exitMemberButton.hidden = YES;
-            self.ownerIconImageView.hidden = YES;
-        }
-    }
 }
 
 @end

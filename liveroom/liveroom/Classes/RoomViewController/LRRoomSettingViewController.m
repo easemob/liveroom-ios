@@ -86,7 +86,7 @@
         roomType = @"抢麦模式";
     }
     NSString *allowAudienceOnSpeaker = _model.allowAudienceOnSpeaker? @"true" : @"false";
-    NSString *info = [NSString stringWithFormat:@"房间id：%@\n密码password：%@\n聊天室chatroomid：%@\n会议confrenceid：%@\n音质模式voicequality：%@\n自由麦主播speakerlimited：%d\n房间人数memberlimited：%d\n创建时间createtime：%@\n允许观众申请上麦applyAllow：%@\n自由麦模式type：%@",_model.roomId,_rommPassword,_model.roomId,_model.conferenceId,@"highlevel",_speakerLimited,_model.maxCount,_model.createTime,allowAudienceOnSpeaker,roomType];
+    NSString *info = [NSString stringWithFormat:@"房间id：%@\n密码password：%@\n聊天室chatroomid：%@\n会议confrenceid：%@\n音质模式voicequality：%@\n主播speakerlimited：%d\n房间人数memberlimited：%d\n创建时间createtime：%@\n允许观众申请上麦applyAllow：%@\n模式type：%@",_model.roomId,_rommPassword,_model.roomId,_model.conferenceId,@"highlevel",_speakerLimited,_model.maxCount,_model.createTime,allowAudienceOnSpeaker,roomType];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6;
     NSDictionary *ats = @{

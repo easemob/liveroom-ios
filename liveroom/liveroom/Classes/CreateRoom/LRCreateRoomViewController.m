@@ -235,7 +235,7 @@
     }
     
     if (self.passwordTextField.text.length > 16 || self.voiceChatroomIDTextField.text.length > 16) {
-        LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"创建失败，房间名或密码长度过长，不能超过64位"];
+        LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"创建失败，房间名或密码长度过长，不能超过16位"];
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }

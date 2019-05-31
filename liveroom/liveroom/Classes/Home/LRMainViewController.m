@@ -33,7 +33,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self _setupSubviews];
-
+//    [self checkAudioStatus];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomDidCreated:) name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
 }
 
@@ -87,5 +87,28 @@
 }
 
 
+- (void) checkAudioStatus{
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    switch (authStatus) {
+        case AVAuthorizationStatusNotDetermined:
+            //没有询问是否开启麦克风
+//            self.audioStatus = @"AVAuthorizationStatusNotDetermined";
+            break;
+        case AVAuthorizationStatusRestricted:
+            //未授权，家长限制
+//            self.audioStatus = @"AVAuthorizationStatusRestricted";
+            break;
+        case AVAuthorizationStatusDenied:
+            //玩家未授权
+//            self.audioStatus = @"AVAuthorizationStatusDenied";
+            break;
+        case AVAuthorizationStatusAuthorized:
+            //玩家授权
+//            self.audioStatus = @"AVAuthorizationStatusAuthorized";
+            break;
+        default:
+            break;
+    }
+}
 
 @end

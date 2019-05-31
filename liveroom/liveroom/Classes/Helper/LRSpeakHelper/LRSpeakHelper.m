@@ -75,16 +75,11 @@
                                                            completion:^(EMCallConference *aCall, EMError *aError)
      {
          if (!aError) {
-            
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                 [weakSelf loudspeaker];
-             });
              weakSelf.conference = aCall;
              [EMClient.sharedClient.conferenceManager startMonitorSpeaker:weakSelf.conference
                                                              timeInterval:500
                                                                completion:^(EMError *aError)
               {
-                  
               }];
          }
          if (aCompletion) {
@@ -174,7 +169,9 @@
 
 #pragma mark - admin
 // 设置用户为主播
-- (void)setupUserToSpeaker:(NSString *)aUsername {
+- (void)setupUserToSpeaker:(NSString *)aUsername
+                completion:(void(^)(BOOL success, NSString *username))completion
+{
     NSString *applyUid = [[EMClient sharedClient].conferenceManager
                           getMemberNameWithAppkey:[EMClient sharedClient].options.appkey
                           username:aUsername];
@@ -184,7 +181,9 @@
                                                                    role:EMConferenceRoleSpeaker
                                                              completion:^(EMError *aError)
      {
-         
+         if (completion) {
+             completion(aError ? NO : YES, applyUid);
+         }
      }];
 }
 
@@ -235,13 +234,15 @@
     if (isPlay) {
         NSURL *url = [NSBundle.mainBundle URLForResource:@"music" withExtension:@"mp3"];
         EMError *error = [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
-        [EMClient.sharedClient.conferenceManager adjustAudioMixingVolume:20];
+        [EMClient.sharedClient.conferenceManager adjustAudioMixingVolume:30];
+        [self loudspeaker];
         NSLog(@"error -- %@",error);
     } else {
         [EMClient.sharedClient.conferenceManager stopAudioMixing];
     }
     _isPlaying = isPlay;
 }
+
 
 #pragma mark - user
 // 申请上麦
@@ -416,8 +417,10 @@
     [EMClient.sharedClient.conferenceManager subscribeConference:aConference
                                                         streamId:aStream.streamId
                                                  remoteVideoView:nil
-                                                      completion:^(EMError *aError) {
-                                                      }];
+                                                      completion:^(EMError *aError)
+    {
+        [self loudspeaker];
+    }];
     
     [_delegates receiveSomeoneOnSpeaker:aStream.userName
                                streamId:aStream.streamId
@@ -532,11 +535,6 @@
     }
 }
 
-#pragma mark - getter
-- (NSString *)adminId {
-    return self.conference.adminIds.firstObject;
-}
-
 - (BOOL)hasHeadset {
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     AVAudioSessionRouteDescription *currentRoute = [audioSession currentRoute];
@@ -550,17 +548,21 @@
 
 // 设置音频输出端
 - (void)loudspeaker {
-    if ([self hasHeadset]) {
-        [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    }else {
-        [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+    NSError *error = nil;
+    AVAudioSession* audioSession = [AVAudioSession sharedInstance];
+    if (![self hasHeadset]) {
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
+                      withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error];
+    } else {
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
     }
+    
+    [audioSession setActive:YES error:&error];
 }
 
 - (void)audioRouteChangeListenerCallback:(NSNotification *)notification {
     NSDictionary *interuptionDict = notification.userInfo;
-    NSInteger routeChangeReason   = [[interuptionDict
-                                      valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+    NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
     switch (routeChangeReason) {
         case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
             [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
@@ -570,7 +572,11 @@
             break;
         case AVAudioSessionRouteChangeReasonCategoryChange:
             break;
+        default:
+            break;
     }
+    
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 }
 
 
