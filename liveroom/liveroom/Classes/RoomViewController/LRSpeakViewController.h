@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LRTypes.h"
+#import "LRSpeakerEmptyCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, weak) LRRoomModel *roomModel;
 @property (nonatomic, strong) NSMutableArray *memberList;
+@property (nonatomic, strong) NSMutableArray *dataAry;
 @end
 
 NS_ASSUME_NONNULL_END

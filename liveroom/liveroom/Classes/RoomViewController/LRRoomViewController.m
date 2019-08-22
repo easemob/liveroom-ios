@@ -21,6 +21,11 @@
 #import "LRSpeakHelper.h"
 #import <AVFoundation/AVFoundation.h>
 
+#import "LRSpeakerCommunicationViewController.h"
+#import "LRSpeakerHostViewController.h"
+#import "LRSpeakerMonopolyViewController.h"
+#import "LRSpeakerPentakillController.h"
+
 #define kPadding 15
 #define kHeaderViewHeight 45
 #define kInputViewHeight 64
@@ -61,12 +66,14 @@
         _password = aPassword;
         self.speakerVC.roomModel = _roomModel;
         self.chatVC.roomModel = _roomModel;
+        
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     self.view.backgroundColor = [UIColor blackColor];
     [self regieterNotifiers];
     [self _setupSubViews];
@@ -108,7 +115,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoginOtherDevice:)
                                                name:LR_Did_Login_Other_Device_Notification
                                              object:nil];
-    
     
 }
 
@@ -241,7 +247,7 @@
 
     [self.view addSubview:self.speakerVC.view];
     [self addChildViewController:self.speakerVC];
-    
+
     [self.view addSubview:self.chatVC.view];
     [self addChildViewController:self.chatVC];
     
@@ -584,10 +590,22 @@
     return _applyOnSpeakBtn;
 }
 
-
 - (LRSpeakViewController *)speakerVC {
     if (!_speakerVC) {
-        _speakerVC = [[LRSpeakViewController alloc] init];
+        // 这里需要依赖服务器端返回的会议类型，来做对应的speakerVC的初始化,后期更改
+//        if (_roomModel.roomType == LRRoomType_Communication) {
+//            _speakerVC = [[LRSpeakerCommunicationViewController alloc] init];
+//        } else if (_roomModel.roomType == LRRoomType_Host) {
+//            _speakerVC = [[LRSpeakerHostViewController alloc] init];
+//        } else if (_roomModel.roomType == LRRoomType_Monopoly) {
+//            _speakerVC = [[LRSpeakerMonopolyViewController alloc] init];
+//        } else if (_roomModel.roomType == LRRoomType_Pentakill) {
+//            _speakerVC = [[LRSpeakerPentakillController alloc] init];
+//        }
+        
+        // 由于已对LRSpeakViewController更改，目前只能初始化对应的子类speakerVC，所以这里的初始化要与创建的会议类型一致
+        _speakerVC = [[LRSpeakerMonopolyViewController alloc] init];
+        NSLog(@"speakerVC初始化-----------------");
     }
     return _speakerVC;
 }

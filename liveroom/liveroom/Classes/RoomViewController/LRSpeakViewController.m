@@ -9,7 +9,6 @@
 #import "LRSpeakViewController.h"
 #import "LRVolumeView.h"
 #import "LRSpeakerCell.h"
-#import "LRSpeakerEmptyCell.h"
 #import "LRSpeakerTypeView.h"
 #import "LRSpeakHelper.h"
 #import "LRRoomModel.h"
@@ -24,11 +23,13 @@ extern NSString * const TALK_EVENT_NAME;
 extern NSString * const ARGUMENT_EVENT_NAME;
 extern NSString * const UN_ARGUMENT_EVENT_NAME;
 extern NSString * const DISCONNECT_EVENT_NAME;
+extern NSString * const PK_ON_MIC_EVENT_NAME;
+extern NSString * const PK_OFF_MIC_EVENT_NAME;
+
 
 @interface LRSpeakViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakHelperDelegate>
 
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
-@property (nonatomic, strong) NSMutableArray *dataAry;
 
 @end
 
@@ -56,7 +57,6 @@ extern NSString * const DISCONNECT_EVENT_NAME;
         LRSpeakerCellModel *model = [[LRSpeakerCellModel alloc] init];
         [self.dataAry addObject:model];
     }
-    
     [self.tableView reloadData];
 }
 
@@ -76,24 +76,20 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 }
 
 #pragma mark - table view delegate & datasource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return self.dataAry.count;
 }
 
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView
-                 cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    UITableViewCell *cell;
-    LRSpeakerCellModel *model = self.dataAry[indexPath.row];
-    if (model.username && model.username.length > 0) {
-        cell = [LRSpeakerCell speakerCellWithType:self.roomModel.roomType
-                                        tableView:tableView
-                                        cellModel:model];
-    }else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"LRSpeakerEmptyCell"];
-        if (!cell) {
-            cell = [[LRSpeakerEmptyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LRSpeakerEmptyCell"];
-        }
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"UITableViewCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     }
+    // Configure the cell...
+    cell.textLabel.text = @"";
     return cell;
 }
 
