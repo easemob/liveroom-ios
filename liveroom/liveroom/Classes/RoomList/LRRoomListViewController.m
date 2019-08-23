@@ -228,6 +228,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LRRoomModel *model = [self.dataArray objectAtIndex:indexPath.row];
+    NSLog(@"连麦模式类型---------%ld", model.roomType);
     [self joinRoomWithModel:model];
 }
 

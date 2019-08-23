@@ -246,7 +246,7 @@
                 @"allowAudienceTalk":@YES,
                 @"imChatRoomMaxusers":@([options.audioQuality intValue]),
                 @"desc":@"desc",
-                @"confrDelayMillis":@3600,
+                @"confrDelayMillis":@360000,
                 @"memRole":@1
                 };
     

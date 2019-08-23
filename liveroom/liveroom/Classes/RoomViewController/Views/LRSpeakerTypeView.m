@@ -86,6 +86,12 @@
             self.infoLabel.text = @"自由麦模式下所有主播可以自由发言";
         }
             break;
+        case LRRoomType_Pentakill:
+        {
+            self.titleLabel.text = @"狼人杀模式";
+            self.infoLabel.text = @"管理员admin可以随时切换发现范围，不同范围内的主播可以发言";
+        }
+            break;
         default:
             break;
     }
