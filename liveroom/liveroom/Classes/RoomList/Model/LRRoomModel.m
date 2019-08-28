@@ -21,7 +21,20 @@
     model.createTime =  dict[@"rtcConfrCreateTime"];
     model.allowAudienceOnSpeaker = [dict[@"allowAudienceTalk"] boolValue];
     model.conferencePassword = [dict[@"rtcConfrPassword"] intValue];
-    model.roomType = LRRoomType_Communication; // 默认值
+    NSString *roomType = dict[@"roomType"];
+    if (![roomType isEqual:[NSNull null]] && roomType != nil) {
+        if ([roomType isEqualToString:@"communication"]) {
+            model.roomType = LRRoomType_Communication;
+        } else if ([roomType isEqualToString:@"host"]) {
+            model.roomType = LRRoomType_Host;
+        } else if ([roomType isEqualToString:@"monopoly"]) {
+            model.roomType = LRRoomType_Monopoly;
+        } else {
+            model.roomType = LRRoomType_Pentakill;
+        }
+    } else {
+        NSLog(@"更新--------");
+    }
     return model;
 }
 
