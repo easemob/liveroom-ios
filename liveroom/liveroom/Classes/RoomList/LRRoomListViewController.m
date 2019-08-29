@@ -228,7 +228,6 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LRRoomModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    NSLog(@"连麦模式类型---------%ld", model.roomType);
     [self joinRoomWithModel:model];
 }
 
@@ -372,6 +371,7 @@
      {
          dispatch_async(dispatch_get_main_queue(), ^{
              if (!error) {
+                 NSLog(@"房间列表------%@", result);
                  NSArray *list = result[@"list"];
                  [self.dataArray removeAllObjects];
                  if (list) {

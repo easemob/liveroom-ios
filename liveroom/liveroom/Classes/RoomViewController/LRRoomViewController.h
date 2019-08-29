@@ -19,11 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
                        roomModel:(LRRoomModel *)aRoomModel
                         password:(NSString *)aPassword;
 
-// LRRoomModel中已经包含了LRRoomType ，这里要不要单独加个会议类型，待商议
-//- (instancetype)initWithUserType:(LRUserRoleType)aType
-//                       roomModel:(LRRoomModel *)aRoomModel
-//                        roomType:(LRRoomType)aRoomType
-//                         password:(NSString *)aPassword;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -592,20 +592,15 @@
 
 - (LRSpeakViewController *)speakerVC {
     if (!_speakerVC) {
-        // 这里需要依赖服务器端返回的会议类型，来做对应的speakerVC的初始化,后期更改
-//        if (_roomModel.roomType == LRRoomType_Communication) {
-//            _speakerVC = [[LRSpeakerCommunicationViewController alloc] init];
-//        } else if (_roomModel.roomType == LRRoomType_Host) {
-//            _speakerVC = [[LRSpeakerHostViewController alloc] init];
-//        } else if (_roomModel.roomType == LRRoomType_Monopoly) {
-//            _speakerVC = [[LRSpeakerMonopolyViewController alloc] init];
-//        } else if (_roomModel.roomType == LRRoomType_Pentakill) {
-//            _speakerVC = [[LRSpeakerPentakillController alloc] init];
-//        }
-        
-        // 由于已对LRSpeakViewController更改，目前只能初始化对应的子类speakerVC，所以这里的初始化要与创建的会议类型一致
-        _speakerVC = [[LRSpeakerMonopolyViewController alloc] init];
-        NSLog(@"speakerVC初始化-----------------");
+        if (_roomModel.roomType == LRRoomType_Communication) {
+            _speakerVC = [[LRSpeakerCommunicationViewController alloc] init];
+        } else if (_roomModel.roomType == LRRoomType_Host) {
+            _speakerVC = [[LRSpeakerHostViewController alloc] init];
+        } else if (_roomModel.roomType == LRRoomType_Monopoly) {
+            _speakerVC = [[LRSpeakerMonopolyViewController alloc] init];
+        } else if (_roomModel.roomType == LRRoomType_Pentakill) {
+            _speakerVC = [[LRSpeakerPentakillController alloc] init];
+        }
     }
     return _speakerVC;
 }

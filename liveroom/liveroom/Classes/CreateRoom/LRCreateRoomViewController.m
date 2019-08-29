@@ -14,6 +14,7 @@
 @interface LRCreateRoomViewController ()
 {
     LRRoomType _type;
+    NSString *_roomType;
 }
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -39,6 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _type = LRRoomType_Communication;
+    _roomType = @"communication";
     [self _setupSubviews];
 }
 
@@ -189,6 +191,7 @@
                                           {
                                               self.speakerTypeTextLabel.text = @"自由麦模式";
                                               self->_type = LRRoomType_Communication;
+                                              self->_roomType = @"communication";
                                           }];
     
     LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
@@ -196,6 +199,7 @@
                                  {
                                      self.speakerTypeTextLabel.text = @"主持模式";
                                      self->_type = LRRoomType_Host;
+                                     self->_roomType = @"host";
                                  }];
     
     LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式"
@@ -203,6 +207,7 @@
                                      {
                                          self.speakerTypeTextLabel.text = @"抢麦模式";
                                          self->_type = LRRoomType_Monopoly;
+                                         self->_roomType = @"monopoly";
                                      }];
     
     
@@ -247,7 +252,8 @@
                 @"imChatRoomMaxusers":@([options.audioQuality intValue]),
                 @"desc":@"desc",
                 @"confrDelayMillis":@360000,
-                @"memRole":@1
+                @"memRole":@1,
+                @"roomtype":self->_roomType
                 };
     
     __weak typeof(self) weakSelf = self;
@@ -256,6 +262,7 @@
     [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:url parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"创建房间-----%@", result);
             [weakSelf hideHud];
             if (!error) {
                 NSMutableDictionary *dic = [result mutableCopy];
