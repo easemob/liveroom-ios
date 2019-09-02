@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) LRVolumeView *volumeView;
 @property (nonatomic, strong) UIView *lineView;
 @property (nonatomic, strong) LRSpeakerCellModel *model;
+
 - (void)updateSubViewUI;
 
 //+ (LRSpeakerCell *)speakerCellWithType:(LRRoomType)aType

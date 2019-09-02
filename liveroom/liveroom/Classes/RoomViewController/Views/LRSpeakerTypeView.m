@@ -10,9 +10,9 @@
 #import "Headers.h"
 
 @interface LRSpeakerTypeView ()
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *infoLabel;
-@property (nonatomic, strong) UIButton *switchBtn;
+@property (nonatomic, strong) UILabel *titleLabel;  //会议模式
+@property (nonatomic, strong) UILabel *infoLabel;   //模式介绍
+@property (nonatomic, strong) UIButton *switchBtn;  //房间模式改变按钮/暂时没开发
 @end
 
 @implementation LRSpeakerTypeView

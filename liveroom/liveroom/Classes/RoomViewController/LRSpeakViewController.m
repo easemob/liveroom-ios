@@ -9,11 +9,11 @@
 #import "LRSpeakViewController.h"
 #import "LRVolumeView.h"
 #import "LRSpeakerCell.h"
-#import "LRSpeakerTypeView.h"
 #import "LRSpeakHelper.h"
 #import "LRRoomModel.h"
 #import "LRSpeakerCellModel.h"
 #import "Headers.h"
+#import "LRSpeakerPentakillCell.h"
 
 #define kMaxSpeakerCount 6
 
@@ -28,8 +28,6 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
 
 
 @interface LRSpeakViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakHelperDelegate>
-
-@property (nonatomic, strong) LRSpeakerTypeView *headerView;
 
 @end
 
@@ -66,13 +64,14 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
     
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
-        make.bottom.equalTo(self.tableView.mas_top);
         make.height.equalTo(@40);
     }];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.headerView.mas_bottom).offset(5);
         make.left.right.bottom.equalTo(self.view);
     }];
+    
 }
 
 #pragma mark - table view delegate & datasource
@@ -80,7 +79,7 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
 {
     return self.dataAry.count;
 }
-
+//返回cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"UITableViewCell";
@@ -122,6 +121,7 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
         if (isAdmin) {
             [self.dataAry exchangeObjectAtIndex:[self.dataAry indexOfObject:nModel] withObjectAtIndex:0];
         }
+        
         [self.tableView reloadData];
     }
 }
@@ -144,11 +144,12 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
 
 // cell上按钮点击事件
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo {
-    if ([eventName isEqualToString:ON_MIC_EVENT_NAME]) {
+    
+    if ([eventName isEqualToString:ON_MIC_EVENT_NAME] || [eventName isEqualToString:PK_ON_MIC_EVENT_NAME]) {
         [LRSpeakHelper.sharedInstance muteMyself:NO];
     }
     
-    if ([eventName isEqualToString:OFF_MIC_EVENT_NAME]) {
+    if ([eventName isEqualToString:OFF_MIC_EVENT_NAME] || [eventName isEqualToString:PK_OFF_MIC_EVENT_NAME]) {
         [LRSpeakHelper.sharedInstance muteMyself:YES];
     }
     
@@ -167,14 +168,14 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
              if (success) {
                  [LRSpeakHelper.sharedInstance setupSpeakerMicOn:username];
              }
-        }];
+         }];
     }
     
     if ([eventName isEqualToString:UN_ARGUMENT_EVENT_NAME]) {
         LRSpeakerCellModel *model = userInfo.allValues.firstObject;
         __block NSString *username = model.username;
         [LRSpeakHelper.sharedInstance unArgumentMic:self.roomModel.roomId
-                                       completion:^(NSString * _Nonnull errorInfo, BOOL success)
+                                         completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              if (success) {
                  [LRSpeakHelper.sharedInstance setupSpeakerMicOff:username];
@@ -229,12 +230,29 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
     }
     [self.tableView reloadData];
 }
-
-// 房间属性变化
-- (void)roomTypeDidChange:(LRRoomType)aType {
-    self.roomModel.roomType = aType;
-    [self.headerView setType:aType];
-}
+/*
+ // 房间属性变化
+ - (void)roomTypeDidChange:(LRRoomType)aType {
+ self.roomModel.roomType = aType;
+ [self.headerView setType:aType];
+ 
+ //重新刷新正确的房间模式
+ [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+ if(self.roomModel.roomType == LRRoomType_Pentakill){
+ make.top.equalTo(self.schedule.mas_bottom).offset(5);
+ }else{
+ make.top.equalTo(self.headerView.mas_bottom).offset(5);
+ }
+ make.left.right.bottom.equalTo(self.view);
+ }];
+ if(self.roomModel.roomType != LRRoomType_Pentakill){
+ self.schedule.hidden = YES;
+ }else{
+ self.schedule.hidden = NO;
+ }
+ 
+ 
+ }*/
 
 // 谁在说话回调 (在主持模式下，标注谁在说话)
 - (void)currentHostTypeSpeakerChanged:(NSString *)aSpeaker {
@@ -288,6 +306,7 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
     
     [self.tableView reloadData];
 }
+
 
 #pragma mark - getter
 - (UITableView *)tableView {
