@@ -42,7 +42,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [self.contentView addSubview:self.crownImage];
     [self.contentView addSubview:self.volumeView];
     [self.contentView addSubview:self.lineView];
-
+    
     
     [self.lightView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).offset(12);
@@ -91,7 +91,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
         [self.volumeView setProgress:0];
     }
 }
-
+// 管理员皇冠👑 & cell 边框
 - (void)updateSubViewUI {
     self.nameLabel.text = _model.username;
     self.lightView.backgroundColor = _model.speakOn ? [UIColor greenColor] : LRColor_MiddleBlackColor;
@@ -112,6 +112,7 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
 }
 
 - (void)btnSelectedWithEventName:(NSString *)aEventName {
+    NSLog(@"\n--------->eventname:   %@    %@",aEventName,self.model);
     [self routerEventWithName:aEventName userInfo:@{@"key" : self.model}];
 }
 

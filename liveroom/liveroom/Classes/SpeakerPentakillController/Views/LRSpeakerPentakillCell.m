@@ -15,9 +15,34 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
 @property (nonatomic, strong) UIButton *voiceEnableBtn;
 // 断开按钮
 @property (nonatomic, strong) UIButton *disconnectBtn;
+//身份图片
+@property (nonatomic, strong) UIImageView *identityImage;
 @end
 
 @implementation LRSpeakerPentakillCell
+
+static dispatch_once_t onceToken;
+static LRSpeakerPentakillCell *identity;
++ (LRSpeakerPentakillCell *)sharedInstance {
+    dispatch_once(&onceToken, ^{
+        identity = [[LRSpeakerPentakillCell alloc] init];
+    });
+    return identity;
+}
+- (void)destoryInstance {
+    onceToken = 0;
+    identity = nil;
+}
+
+//显示/隐藏 狼人杀模式身份图标
+- (void)updateIdentity {
+    if((!self.model.isMyself) && [LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_dayTime"]){
+        self.identityImage.hidden = YES;
+    }else if([LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_night"]){
+        self.identityImage.hidden = NO;
+    }
+}
+
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self _setupSubViews];
@@ -27,12 +52,53 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
 
 - (void)_setupSubViews {
     [super _setupSubViews];
+    self.identityImage = [[UIImageView alloc]initWithFrame:CGRectZero];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSubViewUI)
+                                                 name:LR_WEREWOLF_DIDCHANGE
+                                               object:nil];
+    [self.contentView addSubview:self.identityImage];
     [self.contentView addSubview:self.voiceEnableBtn];
     [self.contentView addSubview:self.disconnectBtn];
 }
-
+// 管理员皇冠👑 & cell 边框
 - (void)updateSubViewUI {
     [super updateSubViewUI];
+    if(self.model.isAdmin){
+        [self.identityImage mas_remakeConstraints:^(MASConstraintMaker *make){
+            make.centerY.equalTo(self.nameLabel);
+            make.left.equalTo(self.crownImage.mas_right).offset(5);
+            make.width.equalTo(@13);
+            make.height.width.equalTo(@12);
+        }];
+    }else{
+        [self.identityImage mas_remakeConstraints:^(MASConstraintMaker *make){
+            make.centerY.equalTo(self.nameLabel);
+            make.left.equalTo(self.nameLabel.mas_right).offset(5);
+            make.width.equalTo(@13);
+            make.height.width.equalTo(@12);
+        }];
+    }
+    
+    //l狼人杀模式设置身份图片
+    BOOL key = true;
+    for (NSString *str in LRSpeakHelper.sharedInstance.identityDic) {
+        NSLog(@"\n---------->useronline:    %@",str);
+    }
+    for(NSString *strIdentity in LRSpeakHelper.sharedInstance.identityDic){
+        NSLog(@"\n------------->stridentity:    %@",strIdentity);
+        if([self.model.username isEqualToString:strIdentity])
+        {
+            self.identityImage.image = [UIImage imageNamed:@"werewolf"];
+            key = false;
+            break;
+        }
+    }
+    if(key){
+        self.identityImage.image = [UIImage imageNamed:@"villager"];
+    }
+    //设置身份白天只有自己可见。
+    [self updateIdentity];
+    
     BOOL voiceEnableBtnNeedShow = self.model.type == LRRoomType_Pentakill && self.model.isMyself;
     if (voiceEnableBtnNeedShow) {
         self.voiceEnableBtn.hidden = NO;
@@ -42,7 +108,6 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
             make.width.equalTo(@(kBtnWidth));
             make.bottom.equalTo(self.lineView.mas_top).offset(-6);
         }];
-        
         
         if (self.model.speakOn) {
             [self.voiceEnableBtn strokeWithColor:LRStrokeLowBlack];
@@ -76,7 +141,10 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
         }];
         self.disconnectBtn.hidden = YES;
     }
+    
 }
+
+
 
 #pragma mark - actions
 - (void)voiceEnableAction:(UIButton *)aBtn {

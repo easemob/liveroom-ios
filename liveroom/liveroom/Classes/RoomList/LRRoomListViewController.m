@@ -58,9 +58,9 @@
     [self _setupSubviews];
     [self autoReload];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(autoReload)
-                                               name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED
-                                             object:nil];
+                                             selector:@selector(autoReload)
+                                                 name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED
+                                               object:nil];
 }
 
 - (void)_setupSubviews
@@ -160,7 +160,7 @@
         make.left.equalTo(self.noResultView).offset(10);
         make.right.equalTo(self.noResultView).offset(-10);
     }];
-
+    
 }
 
 #pragma mark - GestureRecognizer
@@ -178,7 +178,7 @@
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if ([NSStringFromClass([touch.view class]) isEqual:@"UITableViewCellContentView"]) {
         return NO;
-        }
+    }
     return YES;
 }
 
@@ -334,7 +334,7 @@
 
 #pragma mark - Actions
 - (void)joinRoomWithModel:(LRRoomModel *)aModel {
-
+    
     NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"true":@"false"];
     LRAlertController *alert = [LRAlertController showTextAlertWithTitle:aModel.roomname info:info];
     UITextField *pwdTextField = [[UITextField alloc] init];
@@ -386,11 +386,11 @@
                      }
                  }
              }else {
-        
+                 
              }
              [self endReload];
          });
-    }];
+     }];
 }
 
 - (void)endReload {

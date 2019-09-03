@@ -57,6 +57,8 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define kRequestToBe_Audience @"request_tobe_audience"              // 申请下麦
 #define kRequestToBe_Rejected @"request_tobe_rejected"              // 拒绝上麦申请
 
+#define kRequestUser @"requestUser"
+
 #define kRequestConferenceId  @"em_conference_id"
 
 

@@ -32,8 +32,10 @@ typedef enum : NSUInteger {
     LRAlertType_Success,
     LRAlertType_Warning,
     LRAlertType_Error,
-    LRAlertType_None
-} LRAlertType;
+    LRAlertType_None,
+    LRAlertType_Werewolves,
+    LRAlertType_dayTime,
+    LRAlertType_night} LRAlertType;
 
 
 @interface LRAlertController () <UITextFieldDelegate>
@@ -55,7 +57,7 @@ typedef enum : NSUInteger {
 @implementation LRAlertController
 
 + (LRAlertController *)showSuccessAlertWithTitle:(NSString *)aTitle
-                                           info:(NSString * _Nullable)aInfo {
+                                            info:(NSString * _Nullable)aInfo {
     LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_Success
                                                                            title:aTitle
                                                                             info:aInfo];
@@ -64,15 +66,40 @@ typedef enum : NSUInteger {
 
 
 + (LRAlertController *)showTipsAlertWithTitle:(NSString *)aTitle
-                                        info:(NSString * _Nullable)aInfo {
+                                         info:(NSString * _Nullable)aInfo {
     LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_Warning
                                                                            title:aTitle
                                                                             info:aInfo];
     return alertController;
 }
 
++ (LRAlertController *)showClockChangeAlertWithTitle:(NSString *)aTitle
+                                                info:(NSString * _Nullable)aInfo
+                                          clockState:(NSString *)lrterminator {
+    LRAlertController *alertController;
+    if([lrterminator isEqualToString:@"LRTerminator_dayTime"]){
+        alertController = [[LRAlertController alloc] initWithType:LRAlertType_dayTime
+                                                            title:aTitle
+                                                             info:aInfo];
+    }else{
+        alertController = [[LRAlertController alloc] initWithType:LRAlertType_night
+                                                            title:aTitle
+                                                             info:aInfo];
+    }
+    
+    return alertController;
+}
+
++ (LRAlertController *)showIdentityAlertWithTitle:(NSString *)aTitle
+                                             info:(NSString * _Nullable)aInfo {
+    LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_Werewolves
+                                                                           title:aTitle
+                                                                            info:aInfo];
+    return alertController;
+}
+
 + (LRAlertController *)showErrorAlertWithTitle:(NSString *)aTitle
-                                         info:(NSString * _Nullable)aInfo {
+                                          info:(NSString * _Nullable)aInfo {
     LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_Error
                                                                            title:aTitle
                                                                             info:aInfo];
@@ -80,7 +107,7 @@ typedef enum : NSUInteger {
 }
 
 + (LRAlertController *)showTextAlertWithTitle:(NSString *)aTitle
-                                        info:(NSString * _Nullable)aInfo {
+                                         info:(NSString * _Nullable)aInfo {
     LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_None
                                                                            title:aTitle
                                                                             info:aInfo];
@@ -213,6 +240,21 @@ typedef enum : NSUInteger {
         case LRAlertType_Error:
         {
             image = [UIImage imageNamed:@"error"];
+        }
+            break;
+        case LRAlertType_Werewolves:
+        {
+            image = [UIImage imageNamed:@"werewolf"];
+        }
+            break;
+        case LRAlertType_dayTime:
+        {
+            image = [UIImage imageNamed:@"sun"];
+        }
+            break;
+        case LRAlertType_night:
+        {
+            image = [UIImage imageNamed:@"moon"];
         }
             break;
         default:

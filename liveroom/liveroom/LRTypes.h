@@ -25,4 +25,11 @@ typedef enum : NSUInteger {
     LRUserType_Audiance,
 } LRUserRoleType;
 
+//狼人杀模式下的白天黑夜状态
+//当前房间时间钟的昼夜
+typedef enum : NSInteger {
+    LRTerminator_dayTime = 1,  //白天
+    LRTerminator_night     //晚上
+} LRTerminator;
+
 #endif /* LRTypes_h */

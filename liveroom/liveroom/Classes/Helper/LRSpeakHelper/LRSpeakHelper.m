@@ -10,6 +10,8 @@
 #import "LRSpeakHelper.h"
 #import "LRGCDMulticastDelegate.h"
 #import "LRRoomModel.h"
+#import "LRSpeakerPentakillController.h"
+#import "LRSpeakerPentakillCell.h"
 
 #define kKeepHandleTime 30.00
 
@@ -26,13 +28,23 @@
 @end
 
 @implementation LRSpeakHelper
+static dispatch_once_t onceToken;
+static LRSpeakHelper *helper_;
+- (NSMutableArray *)identityDic {
+    if(!_identityDic){
+        _identityDic = [[NSMutableArray alloc]init];
+    }
+    return _identityDic;
+}
 + (LRSpeakHelper *)sharedInstance {
-    static dispatch_once_t onceToken;
-    static LRSpeakHelper *helper_;
     dispatch_once(&onceToken, ^{
         helper_ = [[LRSpeakHelper alloc] init];
     });
     return helper_;
+}
+- (void)destoryInstance {
+    onceToken = 0;
+    helper_ = nil;
 }
 
 - (instancetype)init {
@@ -47,9 +59,9 @@
                                                    object:[AVAudioSession sharedInstance]];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(agreedToBeAudience:)
-                                                   name:LR_Receive_ToBe_Audience_Notification
-                                                 object:nil];
+                                                 selector:@selector(agreedToBeAudience:)
+                                                     name:LR_Receive_ToBe_Audience_Notification
+                                                   object:nil];
     }
     return self;
 }
@@ -67,8 +79,8 @@
 
 // 加入语音会议
 - (void)joinSpeakRoomWithConferenceId:(NSString *)aConferenceId
-                       password:(NSString *)aPassword
-                     completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+                             password:(NSString *)aPassword
+                           completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     __weak typeof(self) weakSelf = self;
     [EMClient.sharedClient.conferenceManager joinConferenceWithConfId:aConferenceId
                                                              password:aPassword
@@ -101,36 +113,45 @@
      }];
 }
 
-
-// 设置房间属性
-- (void)setupRoomType:(LRRoomType)aType {
-    NSString *value;
-    switch (aType) {
-        case LRRoomType_Communication:
-        {
-            value = @"communication";
-        }
-            break;
-        case LRRoomType_Host:
-        {
-            value = @"host";
-        }
-            break;
-        case LRRoomType_Monopoly:
-        {
-            value = @"monopoly";
-        }
-            break;
-        default:
-            break;
-    }
-    if (value) {
-        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"type" value:value completion:^(EMError *aError)
-        {
-                                                                 
-        }];
-    }
-}
+/*
+ // 设置房间属性
+ - (void)setupRoomType:(LRRoomType)aType {
+ NSString *value;
+ switch (aType) {
+ case LRRoomType_Communication:
+ {
+ value = @"communication";
+ }
+ break;
+ case LRRoomType_Host:
+ {
+ value = @"host";
+ }
+ break;
+ case LRRoomType_Monopoly:
+ {
+ value = @"monopoly";
+ }
+ break;
+ case LRRoomType_Pentakill:
+ {
+ value = @"pentakill";
+ }
+ break;
+ default:
+ break;
+ }
+ if (value) {
+ [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"type" value:value completion:^(EMError *aError)
+ {
+ 
+ }];
+ //狼人杀模式设置当前状态
+ if([value isEqualToString:@"pentakill"]){
+ [EMClient.sharedClient.conferenceManager setConferenceAttribute:[NSString stringWithFormat:@"clockStatus%@",self.roomModel.owner] value:@"LRTerminator_dayTime" completion:^(EMError *aError){}];
+ }
+ }
+ }*/
 
 // 发布自己的流，并更新ui
 - (void)setupMySelfToSpeaker {
@@ -142,7 +163,8 @@
     __block BOOL isMute = YES;
     BOOL isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
     isMute = !((isOwner && self.roomModel.roomType == LRRoomType_Host)
-               || (self.roomModel.roomType == LRRoomType_Communication));
+               || (self.roomModel.roomType == LRRoomType_Communication)
+               || (self.roomModel.roomType == LRRoomType_Pentakill));
     param.isMute = isMute;
     [EMClient.sharedClient.conferenceManager publishConference:self.conference
                                                    streamParam:param
@@ -189,6 +211,20 @@
 
 // 设置用户为听众
 - (void)setupUserToAudiance:(NSString *)aUsername {
+    
+    if([LRSpeakHelper.sharedInstance.identityDic containsObject:aUsername]){
+        //把当前要下麦（主动/被动）主播从狼人主播数组删除
+        for (NSString *str in LRSpeakHelper.sharedInstance.identityDic) {
+            NSLog(@"\n---------->userprevious:    %@",str);
+        }
+        [LRSpeakHelper.sharedInstance.identityDic removeObject:aUsername];
+        for (NSString *str in LRSpeakHelper.sharedInstance.identityDic) {
+            NSLog(@"\n---------->userofflineend:    %@",str);
+        }
+        NSString *str = [LRSpeakHelper.sharedInstance.identityDic componentsJoinedByString:@","];
+        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"identityDic" value:str completion:^(EMError *aError){}];
+    }
+    
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
     [LRChatHelper.sharedInstance sendUserOffMicMsg:aUsername];
     [EMClient.sharedClient.conferenceManager
@@ -198,6 +234,22 @@
      completion:^(EMError *aError) {
          
      }];
+    
+    //夜晚通知下麦主播事件
+    if([LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_night"]){
+        EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@""];
+        EMMessage *msg = [[EMMessage alloc] initWithConversationID:aUsername
+                                                              from:kCurrentUsername
+                                                                to:aUsername
+                                                              body:body
+                                                               ext:@{kRequestAction:kRequestToBe_Audience,
+                                                                     kRequestConferenceId:self.conference.confId,
+                                                                     }];
+        msg.chatType = EMChatTypeChat;
+        [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:^(EMMessage *message, EMError *error) {
+        }];
+    }
+    
 }
 
 // 拒绝用户上麦申请
@@ -216,7 +268,7 @@
 
 - (void)setupSpeakerMicOn:(NSString *)aUsername {
     [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"talker" value:aUsername completion:nil];
-
+    
 }
 
 - (void)setupSpeakerMicOff:(NSString *)aUsername {
@@ -233,7 +285,7 @@
     }
     if (isPlay) {
         NSURL *url = [NSBundle.mainBundle URLForResource:@"music" withExtension:@"mp3"];
-        EMError *error = [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1];
+        EMError *error = [EMClient.sharedClient.conferenceManager startAudioMixing:url loop:-1 sendMix:NO];
         [EMClient.sharedClient.conferenceManager adjustAudioMixingVolume:30];
         [self loudspeaker];
         NSLog(@"error -- %@",error);
@@ -256,12 +308,20 @@
     
     EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@""];
     body.isDeliverOnlineOnly = YES; // 只投递在线
+    NSDictionary *extArry = @{kRequestAction:kRequestToBe_Speaker,
+                              kRequestConferenceId:self.conference.confId
+                              };
+    if([LRSpeakerPentakillCell.sharedInstance.identity isEqualToString:@"pentakill"]){
+        extArry = @{kRequestAction:kRequestToBe_Speaker,
+                    kRequestConferenceId:self.conference.confId,
+                    kRequestUser:kCurrentUsername
+                    };
+    }
     EMMessage *msg = [[EMMessage alloc] initWithConversationID:aRoom.owner
                                                           from:kCurrentUsername
                                                             to:aRoom.owner
                                                           body:body
-                                                           ext:@{kRequestAction:kRequestToBe_Speaker,
-                                                                 kRequestConferenceId:self.conference.confId}];
+                                                           ext:extArry];
     
     msg.chatType = EMChatTypeChat;
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:^(EMMessage *message, EMError *error) {
@@ -281,7 +341,8 @@
                                                             to:aRoom.owner
                                                           body:body
                                                            ext:@{kRequestAction:kRequestToBe_Audience,
-                                                                 kRequestConferenceId:self.conference.confId
+                                                                 kRequestConferenceId:self.conference.confId,
+                                                                 kRequestUser:kCurrentUsername
                                                                  }];
     
     msg.chatType = EMChatTypeChat;
@@ -395,13 +456,15 @@
 
 // 自动同意下麦申请
 - (void)agreedToBeAudience:(NSNotification *)aNoti  {
-    NSDictionary *dict = aNoti.object;
-    NSString *username = dict[@"from"];
-    NSString *confid = dict[@"confid"];
-    if (!self.roomModel || ![confid isEqualToString:self.roomModel.conferenceId]) {
-        return;
+    if([self.roomModel.owner isEqualToString:kCurrentUsername]){
+        NSDictionary *dict = aNoti.object;
+        NSString *username = dict[@"from"];
+        NSString *confid = dict[@"confid"];
+        if (!self.roomModel || ![confid isEqualToString:self.roomModel.conferenceId]) {
+            return;
+        }
+        [self setupUserToAudiance:username];
     }
-    [self setupUserToAudiance:username];
 }
 
 #pragma mark - EMConferenceManagerDelegate
@@ -418,9 +481,9 @@
                                                         streamId:aStream.streamId
                                                  remoteVideoView:nil
                                                       completion:^(EMError *aError)
-    {
-        [self loudspeaker];
-    }];
+     {
+         [self loudspeaker];
+     }];
     
     [_delegates receiveSomeoneOnSpeaker:aStream.userName
                                streamId:aStream.streamId
@@ -435,7 +498,7 @@
     if (![aConference.confId isEqualToString:aConference.confId]) {
         return;
     }
-
+    
     [_delegates receiveSomeoneOffSpeaker:aStream.userName];
 }
 
@@ -454,13 +517,13 @@
     {
         [self setupMySelfToSpeaker];
         [[NSNotificationCenter defaultCenter] postNotificationName:LR_UI_ChangeRoleToSpeaker_Notification
-                                                          object:nil];
+                                                            object:nil];
     }
     else if (aConference.role == EMConferenceRoleAudience) // 被设置为观众
     {
         [self setupMySelfToAudiance];
         [[NSNotificationCenter defaultCenter] postNotificationName:LR_UI_ChangeRoleToAudience_Notification
-                                                          object:nil];
+                                                            object:nil];
         if ([_currentMonopolyTalker isEqualToString:kCurrentUsername]) {
             [self unArgumentMic:self.roomModel.roomId
                      completion:^(NSString * _Nonnull errorInfo, BOOL success)
@@ -479,14 +542,14 @@
         return;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_Conference_Destory_Notification
-                                                      object:aConference.confId];
+                                                        object:aConference.confId];
 }
 
 // 监听用户说话
 - (void)conferenceSpeakerDidChange:(EMCallConference *)aConference
                  speakingStreamIds:(NSArray *)aStreamIds {
     [[NSNotificationCenter defaultCenter] postNotificationName:LR_Stream_Did_Speaking_Notification
-                                                      object:aStreamIds];
+                                                        object:aStreamIds];
 }
 
 
@@ -495,24 +558,43 @@
                         attributes:(NSArray <EMConferenceAttribute *>*)attrs{
     NSString *talker = nil;
     for (EMConferenceAttribute *attr in attrs) {
-        if ([attr.key isEqualToString:@"type"]) {
-            NSString *roomType = attr.value;
-            if ([roomType isEqualToString:@"communication"]) {
-                self.roomModel.roomType = LRRoomType_Communication;
-            }else if ([roomType isEqualToString:@"host"]) {
-                self.roomModel.roomType = LRRoomType_Host;
-            }else if ([roomType isEqualToString:@"monopoly"]) {
-                self.roomModel.roomType = LRRoomType_Monopoly;
-            }
-            [_delegates roomTypeDidChange:self.roomModel.roomType];
+        /*
+         if ([attr.key isEqualToString:@"type"]) {
+         NSString *roomType = attr.value;
+         if ([roomType isEqualToString:@"communication"]) {
+         self.roomModel.roomType = LRRoomType_Communication;
+         }else if ([roomType isEqualToString:@"host"]) {
+         self.roomModel.roomType = LRRoomType_Host;
+         }else if ([roomType isEqualToString:@"monopoly"]) {
+         self.roomModel.roomType = LRRoomType_Monopoly;
+         }else if ([roomType isEqualToString:@"pentakill"]){
+         self.roomModel.roomType = LRRoomType_Pentakill;
+         }
+         [_delegates roomTypeDidChange:self.roomModel.roomType];
+         }
+         */
+        //狼人杀模式当前房间时钟状态
+        if([attr.key isEqualToString:[NSString stringWithFormat:@"clockStatus%@",self.roomModel.owner]]){
+            LRSpeakHelper.sharedInstance.clockStatus = attr.value;
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:LRSpeakHelper.sharedInstance.clockStatus];
         }
+        
+        //狼人杀模式主播身份数组
+        if([attr.key isEqualToString:@"identityDic"]){
+            LRSpeakHelper.sharedInstance.identityDic = [NSMutableArray arrayWithArray:[attr.value componentsSeparatedByString:@","]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_WEREWOLF_DIDCHANGE
+                                                                object:nil];
+        }
+        
         if ([attr.key isEqualToString:@"talker"]) {
             talker = attr.value;
         }
         
         if ([attr.key isEqualToString:@"music"]) {
             if (attr.action == EMConferenceAttributeAdd) {
-                [self playMusic:YES];
+                if(!(self.roomModel.roomType == LRRoomType_Pentakill)){
+                    [self playMusic:YES];
+                }
             }else if (attr.action == EMConferenceAttributeDelete) {
                 [self playMusic:NO];
             }
@@ -520,6 +602,7 @@
     }
     
     if (talker) {
+        
         if (self.roomModel.roomType == LRRoomType_Host) {
             [_delegates currentHostTypeSpeakerChanged:talker];
         }

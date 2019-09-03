@@ -10,5 +10,5 @@ target 'liveroom' do
     pod 'CocoaLumberjack', '~> 3.4.2'
     pod 'MJRefresh'
     pod 'MBProgressHUD'
-    pod 'Hyphenate'
+    pod 'Hyphenate', '3.6.1'
 end

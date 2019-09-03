@@ -121,7 +121,7 @@
 
 #pragma mark - message
 - (void)sendMessage:(NSString *)aMessage
-                   completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+         completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aMessage];
     EMMessage *msg = [[EMMessage alloc] initWithConversationID:_roomModel.roomId
                                                           from:EMClient.sharedClient.currentUsername
@@ -132,20 +132,20 @@
     [EMClient.sharedClient.chatManager sendMessage:msg
                                           progress:nil
                                         completion:^(EMMessage *message, EMError *error)
-    {
-        if (aCompletion) {
-            aCompletion(error.errorDescription, !error);
-        }
-    }];
+     {
+         if (aCompletion) {
+             aCompletion(error.errorDescription, !error);
+         }
+     }];
 }
 
 - (void)sendLikeMessage:(NSString *)aMessage
-                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+             completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     [self sendMessage:aMessage completion:aCompletion];
 }
 
 - (void)sendGiftMessage:(NSString *)aMessage
-                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+             completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     [self sendMessage:aMessage completion:aCompletion];
 }
 
@@ -161,29 +161,40 @@
 - (void)sendUserOffMicMsg:(NSString *)username{
     [self sendMessageFromNoti:[NSString stringWithFormat:@"[@%@]下麦",username]];
 }
-
+//会议里上下麦触发事件
 #pragma mark - EMChatManagerDelegate
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages {
     for (EMMessage *msg in aCmdMessages) {
         NSString *action = msg.ext[kRequestAction];
         NSString *confid = msg.ext[kRequestConferenceId];
-       
+        NSString *user = msg.ext[kRequestUser];
+        
+        if ([action isEqualToString:kRequestToBe_Speaker] && user)  //添加狼人进入狼人数组
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_ADD_WEREWOLF_ARRY
+                                                                object:user];
+        }else if([action isEqualToString:kRequestToBe_Speaker] && !user){
+            //非狼人身份也要发通知，刷新身份图标
+            NSString *str = [LRSpeakHelper.sharedInstance.identityDic componentsJoinedByString:@","];
+            [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"identityDic" value:str completion:^(EMError *aError){}];
+        }
+        
         if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_OnSpeak_Request_Notification
-                                                              object:@{@"from":msg.from,@"confid":confid}];
+                                                                object:@{@"from":msg.from,@"confid":confid}];
         }
         
         if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_OnSpeak_Reject_Notification
-                                                              object:@{@"from":msg.from,@"confid":confid}];
+                                                                object:@{@"from":msg.from,@"confid":confid}];
         }
         
         if ([action isEqualToString:kRequestToBe_Audience]) // 收到下麦事件
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_ToBe_Audience_Notification
-                                                              object:@{@"from":msg.from,@"confid":confid}];
+                                                                object:@{@"from":msg.from,@"confid":confid}];
         }
     }
 }
@@ -229,7 +240,7 @@
         reason = @"房间被销毁";
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:LR_Exit_Chatroom_Notification object:reason];
-
+    
     [_delegates didExitChatroom:reason];
 }
 
