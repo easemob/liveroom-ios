@@ -60,7 +60,6 @@ NSString *DISCONNECT_EVENT_NAME          = @"disconnectEventName";
     [self.crownImage mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.nameLabel);
         make.left.equalTo(self.nameLabel.mas_right).offset(5);
-        make.width.equalTo(@13);
         make.height.width.equalTo(@12);
     }];
     
