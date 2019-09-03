@@ -13,6 +13,9 @@
 #define LR_ACCOUNT_LOGIN_CHANGED @"loginStateChange"
 #define LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED @"RoomListDidChanged"
 
+//狼人杀模式夜晚遮掩UI
+#define LR_COVERUI @"CoverUi"
+
 //狼人杀模式当前房间时钟状态
 #define LR_CLOCK_STATE_CHANGE @"ClockStateChange"
 

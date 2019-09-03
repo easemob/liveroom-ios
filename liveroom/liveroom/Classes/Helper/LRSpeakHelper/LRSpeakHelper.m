@@ -28,6 +28,24 @@
 @end
 
 @implementation LRSpeakHelper
+
+static NSString *identity = @"";//全局static狼人杀模式身份标识
+static NSString *clockStatus;  //时钟状态
+
++ (NSString *)instanceIdentity {
+    return identity;
+}
++ (void)setupIdentity:(NSString *)status {
+    identity = status;
+}
+
++ (NSString *)instanceClockStatus {
+    return clockStatus;
+}
++ (void)setupClockStatus:(NSString *)clock {
+    clockStatus = clock;
+}
+
 static dispatch_once_t onceToken;
 static LRSpeakHelper *helper_;
 - (NSMutableArray *)identityDic {
@@ -236,7 +254,7 @@ static LRSpeakHelper *helper_;
      }];
     
     //夜晚通知下麦主播事件
-    if([LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_night"]){
+    if([[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"]){
         EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@""];
         EMMessage *msg = [[EMMessage alloc] initWithConversationID:aUsername
                                                               from:kCurrentUsername
@@ -311,7 +329,7 @@ static LRSpeakHelper *helper_;
     NSDictionary *extArry = @{kRequestAction:kRequestToBe_Speaker,
                               kRequestConferenceId:self.conference.confId
                               };
-    if([LRSpeakerPentakillCell.sharedInstance.identity isEqualToString:@"pentakill"]){
+    if([[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
         extArry = @{kRequestAction:kRequestToBe_Speaker,
                     kRequestConferenceId:self.conference.confId,
                     kRequestUser:kCurrentUsername
@@ -574,9 +592,9 @@ static LRSpeakHelper *helper_;
          }
          */
         //狼人杀模式当前房间时钟状态
-        if([attr.key isEqualToString:[NSString stringWithFormat:@"clockStatus%@",self.roomModel.owner]]){
-            LRSpeakHelper.sharedInstance.clockStatus = attr.value;
-            [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:LRSpeakHelper.sharedInstance.clockStatus];
+        if([attr.key isEqualToString:@"clockStatus"]){
+            [LRSpeakHelper setupClockStatus:attr.value];
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:[LRSpeakHelper instanceClockStatus]];
         }
         
         //狼人杀模式主播身份数组

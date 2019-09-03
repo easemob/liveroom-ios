@@ -417,9 +417,9 @@
                 
                 if(self.roomModel.roomType == LRRoomType_Pentakill){
                     //狼人杀模式设置当前时钟状态
-                    [EMClient.sharedClient.conferenceManager setConferenceAttribute:[NSString stringWithFormat:@"clockStatus%@",self.roomModel.owner] value:@"LRTerminator_dayTime" completion:^(EMError *aError){}];
+                    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"clockStatus" value:@"LRTerminator_dayTime" completion:^(EMError *aError){}];
                     //房主是狼人，房主加入数组
-                    if([LRSpeakerPentakillCell.sharedInstance.identity isEqualToString:@"pentakill"]){
+                    if([[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
                         [LRSpeakHelper.sharedInstance.identityDic addObject:kCurrentUsername];
                     }
                     for(NSString *str in LRSpeakHelper.sharedInstance.identityDic){
@@ -507,11 +507,9 @@
                                                 completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
          {
              [LRSpeakHelper.sharedInstance destoryInstance];//释放数组单例
-             [LRSpeakerPentakillCell.sharedInstance destoryInstance];//释放身份单例
              [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
          }];
     }
-    [LRSpeakerPentakillCell.sharedInstance destoryInstance];//释放身份单例
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
     if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
@@ -589,12 +587,12 @@
     LRAlertController *alert = [LRAlertController showIdentityAlertWithTitle:@"选择上麦身份" info:@"提交上麦参与体验.\n需要先选择上麦后的身份。\n您可以选择狼人或者村民，进行点击确认。"];
     LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"狼人 Werewolf" callback:^(LRAlertController *_Nonnull alertController)
                                {
-                                   LRSpeakerPentakillCell.sharedInstance.identity = @"pentakill";
+                                   [LRSpeakHelper setupIdentity:@"pentakill"];
                                    [self applyOnSpeakHandle];
                                }];
     LRAlertAction *villager = [LRAlertAction alertActionTitle:@"村民 Villager" callback:^(LRAlertController *_Nonnull alertController)
                                {
-                                   LRSpeakerPentakillCell.sharedInstance.identity = @"villager";
+                                   [LRSpeakHelper setupIdentity:@"villager"];
                                    [self applyOnSpeakHandle];
                                }];
     [alert addAction:werewolf];
@@ -606,7 +604,7 @@
 //申请上麦验证
 - (void)applyOnSpeak:(UIButton *)btn {
     //狼人杀模式夜晚状态并且非狼人角色不能申请上麦
-    if(self.roomModel.roomType == LRRoomType_Pentakill && [LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_night"] && ![LRSpeakerPentakillCell.sharedInstance.identity isEqualToString:@"pentakill"]){
+    if(self.roomModel.roomType == LRRoomType_Pentakill && [[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"] && ![[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
         LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"现在是夜晚状态，\n请等待房主切换至白天状态再申请上麦！"];
         LRAlertAction *confirm = [LRAlertAction alertActionTitle:@"确认" callback:^(LRAlertController *_Nonnull          alertContoller){
             

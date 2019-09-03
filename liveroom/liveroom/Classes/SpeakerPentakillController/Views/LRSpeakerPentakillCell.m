@@ -21,28 +21,6 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
 
 @implementation LRSpeakerPentakillCell
 
-static dispatch_once_t onceToken;
-static LRSpeakerPentakillCell *identity;
-+ (LRSpeakerPentakillCell *)sharedInstance {
-    dispatch_once(&onceToken, ^{
-        identity = [[LRSpeakerPentakillCell alloc] init];
-    });
-    return identity;
-}
-- (void)destoryInstance {
-    onceToken = 0;
-    identity = nil;
-}
-
-//显示/隐藏 狼人杀模式身份图标
-- (void)updateIdentity {
-    if((!self.model.isMyself) && [LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_dayTime"]){
-        self.identityImage.hidden = YES;
-    }else if([LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_night"]){
-        self.identityImage.hidden = NO;
-    }
-}
-
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self _setupSubViews];
@@ -53,8 +31,15 @@ static LRSpeakerPentakillCell *identity;
 - (void)_setupSubViews {
     [super _setupSubViews];
     self.identityImage = [[UIImageView alloc]initWithFrame:CGRectZero];
+    //注册通知，有狼人主播上线则修改UI
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSubViewUI)
                                                  name:LR_WEREWOLF_DIDCHANGE
+                                               object:nil];
+    
+    //注册通知修改身份图片显示。隐藏
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateIdentity)
+                                                 name:LR_CLOCK_STATE_CHANGE
                                                object:nil];
     [self.contentView addSubview:self.identityImage];
     [self.contentView addSubview:self.voiceEnableBtn];
@@ -67,14 +52,12 @@ static LRSpeakerPentakillCell *identity;
         [self.identityImage mas_remakeConstraints:^(MASConstraintMaker *make){
             make.centerY.equalTo(self.nameLabel);
             make.left.equalTo(self.crownImage.mas_right).offset(5);
-            make.width.equalTo(@13);
             make.height.width.equalTo(@12);
         }];
     }else{
         [self.identityImage mas_remakeConstraints:^(MASConstraintMaker *make){
             make.centerY.equalTo(self.nameLabel);
             make.left.equalTo(self.nameLabel.mas_right).offset(5);
-            make.width.equalTo(@13);
             make.height.width.equalTo(@12);
         }];
     }
@@ -144,7 +127,14 @@ static LRSpeakerPentakillCell *identity;
     
 }
 
-
+//显示/隐藏 狼人杀模式身份图标
+- (void)updateIdentity {
+    if((!self.model.isMyself) && [[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_dayTime"]){
+        self.identityImage.hidden = YES;
+    }else if([[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"]){
+        self.identityImage.hidden = NO;
+    }
+}
 
 #pragma mark - actions
 - (void)voiceEnableAction:(UIButton *)aBtn {
