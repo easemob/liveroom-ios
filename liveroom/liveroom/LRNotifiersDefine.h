@@ -25,9 +25,6 @@
 //狼人数组已改变
 #define LR_WEREWOLF_DIDCHANGE @"WerewolfDidChange"
 
-//添加狼人进狼人数组
-#define LR_ADD_WEREWOLF_ARRY @"addWerewolfArry"
-
 // Conference
 #define LR_Receive_OnSpeak_Request_Notification         @"ReceiveOnSpeakApply"
 #define LR_Receive_OnSpeak_Reject_Notification          @"ReceiveOnSpeakReject"

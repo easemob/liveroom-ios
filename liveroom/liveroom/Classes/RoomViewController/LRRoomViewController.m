@@ -54,6 +54,8 @@
 @property (nonatomic) BOOL isAlertShow;
 @property (nonatomic) BOOL isShareAlertShow;
 
+@property (nonatomic, weak) NSString *requestUserIdentity;//请求上麦用户身份
+
 @end
 
 @implementation LRRoomViewController
@@ -115,15 +117,10 @@
                                                  name:LR_Did_Login_Other_Device_Notification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addWereWolfArry:)
-                                                 name:LR_ADD_WEREWOLF_ARRY
-                                               object:nil];
-    
 }
 
 //添加狼人进数组
-- (void)addWereWolfArry:(NSNotification *)aNoti {
-    NSString *user = aNoti.object;
+- (void)addWereWolfArry:(NSString *)user {
     [LRSpeakHelper.sharedInstance.identityDic addObject:user];
     for(NSString *str in LRSpeakHelper.sharedInstance.identityDic){
         NSLog(@"\n------>array:   %@",str);
@@ -137,6 +134,7 @@
     NSDictionary *dict = aNoti.object;
     NSString *username = dict[@"from"];
     NSString *confid = dict[@"confid"];
+    _requestUserIdentity = dict[@"requestUserIdentity"];
     if (![confid isEqualToString:self.roomModel.conferenceId]) {
         return;
     }
@@ -181,6 +179,17 @@
     NSString *info = [NSString stringWithFormat:@"%@ 申请上麦，同意么?", username];
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
     LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
+        if(weakSelf.requestUserIdentity){
+            if([weakSelf.requestUserIdentity isEqualToString:@"pentakill"]){
+                [weakSelf addWereWolfArry:username];
+                weakSelf.requestUserIdentity = nil;
+            }else if([weakSelf.requestUserIdentity isEqualToString:@"villager"]){
+                //村民身份也要发通知，刷新身份图标
+                NSString *str = [LRSpeakHelper.sharedInstance.identityDic componentsJoinedByString:@","];
+                [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"identityDic" value:str completion:^(EMError *aError){}];
+                weakSelf.requestUserIdentity = nil;
+            }
+        }
         weakSelf.isAlertShow = NO;
         [LRSpeakHelper.sharedInstance setupUserToSpeaker:username
                                               completion:^(BOOL success, NSString * _Nonnull username) {}];
@@ -213,7 +222,6 @@
 - (void)receiveRequestAgreed:(NSNotification *)aNoti {
     self.applyOnSpeakBtn.hidden = YES;
     self.applyOnSpeakBtn.selected = NO;
-    
 }
 
 // 上麦申请被拒绝
@@ -226,6 +234,7 @@
     self.applyOnSpeakBtn.selected = NO;
     self.applyOnSpeakBtn.hidden = NO;
     [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
+    [LRSpeakHelper setupIdentity:@""];//重置身份为观众
 }
 
 - (void)didLoginOtherDevice:(NSNotification *)aNoti {
@@ -506,9 +515,14 @@
                                                      token:nil
                                                 completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
          {
-             [LRSpeakHelper.sharedInstance destoryInstance];//释放数组单例
+             [LRSpeakHelper.sharedInstance destoryInstance];//释放helper单例
+             
              [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
          }];
+    }
+    if(self.roomModel.roomType == LRRoomType_Pentakill){
+        [LRSpeakHelper setupIdentity:@""];//房主&成员退 出房间重置自己本地狼人杀身份
+        [LRSpeakHelper setupClockStatus:@""];//房主&成员 退出房间重置自己本地时钟
     }
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
@@ -588,11 +602,13 @@
     LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"狼人 Werewolf" callback:^(LRAlertController *_Nonnull alertController)
                                {
                                    [LRSpeakHelper setupIdentity:@"pentakill"];
+                                   self.applyOnSpeakBtn.selected = YES;
                                    [self applyOnSpeakHandle];
                                }];
     LRAlertAction *villager = [LRAlertAction alertActionTitle:@"村民 Villager" callback:^(LRAlertController *_Nonnull alertController)
                                {
                                    [LRSpeakHelper setupIdentity:@"villager"];
+                                   self.applyOnSpeakBtn.selected = YES;
                                    [self applyOnSpeakHandle];
                                }];
     [alert addAction:werewolf];
@@ -622,11 +638,10 @@
         return;
     }
     
-    self.applyOnSpeakBtn.selected = YES;
-    
     if(self.roomModel.roomType == LRRoomType_Pentakill){
         [self identityTap];    //狼人杀模式选择上麦身份
     }else {
+        self.applyOnSpeakBtn.selected = YES;
         [self applyOnSpeakHandle];  //非狼人杀模式直接申请
     }
     

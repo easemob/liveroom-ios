@@ -27,12 +27,12 @@
 
 @property (nonatomic, strong) NSMutableDictionary *dic;//静音狼人数组
 
-
 @end
 
 @implementation LRSpeakerPentakillController
-
+Boolean isExcute;  //每次加入房间回调只执行一次
 - (void)viewDidLoad {
+    isExcute = false;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     //时钟状态改变发言状态置为关闭
@@ -127,16 +127,15 @@
 }
 //时钟状态改变回调
 - (void)callBackClockStatus {
-    static dispatch_once_t onceCallBack;
-    //只执行一次
-    dispatch_once(&onceCallBack, ^{
+    if(!isExcute){
         [self setupClockPic:[LRSpeakHelper instanceClockStatus]];
         //注册狼人杀房间通知在房间模式设定之后，防止第一次进入房间弹窗
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reveiceNotification:)
                                                      name:LR_CLOCK_STATE_CHANGE
                                                    object:nil];
-    });
+        isExcute = true;
+    }
 }
 
 #pragma mark - getter
@@ -293,10 +292,20 @@
 
 //夜晚狼人下麦操作
 - (void)setCoverUI {
-    [LRSpeakHelper setupIdentity:@""];
-    self.tableView.hidden = YES;
-    self.werewolfView.hidden = NO;
-    [self addView];
+    if([[LRSpeakHelper instanceClockStatus]isEqualToString:@"LRTerminator_night"]){
+        //如果是狼人夜晚下麦则需要遮掩UI
+        if([[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
+            self.tableView.hidden = YES;
+            self.werewolfView.hidden = NO;
+            [self addView];
+            [self muteWereWolf];//夜晚下麦狼人静音其他狼人主播
+        }
+        //如果是村民需要重新监听狼人讲话
+        if([[LRSpeakHelper instanceIdentity] isEqualToString:@"villager"]){
+            [self reMuteWereWolf];//夜晚v被下麦村民身份置为观众（空字符串） 重新监听狼人发言
+        }
+    }
+    [LRSpeakHelper setupIdentity:@""];//重置该下麦主播狼人杀身份为观众（即空字符串）
 }
 
 //夜晚村民mute remote（静音）狼人
@@ -318,7 +327,6 @@
         }
     }
     NSLog(@"\ndic.count-------->:  %lu",(unsigned long)self.dic.count);
-    //[self.tableView reloadData];
 }
 //白天村民重新监听狼人发言
 - (void)reMuteWereWolf {
@@ -330,7 +338,6 @@
             [EMClient.sharedClient.conferenceManager muteRemoteAudio:model.streamId mute:NO];
         }
         [self.dic removeAllObjects];
-        //[self.tableView reloadData];
     }
 }
 

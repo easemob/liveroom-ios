@@ -230,7 +230,7 @@ static LRSpeakHelper *helper_;
 // 设置用户为听众
 - (void)setupUserToAudiance:(NSString *)aUsername {
     
-    if([LRSpeakHelper.sharedInstance.identityDic containsObject:aUsername]){
+    if((LRSpeakHelper.sharedInstance.identityDic != nil) && [LRSpeakHelper.sharedInstance.identityDic containsObject:aUsername]){
         //把当前要下麦（主动/被动）主播从狼人主播数组删除
         for (NSString *str in LRSpeakHelper.sharedInstance.identityDic) {
             NSLog(@"\n---------->userprevious:    %@",str);
@@ -253,15 +253,15 @@ static LRSpeakHelper *helper_;
          
      }];
     
-    //夜晚通知下麦主播事件
-    if([[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"]){
+    //狼人杀模式通知下麦主播事件
+    if(self.roomModel.roomType == LRRoomType_Pentakill){
         EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@""];
         EMMessage *msg = [[EMMessage alloc] initWithConversationID:aUsername
                                                               from:kCurrentUsername
                                                                 to:aUsername
                                                               body:body
                                                                ext:@{kRequestAction:kRequestToBe_Audience,
-                                                                     kRequestConferenceId:self.conference.confId,
+                                                                kRequestConferenceId:self.conference.confId,
                                                                      }];
         msg.chatType = EMChatTypeChat;
         [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:^(EMMessage *message, EMError *error) {
@@ -332,7 +332,7 @@ static LRSpeakHelper *helper_;
     if([[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
         extArry = @{kRequestAction:kRequestToBe_Speaker,
                     kRequestConferenceId:self.conference.confId,
-                    kRequestUser:kCurrentUsername
+                    kRequestUserIdentity:@"pentakill"
                     };
     }
     EMMessage *msg = [[EMMessage alloc] initWithConversationID:aRoom.owner
@@ -360,8 +360,9 @@ static LRSpeakHelper *helper_;
                                                           body:body
                                                            ext:@{kRequestAction:kRequestToBe_Audience,
                                                                  kRequestConferenceId:self.conference.confId,
-                                                                 kRequestUser:kCurrentUsername
                                                                  }];
+    
+    //这里不用做狼人杀身份重置，在下麦的时候有一个房主发出的通知，接收通知出有重置
     
     msg.chatType = EMChatTypeChat;
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:^(EMMessage *message, EMError *error) {

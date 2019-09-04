@@ -167,22 +167,17 @@
     for (EMMessage *msg in aCmdMessages) {
         NSString *action = msg.ext[kRequestAction];
         NSString *confid = msg.ext[kRequestConferenceId];
-        NSString *user = msg.ext[kRequestUser];
-        
-        if ([action isEqualToString:kRequestToBe_Speaker] && user)  //添加狼人进入狼人数组
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:LR_ADD_WEREWOLF_ARRY
-                                                                object:user];
-        }else if([action isEqualToString:kRequestToBe_Speaker] && !user){
-            //非狼人身份也要发通知，刷新身份图标
-            NSString *str = [LRSpeakHelper.sharedInstance.identityDic componentsJoinedByString:@","];
-            [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"identityDic" value:str completion:^(EMError *aError){}];
+        NSString *requestUserIdentity = msg.ext[kRequestUserIdentity];
+        if(!requestUserIdentity){
+            requestUserIdentity = @"villager";
         }
         
         if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_OnSpeak_Request_Notification
-                                                                object:@{@"from":msg.from,@"confid":confid}];
+                                                        object:@{@"from":msg.from,
+                                                                 @"confid":confid,  @"requestUserIdentity":requestUserIdentity
+                                                                 }];
         }
         
         if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件
@@ -238,6 +233,10 @@
         reason = @"您被房主移出房间";
     } else if (aReason == EMChatroomBeKickedReasonDestroyed) {
         reason = @"房间被销毁";
+    }
+    if(self.roomModel.roomType == LRRoomType_Pentakill){
+        [LRSpeakHelper setupIdentity:@""];//成员退 重置自己本地狼人杀身份
+        [LRSpeakHelper setupClockStatus:@""];//成员 重置自己本地时钟
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:LR_Exit_Chatroom_Notification object:reason];
     
