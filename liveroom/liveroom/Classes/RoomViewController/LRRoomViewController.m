@@ -31,7 +31,7 @@
 #define kHeaderViewHeight 45
 #define kInputViewHeight 64
 
-@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate, LRSpeakHelperDelegate, LRChatHelperDelegate> {
+@interface LRRoomViewController () <LRVoiceRoomTabbarDelgate, LRSpeakHelperDelegate, LRChatHelperDelegate,EMChatManagerDelegate> {
     BOOL _chatJoined;
     BOOL _conferenceJoined;
     BOOL _chatLeave;
@@ -54,7 +54,8 @@
 @property (nonatomic) BOOL isAlertShow;
 @property (nonatomic) BOOL isShareAlertShow;
 
-@property (nonatomic, weak) NSString *requestUserIdentity;//请求上麦用户身份
+@property (nonatomic, weak) NSString *requestUserIdentity;//房主接受的请求上麦用户身份
+@property (nonatomic,strong) NSString *tempIdentiy;//临时请求上麦身份
 
 @end
 
@@ -82,6 +83,31 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
     [self joinChatAndConferenceRoom];
+    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+}
+
+//狼人主播直接关掉房间房主删除他从狼人数组
+- (void)messagesDidReceive:(NSArray *)aMessages {
+    if([self isOwner]){
+        for (EMMessage *msg in aMessages) {
+            if(msg.chatType == EMChatTypeChatRoom){
+                NSString *closeRoomUser = msg.from;
+                //关闭房间的狼人主播从狼人数组删除
+                for (NSString *str in LRSpeakHelper.sharedInstance.identityDic) {
+                    NSLog(@"\n---------->start:    %@",str);
+                }
+                if(![closeRoomUser isEqualToString:self.roomModel.owner] && [LRSpeakHelper.sharedInstance.identityDic containsObject:closeRoomUser]){
+                    [LRSpeakHelper.sharedInstance.identityDic removeObject:closeRoomUser];
+                    //重新设置服务端狼人数组
+                    for (NSString *str in LRSpeakHelper.sharedInstance.identityDic) {
+                        NSLog(@"\n---------->end:    %@",str);
+                    }
+                    NSString *str = [LRSpeakHelper.sharedInstance.identityDic componentsJoinedByString:@","];
+                    [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"identityDic" value:str completion:^(EMError *aError){}];
+                }
+            }
+        }
+    }
 }
 
 - (void)regieterNotifiers {
@@ -134,7 +160,9 @@
     NSDictionary *dict = aNoti.object;
     NSString *username = dict[@"from"];
     NSString *confid = dict[@"confid"];
-    _requestUserIdentity = dict[@"requestUserIdentity"];
+    if(self.roomModel.roomType == LRRoomType_Pentakill){
+        _requestUserIdentity = dict[@"requestUserIdentity"];
+    }
     if (![confid isEqualToString:self.roomModel.conferenceId]) {
         return;
     }
@@ -181,6 +209,7 @@
     LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
         if(weakSelf.requestUserIdentity){
             if([weakSelf.requestUserIdentity isEqualToString:@"pentakill"]){
+                
                 [weakSelf addWereWolfArry:username];
                 weakSelf.requestUserIdentity = nil;
             }else if([weakSelf.requestUserIdentity isEqualToString:@"villager"]){
@@ -207,6 +236,7 @@
     [alert addAction:reject];
     _isAlertShow = YES;
     [self presentViewController:alert animated:YES completion:nil];
+    //[alert dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)rejectAllRequestMember {
@@ -222,6 +252,8 @@
 - (void)receiveRequestAgreed:(NSNotification *)aNoti {
     self.applyOnSpeakBtn.hidden = YES;
     self.applyOnSpeakBtn.selected = NO;
+    [LRSpeakHelper setupIdentity:_tempIdentiy];
+    self.tempIdentiy = @"";
 }
 
 // 上麦申请被拒绝
@@ -234,7 +266,7 @@
     self.applyOnSpeakBtn.selected = NO;
     self.applyOnSpeakBtn.hidden = NO;
     [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
-    [LRSpeakHelper setupIdentity:@""];//重置身份为观众
+    self.tempIdentiy = @"";
 }
 
 - (void)didLoginOtherDevice:(NSNotification *)aNoti {
@@ -443,7 +475,7 @@
                 if (self.roomModel.roomType == LRRoomType_Host) {
                     [LRSpeakHelper.sharedInstance setupSpeakerMicOn:kCurrentUsername];
                 }
-                if ([LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
+                if (!(self.roomModel.roomType == LRRoomType_Pentakill)&& [LRRoomOptions sharedOptions].isAutomaticallyTurnOnMusic) {
                     [LRSpeakHelper.sharedInstance setAudioPlay:YES];
                 }
             }
@@ -601,13 +633,13 @@
     LRAlertController *alert = [LRAlertController showIdentityAlertWithTitle:@"选择上麦身份" info:@"提交上麦参与体验.\n需要先选择上麦后的身份。\n您可以选择狼人或者村民，进行点击确认。"];
     LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"狼人 Werewolf" callback:^(LRAlertController *_Nonnull alertController)
                                {
-                                   [LRSpeakHelper setupIdentity:@"pentakill"];
+                                   self.tempIdentiy = @"pentakill";
                                    self.applyOnSpeakBtn.selected = YES;
                                    [self applyOnSpeakHandle];
                                }];
     LRAlertAction *villager = [LRAlertAction alertActionTitle:@"村民 Villager" callback:^(LRAlertController *_Nonnull alertController)
                                {
-                                   [LRSpeakHelper setupIdentity:@"villager"];
+                                   self.tempIdentiy = @"villager";
                                    self.applyOnSpeakBtn.selected = YES;
                                    [self applyOnSpeakHandle];
                                }];
@@ -649,7 +681,7 @@
 //申请上麦操作
 - (void)applyOnSpeakHandle {
     __weak typeof(self) weakSelf = self;
-    [LRSpeakHelper.sharedInstance requestOnSpeaker:weakSelf.roomModel completion:^(NSString * _Nonnull errorInfo, BOOL success)
+    [LRSpeakHelper.sharedInstance requestOnSpeaker:weakSelf.roomModel identity:_tempIdentiy completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {
          if (!success) {
              weakSelf.applyOnSpeakBtn.selected = NO;

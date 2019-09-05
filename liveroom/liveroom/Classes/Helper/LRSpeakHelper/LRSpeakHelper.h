@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - user
 // 申请上麦
-- (void)requestOnSpeaker:(LRRoomModel *)aRoom
+- (void)requestOnSpeaker:(LRRoomModel *)aRoom identity:(NSString *)identity
               completion:(void(^_Nullable)(NSString *errorInfo, BOOL success))aCompletion;
 
 // 申请下麦

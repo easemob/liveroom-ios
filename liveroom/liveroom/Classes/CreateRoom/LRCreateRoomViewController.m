@@ -404,6 +404,7 @@
 - (void)closeButtonAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+    [LRSpeakHelper setupIdentity:@""];// 创建房间中断，重置狼人杀身份
 }
 
 @end

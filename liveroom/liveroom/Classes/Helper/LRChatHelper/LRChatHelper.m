@@ -167,17 +167,24 @@
     for (EMMessage *msg in aCmdMessages) {
         NSString *action = msg.ext[kRequestAction];
         NSString *confid = msg.ext[kRequestConferenceId];
-        NSString *requestUserIdentity = msg.ext[kRequestUserIdentity];
-        if(!requestUserIdentity){
-            requestUserIdentity = @"villager";
+        NSString *requestUserIdentity = nil;
+        if(self.roomModel.roomType == LRRoomType_Pentakill){
+            requestUserIdentity = msg.ext[kRequestUserIdentity];
+            if(!requestUserIdentity){
+                requestUserIdentity = @"villager";
+            }
         }
         
         if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
         {
+            NSMutableDictionary *arguments = [[NSMutableDictionary alloc]init];
+            [arguments setObject:msg.from forKey:@"from"];
+            [arguments setObject:confid forKey:@"confid"];
+            if(requestUserIdentity){
+                [arguments setObject:requestUserIdentity forKey:@"requestUserIdentity"];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_OnSpeak_Request_Notification
-                                                        object:@{@"from":msg.from,
-                                                                 @"confid":confid,  @"requestUserIdentity":requestUserIdentity
-                                                                 }];
+                                                        object:arguments];
         }
         
         if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件

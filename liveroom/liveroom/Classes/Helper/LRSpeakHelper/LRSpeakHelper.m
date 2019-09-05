@@ -316,7 +316,7 @@ static LRSpeakHelper *helper_;
 
 #pragma mark - user
 // 申请上麦
-- (void)requestOnSpeaker:(LRRoomModel *)aRoom
+- (void)requestOnSpeaker:(LRRoomModel *)aRoom identity:(NSString *)identity
               completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     
     if (self.conference.role == EMConferenceRoleSpeaker) {
@@ -329,7 +329,7 @@ static LRSpeakHelper *helper_;
     NSDictionary *extArry = @{kRequestAction:kRequestToBe_Speaker,
                               kRequestConferenceId:self.conference.confId
                               };
-    if([[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
+    if([identity isEqualToString:@"pentakill"]){
         extArry = @{kRequestAction:kRequestToBe_Speaker,
                     kRequestConferenceId:self.conference.confId,
                     kRequestUserIdentity:@"pentakill"
@@ -348,6 +348,7 @@ static LRSpeakHelper *helper_;
             aCompletion(error.errorDescription, NO);
         }
     }];
+    
 }
 
 // 申请下麦
@@ -611,9 +612,7 @@ static LRSpeakHelper *helper_;
         
         if ([attr.key isEqualToString:@"music"]) {
             if (attr.action == EMConferenceAttributeAdd) {
-                if(!(self.roomModel.roomType == LRRoomType_Pentakill)){
-                    [self playMusic:YES];
-                }
+                [self playMusic:YES];
             }else if (attr.action == EMConferenceAttributeDelete) {
                 [self playMusic:NO];
             }
