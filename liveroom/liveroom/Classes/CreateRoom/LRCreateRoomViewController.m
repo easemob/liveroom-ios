@@ -9,21 +9,28 @@
 #import "LRCreateRoomViewController.h"
 #import "UIViewController+LRAlert.h"
 #import "LRTypes.h"
+#import "LRSpeakerPentakillCell.h"
 
 #define kPadding 16
 @interface LRCreateRoomViewController ()
 {
     LRRoomType _type;
+    NSString *_roomType;
 }
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UITextField *voiceChatroomIDTextField;
-@property (nonatomic, strong) UITextField *passwordTextField;
-@property (nonatomic, strong) UILabel *chatroomIDLabel;
-@property (nonatomic, strong) UILabel *passwordLabel;
-@property (nonatomic, strong) UIView *speakerTypeView;
-@property (nonatomic, strong) UILabel *speakerTypeTextLabel;
-@property (nonatomic, strong) UILabel *speakerTypeLabel;
+@property (nonatomic, strong) UITextField *voiceChatroomIDTextField;    //房间名
+@property (nonatomic, strong) UITextField *passwordTextField;           //密码
+@property (nonatomic, strong) UILabel *chatroomIDLabel;                //房间名规则
+@property (nonatomic, strong) UILabel *passwordLabel;                  //密码规则
+@property (nonatomic, strong) UIView *speakerTypeView;                 //模式view
+@property (nonatomic, strong) UILabel *speakerTypeTextLabel;           //模式选择
+@property (nonatomic, strong) UILabel *speakerTypeLabel;               //模式设置
+
+@property (nonatomic, strong) UIView *identityTypeView;
+@property (nonatomic, strong) UILabel *identityTypeTextlabel;
+@property (nonatomic, strong) UILabel *identityTypelabel;
+
 @property (nonatomic, strong) UIButton *submitButton;
 
 @end
@@ -39,6 +46,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _type = LRRoomType_Communication;
+    _roomType = @"communication";
     [self _setupSubviews];
 }
 
@@ -130,7 +138,7 @@
     [self.speakerTypeView addGestureRecognizer:tap];
     
     self.speakerTypeTextLabel = [[UILabel alloc] init];
-    self.speakerTypeTextLabel.text = @"自由麦模式";
+    self.speakerTypeTextLabel.text = @"自由麦模式 Communication";
     self.speakerTypeTextLabel.font = [UIFont systemFontOfSize:17];
     [self.speakerTypeTextLabel setTextColor:[UIColor whiteColor]];
     [self.speakerTypeView addSubview:self.speakerTypeTextLabel];
@@ -173,44 +181,149 @@
     }];
 }
 
-#pragma mark ButtonAction
-- (void)closeButtonAction
+
+//设置狼人杀身份选择
+- (void)setupWereWolve
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    _identityTypeView = [[UIView alloc] init];
+    [_identityTypeView strokeWithColor:LRStrokeLowBlack];
+    _identityTypeView.backgroundColor = LRColor_HeightBlackColor;
+    _identityTypeView.userInteractionEnabled = YES;
+    [self.view addSubview:_identityTypeView];
+    [_identityTypeView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.speakerTypeLabel.mas_bottom).offset(12);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+        make.height.equalTo(@48);
+    }];
+    
+    UITapGestureRecognizer *tapIdentity = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(identityTypeTap)];
+    [_identityTypeView addGestureRecognizer:tapIdentity];
+    
+    _identityTypeTextlabel = [[UILabel alloc] init];
+    _identityTypeTextlabel.text = @"狼人 Werewlof";
+    
+    [LRSpeakHelper setupIdentity:@"pentakill"];
+    
+    _identityTypeTextlabel.font = [UIFont systemFontOfSize:18];
+    [_identityTypeTextlabel setTextColor:[UIColor whiteColor]];
+    [_identityTypeView addSubview:_identityTypeTextlabel];
+    [_identityTypeTextlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.identityTypeView).offset(15);
+        make.centerY.equalTo(self.identityTypeView);
+    }];
+    
+    UIImageView *imageIdentity = [[UIImageView alloc] init];
+    imageIdentity.image = [UIImage imageNamed:@"extend"];
+    [self.identityTypeView addSubview:imageIdentity];
+    [imageIdentity mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.identityTypeView);
+        make.right.equalTo(self.identityTypeView).offset(-15);
+    }];
+    
+    _identityTypelabel = [[UILabel alloc] init];
+    _identityTypelabel.text = @"初始化自己的身份。Set up the play mode of the room.";
+    [_identityTypelabel setTextColor:RGBACOLOR(255, 255, 255, 0.3)];
+    _identityTypelabel.numberOfLines = 2;
+    _identityTypelabel.font = [UIFont systemFontOfSize:10];
+    [self.view addSubview:_identityTypelabel];
+    [self.view addSubview:_identityTypelabel];
+    [_identityTypelabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.identityTypeView.mas_bottom).offset(4);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+    }];
+    
+    [self.submitButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.identityTypelabel.mas_bottom).offset(44);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+        make.height.equalTo(@48);
+    }];
+    
+}
+
+//创建房间时房主添加狼人杀身份选择
+- (void)identityTypeTap
+{
+    LRAlertController *alert = [LRAlertController showIdentityAlertWithTitle:@"选择上麦身份" info:@"提交上麦参与体验.\n需要先选择上麦后的身份。\n您可以选择狼人或者村民，进行点击确认。"];
+    LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"狼人 Werewolf" callback:^(LRAlertController *_Nonnull alertController)
+                               {
+                                   self.identityTypeTextlabel.text = @"狼人 Werewolf";
+                                   [LRSpeakHelper setupIdentity:@"pentakill"];
+                                   
+                               }];
+    LRAlertAction *villager = [LRAlertAction alertActionTitle:@"村民 Villager" callback:^(LRAlertController *_Nonnull alertController)
+                               {
+                                   self.identityTypeTextlabel.text = @"村民 Villager";
+                                   [LRSpeakHelper setupIdentity:@"villager"];
+                               }];
+    [alert addAction:werewolf];
+    [alert addAction:villager];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+//隐藏狼人杀身份选择
+- (void)removeIdentity
+{
+    self.identityTypeView.hidden = YES;
+    self.identityTypelabel.hidden = YES;
+    [self.submitButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.speakerTypeLabel.mas_bottom).offset(44);
+        make.left.equalTo(self.view).offset(kPadding);
+        make.right.equalTo(self.view).offset(-kPadding);
+        make.height.equalTo(@48);
+    }];
 }
 
 #pragma mark UITapGestureRecognizer
 - (void)speakerTypeTap
 {
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"自由麦模式下所有主播可以自由发言;\n主持模式下管理员分配的主播获得发言权;\n抢麦模式下所有主播通过抢麦获得发言权;"];
-
-    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式"
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"自由麦模式下所有主播可以自由发言;\n主持模式下管理员分配的主播获得发言权;\n抢麦模式下所有主播通过抢麦获得发言权;\n狼人杀模式下遵循狼人杀玩法规则;"];
+    
+    LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 Communication"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
                                           {
-                                              self.speakerTypeTextLabel.text = @"自由麦模式";
+                                              self.speakerTypeTextLabel.text = @"自由麦模式 Communication";
                                               self->_type = LRRoomType_Communication;
+                                              self->_roomType = @"communication";
+                                              [self removeIdentity];
                                           }];
     
-    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式"
+    LRAlertAction *hostAction = [LRAlertAction alertActionTitle:@"主持模式 Host"
                                                        callback:^(LRAlertController * _Nonnull alertController)
                                  {
-                                     self.speakerTypeTextLabel.text = @"主持模式";
+                                     self.speakerTypeTextLabel.text = @"主持模式 Host";
                                      self->_type = LRRoomType_Host;
+                                     self->_roomType = @"host";
+                                     [self removeIdentity];
                                  }];
     
-    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式"
+    LRAlertAction *monopolyAction = [LRAlertAction alertActionTitle:@"抢麦模式 Monopoly"
                                                            callback:^(LRAlertController * _Nonnull alertController)
                                      {
-                                         self.speakerTypeTextLabel.text = @"抢麦模式";
+                                         self.speakerTypeTextLabel.text = @"抢麦模式 Monopoly";
                                          self->_type = LRRoomType_Monopoly;
+                                         self->_roomType = @"monopoly";
+                                         [self removeIdentity];
                                      }];
     
+    LRAlertAction *werewolvesAction = [LRAlertAction alertActionTitle:@"狼人杀模式 Pentakill"
+                                                             callback:^(LRAlertController * _Nonnull
+                                                                        alertCONTROLLER)
+                                       {
+                                           self.speakerTypeTextLabel.text = @"狼人杀模式 Pentakill";
+                                           self->_type = LRRoomType_Pentakill;
+                                           self->_roomType = @"pentakill";
+                                           [self setupWereWolve];
+                                       }];
     
-    
+    [alert addAction:werewolvesAction];
     [alert addAction:communicationAction];
     [alert addAction:hostAction];
     [alert addAction:monopolyAction];
-
+    
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -246,31 +359,33 @@
                 @"allowAudienceTalk":@YES,
                 @"imChatRoomMaxusers":@([options.audioQuality intValue]),
                 @"desc":@"desc",
-                @"confrDelayMillis":@3600,
-                @"memRole":@1
+                @"confrDelayMillis":@(360000*1000),
+                @"memRole":@1,
+                @"roomtype":self->_roomType
                 };
     
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:@"正在创建房间..."];
     NSString *url = [NSString stringWithFormat:@"http://tcapp.easemob.com/app/%@/create/talk/room", kCurrentUsername];
     [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:url parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf hideHud];
-            if (!error) {
-                NSMutableDictionary *dic = [result mutableCopy];
-                if (dic) {
-                    [dic setObject:weakSelf.voiceChatroomIDTextField.text forKey:@"roomname"];
-                    [dic setObject:weakSelf.passwordTextField.text forKey:@"rtcConfrPassword"];
-                    [dic setObject:EMClient.sharedClient.currentUsername forKey:@"ownerName"];
-                    [dic setObject:@(self->_type) forKey:@"type"];
-                }
-                [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:dic];
-            }else {
-                [self showErrorAlertWithTitle:@"失败" info:error.domain];
-            }
-        });
-    }];
+     {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             NSLog(@"创建房间-----%@", result);
+             [weakSelf hideHud];
+             if (!error) {
+                 NSMutableDictionary *dic = [result mutableCopy];
+                 if (dic) {
+                     [dic setObject:weakSelf.voiceChatroomIDTextField.text forKey:@"roomname"];
+                     [dic setObject:weakSelf.passwordTextField.text forKey:@"rtcConfrPassword"];
+                     [dic setObject:EMClient.sharedClient.currentUsername forKey:@"ownerName"];
+                     [dic setObject:@(self->_type) forKey:@"type"];
+                 }
+                 [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:dic];
+             }else {
+                 [self showErrorAlertWithTitle:@"失败" info:error.domain];
+             }
+         });
+     }];
 }
 
 - (BOOL)hasChinese:(NSString *)str {
@@ -283,6 +398,13 @@
         }
     }
     return NO;
+}
+
+#pragma mark ButtonAction
+- (void)closeButtonAction
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [LRSpeakHelper setupIdentity:@""];// 创建房间中断，重置狼人杀身份
 }
 
 @end

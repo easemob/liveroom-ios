@@ -104,10 +104,10 @@
     [self audioPlayerWithName:@"like" type:@"wav"];
     [self animationImageName:@"like"];
     [LRChatHelper.sharedInstance sendLikeMessage:kMessageFavourite
-                                         completion:^(NSString * _Nonnull errorInfo, BOOL success) {
-        
-    }];
-
+                                      completion:^(NSString * _Nonnull errorInfo, BOOL success) {
+                                          
+                                      }];
+    
     [self addMessageToData:kMessageFavourite
                   fromUser:LRChatHelper.sharedInstance.currentUser
                  timestamp:[[NSDate new] timeIntervalSince1970]];
@@ -118,9 +118,9 @@
     [self animationImageName:@"giftcard"];
     
     [LRChatHelper.sharedInstance sendGiftMessage:kMessageGift
-                                         completion:^(NSString * _Nonnull errorInfo, BOOL success) {
-                                             
-                                         }];
+                                      completion:^(NSString * _Nonnull errorInfo, BOOL success) {
+                                          
+                                      }];
     
     [self addMessageToData:kMessageGift
                   fromUser:LRChatHelper.sharedInstance.currentUser
@@ -138,7 +138,7 @@
     imageView.tag = 99999;
     imageView.alpha = 0.5;
     [self.view.superview addSubview:imageView];
-
+    
     imageView.frame = CGRectMake(0, 0, 90, 90);
     imageView.center = self.view.superview.center;
     [UIView animateWithDuration:0.3 animations:^{
