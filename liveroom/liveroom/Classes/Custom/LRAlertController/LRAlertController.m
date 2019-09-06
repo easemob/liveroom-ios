@@ -167,6 +167,10 @@ typedef enum : NSUInteger {
 
 - (void)viewDidLayoutSubviews
 {
+    if([_title isEqualToString:@"收到上麦申请"]){
+        self.closeButton.hidden = YES;
+    }
+    
     self.otherView.backgroundColor = [UIColor clearColor];
     [_alertView strokeWithColor:LRStrokeLowBlack];
     _alertView.backgroundColor = LRColor_HighLightColor;

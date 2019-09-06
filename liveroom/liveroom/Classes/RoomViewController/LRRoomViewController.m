@@ -142,7 +142,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoginOtherDevice:)
                                                  name:LR_Did_Login_Other_Device_Notification
                                                object:nil];
-    
+
 }
 
 //添加狼人进数组
@@ -207,9 +207,9 @@
     NSString *info = [NSString stringWithFormat:@"%@ 申请上麦，同意么?", username];
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
     LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
+        //若狼人杀模式请求上麦则不为nil
         if(weakSelf.requestUserIdentity){
             if([weakSelf.requestUserIdentity isEqualToString:@"pentakill"]){
-                
                 [weakSelf addWereWolfArry:username];
                 weakSelf.requestUserIdentity = nil;
             }else if([weakSelf.requestUserIdentity isEqualToString:@"villager"]){
@@ -236,7 +236,6 @@
     [alert addAction:reject];
     _isAlertShow = YES;
     [self presentViewController:alert animated:YES completion:nil];
-    //[alert dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)rejectAllRequestMember {
@@ -267,6 +266,7 @@
     self.applyOnSpeakBtn.hidden = NO;
     [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
     self.tempIdentiy = @"";
+
 }
 
 - (void)didLoginOtherDevice:(NSNotification *)aNoti {
