@@ -18,13 +18,12 @@ DEPENDENCIES:
   - MJRefresh
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - CocoaLumberjack
+    - Hyphenate
     - Masonry
     - MBProgressHUD
     - MJRefresh
-  trunk:
-    - Hyphenate
 
 SPEC CHECKSUMS:
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
@@ -35,4 +34,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 2c16dc6d797b16d9ca4715711849d7615d3372d1
 
-COCOAPODS: 1.8.0.beta.1
+COCOAPODS: 1.5.3

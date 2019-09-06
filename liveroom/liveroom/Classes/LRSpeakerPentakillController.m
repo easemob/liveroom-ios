@@ -392,15 +392,16 @@
     content.textColor = RGBACOLOR(255, 255, 255, 1);
     content.font = [UIFont systemFontOfSize:14];
     content.adjustsFontSizeToFitWidth = YES;
-    /*
-     __weak typeof(self) weakSelf = self;
-     if (@available(iOS 10.0, *)) {
-     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.75 repeats:YES block:^(NSTimer * _Nonnull timer){
-     [weakSelf timeRun:title];
-     }];
-     } else {
-     // Fallback on earlier versions
-     }*/
+    
+//     __weak typeof(self) weakSelf = self;
+//     if (@available(iOS 10.0, *)) {
+//     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.75 repeats:YES block:^(NSTimer * _Nonnull timer){
+//     [weakSelf timeRun:title];
+//     }];
+//     } else {
+//     // Fallback on earlier versions
+//     }
+    
 }
 
 - (void)timeRun:(UILabel *)title{

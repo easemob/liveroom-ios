@@ -38,6 +38,7 @@ static LRSpeakerPentakillCell *identity;
 - (void)updateIdentity {
     if((!self.model.isMyself) && [LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_dayTime"]){
         self.identityImage.hidden = YES;
+        
     }else if([LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_night"]){
         self.identityImage.hidden = NO;
     }
@@ -67,14 +68,12 @@ static LRSpeakerPentakillCell *identity;
         [self.identityImage mas_remakeConstraints:^(MASConstraintMaker *make){
             make.centerY.equalTo(self.nameLabel);
             make.left.equalTo(self.crownImage.mas_right).offset(5);
-            make.width.equalTo(@13);
             make.height.width.equalTo(@12);
         }];
     }else{
         [self.identityImage mas_remakeConstraints:^(MASConstraintMaker *make){
             make.centerY.equalTo(self.nameLabel);
             make.left.equalTo(self.nameLabel.mas_right).offset(5);
-            make.width.equalTo(@13);
             make.height.width.equalTo(@12);
         }];
     }
