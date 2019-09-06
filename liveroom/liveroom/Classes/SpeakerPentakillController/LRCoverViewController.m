@@ -70,24 +70,8 @@
     content.font = [UIFont systemFontOfSize:14];
     content.adjustsFontSizeToFitWidth = YES;
 
-     __weak typeof(self) weakSelf = self;
-     if (@available(iOS 10.0, *)) {
-     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.75 repeats:YES block:^(NSTimer * _Nonnull timer){
-     [weakSelf timeRun:title];
-     }];
-     } else {
-     // Fallback on earlier versions
-         
-     }
 }
 
-- (void)timeRun:(UILabel *)title{
-    [_omit appendString:@"."];
-    [title setText:[NSString stringWithFormat:@"夜晚狼人正在发言%@",self.omit]];
-    if([_omit isEqualToString:@"..."]){
-        [_omit setString:@""];
-    }
-}
 
 - (NSMutableString *)omit {
     if(!_omit){

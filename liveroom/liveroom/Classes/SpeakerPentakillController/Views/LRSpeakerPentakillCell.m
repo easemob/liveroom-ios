@@ -21,32 +21,6 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
 
 @implementation LRSpeakerPentakillCell
 
-<<<<<<< HEAD
-=======
-static dispatch_once_t onceToken;
-static LRSpeakerPentakillCell *identity;
-+ (LRSpeakerPentakillCell *)sharedInstance {
-    dispatch_once(&onceToken, ^{
-        identity = [[LRSpeakerPentakillCell alloc] init];
-    });
-    return identity;
-}
-- (void)destoryInstance {
-    onceToken = 0;
-    identity = nil;
-}
-
-//显示/隐藏 狼人杀模式身份图标
-- (void)updateIdentity {
-    if((!self.model.isMyself) && [LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_dayTime"]){
-        self.identityImage.hidden = YES;
-        
-    }else if([LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_night"]){
-        self.identityImage.hidden = NO;
-    }
-}
-
->>>>>>> easemob/dev
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self _setupSubViews];

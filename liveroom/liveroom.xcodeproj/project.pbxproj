@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 789E70471AB662ABBFC025F0 /* libPods-liveroom.a */; };
 		3C38CE86231E64D200EAB8D1 /* LRCoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C38CE85231E64D200EAB8D1 /* LRCoverViewController.m */; };
+		3C449A002322724A000140D5 /* daytime.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3C4499FE2322724A000140D5 /* daytime.wav */; };
+		3C449A012322724A000140D5 /* night.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3C4499FF2322724A000140D5 /* night.wav */; };
 		901A54DA2254CA9700F00186 /* LRRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A54D92254CA9700F00186 /* LRRoomViewController.m */; };
 		902B51ED2261BCFD000EC701 /* UIViewController+LRAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 902B51EC2261BCFD000EC701 /* UIViewController+LRAlert.m */; };
 		90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */; };
@@ -103,6 +105,8 @@
 		2BA6ADC8633F347AD7C7963A /* Pods-liveroom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liveroom.debug.xcconfig"; path = "Pods/Target Support Files/Pods-liveroom/Pods-liveroom.debug.xcconfig"; sourceTree = "<group>"; };
 		3C38CE84231E64D200EAB8D1 /* LRCoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCoverViewController.h; sourceTree = "<group>"; };
 		3C38CE85231E64D200EAB8D1 /* LRCoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCoverViewController.m; sourceTree = "<group>"; };
+		3C4499FE2322724A000140D5 /* daytime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = daytime.wav; sourceTree = "<group>"; };
+		3C4499FF2322724A000140D5 /* night.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = night.wav; sourceTree = "<group>"; };
 		789E70471AB662ABBFC025F0 /* libPods-liveroom.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-liveroom.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		901A54D82254CA9700F00186 /* LRRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomViewController.h; sourceTree = "<group>"; };
 		901A54D92254CA9700F00186 /* LRRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomViewController.m; sourceTree = "<group>"; };
@@ -544,6 +548,8 @@
 		90F2C6F22254C09400A712B8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3C4499FE2322724A000140D5 /* daytime.wav */,
+				3C4499FF2322724A000140D5 /* night.wav */,
 				E00EE572228AD0AF0043C235 /* gift.wav */,
 				E00EE573228AD0B00043C235 /* like.wav */,
 				E00EE56E228424D60043C235 /* music.mp3 */,
@@ -771,6 +777,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C449A002322724A000140D5 /* daytime.wav in Resources */,
 				E00EE575228AD0B10043C235 /* like.wav in Resources */,
 				E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */,
 				E04712DF225C8CEF00F9910C /* find@2x.png in Resources */,
@@ -790,6 +797,7 @@
 				E00EE56F228424D60043C235 /* music.mp3 in Resources */,
 				E0780CD6226EE375008CF34E /* voice1@2x.png in Resources */,
 				E0780CD8226EE375008CF34E /* voice3@2x.png in Resources */,
+				3C449A012322724A000140D5 /* night.wav in Resources */,
 				E0780CD9226EE375008CF34E /* voice2@3x.png in Resources */,
 				E0780CD7226EE375008CF34E /* voice2@2x.png in Resources */,
 				90F2C6F42254C09400A712B8 /* add@2x.png in Resources */,
