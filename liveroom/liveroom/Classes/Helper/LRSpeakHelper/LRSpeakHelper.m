@@ -28,6 +28,24 @@
 @end
 
 @implementation LRSpeakHelper
+
+static NSString *identity = @"";//全局static狼人杀模式身份标识
+static NSString *clockStatus;  //时钟状态
+
++ (NSString *)instanceIdentity {
+    return identity;
+}
++ (void)setupIdentity:(NSString *)status {
+    identity = status;
+}
+
++ (NSString *)instanceClockStatus {
+    return clockStatus;
+}
++ (void)setupClockStatus:(NSString *)clock {
+    clockStatus = clock;
+}
+
 static dispatch_once_t onceToken;
 static LRSpeakHelper *helper_;
 - (NSMutableArray *)identityDic {
@@ -212,7 +230,7 @@ static LRSpeakHelper *helper_;
 // 设置用户为听众
 - (void)setupUserToAudiance:(NSString *)aUsername {
     
-    if([LRSpeakHelper.sharedInstance.identityDic containsObject:aUsername]){
+    if((LRSpeakHelper.sharedInstance.identityDic != nil) && [LRSpeakHelper.sharedInstance.identityDic containsObject:aUsername]){
         //把当前要下麦（主动/被动）主播从狼人主播数组删除
         for (NSString *str in LRSpeakHelper.sharedInstance.identityDic) {
             NSLog(@"\n---------->userprevious:    %@",str);
@@ -235,15 +253,15 @@ static LRSpeakHelper *helper_;
          
      }];
     
-    //夜晚通知下麦主播事件
-    if([LRSpeakHelper.sharedInstance.clockStatus isEqualToString:@"LRTerminator_night"]){
+    //狼人杀模式通知下麦主播事件
+    if(self.roomModel.roomType == LRRoomType_Pentakill){
         EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:@""];
         EMMessage *msg = [[EMMessage alloc] initWithConversationID:aUsername
                                                               from:kCurrentUsername
                                                                 to:aUsername
                                                               body:body
                                                                ext:@{kRequestAction:kRequestToBe_Audience,
-                                                                     kRequestConferenceId:self.conference.confId,
+                                                                kRequestConferenceId:self.conference.confId,
                                                                      }];
         msg.chatType = EMChatTypeChat;
         [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:^(EMMessage *message, EMError *error) {
@@ -298,7 +316,7 @@ static LRSpeakHelper *helper_;
 
 #pragma mark - user
 // 申请上麦
-- (void)requestOnSpeaker:(LRRoomModel *)aRoom
+- (void)requestOnSpeaker:(LRRoomModel *)aRoom identity:(NSString *)identity
               completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     
     if (self.conference.role == EMConferenceRoleSpeaker) {
@@ -311,10 +329,10 @@ static LRSpeakHelper *helper_;
     NSDictionary *extArry = @{kRequestAction:kRequestToBe_Speaker,
                               kRequestConferenceId:self.conference.confId
                               };
-    if([LRSpeakerPentakillCell.sharedInstance.identity isEqualToString:@"pentakill"]){
+    if([identity isEqualToString:@"pentakill"]){
         extArry = @{kRequestAction:kRequestToBe_Speaker,
                     kRequestConferenceId:self.conference.confId,
-                    kRequestUser:kCurrentUsername
+                    kRequestUserIdentity:@"pentakill"
                     };
     }
     EMMessage *msg = [[EMMessage alloc] initWithConversationID:aRoom.owner
@@ -330,6 +348,7 @@ static LRSpeakHelper *helper_;
             aCompletion(error.errorDescription, NO);
         }
     }];
+    
 }
 
 // 申请下麦
@@ -342,8 +361,9 @@ static LRSpeakHelper *helper_;
                                                           body:body
                                                            ext:@{kRequestAction:kRequestToBe_Audience,
                                                                  kRequestConferenceId:self.conference.confId,
-                                                                 kRequestUser:kCurrentUsername
                                                                  }];
+    
+    //这里不用做狼人杀身份重置，在下麦的时候有一个房主发出的通知，接收通知出有重置
     
     msg.chatType = EMChatTypeChat;
     [EMClient.sharedClient.chatManager sendMessage:msg progress:nil completion:^(EMMessage *message, EMError *error) {
@@ -574,9 +594,9 @@ static LRSpeakHelper *helper_;
          }
          */
         //狼人杀模式当前房间时钟状态
-        if([attr.key isEqualToString:[NSString stringWithFormat:@"clockStatus%@",self.roomModel.owner]]){
-            LRSpeakHelper.sharedInstance.clockStatus = attr.value;
-            [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:LRSpeakHelper.sharedInstance.clockStatus];
+        if([attr.key isEqualToString:@"clockStatus"]){
+            [LRSpeakHelper setupClockStatus:attr.value];
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:[LRSpeakHelper instanceClockStatus]];
         }
         
         //狼人杀模式主播身份数组
@@ -592,9 +612,7 @@ static LRSpeakHelper *helper_;
         
         if ([attr.key isEqualToString:@"music"]) {
             if (attr.action == EMConferenceAttributeAdd) {
-                if(!(self.roomModel.roomType == LRRoomType_Pentakill)){
-                    [self playMusic:YES];
-                }
+                [self playMusic:YES];
             }else if (attr.action == EMConferenceAttributeDelete) {
                 [self playMusic:NO];
             }

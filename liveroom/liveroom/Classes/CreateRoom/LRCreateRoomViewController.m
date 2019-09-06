@@ -209,7 +209,7 @@
     _identityTypeTextlabel = [[UILabel alloc] init];
     _identityTypeTextlabel.text = @"狼人 Werewlof";
     
-    LRSpeakerPentakillCell.sharedInstance.identity = @"pentakill";
+    [LRSpeakHelper setupIdentity:@"pentakill"];
     
     _identityTypeTextlabel.font = [UIFont systemFontOfSize:18];
     [_identityTypeTextlabel setTextColor:[UIColor whiteColor]];
@@ -256,13 +256,13 @@
     LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"狼人 Werewolf" callback:^(LRAlertController *_Nonnull alertController)
                                {
                                    self.identityTypeTextlabel.text = @"狼人 Werewolf";
-                                   LRSpeakerPentakillCell.sharedInstance.identity = @"pentakill";
+                                   [LRSpeakHelper setupIdentity:@"pentakill"];
                                    
                                }];
     LRAlertAction *villager = [LRAlertAction alertActionTitle:@"村民 Villager" callback:^(LRAlertController *_Nonnull alertController)
                                {
                                    self.identityTypeTextlabel.text = @"村民 Villager";
-                                   LRSpeakerPentakillCell.sharedInstance.identity = @"villager";
+                                   [LRSpeakHelper setupIdentity:@"villager"];
                                }];
     [alert addAction:werewolf];
     [alert addAction:villager];
@@ -404,6 +404,13 @@
         }
     }
     return NO;
+}
+
+#pragma mark ButtonAction
+- (void)closeButtonAction
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [LRSpeakHelper setupIdentity:@""];// 创建房间中断，重置狼人杀身份
 }
 
 @end

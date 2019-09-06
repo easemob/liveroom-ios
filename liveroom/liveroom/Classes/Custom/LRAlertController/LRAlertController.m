@@ -35,7 +35,8 @@ typedef enum : NSUInteger {
     LRAlertType_None,
     LRAlertType_Werewolves,
     LRAlertType_dayTime,
-    LRAlertType_night} LRAlertType;
+    LRAlertType_night
+} LRAlertType;
 
 
 @interface LRAlertController () <UITextFieldDelegate>

@@ -64,7 +64,10 @@
         make.centerY.equalTo(self.contentView.mas_centerY);
         make.right.equalTo(self.contentView).offset(-10);
     }];
+<<<<<<< HEAD
+=======
     
+>>>>>>> easemob/dev
 }
 
 - (void)setModel:(LRRoomModel *)model

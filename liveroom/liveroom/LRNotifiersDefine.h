@@ -13,6 +13,9 @@
 #define LR_ACCOUNT_LOGIN_CHANGED @"loginStateChange"
 #define LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED @"RoomListDidChanged"
 
+//狼人杀模式夜晚遮掩UI
+#define LR_COVERUI @"CoverUi"
+
 //狼人杀模式当前房间时钟状态
 #define LR_CLOCK_STATE_CHANGE @"ClockStateChange"
 
@@ -21,9 +24,6 @@
 
 //狼人数组已改变
 #define LR_WEREWOLF_DIDCHANGE @"WerewolfDidChange"
-
-//添加狼人进狼人数组
-#define LR_ADD_WEREWOLF_ARRY @"addWerewolfArry"
 
 // Conference
 #define LR_Receive_OnSpeak_Request_Notification         @"ReceiveOnSpeakApply"
