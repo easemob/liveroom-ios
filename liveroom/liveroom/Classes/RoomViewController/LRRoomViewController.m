@@ -143,6 +143,11 @@
                                                  name:LR_Did_Login_Other_Device_Notification
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(cutAudio)
+                                                 name:LR_CLOCK_STATE_CHANGE
+                                               object:nil];
+
 }
 
 //添加狼人进数组
@@ -207,9 +212,9 @@
     NSString *info = [NSString stringWithFormat:@"%@ 申请上麦，同意么?", username];
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
     LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
+        //若狼人杀模式请求上麦则不为nil
         if(weakSelf.requestUserIdentity){
             if([weakSelf.requestUserIdentity isEqualToString:@"pentakill"]){
-                
                 [weakSelf addWereWolfArry:username];
                 weakSelf.requestUserIdentity = nil;
             }else if([weakSelf.requestUserIdentity isEqualToString:@"villager"]){
@@ -236,7 +241,6 @@
     [alert addAction:reject];
     _isAlertShow = YES;
     [self presentViewController:alert animated:YES completion:nil];
-    //[alert dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)rejectAllRequestMember {
@@ -267,6 +271,7 @@
     self.applyOnSpeakBtn.hidden = NO;
     [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
     self.tempIdentiy = @"";
+
 }
 
 - (void)didLoginOtherDevice:(NSNotification *)aNoti {
@@ -625,6 +630,15 @@
 //发送房间消息
 - (void)sendAction:(NSString *)aText {
     [self.chatVC sendText:aText];
+}
+
+//白天夜晚切换播放音效
+- (void)cutAudio {
+    if([[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"]){
+        [_chatVC cutNight];
+    }else{
+        [_chatVC cutDayTime];
+    }
 }
 
 //观众上麦时选择身份

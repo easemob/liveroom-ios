@@ -181,12 +181,6 @@
     }];
 }
 
-// change 
-#pragma mark ButtonAction
-- (void)closeButtonAction
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 //设置狼人杀身份选择
 - (void)setupWereWolve

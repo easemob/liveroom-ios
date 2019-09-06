@@ -25,6 +25,7 @@
 
 @property (nonatomic, strong) NSString *pubStreamId;
 @property (nonatomic, strong) NSTimer *monopolyTimer;
+
 @end
 
 @implementation LRSpeakHelper
@@ -80,6 +81,7 @@ static LRSpeakHelper *helper_;
                                                  selector:@selector(agreedToBeAudience:)
                                                      name:LR_Receive_ToBe_Audience_Notification
                                                    object:nil];
+        
     }
     return self;
 }
@@ -130,46 +132,6 @@ static LRSpeakHelper *helper_;
          }
      }];
 }
-
-/*
- // 设置房间属性
- - (void)setupRoomType:(LRRoomType)aType {
- NSString *value;
- switch (aType) {
- case LRRoomType_Communication:
- {
- value = @"communication";
- }
- break;
- case LRRoomType_Host:
- {
- value = @"host";
- }
- break;
- case LRRoomType_Monopoly:
- {
- value = @"monopoly";
- }
- break;
- case LRRoomType_Pentakill:
- {
- value = @"pentakill";
- }
- break;
- default:
- break;
- }
- if (value) {
- [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"type" value:value completion:^(EMError *aError)
- {
- 
- }];
- //狼人杀模式设置当前状态
- if([value isEqualToString:@"pentakill"]){
- [EMClient.sharedClient.conferenceManager setConferenceAttribute:[NSString stringWithFormat:@"clockStatus%@",self.roomModel.owner] value:@"LRTerminator_dayTime" completion:^(EMError *aError){}];
- }
- }
- }*/
 
 // 发布自己的流，并更新ui
 - (void)setupMySelfToSpeaker {
@@ -348,7 +310,6 @@ static LRSpeakHelper *helper_;
             aCompletion(error.errorDescription, NO);
         }
     }];
-    
 }
 
 // 申请下麦

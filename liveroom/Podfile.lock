@@ -18,7 +18,7 @@ DEPENDENCIES:
   - MJRefresh
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - CocoaLumberjack
     - Hyphenate
     - Masonry
@@ -34,4 +34,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 2c16dc6d797b16d9ca4715711849d7615d3372d1
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.0.beta.1
