@@ -142,6 +142,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoginOtherDevice:)
                                                  name:LR_Did_Login_Other_Device_Notification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(cutAudio)
+                                                 name:LR_CLOCK_STATE_CHANGE
+                                               object:nil];
 
 }
 
@@ -625,6 +630,15 @@
 //发送房间消息
 - (void)sendAction:(NSString *)aText {
     [self.chatVC sendText:aText];
+}
+
+//白天夜晚切换播放音效
+- (void)cutAudio {
+    if([[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"]){
+        [_chatVC cutNight];
+    }else{
+        [_chatVC cutDayTime];
+    }
 }
 
 //观众上麦时选择身份

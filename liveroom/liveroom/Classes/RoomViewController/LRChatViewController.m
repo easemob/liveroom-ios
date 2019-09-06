@@ -127,6 +127,13 @@
                  timestamp:[[NSDate new] timeIntervalSince1970]];
 }
 
+- (void)cutDayTime {
+    [self audioPlayerWithName:@"daytime" type:@"wav"];
+}
+- (void)cutNight {
+    [self audioPlayerWithName:@"night" type:@"wav"];
+}
+
 - (void)animationImageName:(NSString *)imageName
 {
     UIView * view = [self.view.superview viewWithTag:99999];

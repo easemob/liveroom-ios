@@ -25,12 +25,6 @@
 //狼人数组已改变
 #define LR_WEREWOLF_DIDCHANGE @"WerewolfDidChange"
 
-//申请上麦请求被响应
-#define LR_REQUEST_RESPONSED @"RequestResponsed"
-
-//申请上麦请求超时
-#define LR_REQUEST_TIME_OUT @"RequestTimeOut"
-
 // Conference
 #define LR_Receive_OnSpeak_Request_Notification         @"ReceiveOnSpeakApply"
 #define LR_Receive_OnSpeak_Reject_Notification          @"ReceiveOnSpeakReject"

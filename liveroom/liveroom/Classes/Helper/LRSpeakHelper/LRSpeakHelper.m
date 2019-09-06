@@ -82,10 +82,6 @@ static LRSpeakHelper *helper_;
                                                      name:LR_Receive_ToBe_Audience_Notification
                                                    object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(closeTimer)
-                                                     name:LR_REQUEST_RESPONSED
-                                                   object:nil];
     }
     return self;
 }

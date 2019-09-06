@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendText:(NSString *)aText;
 - (void)sendLike;
 - (void)sendGift;
+- (void)cutDayTime;
+- (void)cutNight;
 @end
 
 @interface LRChatCell : UITableViewCell
