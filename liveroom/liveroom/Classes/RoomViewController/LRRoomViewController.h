@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithUserType:(LRUserRoleType)aType
                        roomModel:(LRRoomModel *)aRoomModel
                         password:(NSString *)aPassword;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -10,9 +10,9 @@
 #import "Headers.h"
 
 @interface LRSpeakerTypeView ()
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *infoLabel;
-@property (nonatomic, strong) UIButton *switchBtn;
+@property (nonatomic, strong) UILabel *titleLabel;  //会议模式
+@property (nonatomic, strong) UILabel *infoLabel;   //模式介绍
+@property (nonatomic, strong) UIButton *switchBtn;  //房间模式改变按钮/暂时没开发
 @end
 
 @implementation LRSpeakerTypeView
@@ -84,6 +84,12 @@
         {
             self.titleLabel.text = @"自由麦模式";
             self.infoLabel.text = @"自由麦模式下所有主播可以自由发言";
+        }
+            break;
+        case LRRoomType_Pentakill:
+        {
+            self.titleLabel.text = @"狼人杀模式";
+            self.infoLabel.text = @"管理员admin可以随时切换发现范围，不同范围内的主播可以发言";
         }
             break;
         default:

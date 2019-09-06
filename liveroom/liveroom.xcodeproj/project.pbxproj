@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 789E70471AB662ABBFC025F0 /* libPods-liveroom.a */; };
+		3C38CE86231E64D200EAB8D1 /* LRCoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C38CE85231E64D200EAB8D1 /* LRCoverViewController.m */; };
 		901A54DA2254CA9700F00186 /* LRRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A54D92254CA9700F00186 /* LRRoomViewController.m */; };
 		902B51ED2261BCFD000EC701 /* UIViewController+LRAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 902B51EC2261BCFD000EC701 /* UIViewController+LRAlert.m */; };
 		90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */; };
@@ -56,6 +57,17 @@
 		E04712E2225C907600F9910C /* LRFindView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E1225C907600F9910C /* LRFindView.m */; };
 		E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712F6225F1A5900F9910C /* LRRequestManager.m */; };
 		E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */; };
+		E047130022606E7900F9910C /* delete_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712FF22606E7900F9910C /* delete_input@2x.png */; };
+		E06E63C1230D4CE900DEE2DF /* LRSpeakerMonopolyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63B3230D4CE800DEE2DF /* LRSpeakerMonopolyCell.m */; };
+		E06E63C2230D4CE900DEE2DF /* LRSpeakerHostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63B8230D4CE800DEE2DF /* LRSpeakerHostCell.m */; };
+		E06E63C4230D4CE900DEE2DF /* LRSpeakerCommunicationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63C0230D4CE800DEE2DF /* LRSpeakerCommunicationCell.m */; };
+		E06E63C7230D4D7F00DEE2DF /* LRSpeakerCommunicationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63C6230D4D7F00DEE2DF /* LRSpeakerCommunicationViewController.m */; };
+		E06E63CA230D4D9C00DEE2DF /* LRSpeakerHostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63C9230D4D9C00DEE2DF /* LRSpeakerHostViewController.m */; };
+		E06E63CD230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63CC230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.m */; };
+		E06E63EF230E822200DEE2DF /* LRSpeakerPentakillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63ED230E822200DEE2DF /* LRSpeakerPentakillCell.m */; };
+		E06E63F0230E822200DEE2DF /* LRSpeakerPentakillController.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63EE230E822200DEE2DF /* LRSpeakerPentakillController.m */; };
+		E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C8F226DB9F3008CF34E /* search-material@2x.png */; };
+		E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C90226DB9F3008CF34E /* search-material@3x.png */; };
 		E0780CCB226ED7CB008CF34E /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0780CC9226ED7CB008CF34E /* LRVolumeView.m */; };
 		E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E096BE5E22641FB7007908BB /* LRRoomOptions.m */; };
 /* End PBXBuildFile section */
@@ -75,6 +87,8 @@
 
 /* Begin PBXFileReference section */
 		2BA6ADC8633F347AD7C7963A /* Pods-liveroom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liveroom.debug.xcconfig"; path = "Pods/Target Support Files/Pods-liveroom/Pods-liveroom.debug.xcconfig"; sourceTree = "<group>"; };
+		3C38CE84231E64D200EAB8D1 /* LRCoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCoverViewController.h; sourceTree = "<group>"; };
+		3C38CE85231E64D200EAB8D1 /* LRCoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCoverViewController.m; sourceTree = "<group>"; };
 		789E70471AB662ABBFC025F0 /* libPods-liveroom.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-liveroom.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		901A54D82254CA9700F00186 /* LRRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomViewController.h; sourceTree = "<group>"; };
 		901A54D92254CA9700F00186 /* LRRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomViewController.m; sourceTree = "<group>"; };
@@ -175,6 +189,25 @@
 		E04712F7225F1A5900F9910C /* LRRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRequestManager.h; sourceTree = "<group>"; };
 		E04712FC22602FC800F9910C /* LRCreateRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCreateRoomViewController.h; sourceTree = "<group>"; };
 		E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCreateRoomViewController.m; sourceTree = "<group>"; };
+		E04712FF22606E7900F9910C /* delete_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete_input@2x.png"; sourceTree = "<group>"; };
+		E06E63B3230D4CE800DEE2DF /* LRSpeakerMonopolyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerMonopolyCell.m; sourceTree = "<group>"; };
+		E06E63B4230D4CE800DEE2DF /* LRSpeakerMonopolyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSpeakerMonopolyCell.h; sourceTree = "<group>"; };
+		E06E63B8230D4CE800DEE2DF /* LRSpeakerHostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerHostCell.m; sourceTree = "<group>"; };
+		E06E63B9230D4CE800DEE2DF /* LRSpeakerHostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSpeakerHostCell.h; sourceTree = "<group>"; };
+		E06E63BF230D4CE800DEE2DF /* LRSpeakerCommunicationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSpeakerCommunicationCell.h; sourceTree = "<group>"; };
+		E06E63C0230D4CE800DEE2DF /* LRSpeakerCommunicationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerCommunicationCell.m; sourceTree = "<group>"; };
+		E06E63C5230D4D7F00DEE2DF /* LRSpeakerCommunicationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerCommunicationViewController.h; sourceTree = "<group>"; };
+		E06E63C6230D4D7F00DEE2DF /* LRSpeakerCommunicationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerCommunicationViewController.m; sourceTree = "<group>"; };
+		E06E63C8230D4D9C00DEE2DF /* LRSpeakerHostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerHostViewController.h; sourceTree = "<group>"; };
+		E06E63C9230D4D9C00DEE2DF /* LRSpeakerHostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerHostViewController.m; sourceTree = "<group>"; };
+		E06E63CB230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRSpeakerMonopolyViewController.h; sourceTree = "<group>"; };
+		E06E63CC230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerMonopolyViewController.m; sourceTree = "<group>"; };
+		E06E63EA230E822200DEE2DF /* LRSpeakerPentakillController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSpeakerPentakillController.h; sourceTree = "<group>"; };
+		E06E63EC230E822200DEE2DF /* LRSpeakerPentakillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSpeakerPentakillCell.h; sourceTree = "<group>"; };
+		E06E63ED230E822200DEE2DF /* LRSpeakerPentakillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerPentakillCell.m; sourceTree = "<group>"; };
+		E06E63EE230E822200DEE2DF /* LRSpeakerPentakillController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerPentakillController.m; sourceTree = "<group>"; };
+		E0780C8F226DB9F3008CF34E /* search-material@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@2x.png"; sourceTree = "<group>"; };
+		E0780C90226DB9F3008CF34E /* search-material@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@3x.png"; sourceTree = "<group>"; };
 		E0780CC9226ED7CB008CF34E /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
 		E0780CCA226ED7CB008CF34E /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
 		E096BE5D22641FB7007908BB /* LRRoomOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomOptions.h; sourceTree = "<group>"; };
@@ -325,6 +358,12 @@
 		90F2C6812254C08600A712B8 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E06E63E9230E822200DEE2DF /* SpeakerPentakillController */,
+				E06E63EA230E822200DEE2DF /* LRSpeakerPentakillController.h */,
+				E06E63EE230E822200DEE2DF /* LRSpeakerPentakillController.m */,
+				E06E63BA230D4CE800DEE2DF /* SpeakerCommunicationViewController */,
+				E06E63B5230D4CE800DEE2DF /* SpeakerHostViewController */,
+				E06E63B0230D4CE800DEE2DF /* SpeakerMonopolyController */,
 				901A54D72254CA7500F00186 /* RoomViewController */,
 				90F2C6832254C08600A712B8 /* Home */,
 				90F2C6902254C08600A712B8 /* Category */,
@@ -535,6 +574,82 @@
 			path = LRNetWorking;
 			sourceTree = "<group>";
 		};
+		E06E63B0230D4CE800DEE2DF /* SpeakerMonopolyController */ = {
+			isa = PBXGroup;
+			children = (
+				E06E63B2230D4CE800DEE2DF /* Views */,
+				E06E63CB230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.h */,
+				E06E63CC230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.m */,
+			);
+			path = SpeakerMonopolyController;
+			sourceTree = "<group>";
+		};
+		E06E63B2230D4CE800DEE2DF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E06E63B4230D4CE800DEE2DF /* LRSpeakerMonopolyCell.h */,
+				E06E63B3230D4CE800DEE2DF /* LRSpeakerMonopolyCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E06E63B5230D4CE800DEE2DF /* SpeakerHostViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E06E63B7230D4CE800DEE2DF /* Views */,
+				E06E63C8230D4D9C00DEE2DF /* LRSpeakerHostViewController.h */,
+				E06E63C9230D4D9C00DEE2DF /* LRSpeakerHostViewController.m */,
+			);
+			path = SpeakerHostViewController;
+			sourceTree = "<group>";
+		};
+		E06E63B7230D4CE800DEE2DF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E06E63B9230D4CE800DEE2DF /* LRSpeakerHostCell.h */,
+				E06E63B8230D4CE800DEE2DF /* LRSpeakerHostCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E06E63BA230D4CE800DEE2DF /* SpeakerCommunicationViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E06E63BE230D4CE800DEE2DF /* Views */,
+				E06E63C5230D4D7F00DEE2DF /* LRSpeakerCommunicationViewController.h */,
+				E06E63C6230D4D7F00DEE2DF /* LRSpeakerCommunicationViewController.m */,
+			);
+			path = SpeakerCommunicationViewController;
+			sourceTree = "<group>";
+		};
+		E06E63BE230D4CE800DEE2DF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E06E63BF230D4CE800DEE2DF /* LRSpeakerCommunicationCell.h */,
+				E06E63C0230D4CE800DEE2DF /* LRSpeakerCommunicationCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E06E63E9230E822200DEE2DF /* SpeakerPentakillController */ = {
+			isa = PBXGroup;
+			children = (
+				E06E63EB230E822200DEE2DF /* Views */,
+				3C38CE84231E64D200EAB8D1 /* LRCoverViewController.h */,
+				3C38CE85231E64D200EAB8D1 /* LRCoverViewController.m */,
+			);
+			path = SpeakerPentakillController;
+			sourceTree = "<group>";
+		};
+		E06E63EB230E822200DEE2DF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E06E63EC230E822200DEE2DF /* LRSpeakerPentakillCell.h */,
+				E06E63ED230E822200DEE2DF /* LRSpeakerPentakillCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		E096BE5C22641F50007908BB /* LRRoomOptions */ = {
 			isa = PBXGroup;
 			children = (
@@ -630,21 +745,17 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh",
-				"${PODS_ROOT}/Hyphenate/iOS_Pods_IMFullSDK_V3.6.0/Hyphenate.framework",
+				"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh",
+				"${PODS_ROOT}/Hyphenate/iOS_Pods_IMFullSDK_V3.6.1/Hyphenate.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hyphenate.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B68E15B3F5D8F640D398D453 /* [CP] Check Pods Manifest.lock */ = {
@@ -671,7 +782,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-resources.sh",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -680,7 +791,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-liveroom/Pods-liveroom-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -690,30 +801,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E06E63C1230D4CE900DEE2DF /* LRSpeakerMonopolyCell.m in Sources */,
+				E06E63F0230E822200DEE2DF /* LRSpeakerPentakillController.m in Sources */,
 				90600135225DA55600CD8BAA /* LRSpeakerTypeView.m in Sources */,
 				90F2C6E72254C08600A712B8 /* LRAlertController.m in Sources */,
 				90600131225DA55600CD8BAA /* LRVoiceRoomHeader.m in Sources */,
 				90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */,
 				E04712E2225C907600F9910C /* LRFindView.m in Sources */,
 				901A54DA2254CA9700F00186 /* LRRoomViewController.m in Sources */,
+				E06E63CD230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.m in Sources */,
 				90F2C6D52254C08600A712B8 /* LRLogManager.m in Sources */,
 				9058DF912258D7A900699AB2 /* LRChatViewController.m in Sources */,
 				E03ADD872275BFEA0030C4D6 /* LRRoomSettingViewController.m in Sources */,
 				E0780CCB226ED7CB008CF34E /* LRVolumeView.m in Sources */,
 				90B490852284340300F2EBCC /* NSDictionary+Category.m in Sources */,
+				E06E63EF230E822200DEE2DF /* LRSpeakerPentakillCell.m in Sources */,
 				E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
+				E06E63C4230D4CE900DEE2DF /* LRSpeakerCommunicationCell.m in Sources */,
 				90F2C6D62254C08600A712B8 /* LRRoomModel.m in Sources */,
 				9083DC8F225606B10099C5BD /* LRGCDMulticastDelegate.m in Sources */,
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
 				E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */,
 				9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */,
+				3C38CE86231E64D200EAB8D1 /* LRCoverViewController.m in Sources */,
 				907F5BF2226F238E009ED60E /* LRSpeakerCellModel.m in Sources */,
 				90B4907F2284240400F2EBCC /* NSString+Category.m in Sources */,
 				E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */,
 				9058DF942258D8EE00699AB2 /* LRVoiceRoomTabbar.m in Sources */,
 				907F5BEF226EFFF9009ED60E /* LRSpeakerEmptyCell.m in Sources */,
+				E06E63CA230D4D9C00DEE2DF /* LRSpeakerHostViewController.m in Sources */,
 				907F5BDF226EB6C1009ED60E /* UIResponder+LRRouter.m in Sources */,
 				90F2C6DE2254C08600A712B8 /* LRLoginViewController.m in Sources */,
 				90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */,
@@ -726,6 +844,8 @@
 				90600134225DA55600CD8BAA /* LRChatroomMembersCell.m in Sources */,
 				E04712D7225B61F000F9910C /* LRTabBar.m in Sources */,
 				E04712C62259A77C00F9910C /* LRSearchBar.m in Sources */,
+				E06E63C2230D4CE900DEE2DF /* LRSpeakerHostCell.m in Sources */,
+				E06E63C7230D4D7F00DEE2DF /* LRSpeakerCommunicationViewController.m in Sources */,
 				907F5BE2226ECB3A009ED60E /* LRSpeakerCell.m in Sources */,
 				E04712C72259A77C00F9910C /* LRRealtimeSearch.m in Sources */,
 				90F2C6D82254C08600A712B8 /* LRVoiceChatRoomListCell.m in Sources */,

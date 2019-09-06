@@ -121,7 +121,7 @@
 
 #pragma mark - message
 - (void)sendMessage:(NSString *)aMessage
-                   completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+         completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:aMessage];
     EMMessage *msg = [[EMMessage alloc] initWithConversationID:_roomModel.roomId
                                                           from:EMClient.sharedClient.currentUsername
@@ -132,20 +132,20 @@
     [EMClient.sharedClient.chatManager sendMessage:msg
                                           progress:nil
                                         completion:^(EMMessage *message, EMError *error)
-    {
-        if (aCompletion) {
-            aCompletion(error.errorDescription, !error);
-        }
-    }];
+     {
+         if (aCompletion) {
+             aCompletion(error.errorDescription, !error);
+         }
+     }];
 }
 
 - (void)sendLikeMessage:(NSString *)aMessage
-                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+             completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     [self sendMessage:aMessage completion:aCompletion];
 }
 
 - (void)sendGiftMessage:(NSString *)aMessage
-                completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
+             completion:(void(^)(NSString *errorInfo, BOOL success))aCompletion {
     [self sendMessage:aMessage completion:aCompletion];
 }
 
@@ -161,29 +161,42 @@
 - (void)sendUserOffMicMsg:(NSString *)username{
     [self sendMessageFromNoti:[NSString stringWithFormat:@"[@%@]下麦",username]];
 }
-
+//会议里上下麦触发事件
 #pragma mark - EMChatManagerDelegate
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages {
     for (EMMessage *msg in aCmdMessages) {
         NSString *action = msg.ext[kRequestAction];
         NSString *confid = msg.ext[kRequestConferenceId];
-       
+        NSString *requestUserIdentity = nil;
+        if(self.roomModel.roomType == LRRoomType_Pentakill){
+            requestUserIdentity = msg.ext[kRequestUserIdentity];
+            if(!requestUserIdentity){
+                requestUserIdentity = @"villager";
+            }
+        }
+        
         if ([action isEqualToString:kRequestToBe_Speaker]) // 收到上麦申请
         {
+            NSMutableDictionary *arguments = [[NSMutableDictionary alloc]init];
+            [arguments setObject:msg.from forKey:@"from"];
+            [arguments setObject:confid forKey:@"confid"];
+            if(requestUserIdentity){
+                [arguments setObject:requestUserIdentity forKey:@"requestUserIdentity"];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_OnSpeak_Request_Notification
-                                                              object:@{@"from":msg.from,@"confid":confid}];
+                                                        object:arguments];
         }
         
         if ([action isEqualToString:kRequestToBe_Rejected]) // 收到拒绝上麦事件
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_OnSpeak_Reject_Notification
-                                                              object:@{@"from":msg.from,@"confid":confid}];
+                                                                object:@{@"from":msg.from,@"confid":confid}];
         }
         
         if ([action isEqualToString:kRequestToBe_Audience]) // 收到下麦事件
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_Receive_ToBe_Audience_Notification
-                                                              object:@{@"from":msg.from,@"confid":confid}];
+                                                                object:@{@"from":msg.from,@"confid":confid}];
         }
     }
 }
@@ -228,8 +241,12 @@
     } else if (aReason == EMChatroomBeKickedReasonDestroyed) {
         reason = @"房间被销毁";
     }
+    if(self.roomModel.roomType == LRRoomType_Pentakill){
+        [LRSpeakHelper setupIdentity:@""];//成员 重置自己本地狼人杀身份
+        [LRSpeakHelper setupClockStatus:@""];//成员 重置自己本地时钟
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:LR_Exit_Chatroom_Notification object:reason];
-
+    
     [_delegates didExitChatroom:reason];
 }
 
