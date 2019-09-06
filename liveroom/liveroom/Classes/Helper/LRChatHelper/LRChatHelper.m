@@ -242,7 +242,7 @@
         reason = @"房间被销毁";
     }
     if(self.roomModel.roomType == LRRoomType_Pentakill){
-        [LRSpeakHelper setupIdentity:@""];//成员退 重置自己本地狼人杀身份
+        [LRSpeakHelper setupIdentity:@""];//成员 重置自己本地狼人杀身份
         [LRSpeakHelper setupClockStatus:@""];//成员 重置自己本地时钟
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:LR_Exit_Chatroom_Notification object:reason];
