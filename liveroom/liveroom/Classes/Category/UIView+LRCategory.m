@@ -44,6 +44,11 @@
             color = LRColor_PureBlackColor;
         }
             break;
+        case LRStrokeMiddleBlack:
+        {
+            color = LRColor_MiddleBlackColor;
+        }
+            break;
         default:
             break;
     }

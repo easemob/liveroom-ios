@@ -10,9 +10,10 @@
 #import "UIViewController+LRAlert.h"
 #import "LRTypes.h"
 #import "LRSpeakerPentakillCell.h"
+#import "LRSettingSwitch.h"
 
 #define kPadding 16
-@interface LRCreateRoomViewController ()
+@interface LRCreateRoomViewController ()<LRSettingSwitchDelegate>
 {
     LRRoomType _type;
     NSString *_roomType;
@@ -21,7 +22,8 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UITextField *voiceChatroomIDTextField;    //房间名
 @property (nonatomic, strong) UITextField *passwordTextField;           //密码
-@property (nonatomic, strong) UILabel *chatroomIDLabel;                //房间名规则
+@property (nonatomic, strong) LRSettingSwitch *pwdSwitch;              //免密开关
+@property (nonatomic, strong) UILabel *chatroomIDLabel;               //房间名规则
 @property (nonatomic, strong) UILabel *passwordLabel;                  //密码规则
 @property (nonatomic, strong) UIView *speakerTypeView;                 //模式view
 @property (nonatomic, strong) UILabel *speakerTypeTextLabel;           //模式选择
@@ -30,6 +32,7 @@
 @property (nonatomic, strong) UIView *identityTypeView;
 @property (nonatomic, strong) UILabel *identityTypeTextlabel;
 @property (nonatomic, strong) UILabel *identityTypelabel;
+@property (nonatomic, strong) NSString *tempIdentity;
 
 @property (nonatomic, strong) UIButton *submitButton;
 
@@ -111,6 +114,18 @@
         make.height.equalTo(@48);
     }];
     
+    self.pwdSwitch = [[LRSettingSwitch alloc]init];
+    [self.view addSubview:self.pwdSwitch];
+    [self.pwdSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.passwordTextField.mas_top).offset(12);
+        make.right.equalTo(self.passwordTextField.mas_right).offset(-12);
+        make.width.equalTo(@38);
+        make.height.equalTo(@24);
+    }];
+    self.pwdSwitch.delegate = self;
+    [self.pwdSwitch setOn:true animated:YES];
+    [self.pwdSwitch setupTagBack:38 height:24];
+    
     self.passwordLabel = [[UILabel alloc] init];
     self.passwordLabel.text = @"请输入密码不能为空。Please enter a password that cannot be empty.";
     [self.passwordLabel setTextColor:RGBACOLOR(255, 255, 255, 0.3)];
@@ -181,10 +196,10 @@
     }];
 }
 
-
 //设置狼人杀身份选择
 - (void)setupWereWolve
 {
+    NSLog(@"\npwd       %f",self.passwordTextField.frame.origin.y);
     _identityTypeView = [[UIView alloc] init];
     [_identityTypeView strokeWithColor:LRStrokeLowBlack];
     _identityTypeView.backgroundColor = LRColor_HeightBlackColor;
@@ -203,7 +218,8 @@
     _identityTypeTextlabel = [[UILabel alloc] init];
     _identityTypeTextlabel.text = @"狼人 Werewlof";
     
-    [LRSpeakHelper setupIdentity:@"pentakill"];
+    _tempIdentity = @"pentakill";
+    //[LRSpeakHelper setupIdentity:@"pentakill"];
     
     _identityTypeTextlabel.font = [UIFont systemFontOfSize:18];
     [_identityTypeTextlabel setTextColor:[UIColor whiteColor]];
@@ -250,13 +266,13 @@
     LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"狼人 Werewolf" callback:^(LRAlertController *_Nonnull alertController)
                                {
                                    self.identityTypeTextlabel.text = @"狼人 Werewolf";
-                                   [LRSpeakHelper setupIdentity:@"pentakill"];
+                                   self.tempIdentity = @"pentakill";
                                    
                                }];
     LRAlertAction *villager = [LRAlertAction alertActionTitle:@"村民 Villager" callback:^(LRAlertController *_Nonnull alertController)
                                {
                                    self.identityTypeTextlabel.text = @"村民 Villager";
-                                   [LRSpeakHelper setupIdentity:@"villager"];
+                                   self.tempIdentity = @"villager";
                                }];
     [alert addAction:werewolf];
     [alert addAction:villager];
@@ -280,7 +296,7 @@
 #pragma mark UITapGestureRecognizer
 - (void)speakerTypeTap
 {
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"自由麦模式下所有主播可以自由发言;\n主持模式下管理员分配的主播获得发言权;\n抢麦模式下所有主播通过抢麦获得发言权;\n狼人杀模式下遵循狼人杀玩法规则;"];
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"狼人杀模式下遵循狼人杀玩法规则;\n自由麦模式下所有主播可以自由发言;\n主持模式下管理员分配的主播获得发言权;\n抢麦模式下所有主播通过抢麦获得发言权。"];
     
     LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 Communication"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
@@ -341,7 +357,7 @@
         return;
     }
     
-    if (self.passwordTextField.text.length == 0) {
+    if (self.passwordTextField.text.length == 0 && self.pwdSwitch.isOn) {
         LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"请输入房间密码"];
         [self presentViewController:alert animated:YES completion:nil];
         return;
@@ -355,7 +371,7 @@
     
     LRRoomOptions *options = [LRRoomOptions sharedOptions];
     id body = @{@"roomName":self.voiceChatroomIDTextField.text,
-                @"password":self.passwordTextField.text,
+                @"password":(_pwdSwitch.isOn) ? self.passwordTextField.text : @"",
                 @"allowAudienceTalk":@YES,
                 @"imChatRoomMaxusers":@([options.audioQuality intValue]),
                 @"desc":@"desc",
@@ -379,6 +395,10 @@
                      [dic setObject:weakSelf.passwordTextField.text forKey:@"rtcConfrPassword"];
                      [dic setObject:EMClient.sharedClient.currentUsername forKey:@"ownerName"];
                      [dic setObject:@(self->_type) forKey:@"type"];
+                     if(self->_type == LRRoomType_Pentakill){
+                         [dic setObject:self.tempIdentity forKey:@"identity"];
+                         [dic setObject:@"" forKey:@"clockStatus"];
+                     }
                  }
                  [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:dic];
              }else {
@@ -404,7 +424,30 @@
 - (void)closeButtonAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-    [LRSpeakHelper setupIdentity:@""];// 创建房间中断，重置狼人杀身份
+    _tempIdentity = @"";// 创建房间中断，重置狼人杀身份
+}
+//密码开关
+#pragma mark LRSettingSwitchDelegate
+- (void)settingSwitchWithValueChanged:(LRSettingSwitch *)aSwitch
+{
+    self.pwdSwitch.isOn = !aSwitch;
+    //可选密码开关
+    if(!aSwitch.isOn){
+        self.passwordTextField.placeholder = @"公开房间无需设置密码";
+        self.passwordTextField.backgroundColor = [UIColor blackColor];
+        [self.passwordTextField strokeWithColor:LRStrokeMiddleBlack];
+        self.passwordLabel.text = @"如果需要创建私密房间，请打开密码开关";
+        self.passwordTextField.userInteractionEnabled = NO;
+        self.passwordTextField.enabled = NO;
+    }else{
+        self.passwordTextField.placeholder = @"密码 password";
+        self.passwordTextField.backgroundColor = LRColor_HeightBlackColor;
+        [self.passwordTextField strokeWithColor:LRStrokeLowBlack];
+        self.passwordLabel.text = @"请输入密码不能为空。Please enter a password that cannot be empty.";
+        self.passwordTextField.userInteractionEnabled = YES;
+        self.passwordTextField.enabled = YES;
+    }
+    [self.pwdSwitch setupTagBack:38 height:24];
 }
 
 @end

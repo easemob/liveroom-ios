@@ -16,6 +16,7 @@ typedef enum : NSUInteger {
     LRStrokeGreen,
     LRStrokeWhite,
     LRStrokeLowBlack,
+    LRStrokeMiddleBlack,
     LRStrokePureBlack
 } LRStrokeColor;
 

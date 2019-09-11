@@ -29,7 +29,7 @@
 @end
 
 @implementation LRSpeakHelper
-
+/*
 static NSString *identity = @"";//全局static狼人杀模式身份标识
 static NSString *clockStatus;  //时钟状态
 
@@ -45,7 +45,7 @@ static NSString *clockStatus;  //时钟状态
 }
 + (void)setupClockStatus:(NSString *)clock {
     clockStatus = clock;
-}
+}*/
 
 static dispatch_once_t onceToken;
 static LRSpeakHelper *helper_;
@@ -143,8 +143,7 @@ static LRSpeakHelper *helper_;
     __block BOOL isMute = YES;
     BOOL isOwner = [self.roomModel.owner isEqualToString:kCurrentUsername];
     isMute = !((isOwner && self.roomModel.roomType == LRRoomType_Host)
-               || (self.roomModel.roomType == LRRoomType_Communication)
-               || (self.roomModel.roomType == LRRoomType_Pentakill));
+               || (self.roomModel.roomType == LRRoomType_Communication));
     param.isMute = isMute;
     [EMClient.sharedClient.conferenceManager publishConference:self.conference
                                                    streamParam:param
@@ -556,8 +555,8 @@ static LRSpeakHelper *helper_;
          */
         //狼人杀模式当前房间时钟状态
         if([attr.key isEqualToString:@"clockStatus"]){
-            [LRSpeakHelper setupClockStatus:attr.value];
-            [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:[LRSpeakHelper instanceClockStatus]];
+            //[LRSpeakHelper setupClockStatus:attr.value];
+            [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:attr.value];
         }
         
         //狼人杀模式主播身份数组

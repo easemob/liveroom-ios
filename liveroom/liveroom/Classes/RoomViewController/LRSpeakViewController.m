@@ -48,7 +48,7 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    [self _setupSubViews];
+    [self setupSubViews];
     LRSpeakHelper.sharedInstance.roomModel = _roomModel;
     [self.headerView setType:_roomModel.roomType];
     for (int i = 0; i < kMaxSpeakerCount; i++) {
@@ -58,7 +58,7 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
     [self.tableView reloadData];
 }
 
-- (void)_setupSubViews {
+- (void)setupSubViews {
     [self.view addSubview:self.headerView];
     [self.view addSubview:self.tableView];
     

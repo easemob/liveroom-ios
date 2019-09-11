@@ -61,8 +61,18 @@
     self.roomTpyeLabel.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.roomTpyeLabel];
     [self.roomTpyeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView.mas_centerY);
+        make.centerY.equalTo(self.contentView.mas_centerY).offset(-5);
         make.right.equalTo(self.contentView).offset(-10);
+    }];
+    
+    self.lockImage = [[UIImageView alloc]init];
+    self.lockImage.image = [UIImage imageNamed:@"lock"];
+    [self.contentView addSubview:_lockImage];
+    [self.lockImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.roomTpyeLabel.mas_bottom).offset(3);
+        make.right.equalTo(self.roomTpyeLabel.mas_right);
+        make.height.equalTo(@12);
+        make.width.equalTo(@12);
     }];
 }
 

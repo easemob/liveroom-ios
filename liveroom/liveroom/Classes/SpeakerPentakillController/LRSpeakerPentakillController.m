@@ -9,7 +9,7 @@
 #import "LRSpeakerPentakillController.h"
 #import "LRSpeakerPentakillCell.h"
 #import "UIResponder+LRRouter.h"
-#import "LRCoverViewController.h"
+#import "LRCutClockView.h"
 
 @interface LRSpeakerPentakillController ()
 
@@ -19,9 +19,7 @@
 @property (nonatomic, strong) UIButton *sunBtn;
 @property (nonatomic, strong) UIButton *moonBtn;
 
-@property (nonatomic, strong) NSString *clockstatus;
-
-@property (nonatomic, strong) NSString *num;  //弹框“知道了”计时器
+@property (nonatomic) LRTerminator clockstatus;
 
 @property (nonatomic, strong) UIView *werewolfView;
 
@@ -42,7 +40,7 @@ Boolean isExcute;  //每次加入房间回调只执行一次
                                                object:nil];
     //首次设置时钟状态
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(callBackClockStatus)
+                                             selector:@selector(callBackClockStatus:)
                                                  name:LR_CLOCK_STATE_CHANGE
                                                object:nil];
     if(![self.roomModel.owner isEqualToString:kCurrentUsername]){
@@ -52,10 +50,10 @@ Boolean isExcute;  //每次加入房间回调只执行一次
                                                      name:LR_Receive_ToBe_Audience_Notification
                                                    object:nil];
     }
-    
-    self.num = @"2";
-}
 
+    [self _setupSubViews];
+}
+//切换状态之后全部主播静音，不可说话
 - (void)voiceActionClose{
     for (LRSpeakerCellModel *model in self.dataAry) {
         [self routerEventWithName:@"pkOffMicEventName" userInfo:@{@"key" : model}];
@@ -64,7 +62,7 @@ Boolean isExcute;  //每次加入房间回调只执行一次
 }
 
 - (void)_setupSubViews {
-    [super _setupSubViews];
+    //[super setupSubViews];
     [self.view addSubview:self.werewolfView];
     [self.view addSubview:self.schedule];
     
@@ -85,7 +83,7 @@ Boolean isExcute;  //每次加入房间回调只执行一次
         make.top.equalTo(self.schedule.mas_bottom).offset(5);
         make.left.right.bottom.equalTo(self.view);
     }];
-    [self addView];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
+    [self addNIghtCoverView];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
     
     [_schedule addSubview:_sunBtn];
     [_schedule addSubview:_moonBtn];
@@ -123,17 +121,23 @@ Boolean isExcute;  //每次加入房间回调只执行一次
         make.width.equalTo(@35);
     }];
     
-    [self setupClockPic:[self getCurrentClock]];
 }
 //时钟状态改变回调
-- (void)callBackClockStatus {
+- (void)callBackClockStatus:(NSNotification *)noti{
+    NSString *clock = [noti object];
+    if([clock isEqualToString:@"LRTerminator_night"]) {
+        [self setupClockPic:LRTerminator_night];
+    }else {
+        [self setupClockPic:LRTerminator_dayTime];
+    }
     if(!isExcute){
-        [self setupClockPic:[LRSpeakHelper instanceClockStatus]];
         //注册狼人杀房间通知在房间模式设定之后，防止第一次进入房间弹窗
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reveiceNotification:)
-                                                     name:LR_CLOCK_STATE_CHANGE
-                                                   object:nil];
+        if(![self.roomModel.owner isEqualToString:kCurrentUsername]){
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(reveiceNotification:)
+                                                         name:LR_CLOCK_STATE_CHANGE
+                                                       object:nil];
+        }
         isExcute = true;
     }
 }
@@ -157,20 +161,21 @@ Boolean isExcute;  //每次加入房间回调只执行一次
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"您将要进行白天黑夜模式的切换，\n操作后所有人的发言状态将被初始化。\n确认操作么？"];
     LRAlertAction *confirm = [LRAlertAction alertActionTitle:@"确认" callback:^(LRAlertController *_Nonnull          alertContoller){
         long tag = btn.tag;
-        if(tag == 1 && [[self getCurrentClock]isEqualToString:@"LRTerminator_night"]){
-            [self setupClockPic:@"LRTerminator_dayTime"];
-        }else if(tag == 2  && [[self getCurrentClock]isEqualToString:@"LRTerminator_dayTime"]){
-            [self setupClockPic:@"LRTerminator_night"];
-            if(![[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
-                [self addView];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
-            }
-            if([self.clockstatus isEqualToString:@"LRTerminator_night"] &&
-               [[LRSpeakHelper instanceIdentity] isEqualToString:@"villager"]){
+        if(tag == 1 && self.clockstatus == LRTerminator_night){
+            [self setupClockPic:LRTerminator_dayTime];
+        }else if(tag == 2  && self.clockstatus == LRTerminator_dayTime){
+            [self setupClockPic:LRTerminator_night];
+            /*if(![self.roomModel.identity isEqualToString:@"pentakill"]){
+                [self.coverView startTimers];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
+            }*/
+            if(self.clockstatus == LRTerminator_night &&
+               [self.roomModel.identity isEqualToString:@"villager"]){
                 [self muteWereWolf];//村民静音狼人
             }else{
                 [self reMuteWereWolf];//重新监听狼人说话
             }
         }
+        
     }];
     [alert addAction:confirm];
     [self presentViewController:alert animated:YES completion:nil];
@@ -178,134 +183,98 @@ Boolean isExcute;  //每次加入房间回调只执行一次
 
 //接受房主改变房间时钟状态的通知
 - (void)reveiceNotification:(NSNotification *)noti{
-    NSLog(@"\n---------->?currentuser:%@",kCurrentUsername);
-    if(![self.roomModel.owner isEqualToString:kCurrentUsername]){
-        NSString *clock = [noti object];
-        NSLog(@"\n-------------->notificationClock:    %@",clock);
-        
-        LRAlertController *alert;
-        if([[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_dayTime"]){
-            alert = [LRAlertController showClockChangeAlertWithTitle:@"天亮了"
-                                                                info:@"目前已经切换至白天,所有的设置将恢复默认。\n您可以点击身份图标任意切换角色体验。"
-                                                          clockState:@"LRTerminator_dayTime"];
-        }else{
-            alert = [LRAlertController showClockChangeAlertWithTitle:@"夜晚降临"
-                                                                info:@"目前已经切换至夜晚，只有狼人主播可以\n在夜晚发言。所有的设置将恢复默认。\n请重新点击发言按钮发言。"
-                                                          clockState:@"LRTerminator_night"];
-        }
-        LRAlertAction *confirm = [LRAlertAction alertActionTitle:@"知道了  (3)" callback:^(LRAlertController *_Nonnull          alertContoller){
-        }];
-        [alert addAction:confirm];
-        [self presentViewController:alert animated:YES completion:nil];
-        dispatch_queue_t queue1 = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        //定时器延迟时间
-        NSTimeInterval delayTime = 1.0f;
-        
-        //定时器间隔时间
-        NSTimeInterval timeInterval = 1.0f;
-        
-        //设置开始时间
-        dispatch_time_t startDelayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayTime * NSEC_PER_SEC));
-        
-        //使用全局队列创建计时器
-        dispatch_source_t _sourceTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue1);
-        
-        //设置计时器
-        dispatch_source_set_timer(_sourceTimer,startDelayTime,timeInterval*NSEC_PER_SEC,0.1*NSEC_PER_SEC);
-        
-        dispatch_source_set_event_handler(_sourceTimer, ^{
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [confirm setTitle:[NSString stringWithFormat:@"知道了  (%@)",self.num] forState:UIControlStateNormal];
-            });
-            [self setupNum];
-            if([self.num intValue] < 1){
-                [alert dismissViewControllerAnimated:YES completion:nil];
-                self.num = @"2";
-                dispatch_source_cancel(_sourceTimer);
-            }
-        });
-        dispatch_resume(_sourceTimer);
-        [self setupClockPic:clock];
-        if([clock isEqualToString:@"LRTerminator_night"] && ![[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
-            [self addView];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
-        }
-        if([self.clockstatus isEqualToString:@"LRTerminator_night"] &&
-           [[LRSpeakHelper instanceIdentity] isEqualToString:@"villager"]){
-            [self muteWereWolf];// 夜晚村民静音狼人
-        }else{
-            [self reMuteWereWolf];//白天村民重新监听狼人说话
-        }
-        
+    NSString *clock = [noti object];
+    if([clock isEqualToString:@"LRTerminator_night"]) {
+        [self setupClockPic:LRTerminator_night];
+    }else {
+        [self setupClockPic:LRTerminator_dayTime];
     }
-}
-- (void)setupNum{
-    int temp = [self.num intValue];
-    temp--;
-    self.num = [NSString stringWithFormat:@"%d",temp];
+    /*if([clock isEqualToString:@"LRTerminator_night"] && ![self.roomModel.identity isEqualToString:@"pentakill"]){
+        [self.coverView startTimers];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
+    }*/
+    if(self.clockstatus == LRTerminator_night &&
+       [self.roomModel.identity isEqualToString:@"villager"]){
+        [self muteWereWolf];// 夜晚村民静音狼人
+    }else{
+        [self reMuteWereWolf];//白天村民重新监听狼人说话
+    }
 }
 
 //设置当前时钟昼夜图片
-- (void)setupClockPic:(NSString *)clock{
+- (void)setupClockPic:(LRTerminator)clock{
     UIImage *ImageSun;
     UIImage *ImageMoon;
-    if([clock isEqualToString:@"LRTerminator_dayTime"]){
+    if(clock == LRTerminator_dayTime){
         ImageSun = [UIImage imageNamed:@"sun"];
         ImageMoon = [UIImage imageNamed:@"emptymoon"];
-    }else if([clock isEqualToString:@"LRTerminator_night"]){
+    }else if(clock == LRTerminator_night){
         ImageSun = [UIImage imageNamed:@"emptysun"];
         ImageMoon = [UIImage imageNamed:@"moon"];
     }
     _sunView.image = ImageSun;
     _moonView.image = ImageMoon;
+    if(![self.roomModel.owner isEqualToString:kCurrentUsername]){
+        if(clock == LRTerminator_dayTime){
+            self.moonBtn.hidden = YES;
+            self.sunBtn.hidden = NO;
+        }else{
+            self.moonBtn.hidden = NO;
+            self.sunBtn.hidden = YES;
+            [_moonBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.schedule.mas_left);
+                make.top.equalTo(self.schedule.mas_top);
+                make.height.equalTo(@35);
+                make.width.equalTo(@35);
+            }];
+        }
+    }
     [self setCurrentClock:clock];
 }
 
-//获取当前时间钟：白昼/夜晚
-- (NSString *)getCurrentClock{
-    self.clockstatus = [LRSpeakHelper instanceClockStatus];
-    if([_clockstatus isEqualToString:@"LRTerminator_dayTime"]){
-        return @"LRTerminator_dayTime";
-    }else if([_clockstatus isEqualToString:@"LRTerminator_night"]){
-        return @"LRTerminator_night";
-    }
-    return @"";
-}
-
 //改变当前时钟状态
-- (void)setCurrentClock:(NSString *)newClock{
+- (void)setCurrentClock:(LRTerminator)newClock{
     self.clockstatus = newClock;
-    [LRSpeakHelper setupClockStatus:_clockstatus];
+    self.roomModel.clockStatus = newClock;
     //主播身份是村民并且时钟是夜晚，主播列表遮掩UI
-    if(![[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"] && [_clockstatus isEqualToString:@"LRTerminator_night"]){
+    if(![self.roomModel.identity isEqualToString:@"pentakill"] && _clockstatus == LRTerminator_night){
         self.tableView.hidden = YES;
+        [_coverView startTimers];
         self.werewolfView.hidden = NO;
     }else{
         self.tableView.hidden = NO;
+        [_coverView stopTimers];//先停止计时器
         self.werewolfView.hidden = YES;
     }
     //是房间管理员才可以修改server的时钟状态
     if(self.roomModel.owner == kCurrentUsername){
-        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"clockStatus" value:_clockstatus completion:^(EMError *aError)
+        NSString *clock;
+        if(_clockstatus == LRTerminator_dayTime){
+            clock = @"LRTerminator_dayTime";
+        }else if(_clockstatus == LRTerminator_night){
+            clock = @"LRTerminator_night";
+        }
+        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"clockStatus" value:clock completion:^(EMError *aError)
          {}];
     }
 }
 
 //夜晚狼人下麦操作
 - (void)setCoverUI {
-    if([[LRSpeakHelper instanceClockStatus]isEqualToString:@"LRTerminator_night"]){
+    if(self.roomModel.clockStatus == LRTerminator_night){
         //如果是狼人夜晚下麦则需要遮掩UI
-        if([[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
+        if([self.roomModel.identity isEqualToString:@"pentakill"]){
             self.tableView.hidden = YES;
             self.werewolfView.hidden = NO;
-            [self addView];
+            [self.coverView startTimers];
             [self muteWereWolf];//夜晚下麦狼人静音其他狼人主播
         }
         //如果是村民需要重新监听狼人讲话
-        if([[LRSpeakHelper instanceIdentity] isEqualToString:@"villager"]){
+        if([self.roomModel.identity isEqualToString:@"villager"]){
             [self reMuteWereWolf];//夜晚v被下麦村民身份置为观众（空字符串） 重新监听狼人发言
         }
     }
-    [LRSpeakHelper setupIdentity:@""];//重置该下麦主播狼人杀身份为观众（即空字符串）
+    self.roomModel.identity = @"";
+    //[LRSpeakHelper setupIdentity:@""];//重置该下麦主播狼人杀身份为观众（即空字符串）
 }
 
 //夜晚村民mute remote（静音）狼人
@@ -344,67 +313,14 @@ Boolean isExcute;  //每次加入房间回调只执行一次
 - (UIView *)werewolfView {
     if(!_werewolfView) {
         _werewolfView = [[UIView alloc]initWithFrame:CGRectZero];
-        _werewolfView.backgroundColor = RGBACOLOR(255,255,255,0.3);
+        _werewolfView.backgroundColor = RGBACOLOR(26,26,26,1);
     }
     return _werewolfView;
 }
 //夜晚村民遮掩UI
-- (void)addView {
-
-    UIImageView *icon = [[UIImageView alloc]init];
-    [_werewolfView addSubview:icon];
-    [icon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@35);
-        make.height.equalTo(@35);
-        make.left.equalTo(self.werewolfView.mas_left).offset(15);
-        make.top.equalTo(self.werewolfView.mas_top).offset(20);
-    }];
-    icon.image = [UIImage imageNamed:@"werewolf"];
-    
-    UILabel *title = [[UILabel alloc]init];
-    [_werewolfView addSubview:title];
-    [title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(icon.mas_bottom).offset(5);
-        make.left.equalTo(self.werewolfView.mas_left).offset(15);
-        make.right.equalTo(self.werewolfView.mas_right).offset(-15);
-        make.height.equalTo(@35);
-    }];
-    [title setText:@"夜晚狼人正在发言..."];
-    title.textColor = [UIColor whiteColor];
-    title.font = [UIFont systemFontOfSize:20];
-    title.adjustsFontSizeToFitWidth = YES;
-    
-    UILabel *content = [[UILabel alloc]init];
-    [_werewolfView addSubview:content];
-    [content mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(title.mas_bottom).offset(5);
-        make.left.equalTo(self.werewolfView).offset(15);
-        make.right.equalTo(self.werewolfView.mas_right).offset(-15);
-        make.height.equalTo(@130);
-    }];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineSpacing = 8;
-    NSDictionary *ats = @{
-                          NSFontAttributeName : [UIFont systemFontOfSize:14.0f],
-                          NSParagraphStyleAttributeName : paragraphStyle,
-                          };
-    NSString *common = @"目前正在夜晚发言，只有狼人主播可以在夜晚发言。\n请等待管理员切换成白天模式，恢复全员自由发言。\n请等待管理员切换至白天。\n\n\n\n\n\n";
-    content.attributedText = [[NSAttributedString alloc] initWithString:common attributes:ats];
-    content.numberOfLines = 0;
-    [content sizeToFit];
-    content.textColor = RGBACOLOR(255, 255, 255, 1);
-    content.font = [UIFont systemFontOfSize:14];
-    content.adjustsFontSizeToFitWidth = YES;
-    
-//     __weak typeof(self) weakSelf = self;
-//     if (@available(iOS 10.0, *)) {
-//     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.75 repeats:YES block:^(NSTimer * _Nonnull timer){
-//     [weakSelf timeRun:title];
-//     }];
-//     } else {
-//     // Fallback on earlier versions
-//     }
-    
+- (void)addNIghtCoverView {
+    self.coverView = [[LRCoverView alloc]init];
+    [self.coverView setupNightCoverUI:self.werewolfView];
 }
 
 #pragma mark - table view delegate & datasource
@@ -419,6 +335,7 @@ Boolean isExcute;  //每次加入房间回调只执行一次
             cell = [[LRSpeakerPentakillCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PentakillCellId];
         }
         [(LRSpeakerPentakillCell *)cell setModel:model];
+        [(LRSpeakerPentakillCell *)cell setRoomModel:self.roomModel];
         [(LRSpeakerPentakillCell *)cell updateSubViewUI];
     }else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"LRSpeakerEmptyCell"];
