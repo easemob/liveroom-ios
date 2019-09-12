@@ -113,7 +113,9 @@
         make.right.equalTo(self.view).offset(-kPadding);
         make.height.equalTo(@48);
     }];
-    
+   
+    /*
+     //免密创建UI开关
     self.pwdSwitch = [[LRSettingSwitch alloc]init];
     [self.view addSubview:self.pwdSwitch];
     [self.pwdSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -125,6 +127,7 @@
     self.pwdSwitch.delegate = self;
     [self.pwdSwitch setOn:true animated:YES];
     [self.pwdSwitch setupTagBack:38 height:24];
+     */
     
     self.passwordLabel = [[UILabel alloc] init];
     self.passwordLabel.text = @"请输入密码不能为空。Please enter a password that cannot be empty.";
@@ -219,7 +222,6 @@
     _identityTypeTextlabel.text = @"狼人 Werewlof";
     
     _tempIdentity = @"pentakill";
-    //[LRSpeakHelper setupIdentity:@"pentakill"];
     
     _identityTypeTextlabel.font = [UIFont systemFontOfSize:18];
     [_identityTypeTextlabel setTextColor:[UIColor whiteColor]];
@@ -357,7 +359,8 @@
         return;
     }
     
-    if (self.passwordTextField.text.length == 0 && self.pwdSwitch.isOn) {
+    //if (self.passwordTextField.text.length == 0 && self.pwdSwitch.isOn) {
+    if (self.passwordTextField.text.length == 0) {
         LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"请输入房间密码"];
         [self presentViewController:alert animated:YES completion:nil];
         return;
@@ -371,7 +374,8 @@
     
     LRRoomOptions *options = [LRRoomOptions sharedOptions];
     id body = @{@"roomName":self.voiceChatroomIDTextField.text,
-                @"password":(_pwdSwitch.isOn) ? self.passwordTextField.text : @"",
+                @"password":self.passwordTextField.text,
+                //@"password":(_pwdSwitch.isOn) ? self.passwordTextField.text : @"",
                 @"allowAudienceTalk":@YES,
                 @"imChatRoomMaxusers":@([options.audioQuality intValue]),
                 @"desc":@"desc",
@@ -426,6 +430,8 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     _tempIdentity = @"";// 创建房间中断，重置狼人杀身份
 }
+
+/*
 //密码开关
 #pragma mark LRSettingSwitchDelegate
 - (void)settingSwitchWithValueChanged:(LRSettingSwitch *)aSwitch
@@ -449,7 +455,7 @@
     }
     [self.pwdSwitch setupTagBack:38 height:24];
 }
-
+*/
 @end
 
 

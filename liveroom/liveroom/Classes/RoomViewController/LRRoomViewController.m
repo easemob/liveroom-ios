@@ -298,7 +298,6 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
     self.applyOnSpeakBtn.hidden = NO;
     [self showTipsAlertWithTitle:@"提示 Tip" info:@"申请上麦被拒绝"];
     self.tempIdentiy = @"";
-
 }
 
 - (void)didLoginOtherDevice:(NSNotification *)aNoti {
@@ -570,7 +569,7 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
         [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
     }
     if(self.roomModel.roomType == LRRoomType_Pentakill){
-        self.roomModel.identity = @"";   //房主&成员 退出房间重置自己本地时钟
+        self.roomModel.identity = @"";   //房主&成员 退出房间重置自己本地身份
         LRSpeakerPentakillController *pentakill = (LRSpeakerPentakillController *)self.speakerVC;
         [pentakill.coverView stopTimers];  //关闭房间关闭计时器
     }
@@ -707,7 +706,7 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
 //申请上麦验证
 - (void)applyOnSpeak:(UIButton *)btn {
     //狼人杀模式夜晚状态并且非狼人角色不能申请上麦
-    if(self.roomModel.roomType == LRRoomType_Pentakill && self.roomModel.clockStatus == LRTerminator_night  && ![self.roomModel.identity isEqualToString:@"pentakill"]){
+    if(self.roomModel.roomType == LRRoomType_Pentakill && self.roomModel.clockStatus == LRTerminator_night){
         LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"现在是夜晚状态，\n请等待房主切换至白天状态再申请上麦！"];
         LRAlertAction *confirm = [LRAlertAction alertActionTitle:@"确认" callback:^(LRAlertController *_Nonnull          alertContoller){
             

@@ -337,11 +337,13 @@
 
 #pragma mark - Actions
 - (void)joinRoomWithModel:(LRRoomModel *)aModel {
-    if(!aModel.conferencePassword){
+    /*
+     //没有密码直接加入房间
+     if(!aModel.conferencePassword){
         LRRoomViewController *vroomVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Audiance roomModel:aModel password:[NSString stringWithFormat:@"%d",aModel.conferencePassword]];
         [self presentViewController:vroomVC animated:YES completion:nil];
         return;
-    }
+    }*/
     NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"true":@"false"];
     LRAlertController *alert = [LRAlertController showTextAlertWithTitle:aModel.roomname info:info];
     UITextField *pwdTextField = [[UITextField alloc] init];

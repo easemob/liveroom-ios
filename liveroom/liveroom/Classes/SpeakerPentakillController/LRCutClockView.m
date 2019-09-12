@@ -32,8 +32,8 @@
     UIView *tip = [[UIView alloc]init];
     [self addSubview:tip];
     [tip mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(35);
-        make.right.equalTo(self).offset(-35);
+        make.left.equalTo(self).offset(37);
+        make.right.equalTo(self).offset(-37);
         make.height.equalTo(@250);
         make.center.equalTo(self);
     }];
@@ -47,7 +47,7 @@
     [icon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@35);
         make.height.equalTo(@35);
-        make.left.equalTo(tip.mas_left).offset(15);
+        make.left.equalTo(tip.mas_left).offset(20);
         make.top.equalTo(tip.mas_top).offset(20);
     }];
     
@@ -55,7 +55,7 @@
     [tip addSubview:title];
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(icon.mas_bottom).offset(5);
-        make.left.equalTo(tip.mas_left).offset(15);
+        make.left.equalTo(tip.mas_left).offset(20);
         make.right.equalTo(tip.mas_right).offset(-15);
         make.height.equalTo(@35);
     }];
@@ -68,7 +68,7 @@
     [tip addSubview:content];
     [content mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(title.mas_bottom).offset(5);
-        make.left.equalTo(tip).offset(15);
+        make.left.equalTo(tip).offset(20);
         make.right.equalTo(tip.mas_right).offset(-15);
         make.bottom.lessThanOrEqualTo(tip.mas_bottom).offset(-50);
     }];
@@ -98,7 +98,7 @@
     _btn = [[UIButton alloc]init];
     [tip addSubview:_btn];
     [_btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(tip.mas_bottom).offset(-15);
+        make.bottom.equalTo(tip.mas_bottom).offset(-20);
         make.left.right.equalTo(content);
         make.height.equalTo(@40);
     }];

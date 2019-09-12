@@ -17,6 +17,9 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
 @property (nonatomic, strong) UIButton *disconnectBtn;
 //身份图片
 @property (nonatomic, strong) UIImageView *identityImage;
+//当前时钟状态
+@property (nonatomic) LRTerminator clock;//当前时钟状态
+
 @end
 
 @implementation LRSpeakerPentakillCell
@@ -37,10 +40,10 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
                                                object:nil];
     
     //注册通知修改身份图片显示。隐藏
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    /*[[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateIdentity:)
                                                  name:LR_CLOCK_STATE_CHANGE
-                                               object:nil];
+                                               object:nil];*/
     [self.contentView addSubview:self.identityImage];
     [self.contentView addSubview:self.voiceEnableBtn];
     [self.contentView addSubview:self.disconnectBtn];
@@ -79,10 +82,11 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
     if(key){
         self.identityImage.image = [UIImage imageNamed:@"villager"];
     }
-    //设置身份白天只有自己可见。
-    if((!self.model.isMyself) && self.roomModel.clockStatus == LRTerminator_dayTime){
+
+    //新添加上麦成员是否隐藏身份
+    if((!self.model.isMyself) && _clock == LRTerminator_dayTime){
         self.identityImage.hidden = YES;
-    }else if(self.roomModel.clockStatus == LRTerminator_night){
+    }else if(_clock == LRTerminator_night){
         self.identityImage.hidden = NO;
     }
     
@@ -132,16 +136,11 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
 }
 
 //显示/隐藏 狼人杀模式身份图标
-- (void)updateIdentity:(NSNotification *)noti {
-    NSString *clock = [noti object];
-    if([clock isEqualToString:@"LRTerminator_night"]) {
-        self.roomModel.clockStatus = LRTerminator_night;
-    }else {
-        self.roomModel.clockStatus = LRTerminator_dayTime;
-    }
-    if((!self.model.isMyself) && [noti.object isEqualToString:@"LRTerminator_dayTime"]){
+- (void)updateIdentity:(LRTerminator)noti {
+    self.clock = noti;
+    if((!self.model.isMyself) && _clock == LRTerminator_dayTime){
         self.identityImage.hidden = YES;
-    }else if([noti.object isEqualToString:@"LRTerminator_night"]){
+    }else if(_clock == LRTerminator_night){
         self.identityImage.hidden = NO;
     }
 }
