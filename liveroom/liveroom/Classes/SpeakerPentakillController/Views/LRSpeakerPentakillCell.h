@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LRSpeakerPentakillCell : LRSpeakerCell
-@property (nonatomic, weak) LRRoomModel *roomModel;
+- (void)updateIdentity:(LRTerminator)noti;
 @end
 
 NS_ASSUME_NONNULL_END

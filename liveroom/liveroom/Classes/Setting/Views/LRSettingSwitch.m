@@ -33,6 +33,7 @@
     return self;
 }
 
+/*//免密创建房间UI设置
 - (void)setupTagBack:(float)width height:(float)height {
     CGRect frame = self.tagBackGroundView.frame;
     frame = self.isOn?CGRectMake(kPadding, kPadding,width/2 - kPadding, height - kPadding * 2):CGRectMake(width/2,kPadding, width/2 - kPadding,height - kPadding * 2);
@@ -45,7 +46,7 @@
         make.left.equalTo(self.tagBackGroundView.mas_left).offset(1);
         make.right.equalTo(self.tagBackGroundView.mas_right).offset(-1);
     }];
-}
+}*/
 
 - (void)_setupSubviews{
 //    _isOn = YES;

@@ -555,7 +555,6 @@ static LRSpeakHelper *helper_;
          */
         //狼人杀模式当前房间时钟状态
         if([attr.key isEqualToString:@"clockStatus"]){
-            //[LRSpeakHelper setupClockStatus:attr.value];
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:attr.value];
         }
         

@@ -25,6 +25,8 @@
 
 @property (nonatomic, strong) NSMutableDictionary *dic;//静音狼人数组
 
+@property (nonatomic, strong) LRSpeakerPentakillCell *cell;
+
 @end
 
 @implementation LRSpeakerPentakillController
@@ -83,7 +85,7 @@ Boolean isExcute;  //每次加入房间回调只执行一次
         make.top.equalTo(self.schedule.mas_bottom).offset(5);
         make.left.right.bottom.equalTo(self.view);
     }];
-    [self addNIghtCoverView];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
+    [self addNightCoverView];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
     
     [_schedule addSubview:_sunBtn];
     [_schedule addSubview:_moonBtn];
@@ -130,6 +132,8 @@ Boolean isExcute;  //每次加入房间回调只执行一次
     }else {
         [self setupClockPic:LRTerminator_dayTime];
     }
+    [self.cell updateIdentity:self.clockstatus];//重置cell的身份
+    
     if(!isExcute){
         //注册狼人杀房间通知在房间模式设定之后，防止第一次进入房间弹窗
         if(![self.roomModel.owner isEqualToString:kCurrentUsername]){
@@ -165,9 +169,6 @@ Boolean isExcute;  //每次加入房间回调只执行一次
             [self setupClockPic:LRTerminator_dayTime];
         }else if(tag == 2  && self.clockstatus == LRTerminator_dayTime){
             [self setupClockPic:LRTerminator_night];
-            /*if(![self.roomModel.identity isEqualToString:@"pentakill"]){
-                [self.coverView startTimers];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
-            }*/
             if(self.clockstatus == LRTerminator_night &&
                [self.roomModel.identity isEqualToString:@"villager"]){
                 [self muteWereWolf];//村民静音狼人
@@ -189,9 +190,6 @@ Boolean isExcute;  //每次加入房间回调只执行一次
     }else {
         [self setupClockPic:LRTerminator_dayTime];
     }
-    /*if([clock isEqualToString:@"LRTerminator_night"] && ![self.roomModel.identity isEqualToString:@"pentakill"]){
-        [self.coverView startTimers];//添加内容给狼人正在发言状态Ui   执行多次需要重新触发定时器
-    }*/
     if(self.clockstatus == LRTerminator_night &&
        [self.roomModel.identity isEqualToString:@"villager"]){
         [self muteWereWolf];// 夜晚村民静音狼人
@@ -270,11 +268,10 @@ Boolean isExcute;  //每次加入房间回调只执行一次
         }
         //如果是村民需要重新监听狼人讲话
         if([self.roomModel.identity isEqualToString:@"villager"]){
-            [self reMuteWereWolf];//夜晚v被下麦村民身份置为观众（空字符串） 重新监听狼人发言
+            [self reMuteWereWolf];//夜晚被下麦村民身份置为观众（空字符串） 重新监听狼人发言
         }
     }
-    self.roomModel.identity = @"";
-    //[LRSpeakHelper setupIdentity:@""];//重置该下麦主播狼人杀身份为观众（即空字符串）
+    self.roomModel.identity = @""; //重置该下麦主播狼人杀身份为观众（即空字符串）
 }
 
 //夜晚村民mute remote（静音）狼人
@@ -318,7 +315,7 @@ Boolean isExcute;  //每次加入房间回调只执行一次
     return _werewolfView;
 }
 //夜晚村民遮掩UI
-- (void)addNIghtCoverView {
+- (void)addNightCoverView {
     self.coverView = [[LRCoverView alloc]init];
     [self.coverView setupNightCoverUI:self.werewolfView];
 }
@@ -334,9 +331,10 @@ Boolean isExcute;  //每次加入房间回调只执行一次
         if (!cell) {
             cell = [[LRSpeakerPentakillCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PentakillCellId];
         }
-        [(LRSpeakerPentakillCell *)cell setModel:model];
-        [(LRSpeakerPentakillCell *)cell setRoomModel:self.roomModel];
-        [(LRSpeakerPentakillCell *)cell updateSubViewUI];
+        _cell = (LRSpeakerPentakillCell *)cell;
+        [_cell setModel:model];
+        [_cell updateSubViewUI];
+        [_cell updateIdentity:self.roomModel.clockStatus];//重置cell的身份
     }else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"LRSpeakerEmptyCell"];
         if (!cell) {
