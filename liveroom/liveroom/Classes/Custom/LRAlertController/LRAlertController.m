@@ -74,23 +74,6 @@ typedef enum : NSUInteger {
     return alertController;
 }
 
-+ (LRAlertController *)showClockChangeAlertWithTitle:(NSString *)aTitle
-                                                info:(NSString * _Nullable)aInfo
-                                          clockState:(NSString *)lrterminator {
-    LRAlertController *alertController;
-    if([lrterminator isEqualToString:@"LRTerminator_dayTime"]){
-        alertController = [[LRAlertController alloc] initWithType:LRAlertType_dayTime
-                                                            title:aTitle
-                                                             info:aInfo];
-    }else{
-        alertController = [[LRAlertController alloc] initWithType:LRAlertType_night
-                                                            title:aTitle
-                                                             info:aInfo];
-    }
-    
-    return alertController;
-}
-
 + (LRAlertController *)showIdentityAlertWithTitle:(NSString *)aTitle
                                              info:(NSString * _Nullable)aInfo {
     LRAlertController *alertController = [[LRAlertController alloc] initWithType:LRAlertType_Werewolves

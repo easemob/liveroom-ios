@@ -17,12 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) EMCallConference *conference;
 @property (nonatomic, weak) LRRoomModel * _Nullable roomModel;
 @property (nonatomic, strong) NSMutableArray *identityDic;  //当前房间狼人数组
-
+/*
 + (NSString *)instanceIdentity;//返回狼人杀主播身份
 + (void)setupIdentity:(NSString *)status;//设置狼人杀主播身份
 + (NSString *)instanceClockStatus;//返回狼人杀时钟状态
 + (void)setupClockStatus:(NSString *)clock;//设置狼人杀时钟状态
-
+*/
 - (void)destoryInstance;//销毁单例
 + (LRSpeakHelper *)sharedInstance;
 

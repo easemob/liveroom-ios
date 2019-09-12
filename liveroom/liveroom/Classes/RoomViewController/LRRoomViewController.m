@@ -26,6 +26,7 @@
 #import "LRSpeakerMonopolyViewController.h"
 #import "LRSpeakerPentakillController.h"
 #import "LRSpeakerPentakillCell.h"
+#import "LRCutClockView.h"
 
 #define kPadding 15
 #define kHeaderViewHeight 45
@@ -55,11 +56,12 @@
 @property (nonatomic) BOOL isShareAlertShow;
 
 @property (nonatomic, weak) NSString *requestUserIdentity;//房主接受的请求上麦用户身份
-@property (nonatomic,strong) NSString *tempIdentiy;//临时请求上麦身份
+@property (nonatomic, strong) NSString *tempIdentiy;//临时请求上麦身份
 
 @end
 
 @implementation LRRoomViewController
+BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
 
 - (instancetype)initWithUserType:(LRUserRoleType)aType
                        roomModel:(LRRoomModel *)aRoomModel
@@ -144,10 +146,35 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(cutAudio)
+                                             selector:@selector(cutAudio:)
                                                  name:LR_CLOCK_STATE_CHANGE
                                                object:nil];
 
+}
+
+//时钟切换弹窗
+- (void)cutTip:(NSNotification *)noti {
+    NSArray *subViews = self.view.subviews;
+    for (id view in subViews) {
+        if([view class] == [LRCutClockView class]) {
+            LRCutClockView *clockMaskView = (LRCutClockView *)view;
+            [clockMaskView stopTimer];
+            [clockMaskView removeFromSuperview];
+            break;
+        }
+    }
+    NSString *clock = [noti object];
+    LRCutClockView *cutView;
+    if([clock isEqualToString:@"LRTerminator_dayTime"]){
+        cutView = [[LRCutClockView alloc]initWithTerminator:LRTerminator_dayTime];
+    }else{
+        cutView = [[LRCutClockView alloc]initWithTerminator:LRTerminator_night];
+    }
+    [self.view addSubview:cutView];
+    [cutView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.bottom.equalTo(self.view);
+    }];
+    [cutView startTimer];
 }
 
 //添加狼人进数组
@@ -256,7 +283,7 @@
 - (void)receiveRequestAgreed:(NSNotification *)aNoti {
     self.applyOnSpeakBtn.hidden = YES;
     self.applyOnSpeakBtn.selected = NO;
-    [LRSpeakHelper setupIdentity:_tempIdentiy];
+    self.roomModel.identity = _tempIdentiy;
     self.tempIdentiy = @"";
 }
 
@@ -465,7 +492,7 @@
                     //狼人杀模式设置当前时钟状态
                     [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"clockStatus" value:@"LRTerminator_dayTime" completion:^(EMError *aError){}];
                     //房主是狼人，房主加入数组
-                    if([[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
+                    if([self.roomModel.identity isEqualToString:@"pentakill"]){
                         [LRSpeakHelper.sharedInstance.identityDic addObject:kCurrentUsername];
                     }
                     for(NSString *str in LRSpeakHelper.sharedInstance.identityDic){
@@ -542,6 +569,11 @@
     if(_conferenceJoined && _chatJoined) {
         [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
     }
+    if(self.roomModel.roomType == LRRoomType_Pentakill){
+        self.roomModel.identity = @"";   //房主&成员 退出房间重置自己本地时钟
+        LRSpeakerPentakillController *pentakill = (LRSpeakerPentakillController *)self.speakerVC;
+        [pentakill.coverView stopTimers];  //关闭房间关闭计时器
+    }
     if (self.isOwner)
     {
         NSString *url = @"http://tcapp.easemob.com/app/huangcl/delete/talk/room/";
@@ -556,10 +588,6 @@
              
              [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:nil];
          }];
-    }
-    if(self.roomModel.roomType == LRRoomType_Pentakill){
-        [LRSpeakHelper setupIdentity:@""];//房主&成员退 出房间重置自己本地狼人杀身份
-        [LRSpeakHelper setupClockStatus:@""];//房主&成员 退出房间重置自己本地时钟
     }
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [LRChatHelper.sharedInstance leaveChatroomWithCompletion:nil];
@@ -633,12 +661,25 @@
 }
 
 //白天夜晚切换播放音效
-- (void)cutAudio {
-    if([[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"]){
+- (void)cutAudio:(NSNotification *)noti {
+    NSString *clock = [noti object];
+    if([clock isEqualToString:@"LRTerminator_night"]) {
+        self.roomModel.clockStatus = LRTerminator_night;
+    }else {
+        self.roomModel.clockStatus = LRTerminator_dayTime;
+    }
+    if([noti.object isEqualToString:@"LRTerminator_night"]){
         [_chatVC cutNight];
     }else{
         [_chatVC cutDayTime];
     }
+    
+    if(!isRegisterCutClockNoti)
+    //避免首次加入房间弹时钟切换提示框
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(cutTip:)
+                                                 name:LR_CLOCK_STATE_CHANGE
+                                               object:nil];
 }
 
 //观众上麦时选择身份
@@ -666,7 +707,7 @@
 //申请上麦验证
 - (void)applyOnSpeak:(UIButton *)btn {
     //狼人杀模式夜晚状态并且非狼人角色不能申请上麦
-    if(self.roomModel.roomType == LRRoomType_Pentakill && [[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"] && ![[LRSpeakHelper instanceIdentity] isEqualToString:@"pentakill"]){
+    if(self.roomModel.roomType == LRRoomType_Pentakill && self.roomModel.clockStatus == LRTerminator_night  && ![self.roomModel.identity isEqualToString:@"pentakill"]){
         LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"现在是夜晚状态，\n请等待房主切换至白天状态再申请上麦！"];
         LRAlertAction *confirm = [LRAlertAction alertActionTitle:@"确认" callback:^(LRAlertController *_Nonnull          alertContoller){
             

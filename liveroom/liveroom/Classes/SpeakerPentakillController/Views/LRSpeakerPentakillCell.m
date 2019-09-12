@@ -38,7 +38,7 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
     
     //注册通知修改身份图片显示。隐藏
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateIdentity)
+                                             selector:@selector(updateIdentity:)
                                                  name:LR_CLOCK_STATE_CHANGE
                                                object:nil];
     [self.contentView addSubview:self.identityImage];
@@ -80,7 +80,11 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
         self.identityImage.image = [UIImage imageNamed:@"villager"];
     }
     //设置身份白天只有自己可见。
-    [self updateIdentity];
+    if((!self.model.isMyself) && self.roomModel.clockStatus == LRTerminator_dayTime){
+        self.identityImage.hidden = YES;
+    }else if(self.roomModel.clockStatus == LRTerminator_night){
+        self.identityImage.hidden = NO;
+    }
     
     BOOL voiceEnableBtnNeedShow = self.model.type == LRRoomType_Pentakill && self.model.isMyself;
     if (voiceEnableBtnNeedShow) {
@@ -128,10 +132,16 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
 }
 
 //显示/隐藏 狼人杀模式身份图标
-- (void)updateIdentity {
-    if((!self.model.isMyself) && [[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_dayTime"]){
+- (void)updateIdentity:(NSNotification *)noti {
+    NSString *clock = [noti object];
+    if([clock isEqualToString:@"LRTerminator_night"]) {
+        self.roomModel.clockStatus = LRTerminator_night;
+    }else {
+        self.roomModel.clockStatus = LRTerminator_dayTime;
+    }
+    if((!self.model.isMyself) && [noti.object isEqualToString:@"LRTerminator_dayTime"]){
         self.identityImage.hidden = YES;
-    }else if([[LRSpeakHelper instanceClockStatus] isEqualToString:@"LRTerminator_night"]){
+    }else if([noti.object isEqualToString:@"LRTerminator_night"]){
         self.identityImage.hidden = NO;
     }
 }

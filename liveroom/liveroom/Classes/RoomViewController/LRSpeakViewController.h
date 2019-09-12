@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableArray *memberList;
 @property (nonatomic, strong) NSMutableArray *dataAry;
 @property (nonatomic, strong) LRSpeakerTypeView *headerView;
-- (void)_setupSubViews;
+- (void)setupSubViews;
 @end
 
 NS_ASSUME_NONNULL_END

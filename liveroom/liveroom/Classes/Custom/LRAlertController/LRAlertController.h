@@ -38,9 +38,6 @@ typedef void(^CloseBlock)(void);
 + (LRAlertController *)showIdentityAlertWithTitle:(NSString *)aTitle
                                              info:(NSString * _Nullable)aInfo;
 
-+ (LRAlertController *)showClockChangeAlertWithTitle:(NSString *)aTitle
-                                                info:(NSString * _Nullable)aInfo
-                                          clockState:(NSString *)lrterminator;
 
 - (void)addAction:(LRAlertAction *)aAction;
 

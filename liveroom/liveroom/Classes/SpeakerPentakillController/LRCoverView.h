@@ -10,7 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LRCoverViewController : UIViewController
+@interface LRCoverView : UIView
+- (void)startTimers;
+- (void)stopTimers;
 - (void)setupNightCoverUI:(UIView *)_werewolfView;
 @end
 

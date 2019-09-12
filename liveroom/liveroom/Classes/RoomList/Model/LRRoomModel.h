@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) int conferencePassword;
 @property (nonatomic, assign) LRRoomType roomType;
 
+@property (nonatomic) LRTerminator clockStatus;//狼人杀模式当前时钟状态
+@property (nonatomic,strong) NSString *identity;//狼人杀模式本地身份
+
 + (instancetype)roomWithDict:(NSDictionary *)dict;
 @end
 

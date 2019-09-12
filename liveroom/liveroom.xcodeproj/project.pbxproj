@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2D14E168672B7F54AE7ABA60 /* libPods-liveroom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 789E70471AB662ABBFC025F0 /* libPods-liveroom.a */; };
-		3C38CE86231E64D200EAB8D1 /* LRCoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C38CE85231E64D200EAB8D1 /* LRCoverViewController.m */; };
+		3C38CE86231E64D200EAB8D1 /* LRCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C38CE85231E64D200EAB8D1 /* LRCoverView.m */; };
 		3C449A002322724A000140D5 /* daytime.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3C4499FE2322724A000140D5 /* daytime.wav */; };
 		3C449A012322724A000140D5 /* night.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3C4499FF2322724A000140D5 /* night.wav */; };
+		3CB8DBBB2328AB46008F1CFD /* LRCutClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB8DBBA2328AB46008F1CFD /* LRCutClockView.m */; };
 		901A54DA2254CA9700F00186 /* LRRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A54D92254CA9700F00186 /* LRRoomViewController.m */; };
 		902B51ED2261BCFD000EC701 /* UIViewController+LRAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 902B51EC2261BCFD000EC701 /* UIViewController+LRAlert.m */; };
 		90445CB1225CD03300917B64 /* LRChatroomMembersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 90445CAD225CD03300917B64 /* LRChatroomMembersModel.m */; };
@@ -103,10 +104,12 @@
 
 /* Begin PBXFileReference section */
 		2BA6ADC8633F347AD7C7963A /* Pods-liveroom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liveroom.debug.xcconfig"; path = "Pods/Target Support Files/Pods-liveroom/Pods-liveroom.debug.xcconfig"; sourceTree = "<group>"; };
-		3C38CE84231E64D200EAB8D1 /* LRCoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCoverViewController.h; sourceTree = "<group>"; };
-		3C38CE85231E64D200EAB8D1 /* LRCoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCoverViewController.m; sourceTree = "<group>"; };
+		3C38CE84231E64D200EAB8D1 /* LRCoverView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCoverView.h; sourceTree = "<group>"; };
+		3C38CE85231E64D200EAB8D1 /* LRCoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCoverView.m; sourceTree = "<group>"; };
 		3C4499FE2322724A000140D5 /* daytime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = daytime.wav; sourceTree = "<group>"; };
 		3C4499FF2322724A000140D5 /* night.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = night.wav; sourceTree = "<group>"; };
+		3CB8DBB92328AB46008F1CFD /* LRCutClockView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCutClockView.h; sourceTree = "<group>"; };
+		3CB8DBBA2328AB46008F1CFD /* LRCutClockView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCutClockView.m; sourceTree = "<group>"; };
 		789E70471AB662ABBFC025F0 /* libPods-liveroom.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-liveroom.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		901A54D82254CA9700F00186 /* LRRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomViewController.h; sourceTree = "<group>"; };
 		901A54D92254CA9700F00186 /* LRRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomViewController.m; sourceTree = "<group>"; };
@@ -391,8 +394,6 @@
 			isa = PBXGroup;
 			children = (
 				E06E63E9230E822200DEE2DF /* SpeakerPentakillController */,
-				E06E63EA230E822200DEE2DF /* LRSpeakerPentakillController.h */,
-				E06E63EE230E822200DEE2DF /* LRSpeakerPentakillController.m */,
 				E06E63BA230D4CE800DEE2DF /* SpeakerCommunicationViewController */,
 				E06E63B5230D4CE800DEE2DF /* SpeakerHostViewController */,
 				E06E63B0230D4CE800DEE2DF /* SpeakerMonopolyController */,
@@ -685,9 +686,13 @@
 		E06E63E9230E822200DEE2DF /* SpeakerPentakillController */ = {
 			isa = PBXGroup;
 			children = (
+				E06E63EA230E822200DEE2DF /* LRSpeakerPentakillController.h */,
+				E06E63EE230E822200DEE2DF /* LRSpeakerPentakillController.m */,
 				E06E63EB230E822200DEE2DF /* Views */,
-				3C38CE84231E64D200EAB8D1 /* LRCoverViewController.h */,
-				3C38CE85231E64D200EAB8D1 /* LRCoverViewController.m */,
+				3C38CE84231E64D200EAB8D1 /* LRCoverView.h */,
+				3C38CE85231E64D200EAB8D1 /* LRCoverView.m */,
+				3CB8DBB92328AB46008F1CFD /* LRCutClockView.h */,
+				3CB8DBBA2328AB46008F1CFD /* LRCutClockView.m */,
 			);
 			path = SpeakerPentakillController;
 			sourceTree = "<group>";
@@ -893,7 +898,7 @@
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
 				E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */,
 				9083DC8B225603E70099C5BD /* LRSpeakViewController.m in Sources */,
-				3C38CE86231E64D200EAB8D1 /* LRCoverViewController.m in Sources */,
+				3C38CE86231E64D200EAB8D1 /* LRCoverView.m in Sources */,
 				907F5BF2226F238E009ED60E /* LRSpeakerCellModel.m in Sources */,
 				90B4907F2284240400F2EBCC /* NSString+Category.m in Sources */,
 				E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */,
@@ -905,6 +910,7 @@
 				90600141225EE38B00CD8BAA /* LRSpeakHelper.m in Sources */,
 				90F2C6D62254C08600A712B8 /* LRRoomModel.m in Sources */,
 				E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */,
+				3CB8DBBB2328AB46008F1CFD /* LRCutClockView.m in Sources */,
 				90F2C6D12254C08600A712B8 /* LRMainViewController.m in Sources */,
 				90F2C67B2254C02B00A712B8 /* main.m in Sources */,
 				902B51ED2261BCFD000EC701 /* UIViewController+LRAlert.m in Sources */,

@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(id)initWithFrame:(CGRect)frame;
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated;
-
+- (void)setupTagBack:(float)width height:(float)height;
 @end
 
 @protocol LRSettingSwitchDelegate <NSObject>

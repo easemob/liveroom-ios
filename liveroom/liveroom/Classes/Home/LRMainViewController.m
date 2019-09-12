@@ -66,7 +66,8 @@
         return;
     }
     LRCreateRoomViewController *createVC = [[LRCreateRoomViewController alloc] init];
-    [self presentViewController:createVC animated:YES completion:nil];
+    [self presentViewController:createVC animated:YES completion:nil];         
+    //[createVC setupPwdSwitch:createVC];
 }
 
 
@@ -76,6 +77,8 @@
         NSDictionary *roomInfo = aNoti.object;
         LRRoomModel *model = [LRRoomModel roomWithDict:roomInfo];
         model.roomType = [roomInfo[@"type"] integerValue];
+        model.identity = roomInfo[@"identity"];
+        model.clockStatus = roomInfo[@"clockStatus"];
         LRRoomViewController *lrVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
         [self presentViewController:lrVC animated:YES completion:nil];
     }
