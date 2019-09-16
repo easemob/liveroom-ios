@@ -82,11 +82,11 @@
     if(clockStatus == LRTerminator_dayTime) {
         icon.image = [UIImage imageNamed:@"sun"];
         [title setText:@"白天发言"];
-        common = @"目前已切换至白天发言，所有设置将恢复默认。\n您可以点击身份图标任意切换角色体验。";
+        common = @"目前已经切换至白天，所有设置将恢复默认。\n您可以点击身份图标任意切换角色体验。";
     }else{
         icon.image = [UIImage imageNamed:@"moon"];
         [title setText:@"夜晚发言"];
-        common = @"目前已经切换至夜晚，只有狼人主播可以\n在夜晚发言。所有的设置将恢复默认。\n请重新点击发言按钮发言。";
+        common = @"目前已经切换至夜晚，只有”狼人“身份\n主播可以在夜晚发言。所有的设置将\n恢复默认。请重新点击发言按钮发言。";
     }
     content.attributedText = [[NSAttributedString alloc] initWithString:common attributes:ats];
     content.numberOfLines = 0;

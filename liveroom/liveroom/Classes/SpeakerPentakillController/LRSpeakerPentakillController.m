@@ -162,12 +162,16 @@ Boolean isExcute;  //每次加入房间回调只执行一次
 
 //房间创建者修改当前房间昼夜时钟状态
 - (void)adminSwitchClock:(UIButton*)btn{
+    long tag = btn.tag;
+    if((tag == 1 && self.clockstatus == LRTerminator_dayTime) ||
+       (tag == 2 && self.clockstatus == LRTerminator_night)) {
+        return;
+    }
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"您将要进行白天黑夜模式的切换，\n操作后所有人的发言状态将被初始化。\n确认操作么？"];
     LRAlertAction *confirm = [LRAlertAction alertActionTitle:@"确认" callback:^(LRAlertController *_Nonnull          alertContoller){
-        long tag = btn.tag;
         if(tag == 1 && self.clockstatus == LRTerminator_night){
             [self setupClockPic:LRTerminator_dayTime];
-        }else if(tag == 2  && self.clockstatus == LRTerminator_dayTime){
+        }else if(tag == 2 && self.clockstatus == LRTerminator_dayTime){
             [self setupClockPic:LRTerminator_night];
             if(self.clockstatus == LRTerminator_night &&
                [self.roomModel.identity isEqualToString:@"villager"]){
@@ -264,7 +268,6 @@ Boolean isExcute;  //每次加入房间回调只执行一次
             self.tableView.hidden = YES;
             self.werewolfView.hidden = NO;
             [self.coverView startTimers];
-            [self muteWereWolf];//夜晚下麦狼人静音其他狼人主播
         }
         //如果是村民需要重新监听狼人讲话
         if([self.roomModel.identity isEqualToString:@"villager"]){

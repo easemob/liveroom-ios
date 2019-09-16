@@ -89,7 +89,7 @@
     } else if (_model.roomType == LRRoomType_Monopoly) {
         roomType = @"抢麦模式";
     } else if (_model.roomType == LRRoomType_Pentakill) {
-        roomType = @"狼人杀模式";
+        roomType = @"临场模式";
     }
     _roomTpyeLabel.text = roomType;
 }

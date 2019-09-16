@@ -243,13 +243,12 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
         if(weakSelf.requestUserIdentity){
             if([weakSelf.requestUserIdentity isEqualToString:@"pentakill"]){
                 [weakSelf addWereWolfArry:username];
-                weakSelf.requestUserIdentity = nil;
             }else if([weakSelf.requestUserIdentity isEqualToString:@"villager"]){
                 //村民身份也要发通知，刷新身份图标
                 NSString *str = [LRSpeakHelper.sharedInstance.identityDic componentsJoinedByString:@","];
                 [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"identityDic" value:str completion:^(EMError *aError){}];
-                weakSelf.requestUserIdentity = nil;
             }
+            weakSelf.requestUserIdentity = nil;
         }
         weakSelf.isAlertShow = NO;
         [LRSpeakHelper.sharedInstance setupUserToSpeaker:username
@@ -684,14 +683,14 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
 //观众上麦时选择身份
 - (void)identityTap
 {
-    LRAlertController *alert = [LRAlertController showIdentityAlertWithTitle:@"选择上麦身份" info:@"提交上麦参与体验.\n需要先选择上麦后的身份。\n您可以选择狼人或者村民，进行点击确认。"];
-    LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"狼人 Werewolf" callback:^(LRAlertController *_Nonnull alertController)
+    LRAlertController *alert = [LRAlertController showIdentityAlertWithTitle:@"选择上麦身份" info:@"请先选择上麦后的主播身份"];
+    LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"夜晚可发言（狼人角色）" callback:^(LRAlertController *_Nonnull alertController)
                                {
                                    self.tempIdentiy = @"pentakill";
                                    self.applyOnSpeakBtn.selected = YES;
                                    [self applyOnSpeakHandle];
                                }];
-    LRAlertAction *villager = [LRAlertAction alertActionTitle:@"村民 Villager" callback:^(LRAlertController *_Nonnull alertController)
+    LRAlertAction *villager = [LRAlertAction alertActionTitle:@"夜晚不可发言（好人角色）" callback:^(LRAlertController *_Nonnull alertController)
                                {
                                    self.tempIdentiy = @"villager";
                                    self.applyOnSpeakBtn.selected = YES;

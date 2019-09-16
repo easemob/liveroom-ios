@@ -39,11 +39,6 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
                                                  name:LR_WEREWOLF_DIDCHANGE
                                                object:nil];
     
-    //注册通知修改身份图片显示。隐藏
-    /*[[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateIdentity:)
-                                                 name:LR_CLOCK_STATE_CHANGE
-                                               object:nil];*/
     [self.contentView addSubview:self.identityImage];
     [self.contentView addSubview:self.voiceEnableBtn];
     [self.contentView addSubview:self.disconnectBtn];
@@ -83,7 +78,7 @@ NSString *PK_OFF_MIC_EVENT_NAME             = @"pkOffMicEventName";
         self.identityImage.image = [UIImage imageNamed:@"villager"];
     }
 
-    //新添加上麦成员是否隐藏身份
+    //新添加上麦成员b隐白天藏身份对其他人
     if((!self.model.isMyself) && _clock == LRTerminator_dayTime){
         self.identityImage.hidden = YES;
     }else if(_clock == LRTerminator_night){
