@@ -105,6 +105,7 @@
     self.passwordTextField = [[UITextField alloc] init];
     self.passwordTextField.placeholder = @"密码 password";
     [self.passwordTextField setupTextField];
+    //self.passwordTextField.secureTextEntry = YES;
     [self.passwordTextField strokeWithColor:LRStrokeLowBlack];
     [self.view addSubview:self.passwordTextField];
     [self.passwordTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -113,6 +114,17 @@
         make.right.equalTo(self.view).offset(-kPadding);
         make.height.equalTo(@48);
     }];
+    /*
+    if (@available(iOS 11.0, *)) {
+        _passwordTextField.textContentType = UITextContentTypePassword;
+        _passwordTextField.textContentType = UITextContentTypePassword;
+    }
+    if (@available(iOS 12.0, *)) {
+        _passwordTextField.textContentType = UITextContentTypeNewPassword;
+        _passwordTextField.textContentType = UITextContentTypeNewPassword;
+    } else {
+        // Fallback on earlier versions
+    }*/
    
     /*
      //免密创建UI开关
@@ -298,7 +310,7 @@
 #pragma mark UITapGestureRecognizer
 - (void)speakerTypeTap
 {
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"切换房间互动模式会初始化麦序。临场模式中，主播可以\n切换模式形成小范围发言；主持模式为当前只有管理员可\n以发言;抢麦模式为当 前只有管理员可以发言;互动模式为\n全部主播均可发言。请确认切换的模式。"];
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"切换房间互动模式会初始化麦序。临场模式中，主播可以\n切换模式形成小范围发言；主持模式为当前只有管理员可\n以发言；抢麦模式为当前只有管理员可以发言；互动模式为\n全部主播均可发言。请确认切换的模式。"];
     
     LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 Communication"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
