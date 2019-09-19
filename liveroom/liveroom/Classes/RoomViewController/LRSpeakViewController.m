@@ -13,7 +13,6 @@
 #import "LRRoomModel.h"
 #import "LRSpeakerCellModel.h"
 #import "Headers.h"
-#import "LRSpeakerPentakillCell.h"
 
 #define kMaxSpeakerCount 6
 

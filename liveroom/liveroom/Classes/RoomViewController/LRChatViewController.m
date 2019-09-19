@@ -172,7 +172,7 @@
     NSString *string = [[NSBundle mainBundle] pathForResource:audioName ofType:type];
     NSURL *url = [NSURL fileURLWithPath:string];
     self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
-    self.audioPlayer.volume = 100;
+    self.audioPlayer.volume = 80;
     self.audioPlayer.numberOfLoops = 0;
     [self.audioPlayer play];
 }

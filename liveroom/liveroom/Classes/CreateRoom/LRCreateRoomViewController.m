@@ -13,7 +13,7 @@
 #import "LRSettingSwitch.h"
 
 #define kPadding 16
-@interface LRCreateRoomViewController ()<LRSettingSwitchDelegate>
+@interface LRCreateRoomViewController ()
 {
     LRRoomType _type;
     NSString *_roomType;
@@ -105,6 +105,7 @@
     self.passwordTextField = [[UITextField alloc] init];
     self.passwordTextField.placeholder = @"密码 password";
     [self.passwordTextField setupTextField];
+    //self.passwordTextField.secureTextEntry = YES;
     [self.passwordTextField strokeWithColor:LRStrokeLowBlack];
     [self.view addSubview:self.passwordTextField];
     [self.passwordTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -113,6 +114,17 @@
         make.right.equalTo(self.view).offset(-kPadding);
         make.height.equalTo(@48);
     }];
+    /*
+    if (@available(iOS 11.0, *)) {
+        _passwordTextField.textContentType = UITextContentTypePassword;
+        _passwordTextField.textContentType = UITextContentTypePassword;
+    }
+    if (@available(iOS 12.0, *)) {
+        _passwordTextField.textContentType = UITextContentTypeNewPassword;
+        _passwordTextField.textContentType = UITextContentTypeNewPassword;
+    } else {
+        // Fallback on earlier versions
+    }*/
    
     /*
      //免密创建UI开关
@@ -219,7 +231,7 @@
     [_identityTypeView addGestureRecognizer:tapIdentity];
     
     _identityTypeTextlabel = [[UILabel alloc] init];
-    _identityTypeTextlabel.text = @"狼人 Werewlof";
+    _identityTypeTextlabel.text = @"夜晚可发言（狼人角色）";
     
     _tempIdentity = @"pentakill";
     
@@ -264,16 +276,16 @@
 //创建房间时房主添加狼人杀身份选择
 - (void)identityTypeTap
 {
-    LRAlertController *alert = [LRAlertController showIdentityAlertWithTitle:@"选择上麦身份" info:@"提交上麦参与体验.\n需要先选择上麦后的身份。\n您可以选择狼人或者村民，进行点击确认。"];
-    LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"狼人 Werewolf" callback:^(LRAlertController *_Nonnull alertController)
+    LRAlertController *alert = [LRAlertController showIdentityAlertWithTitle:@"选择上麦身份" info:@"提交上麦参与体验.\n需要先选择上麦后的身份。\n您可以选择狼人或者好人，进行点击确认。"];
+    LRAlertAction *werewolf = [LRAlertAction alertActionTitle:@"夜晚可发言（狼人角色）" callback:^(LRAlertController *_Nonnull alertController)
                                {
-                                   self.identityTypeTextlabel.text = @"狼人 Werewolf";
+                                   self.identityTypeTextlabel.text = @"夜晚可发言（狼人角色）";
                                    self.tempIdentity = @"pentakill";
                                    
                                }];
-    LRAlertAction *villager = [LRAlertAction alertActionTitle:@"村民 Villager" callback:^(LRAlertController *_Nonnull alertController)
+    LRAlertAction *villager = [LRAlertAction alertActionTitle:@"夜晚不可发言（好人角色）" callback:^(LRAlertController *_Nonnull alertController)
                                {
-                                   self.identityTypeTextlabel.text = @"村民 Villager";
+                                   self.identityTypeTextlabel.text = @"夜晚不可发言（好人角色）";
                                    self.tempIdentity = @"villager";
                                }];
     [alert addAction:werewolf];
@@ -298,7 +310,7 @@
 #pragma mark UITapGestureRecognizer
 - (void)speakerTypeTap
 {
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"狼人杀模式下遵循狼人杀玩法规则;\n自由麦模式下所有主播可以自由发言;\n主持模式下管理员分配的主播获得发言权;\n抢麦模式下所有主播通过抢麦获得发言权。"];
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"切换房间互动模式会初始化麦序。临场模式中，主播可以\n切换模式形成小范围发言；主持模式为当前只有管理员可\n以发言；抢麦模式为当前只有管理员可以发言；互动模式为\n全部主播均可发言。请确认切换的模式。"];
     
     LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 Communication"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
@@ -327,11 +339,11 @@
                                          [self removeIdentity];
                                      }];
     
-    LRAlertAction *werewolvesAction = [LRAlertAction alertActionTitle:@"狼人杀模式 Pentakill"
+    LRAlertAction *werewolvesAction = [LRAlertAction alertActionTitle:@"临场模式 Ambience"
                                                              callback:^(LRAlertController * _Nonnull
                                                                         alertCONTROLLER)
                                        {
-                                           self.speakerTypeTextLabel.text = @"狼人杀模式 Pentakill";
+                                           self.speakerTypeTextLabel.text = @"临场模式 Ambience";
                                            self->_type = LRRoomType_Pentakill;
                                            self->_roomType = @"pentakill";
                                            [self setupWereWolve];
@@ -401,7 +413,6 @@
                      [dic setObject:@(self->_type) forKey:@"type"];
                      if(self->_type == LRRoomType_Pentakill){
                          [dic setObject:self.tempIdentity forKey:@"identity"];
-                         [dic setObject:@"" forKey:@"clockStatus"];
                      }
                  }
                  [[NSNotificationCenter defaultCenter] postNotificationName:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED object:dic];

@@ -78,7 +78,6 @@
         LRRoomModel *model = [LRRoomModel roomWithDict:roomInfo];
         model.roomType = [roomInfo[@"type"] integerValue];
         model.identity = roomInfo[@"identity"];
-        model.clockStatus = roomInfo[@"clockStatus"];
         LRRoomViewController *lrVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
         [self presentViewController:lrVC animated:YES completion:nil];
     }

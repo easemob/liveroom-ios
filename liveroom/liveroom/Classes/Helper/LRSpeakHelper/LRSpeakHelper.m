@@ -610,22 +610,24 @@ static LRSpeakHelper *helper_;
 - (void)loudspeaker {
     NSError *error = nil;
     AVAudioSession* audioSession = [AVAudioSession sharedInstance];
+    //是否有耳机插入
     if (![self hasHeadset]) {
         [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
                       withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error];
     } else {
-        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     }
-    
     [audioSession setActive:YES error:&error];
+    
 }
 
 - (void)audioRouteChangeListenerCallback:(NSNotification *)notification {
+    
     NSDictionary *interuptionDict = notification.userInfo;
     NSInteger routeChangeReason = [[interuptionDict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
     switch (routeChangeReason) {
         case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
-            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
             break;
         case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
             [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
@@ -635,7 +637,6 @@ static LRSpeakHelper *helper_;
         default:
             break;
     }
-    
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
 }
 

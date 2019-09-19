@@ -70,26 +70,26 @@
     switch (_type) {
         case LRRoomType_Host:
         {
-            self.titleLabel.text = @"主持模式";
+            self.titleLabel.text = @"主持模式 Host";
             self.infoLabel.text = @"主持模式下管理员分配的主播获得发言权";
         }
             break;
         case LRRoomType_Monopoly:
         {
-            self.titleLabel.text = @"抢麦模式";
+            self.titleLabel.text = @"抢麦模式 Monopoly";
             self.infoLabel.text = @"抢麦模式下所有主播通过抢麦获得发言权";
         }
             break;
         case LRRoomType_Communication:
         {
-            self.titleLabel.text = @"自由麦模式";
+            self.titleLabel.text = @"自由麦模式 Communication";
             self.infoLabel.text = @"自由麦模式下所有主播可以自由发言";
         }
             break;
         case LRRoomType_Pentakill:
         {
-            self.titleLabel.text = @"狼人杀模式";
-            self.infoLabel.text = @"管理员admin可以随时切换发现范围，不同范围内的主播可以发言";
+            self.titleLabel.text = @"临场模式 Ambience";
+            self.infoLabel.text = @"管理员可以切换白天、夜晚进行临场模式切换";
         }
             break;
         default:

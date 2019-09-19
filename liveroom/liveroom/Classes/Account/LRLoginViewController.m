@@ -54,7 +54,8 @@
     if (![self validationInputInfo]) return;
     [self showHudInView:self.view hint:@"正在登录..."];
     __weak typeof(self) weakself = self;
-    [LRChatHelper.sharedInstance asyncLoginWithUsername:self.usernameTextField.text
+    NSString *name = [self.usernameTextField.text lowercaseString];
+    [LRChatHelper.sharedInstance asyncLoginWithUsername:name
                                              password:self.passwordTextField.text
                                            completion:^(NSString * _Nonnull errorInfo, BOOL success)
     {
@@ -76,7 +77,8 @@
     if (![self validationInputInfo]) return;
     [self showHudInView:self.view hint:@"正在注册..."];
     __weak typeof(self) weakself = self;
-    [LRChatHelper.sharedInstance asyncRegisterWithUsername:self.usernameTextField.text
+    NSString *name = [self.usernameTextField.text lowercaseString];
+    [LRChatHelper.sharedInstance asyncRegisterWithUsername:name
                                                 password:self.passwordTextField.text
                                               completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {
