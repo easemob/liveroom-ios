@@ -310,7 +310,7 @@
 #pragma mark UITapGestureRecognizer
 - (void)speakerTypeTap
 {
-    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"切换房间互动模式会初始化麦序。临场模式中，主播可以\n切换模式形成小范围发言；主持模式为当前只有管理员可\n以发言；抢麦模式为当前只有管理员可以发言；互动模式为\n全部主播均可发言。请确认切换的模式。"];
+    LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"提示" info:@"切换房间互动模式会初始化麦序。临场模式中，\n主播可以切换模式形成小范围发言；主持模式为\n当前只有管理员可以发言；抢麦模式为当前只有\n管理员可以发言；互动模式为全部主播均可发言。\n请确认切换的模式。"];
     
     LRAlertAction *communicationAction = [LRAlertAction alertActionTitle:@"自由麦模式 Communication"
                                                                 callback:^(LRAlertController * _Nonnull alertController)
@@ -339,11 +339,11 @@
                                          [self removeIdentity];
                                      }];
     
-    LRAlertAction *werewolvesAction = [LRAlertAction alertActionTitle:@"临场模式 Ambience"
+    LRAlertAction *werewolvesAction = [LRAlertAction alertActionTitle:@"临场模式 Temporary"
                                                              callback:^(LRAlertController * _Nonnull
                                                                         alertCONTROLLER)
                                        {
-                                           self.speakerTypeTextLabel.text = @"临场模式 Ambience";
+                                           self.speakerTypeTextLabel.text = @"临场模式 Temporary";
                                            self->_type = LRRoomType_Pentakill;
                                            self->_roomType = @"pentakill";
                                            [self setupWereWolve];

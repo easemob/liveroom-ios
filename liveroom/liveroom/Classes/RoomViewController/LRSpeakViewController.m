@@ -234,23 +234,6 @@ extern NSString * const PK_OFF_MIC_EVENT_NAME;
  - (void)roomTypeDidChange:(LRRoomType)aType {
  self.roomModel.roomType = aType;
  [self.headerView setType:aType];
- 
- //重新刷新正确的房间模式
- [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
- if(self.roomModel.roomType == LRRoomType_Pentakill){
- make.top.equalTo(self.schedule.mas_bottom).offset(5);
- }else{
- make.top.equalTo(self.headerView.mas_bottom).offset(5);
- }
- make.left.right.bottom.equalTo(self.view);
- }];
- if(self.roomModel.roomType != LRRoomType_Pentakill){
- self.schedule.hidden = YES;
- }else{
- self.schedule.hidden = NO;
- }
- 
- 
  }*/
 
 // 谁在说话回调 (在主持模式下，标注谁在说话)
