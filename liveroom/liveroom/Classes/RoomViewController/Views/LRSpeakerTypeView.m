@@ -88,7 +88,7 @@
             break;
         case LRRoomType_Pentakill:
         {
-            self.titleLabel.text = @"临场模式 Ambience";
+            self.titleLabel.text = @"临场模式 Temporary";
             self.infoLabel.text = @"管理员可以切换白天、夜晚进行临场模式切换";
         }
             break;

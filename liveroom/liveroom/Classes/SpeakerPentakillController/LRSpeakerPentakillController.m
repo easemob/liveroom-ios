@@ -42,14 +42,16 @@ Boolean isExcute;  //每次加入房间回调只执行一次
                                                object:nil];
     //首次设置时钟状态
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(callBackClockStatus:)
+                                        selector:@selector(callBackClockStatus:)
                                                  name:LR_CLOCK_STATE_CHANGE
                                                object:nil];
+    
+    
     if(![self.roomModel.owner isEqualToString:kCurrentUsername]){
         //夜晚狼人下麦操作
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(setCoverUI)
-                                                     name:LR_Receive_ToBe_Audience_Notification
+                                        selector:@selector(setCoverUI)
+                                             name:LR_Receive_ToBe_Audience_Notification
                                                    object:nil];
     }
 

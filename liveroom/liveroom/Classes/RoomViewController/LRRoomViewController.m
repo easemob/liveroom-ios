@@ -37,6 +37,7 @@
     BOOL _conferenceJoined;
     BOOL _chatLeave;
     BOOL _conferenceLeave;
+    bool _isRegisterClockEventNoti;
 }
 @property (nonatomic, assign) LRUserRoleType type;
 @property (nonatomic, strong) LRVoiceRoomHeader *headerView;
@@ -61,7 +62,6 @@
 @end
 
 @implementation LRRoomViewController
-BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
 
 - (instancetype)initWithUserType:(LRUserRoleType)aType
                        roomModel:(LRRoomModel *)aRoomModel
@@ -73,6 +73,7 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
         self.speakerVC.roomModel = _roomModel;
         self.chatVC.roomModel = _roomModel;
     }
+    _isRegisterClockEventNoti = false;
     return self;
 }
 
@@ -144,12 +145,28 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoginOtherDevice:)
                                                  name:LR_Did_Login_Other_Device_Notification
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(cutAudio:)
+                                             selector:@selector(registerClockDidChangeEvent)
                                                  name:LR_CLOCK_STATE_CHANGE
                                                object:nil];
+}
 
+//第一次回调之后才需注册的通知
+- (void)registerClockDidChangeEvent {
+    if(!_isRegisterClockEventNoti){
+        //避免首次加入房间弹时钟切换提示框
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(cutTip:)
+                                                     name:LR_CLOCK_STATE_CHANGE
+                                                   object:nil];
+        //创建，首次加入不需要有切换状态音效
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(cutAudio:)
+                                                     name:LR_CLOCK_STATE_CHANGE
+                                                   object:nil];
+        _isRegisterClockEventNoti = true;
+    }
 }
 
 //时钟切换弹窗
@@ -564,6 +581,7 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
 }
 //房间关闭
 - (void)closeWindowAction {
+    _isRegisterClockEventNoti = false;
     if(_conferenceJoined && _chatJoined) {
         [LRChatHelper.sharedInstance sendMessageFromNoti:@"我走了"];
     }
@@ -637,6 +655,9 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
 #pragma mark - LRChatHelperDelegate
 - (void)didExitChatroom:(NSString *)aReason
 {
+    //重置本地身份
+    self.speakerVC.roomModel.identity = @"";
+    _isRegisterClockEventNoti = false;
     [LRSpeakHelper.sharedInstance leaveSpeakRoomWithRoomId:self.roomModel.conferenceId completion:nil];
     [self showHint:aReason];
     if (_isShareAlertShow) {
@@ -671,13 +692,6 @@ BOOL isRegisterCutClockNoti = false;//是否已经注册时钟切换弹窗通知
     }else{
         [_chatVC cutDayTime];
     }
-    
-    if(!isRegisterCutClockNoti)
-    //避免首次加入房间弹时钟切换提示框
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(cutTip:)
-                                                 name:LR_CLOCK_STATE_CHANGE
-                                               object:nil];
 }
 
 //观众上麦时选择身份
