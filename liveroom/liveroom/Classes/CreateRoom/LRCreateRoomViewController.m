@@ -291,6 +291,7 @@
     [alert addAction:werewolf];
     [alert addAction:villager];
     
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -354,6 +355,7 @@
     [alert addAction:hostAction];
     [alert addAction:monopolyAction];
     
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -361,12 +363,14 @@
 {
     if (self.voiceChatroomIDTextField.text.length == 0) {
         LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"请输入房间号"];
+        alert.modalPresentationStyle = 0;
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
     
     if ([self hasChinese:self.voiceChatroomIDTextField.text]) {
         LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"房间号不支持中文"];
+        alert.modalPresentationStyle = 0;
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
@@ -374,12 +378,14 @@
     //if (self.passwordTextField.text.length == 0 && self.pwdSwitch.isOn) {
     if (self.passwordTextField.text.length == 0) {
         LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"请输入房间密码"];
+        alert.modalPresentationStyle = 0;
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
     
     if (self.passwordTextField.text.length > 16 || self.voiceChatroomIDTextField.text.length > 16) {
         LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:@"错误 Error" info:@"创建失败，房间名或密码长度过长，不能超过16位"];
+        alert.modalPresentationStyle = 0;
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
@@ -391,18 +397,17 @@
                 @"allowAudienceTalk":@YES,
                 @"imChatRoomMaxusers":@([options.audioQuality intValue]),
                 @"desc":@"desc",
-                @"confrDelayMillis":@(360000*1000),
+                @"confrDelayMillis":@(3600*1000),
                 @"memRole":@1,
                 @"roomtype":self->_roomType
                 };
-    
+
     __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:@"正在创建房间..."];
     NSString *url = [NSString stringWithFormat:@"http://tcapp.easemob.com/app/%@/create/talk/room", kCurrentUsername];
     [LRRequestManager.sharedInstance requestWithMethod:@"POST" urlString:url parameters:body token:nil completion:^(NSDictionary * _Nonnull result, NSError * _Nonnull error)
      {
          dispatch_async(dispatch_get_main_queue(), ^{
-             NSLog(@"创建房间-----%@", result);
              [weakSelf hideHud];
              if (!error) {
                  NSMutableDictionary *dic = [result mutableCopy];

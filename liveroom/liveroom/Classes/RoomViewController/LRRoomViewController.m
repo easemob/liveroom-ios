@@ -283,6 +283,7 @@
     [alert addAction:agreed];
     [alert addAction:reject];
     _isAlertShow = YES;
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -534,6 +535,7 @@
 - (void)memberListAction {
     LRRoomInfoViewController *membersVC = [[LRRoomInfoViewController alloc] init];
     membersVC.model = self.roomModel;
+    membersVC.modalPresentationStyle = 0;
     [self presentViewController:membersVC animated:YES completion:^{
         
     }];
@@ -577,6 +579,7 @@
     settingVC.rommPassword = _password;
     settingVC.speakerLimited = 6;
     settingVC.model = _roomModel;
+    settingVC.modalPresentationStyle = 0;
     [self presentViewController:settingVC animated:YES completion:nil];
 }
 //房间关闭
@@ -712,7 +715,7 @@
                                }];
     [alert addAction:werewolf];
     [alert addAction:villager];
-    
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -725,6 +728,7 @@
             
         }];
         [alert addAction:confirm];
+        alert.modalPresentationStyle = 0;
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }

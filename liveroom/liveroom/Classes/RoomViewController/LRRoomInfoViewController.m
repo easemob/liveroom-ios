@@ -332,6 +332,7 @@
         }
         LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:title
                                                                                    info:info];
+        alertController.modalPresentationStyle = 0;
         [self presentViewController:alertController animated:YES completion:nil];
     }];
 }

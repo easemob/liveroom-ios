@@ -111,7 +111,7 @@
     self.leftViewMode = UITextFieldViewModeAlways;
     self.backgroundColor = LRColor_HeightBlackColor;
     self.textColor = [UIColor whiteColor];
-    [self setValue:LRColor_LowBlackColor forKeyPath:@"_placeholderLabel.textColor"];
+//    [self setValue:LRColor_LowBlackColor forKeyPath:@"_placeholderLabel.textColor"];
 }
 
 @end

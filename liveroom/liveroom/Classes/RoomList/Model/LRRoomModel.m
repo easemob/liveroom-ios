@@ -10,9 +10,17 @@
 
 @implementation LRRoomModel
 
-+ (instancetype)roomWithDict:(NSDictionary *)dict
++ (instancetype)roomWithDict:(NSDictionary *)retDict
 {
     LRRoomModel *model = [[LRRoomModel alloc] init];
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    for (NSString *key in retDict.allKeys) {
+        if (![retDict[key] isKindOfClass:[NSNull class]]) {
+            dict[key] = retDict[key];
+        }
+    }
+    
     model.roomname = dict[@"roomName"];
     model.roomId = dict[@"roomId"];
     model.conferenceId = dict[@"rtcConfrId"];

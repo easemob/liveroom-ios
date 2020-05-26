@@ -361,10 +361,12 @@
             }
         }
         LRRoomViewController *vroomVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Audiance roomModel:aModel password:alertController.textField.text];
+        vroomVC.modalPresentationStyle = 0;
         [self presentViewController:vroomVC animated:YES completion:nil];
     }];
     
     [alert addAction:joinAction];
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -386,6 +388,9 @@
                  if (list) {
                      for (NSDictionary *dic in list) {
                          LRRoomModel *model = [LRRoomModel roomWithDict:dic];
+                         if ([model.conferenceId isKindOfClass:[NSNull class]]) {
+                             continue;
+                         }
                          if ([model.owner isEqualToString:kCurrentUsername]) {
                              // 如果发现列表中有自己建立的房间，直接解散。
                              [self destoryMyRoom:model];

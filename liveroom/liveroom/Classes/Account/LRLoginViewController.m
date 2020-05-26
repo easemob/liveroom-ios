@@ -41,6 +41,7 @@
     if (uname.length == 0 || pwd.length == 0) {
         LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"错误 error"
                                                                              info:@"用户名或密码不能为空"];
+        alertController.modalPresentationStyle = 0;
         [self presentViewController:alertController animated:YES completion:nil];
         return NO;
     }
@@ -66,6 +67,7 @@
         }else {
             LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"登录失败"
                                                                                  info:errorInfo];
+            alertController.modalPresentationStyle = 0;
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }];
@@ -86,10 +88,12 @@
          if (success) {
              LRAlertController *alertController = [LRAlertController showSuccessAlertWithTitle:@"注册成功"
                                                                                   info:nil];
+             alertController.modalPresentationStyle = 0;
              [self presentViewController:alertController animated:YES completion:nil];
          }else {
              LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"注册失败"
                                                                                   info:errorInfo];
+             alertController.modalPresentationStyle = 0;
              [self presentViewController:alertController animated:YES completion:nil];
          }
      }];
