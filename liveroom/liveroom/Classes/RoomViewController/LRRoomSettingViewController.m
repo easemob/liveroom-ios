@@ -24,8 +24,8 @@
     [self _setupSubviews];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(exitChatroom:) name:LR_Exit_Chatroom_Notification
-                                             object:nil];
+                                             selector:@selector(exitChatroom:) name:LR_Exit_Chatroom_Notification
+                                               object:nil];
 }
 
 - (void)_setupSubviews
@@ -82,8 +82,10 @@
         roomType = @"自由麦模式";
     } else if (_model.roomType == LRRoomType_Host) {
         roomType = @"主持模式";
-    } else {
+    } else if(_model.roomType == LRRoomType_Monopoly){
         roomType = @"抢麦模式";
+    } else {
+        roomType = @"临场模式";
     }
     NSString *allowAudienceOnSpeaker = _model.allowAudienceOnSpeaker? @"true" : @"false";
     NSString *info = [NSString stringWithFormat:@"房间id：%@\n密码password：%@\n聊天室chatroomid：%@\n会议confrenceid：%@\n音质模式voicequality：%@\n主播speakerlimited：%d\n房间人数memberlimited：%d\n创建时间createtime：%@\n允许观众申请上麦applyAllow：%@\n模式type：%@",_model.roomId,_rommPassword,_model.roomId,_model.conferenceId,@"highlevel",_speakerLimited,_model.maxCount,_model.createTime,allowAudienceOnSpeaker,roomType];

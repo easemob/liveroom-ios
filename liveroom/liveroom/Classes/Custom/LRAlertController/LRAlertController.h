@@ -24,16 +24,19 @@ typedef void(^CloseBlock)(void);
 @property (nonatomic, strong) UITextField *textField;
 
 + (LRAlertController *)showSuccessAlertWithTitle:(NSString *)aTitle
-                                           info:(NSString * _Nullable)aInfo;
+                                            info:(NSString * _Nullable)aInfo;
 
 + (LRAlertController *)showTipsAlertWithTitle:(NSString *)aTitle
-                                        info:(NSString * _Nullable)aInfo;
-
-+ (LRAlertController *)showErrorAlertWithTitle:(NSString *)aTitle
                                          info:(NSString * _Nullable)aInfo;
 
++ (LRAlertController *)showErrorAlertWithTitle:(NSString *)aTitle
+                                          info:(NSString * _Nullable)aInfo;
+
 + (LRAlertController *)showTextAlertWithTitle:(NSString *)aTitle
-                                        info:(NSString * _Nullable)aInfo;
+                                         info:(NSString * _Nullable)aInfo;
+
++ (LRAlertController *)showIdentityAlertWithTitle:(NSString *)aTitle
+                                             info:(NSString * _Nullable)aInfo;
 
 
 - (void)addAction:(LRAlertAction *)aAction;

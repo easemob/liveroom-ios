@@ -10,9 +10,9 @@
 #import "Headers.h"
 
 @interface LRSpeakerTypeView ()
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *infoLabel;
-@property (nonatomic, strong) UIButton *switchBtn;
+@property (nonatomic, strong) UILabel *titleLabel;  //会议模式
+@property (nonatomic, strong) UILabel *infoLabel;   //模式介绍
+@property (nonatomic, strong) UIButton *switchBtn;  //房间模式改变按钮/暂时没开发
 @end
 
 @implementation LRSpeakerTypeView
@@ -70,20 +70,26 @@
     switch (_type) {
         case LRRoomType_Host:
         {
-            self.titleLabel.text = @"主持模式";
+            self.titleLabel.text = @"主持模式 Host";
             self.infoLabel.text = @"主持模式下管理员分配的主播获得发言权";
         }
             break;
         case LRRoomType_Monopoly:
         {
-            self.titleLabel.text = @"抢麦模式";
+            self.titleLabel.text = @"抢麦模式 Monopoly";
             self.infoLabel.text = @"抢麦模式下所有主播通过抢麦获得发言权";
         }
             break;
         case LRRoomType_Communication:
         {
-            self.titleLabel.text = @"自由麦模式";
+            self.titleLabel.text = @"自由麦模式 Communication";
             self.infoLabel.text = @"自由麦模式下所有主播可以自由发言";
+        }
+            break;
+        case LRRoomType_Pentakill:
+        {
+            self.titleLabel.text = @"临场模式 Temporary";
+            self.infoLabel.text = @"管理员可以切换白天、夜晚进行临场模式切换";
         }
             break;
         default:

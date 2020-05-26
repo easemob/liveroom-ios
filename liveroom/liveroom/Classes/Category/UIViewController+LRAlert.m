@@ -13,6 +13,7 @@
 - (void)showErrorAlertWithTitle:(NSString *)aTitle info:(NSString *)aInfo {
     LRAlertController *alert = [LRAlertController showErrorAlertWithTitle:aTitle info:aInfo];
 //    LRAlertAction *action = [LRAlertAction alertActionTitle:@"确定" callback:nil];
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -20,6 +21,7 @@
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:aTitle info:aInfo];
     LRAlertAction *action = [LRAlertAction alertActionTitle:@"确定" callback:nil];
     [alert addAction:action];
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 @end

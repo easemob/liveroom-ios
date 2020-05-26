@@ -98,6 +98,7 @@
                                                                 object:@NO];
         } else {
             LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"退出登录失败" info:aError.errorDescription];
+            alertController.modalPresentationStyle = 0;
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }];

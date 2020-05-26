@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(id)initWithFrame:(CGRect)frame;
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated;
-
+//- (void)setupTagBack:(float)width height:(float)height;  //免密创建房间UI设置
 @end
 
 @protocol LRSettingSwitchDelegate <NSObject>

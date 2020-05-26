@@ -43,6 +43,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define LRColor_HeightBlackColor RGBACOLOR(26, 26, 26, 1)
 #define LRColor_MiddleBlackColor RGBACOLOR(51, 51, 51, 1)
 #define LRColor_LowBlackColor RGBACOLOR(102, 102, 102, 1)
+#define LRColor_MiddleBlackColor RGBACOLOR(51, 51, 51, 1)
 #define LRColor_LessBlackColor RGBACOLOR(202, 202, 202, 1)
 #define LRColor_LessGreenColor RGBACOLOR(126, 211, 33, 1)
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
@@ -56,6 +57,8 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define kRequestToBe_Speaker @"request_tobe_speaker"                // 申请上麦
 #define kRequestToBe_Audience @"request_tobe_audience"              // 申请下麦
 #define kRequestToBe_Rejected @"request_tobe_rejected"              // 拒绝上麦申请
+
+#define kRequestUserIdentity @"requestUserIdentity"
 
 #define kRequestConferenceId  @"em_conference_id"
 

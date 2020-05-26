@@ -33,6 +33,21 @@
     return self;
 }
 
+/*//免密创建房间UI设置
+- (void)setupTagBack:(float)width height:(float)height {
+    CGRect frame = self.tagBackGroundView.frame;
+    frame = self.isOn?CGRectMake(kPadding, kPadding,width/2 - kPadding, height - kPadding * 2):CGRectMake(width/2,kPadding, width/2 - kPadding,height - kPadding * 2);
+    self.tagBackGroundView.frame = frame;
+    self.tagBackGroundView.layer.cornerRadius = self.tagBackGroundView.frame.size.height/10;
+    self.layer.cornerRadius = self.frame.size.height/10;
+    [self.tagView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tagBackGroundView.mas_top).offset(1);
+        make.bottom.equalTo(self.tagBackGroundView.mas_bottom).offset(-1);
+        make.left.equalTo(self.tagBackGroundView.mas_left).offset(1);
+        make.right.equalTo(self.tagBackGroundView.mas_right).offset(-1);
+    }];
+}*/
+
 - (void)_setupSubviews{
 //    _isOn = YES;
 //    _isAnimated = YES;

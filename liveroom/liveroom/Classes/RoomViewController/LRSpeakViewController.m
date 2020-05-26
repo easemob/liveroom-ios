@@ -9,8 +9,6 @@
 #import "LRSpeakViewController.h"
 #import "LRVolumeView.h"
 #import "LRSpeakerCell.h"
-#import "LRSpeakerEmptyCell.h"
-#import "LRSpeakerTypeView.h"
 #import "LRSpeakHelper.h"
 #import "LRRoomModel.h"
 #import "LRSpeakerCellModel.h"
@@ -24,11 +22,11 @@ extern NSString * const TALK_EVENT_NAME;
 extern NSString * const ARGUMENT_EVENT_NAME;
 extern NSString * const UN_ARGUMENT_EVENT_NAME;
 extern NSString * const DISCONNECT_EVENT_NAME;
+extern NSString * const PK_ON_MIC_EVENT_NAME;
+extern NSString * const PK_OFF_MIC_EVENT_NAME;
+
 
 @interface LRSpeakViewController () <UITableViewDelegate, UITableViewDataSource, LRSpeakHelperDelegate>
-
-@property (nonatomic, strong) LRSpeakerTypeView *headerView;
-@property (nonatomic, strong) NSMutableArray *dataAry;
 
 @end
 
@@ -49,51 +47,47 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    [self _setupSubViews];
+    [self setupSubViews];
     LRSpeakHelper.sharedInstance.roomModel = _roomModel;
     [self.headerView setType:_roomModel.roomType];
     for (int i = 0; i < kMaxSpeakerCount; i++) {
         LRSpeakerCellModel *model = [[LRSpeakerCellModel alloc] init];
         [self.dataAry addObject:model];
     }
-    
     [self.tableView reloadData];
 }
 
-- (void)_setupSubViews {
+- (void)setupSubViews {
     [self.view addSubview:self.headerView];
     [self.view addSubview:self.tableView];
     
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
-        make.bottom.equalTo(self.tableView.mas_top);
         make.height.equalTo(@40);
     }];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.headerView.mas_bottom).offset(5);
         make.left.right.bottom.equalTo(self.view);
     }];
+    
 }
 
 #pragma mark - table view delegate & datasource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return self.dataAry.count;
 }
-
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView
-                 cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    UITableViewCell *cell;
-    LRSpeakerCellModel *model = self.dataAry[indexPath.row];
-    if (model.username && model.username.length > 0) {
-        cell = [LRSpeakerCell speakerCellWithType:self.roomModel.roomType
-                                        tableView:tableView
-                                        cellModel:model];
-    }else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"LRSpeakerEmptyCell"];
-        if (!cell) {
-            cell = [[LRSpeakerEmptyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LRSpeakerEmptyCell"];
-        }
+//返回cell
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"UITableViewCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     }
+    // Configure the cell...
+    cell.textLabel.text = @"";
     return cell;
 }
 
@@ -126,6 +120,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
         if (isAdmin) {
             [self.dataAry exchangeObjectAtIndex:[self.dataAry indexOfObject:nModel] withObjectAtIndex:0];
         }
+        
         [self.tableView reloadData];
     }
 }
@@ -148,11 +143,12 @@ extern NSString * const DISCONNECT_EVENT_NAME;
 
 // cell上按钮点击事件
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo {
-    if ([eventName isEqualToString:ON_MIC_EVENT_NAME]) {
+    
+    if ([eventName isEqualToString:ON_MIC_EVENT_NAME] || [eventName isEqualToString:PK_ON_MIC_EVENT_NAME]) {
         [LRSpeakHelper.sharedInstance muteMyself:NO];
     }
     
-    if ([eventName isEqualToString:OFF_MIC_EVENT_NAME]) {
+    if ([eventName isEqualToString:OFF_MIC_EVENT_NAME] || [eventName isEqualToString:PK_OFF_MIC_EVENT_NAME]) {
         [LRSpeakHelper.sharedInstance muteMyself:YES];
     }
     
@@ -171,14 +167,14 @@ extern NSString * const DISCONNECT_EVENT_NAME;
              if (success) {
                  [LRSpeakHelper.sharedInstance setupSpeakerMicOn:username];
              }
-        }];
+         }];
     }
     
     if ([eventName isEqualToString:UN_ARGUMENT_EVENT_NAME]) {
         LRSpeakerCellModel *model = userInfo.allValues.firstObject;
         __block NSString *username = model.username;
         [LRSpeakHelper.sharedInstance unArgumentMic:self.roomModel.roomId
-                                       completion:^(NSString * _Nonnull errorInfo, BOOL success)
+                                         completion:^(NSString * _Nonnull errorInfo, BOOL success)
          {
              if (success) {
                  [LRSpeakHelper.sharedInstance setupSpeakerMicOff:username];
@@ -233,12 +229,12 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     }
     [self.tableView reloadData];
 }
-
-// 房间属性变化
-- (void)roomTypeDidChange:(LRRoomType)aType {
-    self.roomModel.roomType = aType;
-    [self.headerView setType:aType];
-}
+/*
+ // 房间属性变化
+ - (void)roomTypeDidChange:(LRRoomType)aType {
+ self.roomModel.roomType = aType;
+ [self.headerView setType:aType];
+ }*/
 
 // 谁在说话回调 (在主持模式下，标注谁在说话)
 - (void)currentHostTypeSpeakerChanged:(NSString *)aSpeaker {
@@ -292,6 +288,7 @@ extern NSString * const DISCONNECT_EVENT_NAME;
     
     [self.tableView reloadData];
 }
+
 
 #pragma mark - getter
 - (UITableView *)tableView {

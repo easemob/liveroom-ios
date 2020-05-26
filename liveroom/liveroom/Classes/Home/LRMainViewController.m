@@ -66,19 +66,24 @@
         return;
     }
     LRCreateRoomViewController *createVC = [[LRCreateRoomViewController alloc] init];
+    createVC.modalPresentationStyle = 0;
     [self presentViewController:createVC animated:YES completion:nil];
 }
 
 
 - (void)roomDidCreated:(NSNotification *)aNoti {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    if (aNoti.object) {
-        NSDictionary *roomInfo = aNoti.object;
-        LRRoomModel *model = [LRRoomModel roomWithDict:roomInfo];
-        model.roomType = [roomInfo[@"type"] integerValue];
-        LRRoomViewController *lrVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
-        [self presentViewController:lrVC animated:YES completion:nil];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+        if (aNoti.object) {
+            NSDictionary *roomInfo = aNoti.object;
+            LRRoomModel *model = [LRRoomModel roomWithDict:roomInfo];
+            model.roomType = [roomInfo[@"type"] integerValue];
+            model.identity = roomInfo[@"identity"];
+            LRRoomViewController *lrVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Admin roomModel:model password:roomInfo[@"rtcConfrPassword"]];
+            lrVC.modalPresentationStyle = 0;
+            [self presentViewController:lrVC animated:YES completion:nil];
+        }
+    });
 }
 
 // 被踢

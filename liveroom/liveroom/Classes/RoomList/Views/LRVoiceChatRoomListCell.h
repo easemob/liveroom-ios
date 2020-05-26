@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UILabel *chatRoomNameLabel;
 @property (nonatomic, strong) UILabel *userNameLabel;
+@property (nonatomic, strong) UILabel *roomTpyeLabel;
+@property (nonatomic, strong) UIImageView *lockImage;
 @property (nonatomic, strong) LRRoomModel *model;
 
 @end

@@ -58,9 +58,9 @@
     [self _setupSubviews];
     [self autoReload];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(autoReload)
-                                               name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED
-                                             object:nil];
+                                             selector:@selector(autoReload)
+                                                 name:LR_NOTIFICATION_ROOM_LIST_DIDCHANGEED
+                                               object:nil];
 }
 
 - (void)_setupSubviews
@@ -160,7 +160,7 @@
         make.left.equalTo(self.noResultView).offset(10);
         make.right.equalTo(self.noResultView).offset(-10);
     }];
-
+    
 }
 
 #pragma mark - GestureRecognizer
@@ -178,7 +178,7 @@
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if ([NSStringFromClass([touch.view class]) isEqual:@"UITableViewCellContentView"]) {
         return NO;
-        }
+    }
     return YES;
 }
 
@@ -220,6 +220,9 @@
         model = [self.searchResults objectAtIndex:indexPath.row];
     }
     cell.model = model;
+    if(!model.conferencePassword){
+        cell.lockImage.hidden = YES;
+    }
     return cell;
 }
 
@@ -334,7 +337,13 @@
 
 #pragma mark - Actions
 - (void)joinRoomWithModel:(LRRoomModel *)aModel {
-
+    /*
+     //没有密码直接加入房间
+     if(!aModel.conferencePassword){
+        LRRoomViewController *vroomVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Audiance roomModel:aModel password:[NSString stringWithFormat:@"%d",aModel.conferencePassword]];
+        [self presentViewController:vroomVC animated:YES completion:nil];
+        return;
+    }*/
     NSString *info = [NSString stringWithFormat:@"房主: %@\n聊天室ID: %@\n语音会议ID: %@\n房间最大人数: %d\n创建时间: %@\n允许观众上麦: %@", aModel.owner, aModel.roomId, aModel.conferenceId, aModel.maxCount, aModel.createTime, aModel.allowAudienceOnSpeaker ? @"true":@"false"];
     LRAlertController *alert = [LRAlertController showTextAlertWithTitle:aModel.roomname info:info];
     UITextField *pwdTextField = [[UITextField alloc] init];
@@ -352,10 +361,12 @@
             }
         }
         LRRoomViewController *vroomVC = [[LRRoomViewController alloc] initWithUserType:LRUserType_Audiance roomModel:aModel password:alertController.textField.text];
+        vroomVC.modalPresentationStyle = 0;
         [self presentViewController:vroomVC animated:YES completion:nil];
     }];
     
     [alert addAction:joinAction];
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -371,11 +382,15 @@
      {
          dispatch_async(dispatch_get_main_queue(), ^{
              if (!error) {
+                 NSLog(@"房间列表------%@", result);
                  NSArray *list = result[@"list"];
                  [self.dataArray removeAllObjects];
                  if (list) {
                      for (NSDictionary *dic in list) {
                          LRRoomModel *model = [LRRoomModel roomWithDict:dic];
+                         if ([model.conferenceId isKindOfClass:[NSNull class]]) {
+                             continue;
+                         }
                          if ([model.owner isEqualToString:kCurrentUsername]) {
                              // 如果发现列表中有自己建立的房间，直接解散。
                              [self destoryMyRoom:model];
@@ -385,11 +400,11 @@
                      }
                  }
              }else {
-        
+                 
              }
              [self endReload];
          });
-    }];
+     }];
 }
 
 - (void)endReload {

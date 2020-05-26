@@ -41,6 +41,7 @@
     if (uname.length == 0 || pwd.length == 0) {
         LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"错误 error"
                                                                              info:@"用户名或密码不能为空"];
+        alertController.modalPresentationStyle = 0;
         [self presentViewController:alertController animated:YES completion:nil];
         return NO;
     }
@@ -54,7 +55,7 @@
     if (![self validationInputInfo]) return;
     [self showHudInView:self.view hint:@"正在登录..."];
     __weak typeof(self) weakself = self;
-    [LRChatHelper.sharedInstance asyncLoginWithUsername:self.usernameTextField.text
+    [LRChatHelper.sharedInstance asyncLoginWithUsername:[self.usernameTextField.text lowercaseString]
                                              password:self.passwordTextField.text
                                            completion:^(NSString * _Nonnull errorInfo, BOOL success)
     {
@@ -65,6 +66,7 @@
         }else {
             LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"登录失败"
                                                                                  info:errorInfo];
+            alertController.modalPresentationStyle = 0;
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }];
@@ -76,7 +78,8 @@
     if (![self validationInputInfo]) return;
     [self showHudInView:self.view hint:@"正在注册..."];
     __weak typeof(self) weakself = self;
-    [LRChatHelper.sharedInstance asyncRegisterWithUsername:self.usernameTextField.text
+    NSString *name = [self.usernameTextField.text lowercaseString];
+    [LRChatHelper.sharedInstance asyncRegisterWithUsername:name
                                                 password:self.passwordTextField.text
                                               completion:^(NSString * _Nonnull errorInfo, BOOL success)
      {
@@ -84,10 +87,12 @@
          if (success) {
              LRAlertController *alertController = [LRAlertController showSuccessAlertWithTitle:@"注册成功"
                                                                                   info:nil];
+             alertController.modalPresentationStyle = 0;
              [self presentViewController:alertController animated:YES completion:nil];
          }else {
              LRAlertController *alertController = [LRAlertController showErrorAlertWithTitle:@"注册失败"
                                                                                   info:errorInfo];
+             alertController.modalPresentationStyle = 0;
              [self presentViewController:alertController animated:YES completion:nil];
          }
      }];

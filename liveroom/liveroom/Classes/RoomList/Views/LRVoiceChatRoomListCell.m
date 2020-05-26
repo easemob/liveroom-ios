@@ -55,6 +55,25 @@
         make.right.equalTo(self.contentView).offset(-10);
     }];
     
+    self.roomTpyeLabel = [[UILabel alloc] init];
+    self.roomTpyeLabel.textColor = [UIColor whiteColor];
+    self.roomTpyeLabel.font = [UIFont systemFontOfSize:13];
+    self.roomTpyeLabel.backgroundColor = [UIColor clearColor];
+    [self.contentView addSubview:self.roomTpyeLabel];
+    [self.roomTpyeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView.mas_centerY).offset(-5);
+        make.right.equalTo(self.contentView).offset(-10);
+    }];
+    
+    self.lockImage = [[UIImageView alloc]init];
+    self.lockImage.image = [UIImage imageNamed:@"lock"];
+    [self.contentView addSubview:_lockImage];
+    [self.lockImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.roomTpyeLabel.mas_bottom).offset(3);
+        make.right.equalTo(self.roomTpyeLabel.mas_right);
+        make.height.equalTo(@12);
+        make.width.equalTo(@12);
+    }];
 }
 
 - (void)setModel:(LRRoomModel *)model
@@ -62,6 +81,17 @@
     _model = model;
     _chatRoomNameLabel.text = _model.roomname;
     _userNameLabel.text = _model.roomId;
+    NSString *roomType;
+    if (_model.roomType == LRRoomType_Communication) {
+        roomType = @"自由麦模式";
+    } else if (_model.roomType == LRRoomType_Host) {
+        roomType = @"主持模式";
+    } else if (_model.roomType == LRRoomType_Monopoly) {
+        roomType = @"抢麦模式";
+    } else if (_model.roomType == LRRoomType_Pentakill) {
+        roomType = @"临场模式";
+    }
+    _roomTpyeLabel.text = roomType;
 }
 
 @end

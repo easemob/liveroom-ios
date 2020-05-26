@@ -104,10 +104,10 @@
     [self audioPlayerWithName:@"like" type:@"wav"];
     [self animationImageName:@"like"];
     [LRChatHelper.sharedInstance sendLikeMessage:kMessageFavourite
-                                         completion:^(NSString * _Nonnull errorInfo, BOOL success) {
-        
-    }];
-
+                                      completion:^(NSString * _Nonnull errorInfo, BOOL success) {
+                                          
+                                      }];
+    
     [self addMessageToData:kMessageFavourite
                   fromUser:LRChatHelper.sharedInstance.currentUser
                  timestamp:[[NSDate new] timeIntervalSince1970]];
@@ -118,13 +118,20 @@
     [self animationImageName:@"giftcard"];
     
     [LRChatHelper.sharedInstance sendGiftMessage:kMessageGift
-                                         completion:^(NSString * _Nonnull errorInfo, BOOL success) {
-                                             
-                                         }];
+                                      completion:^(NSString * _Nonnull errorInfo, BOOL success) {
+                                          
+                                      }];
     
     [self addMessageToData:kMessageGift
                   fromUser:LRChatHelper.sharedInstance.currentUser
                  timestamp:[[NSDate new] timeIntervalSince1970]];
+}
+
+- (void)cutDayTime {
+    [self audioPlayerWithName:@"daytime" type:@"wav"];
+}
+- (void)cutNight {
+    [self audioPlayerWithName:@"night" type:@"wav"];
 }
 
 - (void)animationImageName:(NSString *)imageName
@@ -138,7 +145,7 @@
     imageView.tag = 99999;
     imageView.alpha = 0.5;
     [self.view.superview addSubview:imageView];
-
+    
     imageView.frame = CGRectMake(0, 0, 90, 90);
     imageView.center = self.view.superview.center;
     [UIView animateWithDuration:0.3 animations:^{
@@ -165,7 +172,7 @@
     NSString *string = [[NSBundle mainBundle] pathForResource:audioName ofType:type];
     NSURL *url = [NSURL fileURLWithPath:string];
     self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
-    self.audioPlayer.volume = 100;
+    self.audioPlayer.volume = 80;
     self.audioPlayer.numberOfLoops = 0;
     [self.audioPlayer play];
 }
