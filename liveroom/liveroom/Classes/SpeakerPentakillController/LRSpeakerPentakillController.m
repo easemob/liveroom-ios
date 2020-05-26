@@ -185,6 +185,7 @@ Boolean isExcute;  //每次加入房间回调只执行一次
         
     }];
     [alert addAction:confirm];
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 

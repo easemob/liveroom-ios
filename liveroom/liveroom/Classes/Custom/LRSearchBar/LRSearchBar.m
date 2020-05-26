@@ -76,7 +76,7 @@
 - (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
 {
     _placeholderTextColor = placeholderTextColor;
-    [self.textField setValue:_placeholderTextColor forKeyPath:@"_placeholderLabel.textColor"];
+//    [self.textField setValue:_placeholderTextColor forKeyPath:@"_placeholderLabel.textColor"];
 }
 
 - (void)setStrokeWidth:(CGFloat)strokeWidth
@@ -109,7 +109,7 @@
 - (void)setPlaceholderTextFont:(CGFloat)placeholderTextFont
 {
     _placeholderTextFont = placeholderTextFont;
-    [self.textField setValue:[UIFont systemFontOfSize:_placeholderTextFont] forKeyPath:@"_placeholderLabel.font"];
+//    [self.textField setValue:[UIFont systemFontOfSize:_placeholderTextFont] forKeyPath:@"_placeholderLabel.font"];
 }
 
 #pragma mark - UITextFieldDelegate

@@ -46,7 +46,6 @@
 		90F2C6E12254C08600A712B8 /* LRSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6B22254C08600A712B8 /* LRSettingViewController.m */; };
 		90F2C6E72254C08600A712B8 /* LRAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90F2C6BC2254C08600A712B8 /* LRAlertController.m */; };
 		90F2C6E82254C08600A712B8 /* LRAlertController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6BD2254C08600A712B8 /* LRAlertController.xib */; };
-		90F2C6F42254C09400A712B8 /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F2C6F32254C09400A712B8 /* add@2x.png */; };
 		E00EE56F228424D60043C235 /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E00EE56E228424D60043C235 /* music.mp3 */; };
 		E00EE574228AD0B10043C235 /* gift.wav in Resources */ = {isa = PBXBuildFile; fileRef = E00EE572228AD0AF0043C235 /* gift.wav */; };
 		E00EE575228AD0B10043C235 /* like.wav in Resources */ = {isa = PBXBuildFile; fileRef = E00EE573228AD0B00043C235 /* like.wav */; };
@@ -58,7 +57,6 @@
 		E04712D32259D20900F9910C /* LRSettingSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712D22259D20900F9910C /* LRSettingSwitch.m */; };
 		E04712D7225B61F000F9910C /* LRTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712D6225B61F000F9910C /* LRTabBar.m */; };
 		E04712DB225C503400F9910C /* LRRoomInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712DA225C503400F9910C /* LRRoomInfoViewController.m */; };
-		E04712DF225C8CEF00F9910C /* find@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712DE225C8CEF00F9910C /* find@2x.png */; };
 		E04712E2225C907600F9910C /* LRFindView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E1225C907600F9910C /* LRFindView.m */; };
 		E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712F6225F1A5900F9910C /* LRRequestManager.m */; };
 		E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */; };
@@ -74,19 +72,7 @@
 		E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C8F226DB9F3008CF34E /* search-material@2x.png */; };
 		E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C90226DB9F3008CF34E /* search-material@3x.png */; };
 		E0780CCB226ED7CB008CF34E /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0780CC9226ED7CB008CF34E /* LRVolumeView.m */; };
-		E0780CD4226EE375008CF34E /* voice3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CCC226EE374008CF34E /* voice3@3x.png */; };
-		E0780CD5226EE375008CF34E /* voice1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CCD226EE374008CF34E /* voice1@3x.png */; };
-		E0780CD6226EE375008CF34E /* voice1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CCE226EE374008CF34E /* voice1@2x.png */; };
-		E0780CD7226EE375008CF34E /* voice2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CCF226EE374008CF34E /* voice2@2x.png */; };
-		E0780CD8226EE375008CF34E /* voice3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CD0226EE374008CF34E /* voice3@2x.png */; };
-		E0780CD9226EE375008CF34E /* voice2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CD1226EE374008CF34E /* voice2@3x.png */; };
-		E0780CDA226EE375008CF34E /* voice4@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CD2226EE374008CF34E /* voice4@3x.png */; };
-		E0780CDB226EE375008CF34E /* voice4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780CD3226EE374008CF34E /* voice4@2x.png */; };
 		E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E096BE5E22641FB7007908BB /* LRRoomOptions.m */; };
-		E0A7E6F9226D802400AE6C6F /* close2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F5226D802400AE6C6F /* close2@3x.png */; };
-		E0A7E6FA226D802400AE6C6F /* creat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F6226D802400AE6C6F /* creat@2x.png */; };
-		E0A7E6FB226D802400AE6C6F /* creat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F7226D802400AE6C6F /* creat@3x.png */; };
-		E0A7E6FC226D802400AE6C6F /* close2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A7E6F8226D802400AE6C6F /* close2@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -183,7 +169,6 @@
 		90F2C6B72254C08600A712B8 /* LRAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRAlertController.h; sourceTree = "<group>"; };
 		90F2C6BC2254C08600A712B8 /* LRAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRAlertController.m; sourceTree = "<group>"; };
 		90F2C6BD2254C08600A712B8 /* LRAlertController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LRAlertController.xib; sourceTree = "<group>"; };
-		90F2C6F32254C09400A712B8 /* add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add@2x.png"; sourceTree = "<group>"; };
 		9129ABF1877E591B4D2B7E4D /* Pods-liveroom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-liveroom.release.xcconfig"; path = "Pods/Target Support Files/Pods-liveroom/Pods-liveroom.release.xcconfig"; sourceTree = "<group>"; };
 		E00EE564228410500043C235 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E00EE56E228424D60043C235 /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = music.mp3; sourceTree = "<group>"; };
@@ -205,7 +190,6 @@
 		E04712D6225B61F000F9910C /* LRTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRTabBar.m; sourceTree = "<group>"; };
 		E04712D9225C503400F9910C /* LRRoomInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomInfoViewController.h; sourceTree = "<group>"; };
 		E04712DA225C503400F9910C /* LRRoomInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomInfoViewController.m; sourceTree = "<group>"; };
-		E04712DE225C8CEF00F9910C /* find@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "find@2x.png"; sourceTree = "<group>"; };
 		E04712E0225C907600F9910C /* LRFindView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRFindView.h; sourceTree = "<group>"; };
 		E04712E1225C907600F9910C /* LRFindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRFindView.m; sourceTree = "<group>"; };
 		E04712F6225F1A5900F9910C /* LRRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRRequestManager.m; sourceTree = "<group>"; };
@@ -233,20 +217,8 @@
 		E0780C90226DB9F3008CF34E /* search-material@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@3x.png"; sourceTree = "<group>"; };
 		E0780CC9226ED7CB008CF34E /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
 		E0780CCA226ED7CB008CF34E /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
-		E0780CCC226EE374008CF34E /* voice3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice3@3x.png"; sourceTree = "<group>"; };
-		E0780CCD226EE374008CF34E /* voice1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice1@3x.png"; sourceTree = "<group>"; };
-		E0780CCE226EE374008CF34E /* voice1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice1@2x.png"; sourceTree = "<group>"; };
-		E0780CCF226EE374008CF34E /* voice2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice2@2x.png"; sourceTree = "<group>"; };
-		E0780CD0226EE374008CF34E /* voice3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice3@2x.png"; sourceTree = "<group>"; };
-		E0780CD1226EE374008CF34E /* voice2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice2@3x.png"; sourceTree = "<group>"; };
-		E0780CD2226EE374008CF34E /* voice4@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice4@3x.png"; sourceTree = "<group>"; };
-		E0780CD3226EE374008CF34E /* voice4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voice4@2x.png"; sourceTree = "<group>"; };
 		E096BE5D22641FB7007908BB /* LRRoomOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomOptions.h; sourceTree = "<group>"; };
 		E096BE5E22641FB7007908BB /* LRRoomOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRRoomOptions.m; sourceTree = "<group>"; };
-		E0A7E6F5226D802400AE6C6F /* close2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close2@3x.png"; sourceTree = "<group>"; };
-		E0A7E6F6226D802400AE6C6F /* creat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creat@2x.png"; sourceTree = "<group>"; };
-		E0A7E6F7226D802400AE6C6F /* creat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creat@3x.png"; sourceTree = "<group>"; };
-		E0A7E6F8226D802400AE6C6F /* close2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close2@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -554,23 +526,6 @@
 				E00EE572228AD0AF0043C235 /* gift.wav */,
 				E00EE573228AD0B00043C235 /* like.wav */,
 				E00EE56E228424D60043C235 /* music.mp3 */,
-				E0780CCE226EE374008CF34E /* voice1@2x.png */,
-				E0780CCD226EE374008CF34E /* voice1@3x.png */,
-				E0780CCF226EE374008CF34E /* voice2@2x.png */,
-				E0780CD1226EE374008CF34E /* voice2@3x.png */,
-				E0780CD0226EE374008CF34E /* voice3@2x.png */,
-				E0780CCC226EE374008CF34E /* voice3@3x.png */,
-				E0780CD3226EE374008CF34E /* voice4@2x.png */,
-				E0780CD2226EE374008CF34E /* voice4@3x.png */,
-				E0780C8F226DB9F3008CF34E /* search-material@2x.png */,
-				E0780C90226DB9F3008CF34E /* search-material@3x.png */,
-				E0A7E6F8226D802400AE6C6F /* close2@2x.png */,
-				E0A7E6F5226D802400AE6C6F /* close2@3x.png */,
-				E0A7E6F6226D802400AE6C6F /* creat@2x.png */,
-				E0A7E6F7226D802400AE6C6F /* creat@3x.png */,
-				E04712FF22606E7900F9910C /* delete_input@2x.png */,
-				E04712DE225C8CEF00F9910C /* find@2x.png */,
-				90F2C6F32254C09400A712B8 /* add@2x.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -784,30 +739,20 @@
 			files = (
 				3C449A002322724A000140D5 /* daytime.wav in Resources */,
 				E00EE575228AD0B10043C235 /* like.wav in Resources */,
-				E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */,
-				E04712DF225C8CEF00F9910C /* find@2x.png in Resources */,
-				E0780CD5226EE375008CF34E /* voice1@3x.png in Resources */,
-				E0A7E6F9226D802400AE6C6F /* close2@3x.png in Resources */,
-				E0A7E6FB226D802400AE6C6F /* creat@3x.png in Resources */,
-				E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */,
 				E00EE574228AD0B10043C235 /* gift.wav in Resources */,
-				E0780CD4226EE375008CF34E /* voice3@3x.png in Resources */,
 				90F2C6782254C02B00A712B8 /* LaunchScreen.storyboard in Resources */,
-				E0780CDB226EE375008CF34E /* voice4@2x.png in Resources */,
-				E047130022606E7900F9910C /* delete_input@2x.png in Resources */,
-				E0A7E6FA226D802400AE6C6F /* creat@2x.png in Resources */,
 				90F2C6752254C02B00A712B8 /* Assets.xcassets in Resources */,
 				90F2C6E82254C08600A712B8 /* LRAlertController.xib in Resources */,
 				90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */,
 				E00EE56F228424D60043C235 /* music.mp3 in Resources */,
-				E0780CD6226EE375008CF34E /* voice1@2x.png in Resources */,
-				E0780CD8226EE375008CF34E /* voice3@2x.png in Resources */,
-				3C449A012322724A000140D5 /* night.wav in Resources */,
-				E0780CD9226EE375008CF34E /* voice2@3x.png in Resources */,
-				E0780CD7226EE375008CF34E /* voice2@2x.png in Resources */,
-				90F2C6F42254C09400A712B8 /* add@2x.png in Resources */,
-				E0A7E6FC226D802400AE6C6F /* close2@2x.png in Resources */,
-				E0780CDA226EE375008CF34E /* voice4@3x.png in Resources */,
+                E0780CD6226EE375008CF34E /* voice1@2x.png in Resources */,
+                E0780CD8226EE375008CF34E /* voice3@2x.png in Resources */,
+                3C449A012322724A000140D5 /* night.wav in Resources */,
+                E0780CD9226EE375008CF34E /* voice2@3x.png in Resources */,
+                E0780CD7226EE375008CF34E /* voice2@2x.png in Resources */,
+                90F2C6F42254C09400A712B8 /* add@2x.png in Resources */,
+                E0A7E6FC226D802400AE6C6F /* close2@2x.png in Resources */,
+                E0780CDA226EE375008CF34E /* voice4@3x.png in Resources */,
 				90F2C6DD2254C08600A712B8 /* LRLoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

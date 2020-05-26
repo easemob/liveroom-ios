@@ -255,6 +255,12 @@
     NSString *username = _requestList.firstObject;
     NSString *info = [NSString stringWithFormat:@"%@ 申请上麦，同意么?", username];
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
+    alert.closeBlock = ^{
+        weakSelf.isAlertShow = NO;
+        [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
+        [weakSelf.requestList removeObjectAtIndex:0];
+        [weakSelf showRequestInfoFromRequestList];
+    };
     LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
         //若狼人杀模式请求上麦则不为nil
         if(weakSelf.requestUserIdentity){
@@ -283,6 +289,7 @@
     [alert addAction:agreed];
     [alert addAction:reject];
     _isAlertShow = YES;
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -534,6 +541,7 @@
 - (void)memberListAction {
     LRRoomInfoViewController *membersVC = [[LRRoomInfoViewController alloc] init];
     membersVC.model = self.roomModel;
+    membersVC.modalPresentationStyle = 0;
     [self presentViewController:membersVC animated:YES completion:^{
         
     }];
@@ -577,6 +585,7 @@
     settingVC.rommPassword = _password;
     settingVC.speakerLimited = 6;
     settingVC.model = _roomModel;
+    settingVC.modalPresentationStyle = 0;
     [self presentViewController:settingVC animated:YES completion:nil];
 }
 //房间关闭
@@ -712,7 +721,7 @@
                                }];
     [alert addAction:werewolf];
     [alert addAction:villager];
-    
+    alert.modalPresentationStyle = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -725,6 +734,7 @@
             
         }];
         [alert addAction:confirm];
+        alert.modalPresentationStyle = 0;
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
