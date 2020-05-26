@@ -255,6 +255,12 @@
     NSString *username = _requestList.firstObject;
     NSString *info = [NSString stringWithFormat:@"%@ 申请上麦，同意么?", username];
     LRAlertController *alert = [LRAlertController showTipsAlertWithTitle:@"收到上麦申请" info:info];
+    alert.closeBlock = ^{
+        weakSelf.isAlertShow = NO;
+        [LRSpeakHelper.sharedInstance forbidUserOnSpeaker:username];
+        [weakSelf.requestList removeObjectAtIndex:0];
+        [weakSelf showRequestInfoFromRequestList];
+    };
     LRAlertAction *agreed = [LRAlertAction alertActionTitle:@"同意" callback:^(LRAlertController * _Nonnull alertController) {
         //若狼人杀模式请求上麦则不为nil
         if(weakSelf.requestUserIdentity){
