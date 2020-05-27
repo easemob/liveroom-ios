@@ -133,6 +133,38 @@ static LRSpeakHelper *helper_;
      }];
 }
 
+
+// 设置房间属性
+- (void)setupRoomType:(LRRoomType)aType {
+    NSString *value;
+    switch (aType) {
+        case LRRoomType_Communication:
+        {
+            value = @"communication";
+        }
+            break;
+        case LRRoomType_Host:
+        {
+            value = @"host";
+        }
+            break;
+        case LRRoomType_Monopoly:
+        {
+            value = @"monopoly";
+        }
+            break;
+        default:
+            break;
+    }
+    if (value) {
+        [EMClient.sharedClient.conferenceManager setConferenceAttribute:@"type" value:value completion:^(EMError *aError)
+        {
+                                                                 
+        }];
+    }
+}
+
+
 // 发布自己的流，并更新ui
 - (void)setupMySelfToSpeaker {
     __weak typeof(self) weakSekf = self;
@@ -206,11 +238,11 @@ static LRSpeakHelper *helper_;
     
     NSString *applyUid = [[EMClient sharedClient].conferenceManager getMemberNameWithAppkey:[EMClient sharedClient].options.appkey username:aUsername];
     [LRChatHelper.sharedInstance sendUserOffMicMsg:aUsername];
-    [EMClient.sharedClient.conferenceManager
-     changeMemberRoleWithConfId:self.conference.confId
-     memberNames:@[applyUid]
-     role:EMConferenceRoleAudience
-     completion:^(EMError *aError) {
+    [EMClient.sharedClient.conferenceManager changeMemberRoleWithConfId:self.conference.confId
+                                                            memberNames:@[applyUid]
+                                                                   role:EMConferenceRoleAudience
+                                                             completion:^(EMError *aError)
+    {
          
      }];
     
@@ -533,7 +565,7 @@ static LRSpeakHelper *helper_;
 }
 
 
-// 会议属性修改
+// 会议属性被修改
 - (void)conferenceAttributeUpdated:(EMCallConference *)aConference
                         attributes:(NSArray <EMConferenceAttribute *>*)attrs{
     NSString *talker = nil;
