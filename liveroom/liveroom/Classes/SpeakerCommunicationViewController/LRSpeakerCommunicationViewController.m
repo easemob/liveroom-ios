@@ -23,7 +23,7 @@
 #pragma mark - table view delegate & datasource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
+     UITableViewCell *cell;
     LRSpeakerCellModel *model = self.dataAry[indexPath.row];
     if (model.username && model.username.length > 0) {
         static NSString *CommunicationCellId = @"Communication";
