@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - admin
 // 设置房间属性
-//- (void)setupRoomType:(LRRoomType)aType;
+- (void)setupRoomType:(LRRoomType)aType;
 
 // 自己上麦
 - (void)setupMySelfToSpeaker;
