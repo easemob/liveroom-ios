@@ -538,21 +538,21 @@ static LRSpeakHelper *helper_;
                         attributes:(NSArray <EMConferenceAttribute *>*)attrs{
     NSString *talker = nil;
     for (EMConferenceAttribute *attr in attrs) {
-        /*
+        
          if ([attr.key isEqualToString:@"type"]) {
-         NSString *roomType = attr.value;
+             NSString *roomType = attr.value;
          if ([roomType isEqualToString:@"communication"]) {
-         self.roomModel.roomType = LRRoomType_Communication;
+             self.roomModel.roomType = LRRoomType_Communication;
          }else if ([roomType isEqualToString:@"host"]) {
-         self.roomModel.roomType = LRRoomType_Host;
+             self.roomModel.roomType = LRRoomType_Host;
          }else if ([roomType isEqualToString:@"monopoly"]) {
-         self.roomModel.roomType = LRRoomType_Monopoly;
+             self.roomModel.roomType = LRRoomType_Monopoly;
          }else if ([roomType isEqualToString:@"pentakill"]){
-         self.roomModel.roomType = LRRoomType_Pentakill;
+             self.roomModel.roomType = LRRoomType_Pentakill;
          }
-         [_delegates roomTypeDidChange:self.roomModel.roomType];
+             [_delegates roomTypeDidChange:self.roomModel.roomType];
          }
-         */
+         
         //狼人杀模式当前房间时钟状态
         if([attr.key isEqualToString:@"clockStatus"]){
             [[NSNotificationCenter defaultCenter] postNotificationName:LR_CLOCK_STATE_CHANGE object:attr.value];
