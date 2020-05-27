@@ -512,7 +512,7 @@
             }
             
             if (self.isOwner) { // 群主自动上麦
-                //[LRSpeakHelper.sharedInstance setupRoomType:self.roomModel.roomType];
+                [LRSpeakHelper.sharedInstance setupRoomType:self.roomModel.roomType];
                 [LRSpeakHelper.sharedInstance setupMySelfToSpeaker];
                 
                 if(self.roomModel.roomType == LRRoomType_Pentakill){
@@ -668,6 +668,9 @@
 
 #pragma mark - LRSpeakHelperDelegate
 - (void)roomTypeDidChange:(LRRoomType)aType {
+    if (_roomModel.roomType == aType) {
+        return;;
+    }
     _roomModel.roomType = aType;
     [_speakerVC removeFromParentViewController];
     [_speakerVC.view removeFromSuperview];
