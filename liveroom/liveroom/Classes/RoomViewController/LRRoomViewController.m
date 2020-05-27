@@ -82,6 +82,7 @@
     self.view.backgroundColor = [UIColor blackColor];
     [self regieterNotifiers];
     [self _setupSubViews];
+    [self _reloadViewConstraints];
     [self _updateHeaderView];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chatTapAction:)];
     [self.chatVC.view addGestureRecognizer:tap];
@@ -346,13 +347,7 @@
                                                           info:_roomModel.roomId];
     self.headerView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.headerView];
-    [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(kPadding);
-        make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
-        make.right.equalTo(self.view).offset(-kPadding);
-        make.height.equalTo(@kHeaderViewHeight);
-    }];
-    
+
     [self.view addSubview:self.speakerVC.view];
     [self addChildViewController:self.speakerVC];
     
@@ -360,22 +355,32 @@
     [self addChildViewController:self.chatVC];
     
     [self.view addSubview:self.inputBar];
+}
+
+- (void)_reloadViewConstraints {
+    [self.headerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(kPadding);
+        make.top.equalTo(self.view).offset(LRSafeAreaTopHeight);
+        make.right.equalTo(self.view).offset(-kPadding);
+        make.height.equalTo(@kHeaderViewHeight);
+    }];
+    
     // 房间tableview位置
-    [self.speakerVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.speakerVC.view mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.headerView.mas_bottom).offset(5);
         make.left.equalTo(self.headerView);
         make.right.equalTo(self.headerView);
         make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 + 140));
     }];
     
-    [self.chatVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.chatVC.view mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.speakerVC.view);
         make.right.equalTo(self.speakerVC.view);
         make.bottom.equalTo(self.inputBar.mas_top);
         make.height.equalTo(@((LRWindowHeight - LRSafeAreaTopHeight - kHeaderViewHeight - kInputViewHeight - LRSafeAreaBottomHeight) / 2 - 90 - 60));
     }];
     
-    [self.inputBar mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.inputBar mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.chatVC.view.mas_bottom);
         make.left.equalTo(self.chatVC.view);
         make.right.equalTo(self.chatVC.view);
@@ -385,7 +390,7 @@
     
     if (!self.isOwner) {
         [self.view addSubview:self.applyOnSpeakBtn];
-        [self.applyOnSpeakBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.applyOnSpeakBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@46);
             make.bottom.equalTo(self.chatVC.view);
             make.right.equalTo(self.chatVC.view);
@@ -661,6 +666,20 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:LR_ChatView_Tableview_Roll_Notification object:nil];
 }
 
+#pragma mark - LRSpeakHelperDelegate
+- (void)roomTypeDidChange:(LRRoomType)aType {
+    _roomModel.roomType = aType;
+    [_speakerVC removeFromParentViewController];
+    [_speakerVC.view removeFromSuperview];
+    _speakerVC = nil;
+    self.speakerVC.roomModel = _roomModel;
+    [self addChildViewController:self.speakerVC];
+    [self.view addSubview:self.speakerVC.view];
+    
+    [self _updateHeaderView];
+    [self _reloadViewConstraints];
+}
+
 #pragma mark - LRChatHelperDelegate
 - (void)didExitChatroom:(NSString *)aReason
 {
@@ -796,6 +815,8 @@
             _speakerVC = [[LRSpeakerMonopolyViewController alloc] init];
         } else if (_roomModel.roomType == LRRoomType_Pentakill) {
             _speakerVC = [[LRSpeakerPentakillController alloc] init];
+        } else {
+            _speakerVC = [[LRSpeakerCommunicationViewController alloc] init];
         }
     }
     return _speakerVC;
