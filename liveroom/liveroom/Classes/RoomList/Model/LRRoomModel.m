@@ -29,7 +29,7 @@
     model.createTime =  dict[@"rtcConfrCreateTime"];
     model.allowAudienceOnSpeaker = [dict[@"allowAudienceTalk"] boolValue];
     model.conferencePassword = [dict[@"rtcConfrPassword"] intValue];
-    NSString *roomType = dict[@"roomType"];
+    NSString *roomType = dict[@"roomtype"];
     if (![roomType isEqual:[NSNull null]] && roomType != nil) {
         if ([roomType isEqualToString:@"communication"]) {
             model.roomType = LRRoomType_Communication;
