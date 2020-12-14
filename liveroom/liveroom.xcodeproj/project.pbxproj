@@ -60,7 +60,6 @@
 		E04712E2225C907600F9910C /* LRFindView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712E1225C907600F9910C /* LRFindView.m */; };
 		E04712F8225F1A5A00F9910C /* LRRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712F6225F1A5900F9910C /* LRRequestManager.m */; };
 		E04712FE22602FC800F9910C /* LRCreateRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */; };
-		E047130022606E7900F9910C /* delete_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E04712FF22606E7900F9910C /* delete_input@2x.png */; };
 		E06E63C1230D4CE900DEE2DF /* LRSpeakerMonopolyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63B3230D4CE800DEE2DF /* LRSpeakerMonopolyCell.m */; };
 		E06E63C2230D4CE900DEE2DF /* LRSpeakerHostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63B8230D4CE800DEE2DF /* LRSpeakerHostCell.m */; };
 		E06E63C4230D4CE900DEE2DF /* LRSpeakerCommunicationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63C0230D4CE800DEE2DF /* LRSpeakerCommunicationCell.m */; };
@@ -69,8 +68,6 @@
 		E06E63CD230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63CC230D4DAF00DEE2DF /* LRSpeakerMonopolyViewController.m */; };
 		E06E63EF230E822200DEE2DF /* LRSpeakerPentakillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63ED230E822200DEE2DF /* LRSpeakerPentakillCell.m */; };
 		E06E63F0230E822200DEE2DF /* LRSpeakerPentakillController.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E63EE230E822200DEE2DF /* LRSpeakerPentakillController.m */; };
-		E0780C91226DB9F3008CF34E /* search-material@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C8F226DB9F3008CF34E /* search-material@2x.png */; };
-		E0780C92226DB9F3008CF34E /* search-material@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0780C90226DB9F3008CF34E /* search-material@3x.png */; };
 		E0780CCB226ED7CB008CF34E /* LRVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0780CC9226ED7CB008CF34E /* LRVolumeView.m */; };
 		E096BE5F22641FB7007908BB /* LRRoomOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E096BE5E22641FB7007908BB /* LRRoomOptions.m */; };
 /* End PBXBuildFile section */
@@ -196,7 +193,6 @@
 		E04712F7225F1A5900F9910C /* LRRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRRequestManager.h; sourceTree = "<group>"; };
 		E04712FC22602FC800F9910C /* LRCreateRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRCreateRoomViewController.h; sourceTree = "<group>"; };
 		E04712FD22602FC800F9910C /* LRCreateRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LRCreateRoomViewController.m; sourceTree = "<group>"; };
-		E04712FF22606E7900F9910C /* delete_input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete_input@2x.png"; sourceTree = "<group>"; };
 		E06E63B3230D4CE800DEE2DF /* LRSpeakerMonopolyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerMonopolyCell.m; sourceTree = "<group>"; };
 		E06E63B4230D4CE800DEE2DF /* LRSpeakerMonopolyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSpeakerMonopolyCell.h; sourceTree = "<group>"; };
 		E06E63B8230D4CE800DEE2DF /* LRSpeakerHostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerHostCell.m; sourceTree = "<group>"; };
@@ -213,8 +209,6 @@
 		E06E63EC230E822200DEE2DF /* LRSpeakerPentakillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRSpeakerPentakillCell.h; sourceTree = "<group>"; };
 		E06E63ED230E822200DEE2DF /* LRSpeakerPentakillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerPentakillCell.m; sourceTree = "<group>"; };
 		E06E63EE230E822200DEE2DF /* LRSpeakerPentakillController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRSpeakerPentakillController.m; sourceTree = "<group>"; };
-		E0780C8F226DB9F3008CF34E /* search-material@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@2x.png"; sourceTree = "<group>"; };
-		E0780C90226DB9F3008CF34E /* search-material@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-material@3x.png"; sourceTree = "<group>"; };
 		E0780CC9226ED7CB008CF34E /* LRVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRVolumeView.m; sourceTree = "<group>"; };
 		E0780CCA226ED7CB008CF34E /* LRVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRVolumeView.h; sourceTree = "<group>"; };
 		E096BE5D22641FB7007908BB /* LRRoomOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRRoomOptions.h; sourceTree = "<group>"; };
@@ -681,9 +675,7 @@
 				90F2C6642254C02A00A712B8 /* Sources */,
 				90F2C6652254C02A00A712B8 /* Frameworks */,
 				90F2C6662254C02A00A712B8 /* Resources */,
-				E5A84395069200D90DDF58CB /* [CP] Copy Pods Resources */,
 				90986BA622649737009A8FC7 /* Embed Frameworks */,
-				618FA2612F8FBC371462BBD1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -745,14 +737,7 @@
 				90F2C6E82254C08600A712B8 /* LRAlertController.xib in Resources */,
 				90F2C6732254C02A00A712B8 /* Main.storyboard in Resources */,
 				E00EE56F228424D60043C235 /* music.mp3 in Resources */,
-                E0780CD6226EE375008CF34E /* voice1@2x.png in Resources */,
-                E0780CD8226EE375008CF34E /* voice3@2x.png in Resources */,
-                3C449A012322724A000140D5 /* night.wav in Resources */,
-                E0780CD9226EE375008CF34E /* voice2@3x.png in Resources */,
-                E0780CD7226EE375008CF34E /* voice2@2x.png in Resources */,
-                90F2C6F42254C09400A712B8 /* add@2x.png in Resources */,
-                E0A7E6FC226D802400AE6C6F /* close2@2x.png in Resources */,
-                E0780CDA226EE375008CF34E /* voice4@3x.png in Resources */,
+				3C449A012322724A000140D5 /* night.wav in Resources */,
 				90F2C6DD2254C08600A712B8 /* LRLoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -760,23 +745,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		618FA2612F8FBC371462BBD1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B68E15B3F5D8F640D398D453 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -793,23 +761,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E5A84395069200D90DDF58CB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-liveroom/Pods-liveroom-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

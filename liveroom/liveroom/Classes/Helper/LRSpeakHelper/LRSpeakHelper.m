@@ -153,6 +153,10 @@ static LRSpeakHelper *helper_;
             value = @"monopoly";
         }
             break;
+        case LRRoomType_Pentakill:
+        {
+            value = @"pentakill";
+        }
         default:
             break;
     }
